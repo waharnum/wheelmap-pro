@@ -7,11 +7,10 @@ import { Router, Route, IndexRoute } from 'react-router';
 import { Accounts, STATES } from 'meteor/std:accounts-ui';
 
 import App from './App';
-import Login from './components/Login';
-import Home from './components/Home';
-import Admin from './components/Admin';
-import NotFound from './components/NotFound/NotFound';
-import TasksContainer from './containers/TasksContainer';
+import Login from './pages/Login';
+import Home from './pages/Home';
+import Admin from './pages/Admin';
+import NotFound from './pages/NotFound/NotFound';
 
 
 function acceptInvitationOnLogin() {

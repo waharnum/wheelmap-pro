@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import Task from '../components/Task';
-import Login from '../components/Login/Login';
+import Task from '../pages/Task';
+import Login from '../pages/Login/Login';
 
 const tasksList = (tasks) => tasks.map((task) => (
   <Task task={task} key={task._id} />
