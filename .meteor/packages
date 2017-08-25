@@ -26,3 +26,4 @@ accounts-password
 reactrouter:react-router-ssr
 # orionsoft:react-meteor-data
 std:accounts-ui
+twbs:bootstrap
