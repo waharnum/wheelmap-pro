@@ -1,0 +1,23 @@
+{
+    "public": {
+      "aws": {
+        "region": "eu-central-1",
+        "s3": {
+          "bucket": "accessibility-cloud-uploads"
+        }
+      },
+      "mapbox": "..."
+    },
+    "aws": {
+      "accessKeyId": "...",
+      "secretAccessKey": "..."
+    },
+    "transifex": {
+      "projectSlug": "accessibility-cloud",
+      "username": "...",
+      "password": "..."
+    },
+    "scripts": {
+      "timeoutMs": 10000
+    }
+}
