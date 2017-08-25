@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { OrganizationMembers } from '../organization-members.js';
-import { publishPublicFields } from '/server/publish';
-import { publishPrivateFieldsForMembers } from '/both/api/organizations/server/publications';
+import { publishPublicFields } from '/imports/server/publish';
+import { publishPrivateFieldsForMembers } from '/imports/both/api/organizations/server/publications';
 
 publishPublicFields('organizationMembers', OrganizationMembers);
 

@@ -3,11 +3,11 @@ import map from 'lodash/map';
 import { Random } from 'meteor/random';
 import { Email } from 'meteor/email';
 import { check } from 'meteor/check';
-// import CryptoJS from 'meteor/jparker:crypto-md5';
+
 import { OrganizationMembers } from '../organization-members';
-import { Organizations } from '/both/api/organizations/organizations';
-import { getDisplayedNameForUser } from '/both/lib/user-name';
-import { getGravatarHashForEmailAddress } from '/both/lib/user-icon';
+import { Organizations } from '/imports/both/api/organizations/organizations';
+import { getDisplayedNameForUser } from '/imports/both/lib/user-name';
+import { getGravatarHashForEmailAddress } from '/imports/both/lib/user-icon';
 
 const invitationEmailBody = ({ userName, organizationId, organizationName, token }) =>
 `Hi,

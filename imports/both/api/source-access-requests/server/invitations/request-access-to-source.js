@@ -2,8 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import pick from 'lodash/pick';
 import { Email } from 'meteor/email';
 import { SourceAccessRequests } from '../../source-access-requests';
-import { Organizations } from '/both/api/organizations/organizations';
-import { Sources } from '/both/api/sources/sources';
+import { Organizations } from '/imports/both/api/organizations/organizations';
+import { Sources } from '/imports/both/api/sources/sources';
 
 const invitationEmailBody = ({
   requesterEmailAddress,

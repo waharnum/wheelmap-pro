@@ -2,14 +2,14 @@ import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/factory';
 import { TAPi18n } from 'meteor/tap:i18n';
 
-import { Languages } from '/both/api/languages/languages';
-import { Licenses } from '/both/api/licenses/licenses';
-import { Organizations } from '/both/api/organizations/organizations';
-import { PlaceInfos } from '/both/api/place-infos/place-infos';
-import { SourceImports } from '/both/api/source-imports/source-imports';
-import { Sources } from '/both/api/sources/sources';
+import { Languages } from '/imports/both/api/languages/languages';
+import { Licenses } from '/imports/both/api/licenses/licenses';
+import { Organizations } from '/imports/both/api/organizations/organizations';
+import { PlaceInfos } from '/imports/both/api/place-infos/place-infos';
+import { SourceImports } from '/imports/both/api/source-imports/source-imports';
+import { Sources } from '/imports/both/api/sources/sources';
 
-import { isAdmin } from '/both/lib/is-admin';
+import { isAdmin } from '/imports/both/lib/is-admin';
 
 Factory.define('organization', Organizations, {
   name: 'ACME GmbH',

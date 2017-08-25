@@ -13,7 +13,7 @@ import httpMethodHandlers from './http-methods';
 import { collectionWithName } from './collections';
 import { getAppAndUserFromRequest } from './authenticate-request';
 import { setAccessControlHeaders } from './set-access-control-headers';
-import { getDisplayedNameForUser } from '/both/lib/user-name';
+import { getDisplayedNameForUser } from '/imports/both/lib/user-name';
 
 function handleJSONRequest(req, res, next) {
   const { pathname } = url.parse(req.url);

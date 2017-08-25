@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import { SourceImports } from '/both/api/source-imports/source-imports';
-import { Sources } from '/both/api/sources/sources';
+import { SourceImports } from '/imports/both/api/source-imports/source-imports';
+import { Sources } from '/imports/both/api/sources/sources';
 
 Meteor.startup(() => {
   const selector = { streamChain: { $elemMatch: { 'progress.isFinished': { $exists: false } } } };

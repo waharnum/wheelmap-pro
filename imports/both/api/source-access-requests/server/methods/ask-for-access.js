@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import { Sources } from '/both/api/sources/sources.js';
-import { Organizations } from '/both/api/organizations/organizations.js';
+import { Sources } from '/imports/both/api/sources/sources.js';
+import { Organizations } from '/imports/both/api/organizations/organizations.js';
 import { SourceAccessRequests } from '../../source-access-requests.js';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { requestAccessToSource } from '../invitations';

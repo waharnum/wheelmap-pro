@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { TAPi18n } from 'meteor/tap:i18n';
-import { isAdmin } from '/both/lib/is-admin';
+import { isAdmin } from '/imports/both/lib/is-admin';
 
 Meteor.methods({
   'users.approve'(_id) {

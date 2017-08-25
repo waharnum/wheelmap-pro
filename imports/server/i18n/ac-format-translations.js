@@ -3,10 +3,10 @@ import { Meteor } from 'meteor/meteor';
 import flatten from 'lodash/flatten';
 import map from 'lodash/map';
 import isObject from 'lodash/isObject';
-import { acFormat } from '/both/lib/ac-format';
+import { acFormat } from '/imports/both/lib/ac-format';
 import { syncWithTransifex } from './sync';
 import { TAPi18n } from 'meteor/tap:i18n';
-import { isAdmin } from '/both/lib/is-admin';
+import { isAdmin } from '/imports/both/lib/is-admin';
 import { cacheRegisteredLocales } from './locales';
 import { createTranslationHelper } from './translation-helper';
 

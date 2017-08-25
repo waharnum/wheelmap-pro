@@ -1,7 +1,8 @@
+import md5 from 'md5';
 import { Meteor } from 'meteor/meteor';
 
 export function getGravatarHashForEmailAddress(address) {
-  return CryptoJS.MD5(address.trim().toLowerCase()).toString();
+  return md5(address.trim().toLowerCase()).toString();
 }
 
 export function getGravatarImageUrl(hash) {

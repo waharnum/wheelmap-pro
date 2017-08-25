@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
-import { Sources } from '/both/api/sources/sources.js';
-import { OrganizationMembers } from '/both/api/organization-members/organization-members.js';
+import { Sources } from '/imports/both/api/sources/sources.js';
+import { OrganizationMembers } from '/imports/both/api/organization-members/organization-members.js';
 import { SourceAccessRequests } from '../../source-access-requests.js';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { ignoreAccessRequest } from '../invitations';

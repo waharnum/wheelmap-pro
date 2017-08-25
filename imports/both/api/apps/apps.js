@@ -1,7 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
-import { Organizations } from '/both/api/organizations/organizations';
+import { Organizations } from '/imports/both/api/organizations/organizations';
 
 export const Apps = new Mongo.Collection('Apps');
 

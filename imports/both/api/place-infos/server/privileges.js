@@ -1,7 +1,7 @@
-import { isAdmin } from '/both/lib/is-admin';
+import { isAdmin } from '/imports/both/lib/is-admin';
 import { check } from 'meteor/check';
 import { PlaceInfos } from '../place-infos';
-import { Sources } from '/both/api/sources/sources';
+import { Sources } from '/imports/both/api/sources/sources';
 
 PlaceInfos.allow({
   insert: isAdmin,

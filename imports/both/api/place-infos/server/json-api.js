@@ -1,14 +1,14 @@
 import cloneDeep from 'lodash/cloneDeep';
 import set from 'lodash/set';
 import omit from 'lodash/omit';
-import { geoDistance } from '/both/lib/geo-distance';
-import { Sources } from '/both/api/sources/sources';
+import { geoDistance } from '/imports/both/lib/geo-distance';
+import { Sources } from '/imports/both/api/sources/sources';
 import {
   pathsInObject,
   getTranslationForAccessibilityAttribute,
-} from '/server/i18n/ac-format-translations';
-import { Categories } from '/both/api/categories/categories';
-import { PlaceInfos } from '/both/api/place-infos/place-infos';
+} from '/imports/server/i18n/ac-format-translations';
+import { Categories } from '/imports/both/api/categories/categories';
+import { PlaceInfos } from '/imports/both/api/place-infos/place-infos';
 
 const helpers = {
   getLocalizedCategory(locale) {

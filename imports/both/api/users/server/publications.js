@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { isAdmin } from '/both/lib/is-admin';
+import { isAdmin } from '/imports/both/lib/is-admin';
 
 Meteor.publish('users.needApproval', function publish() {
   this.autorun(() => {

@@ -1,8 +1,8 @@
-import { isAdmin } from '/both/lib/is-admin';
-import { isApproved } from '/both/lib/is-approved';
+import { isAdmin } from '/imports/both/lib/is-admin';
+import { isApproved } from '/imports/both/lib/is-approved';
 import { check } from 'meteor/check';
-import { OrganizationMembers } from '/both/api/organization-members/organization-members';
-import { Organizations } from '/both/api/organizations/organizations';
+import { OrganizationMembers } from '/imports/both/api/organization-members/organization-members';
+import { Organizations } from '/imports/both/api/organizations/organizations';
 import uniq from 'lodash/uniq';
 
 export function isUserMemberOfOrganizationWithId(userId, organizationId) {

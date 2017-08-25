@@ -2,7 +2,7 @@ import { check } from 'meteor/check';
 import { Organizations } from '../organizations';
 import {
   userHasFullAccessToOrganization,
-} from '/both/api/organizations/privileges';
+} from '/imports/both/api/organizations/privileges';
 
 Organizations.allow({
   insert: userHasFullAccessToOrganization,

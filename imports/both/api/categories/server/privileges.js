@@ -1,4 +1,4 @@
-import { isAdmin } from '/both/lib/is-admin';
+import { isAdmin } from '/imports/both/lib/is-admin';
 import { Categories } from '../categories.js';
 
 Categories.allow({

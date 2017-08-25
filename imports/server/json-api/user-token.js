@@ -7,7 +7,7 @@ import {
   MaxExpireInterval,
   ExpirationCheckInterval,
   DefaultExpirationTime,
-} from '/both/lib/api-tokens';
+} from '/imports/both/lib/api-tokens';
 
 const ApiTokens = new Mongo.Collection('apiTokens');
 

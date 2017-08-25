@@ -1,7 +1,7 @@
 import { check } from 'meteor/check';
 import SimpleSchema from 'simpl-schema';
 import set from 'lodash/set';
-import entries from '/both/lib/entries';
+import entries from '/imports/both/lib/entries';
 import getVMContext from './get-vm-context';
 import vm from 'vm';
 import vmScriptsOptions from '../vm-scripts-options';

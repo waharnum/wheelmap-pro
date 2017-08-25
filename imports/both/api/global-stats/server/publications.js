@@ -1,4 +1,4 @@
 import { GlobalStats } from '../global-stats.js';
-import { publishPublicFields } from '/server/publish';
+import { publishPublicFields } from '/imports/server/publish';
 
 publishPublicFields('globalStats', GlobalStats);

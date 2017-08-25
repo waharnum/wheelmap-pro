@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import SimpleSchema from 'simpl-schema';
 import { Organizations } from '../organizations';
-import { OrganizationMembers } from '/both/api/organization-members/organization-members';
+import { OrganizationMembers } from '/imports/both/api/organization-members/organization-members';
 
 
 export const insert = new ValidatedMethod({

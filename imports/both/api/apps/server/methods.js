@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 
-import { Apps } from '/both/api/apps/apps.js';
-import { userHasFullAccessToOrganizationId } from '/both/api/organizations/privileges';
+import { Apps } from '/imports/both/api/apps/apps.js';
+import { userHasFullAccessToOrganizationId } from '/imports/both/api/organizations/privileges';
 
 Meteor.methods({
   deleteAppWithId(appId) {

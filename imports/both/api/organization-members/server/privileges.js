@@ -4,11 +4,11 @@ import map from 'lodash/map';
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { OrganizationMembers } from '../organization-members';
-import { Apps } from '/both/api/apps/apps';
+import { Apps } from '/imports/both/api/apps/apps';
 import {
   getAccessibleOrganizationIdsForUserId,
   userHasFullAccessToReferencedOrganization,
-} from '/both/api/organizations/privileges';
+} from '/imports/both/api/organizations/privileges';
 
 OrganizationMembers.allow({
   insert: userHasFullAccessToReferencedOrganization,

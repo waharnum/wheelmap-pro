@@ -1,4 +1,4 @@
-import { userHasFullAccessToReferencedOrganization } from '/both/api/organizations/privileges';
+import { userHasFullAccessToReferencedOrganization } from '/imports/both/api/organizations/privileges';
 import { Licenses } from '../licenses';
 
 Licenses.allow({

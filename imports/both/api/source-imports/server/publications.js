@@ -1,10 +1,10 @@
 import util from 'util';
 import { Meteor } from 'meteor/meteor';
-import { Sources } from '/both/api/sources/sources';
+import { Sources } from '/imports/both/api/sources/sources';
 import { check } from 'meteor/check';
 import { SourceImports } from '../source-imports.js';
-import { publishPublicFields } from '/server/publish';
-import { publishPrivateFieldsForMembers } from '/both/api/organizations/server/publications';
+import { publishPublicFields } from '/imports/server/publish';
+import { publishPrivateFieldsForMembers } from '/imports/both/api/organizations/server/publications';
 
 publishPublicFields('sourceImports', SourceImports);
 publishPrivateFieldsForMembers('sourceImports', SourceImports);

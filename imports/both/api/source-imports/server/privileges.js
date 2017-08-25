@@ -2,9 +2,9 @@ import { check } from 'meteor/check';
 import {
   getAccessibleOrganizationIdsForUserId,
   userHasFullAccessToReferencedOrganization,
-} from '/both/api/organizations/privileges';
+} from '/imports/both/api/organizations/privileges';
 import { SourceImports } from '../source-imports';
-import { Sources } from '/both/api/sources/sources';
+import { Sources } from '/imports/both/api/sources/sources';
 
 SourceImports.allow({
   insert: userHasFullAccessToReferencedOrganization,

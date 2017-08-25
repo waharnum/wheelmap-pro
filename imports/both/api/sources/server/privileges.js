@@ -2,13 +2,13 @@ import { Meteor } from 'meteor/meteor';
 import { check, Match } from 'meteor/check';
 import { TAPi18n } from 'meteor/tap:i18n';
 import { Sources } from '../sources';
-import { Organizations } from '/both/api/organizations/organizations';
-import { Apps } from '/both/api/apps/apps';
+import { Organizations } from '/imports/both/api/organizations/organizations';
+import { Apps } from '/imports/both/api/apps/apps';
 import {
   getAccessibleOrganizationIdsForUserId,
   userHasFullAccessToReferencedOrganization,
   userHasFullAccessToOrganizationId,
-} from '/both/api/organizations/privileges';
+} from '/imports/both/api/organizations/privileges';
 
 Sources.allow({
   insert: userHasFullAccessToReferencedOrganization,

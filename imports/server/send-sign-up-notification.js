@@ -1,7 +1,7 @@
 import { Accounts } from 'meteor/accounts-base';
 import { Meteor } from 'meteor/meteor';
 import { Email } from 'meteor/email';
-import { getDisplayedNameForUser } from '/both/lib/user-name';
+import { getDisplayedNameForUser } from '/imports/both/lib/user-name';
 
 Accounts.onCreateUser((options, user) => {
   console.log('Send notification email for signup:', user);

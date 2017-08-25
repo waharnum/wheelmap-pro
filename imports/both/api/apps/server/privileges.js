@@ -2,7 +2,7 @@ import { check } from 'meteor/check';
 import {
   getAccessibleOrganizationIdsForUserId,
   userHasFullAccessToReferencedOrganization,
-} from '/both/api/organizations/privileges';
+} from '/imports/both/api/organizations/privileges';
 
 import { Apps } from '../apps.js';
 

@@ -1,13 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 
-import { PlaceInfos } from '/both/api/place-infos/place-infos.js';
-import { SourceImports } from '/both/api/source-imports/source-imports.js';
-import { Sources } from '/both/api/sources/sources.js';
+import { PlaceInfos } from '/imports/both/api/place-infos/place-infos.js';
+import { SourceImports } from '/imports/both/api/source-imports/source-imports.js';
+import { Sources } from '/imports/both/api/sources/sources.js';
 import {
   checkExistenceAndFullAccessToSourceId,
   checkExistenceAndVisibilityForSourceId,
-} from '/both/api/sources/server/privileges';
+} from '/imports/both/api/sources/server/privileges';
 
 Meteor.methods({
   getPlacesForSource(sourceId, limitCount = 1000) {

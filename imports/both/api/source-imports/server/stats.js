@@ -1,13 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
-import { PlaceInfos } from '/both/api/place-infos/place-infos';
-import { SourceImports } from '/both/api/source-imports/source-imports';
-import { Sources } from '/both/api/sources/sources';
+import { PlaceInfos } from '/imports/both/api/place-infos/place-infos';
+import { SourceImports } from '/imports/both/api/source-imports/source-imports';
+import { Sources } from '/imports/both/api/sources/sources';
 import get from 'lodash/get';
 import set from 'lodash/set';
 import isObject from 'lodash/isObject';
-import { calculateGlobalStats } from '/both/api/global-stats/server/calculation';
-import { checkExistenceAndVisibilityForSourceId } from '/both/api/sources/server/privileges';
+import { calculateGlobalStats } from '/imports/both/api/global-stats/server/calculation';
+import { checkExistenceAndVisibilityForSourceId } from '/imports/both/api/sources/server/privileges';
 import Fiber from 'fibers';
 
 const attributeBlacklist = {

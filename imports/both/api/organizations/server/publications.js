@@ -7,7 +7,7 @@ import { check } from 'meteor/check';
 import { Organizations } from '../organizations.js';
 
 import { getAccessibleOrganizationIdsForUserId } from '../privileges';
-import { publishPublicFields, publishPrivateFields } from '/server/publish';
+import { publishPublicFields, publishPrivateFields } from '/imports/server/publish';
 
 
 publishPublicFields('organizations', Organizations);

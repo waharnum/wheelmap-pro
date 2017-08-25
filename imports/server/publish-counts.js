@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
-import { PlaceInfos } from '/both/api/place-infos/place-infos';
+import { PlaceInfos } from '/imports/both/api/place-infos/place-infos';
 
 const collectionName = 'sourcesPlaceInfoCounts';
 

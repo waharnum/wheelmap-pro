@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Apps } from '../apps.js';
-import { getAccessibleOrganizationIdsForRoles } from '/both/api/organizations/privileges';
-import { publishPublicFields } from '/server/publish';
-import { publishPrivateFieldsForMembers } from '/both/api/organizations/server/publications';
+import { getAccessibleOrganizationIdsForRoles } from '/imports/both/api/organizations/privileges';
+import { publishPublicFields } from '/imports/server/publish';
+import { publishPrivateFieldsForMembers } from '/imports/both/api/organizations/server/publications';
 
 publishPublicFields('apps', Apps);
 publishPrivateFieldsForMembers('apps', Apps);

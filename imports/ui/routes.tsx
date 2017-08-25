@@ -12,6 +12,7 @@ import Home from './pages/Home';
 import Admin from './pages/Admin';
 import NotFound from './pages/NotFound/NotFound';
 
+import ShowOrganization from './pages/Organizations/Show';
 
 function acceptInvitationOnLogin() {
   Tracker.autorun((c) => {
@@ -48,14 +49,14 @@ function acceptInvitationOnLogin() {
   });
 }
 
-<Route path='/organizations/:_id/accept-invitation/:invitationToken' onEnter={() => {
-    Session.set('invitationToken', this.getParam('invitationToken'));
-    Session.set('organizationId', this.getParam('_id'));
-    if (!Meteor.userId()) {
-        window.location.href = '/';
-    }
-    acceptInvitationOnLogin();
-}} />
+// <Route path='/organizations/:_id/accept-invitation/:invitationToken' onEnter={() => {
+//     Session.set('invitationToken', this.getParam('invitationToken'));
+//     Session.set('organizationId', this.getParam('_id'));
+//     if (!Meteor.userId()) {
+//         window.location.href = '/';
+//     }
+//     acceptInvitationOnLogin();
+// }} />
 
 
 export default (
@@ -68,6 +69,7 @@ export default (
             <Route path="/admin" component={App}>
                 <IndexRoute component={Admin} />
             </Route>
+            <Route path="/organizations/:_id" component={ShowOrganization} />
             <Route path="*" component={NotFound} />
         </Route>
     </Router>

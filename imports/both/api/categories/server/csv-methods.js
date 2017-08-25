@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { TAPi18n } from 'meteor/tap:i18n';
-import { Categories } from '/both/api/categories/categories.js';
-import { isAdmin } from '/both/lib/is-admin';
+import { Categories } from '/imports/both/api/categories/categories.js';
+import { isAdmin } from '/imports/both/lib/is-admin';
 import compact from 'lodash/compact';
 
 Meteor.methods({

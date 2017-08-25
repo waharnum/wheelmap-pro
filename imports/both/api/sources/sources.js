@@ -2,12 +2,12 @@ import find from 'lodash/find';
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { isAdmin } from '/both/lib/is-admin';
+import { isAdmin } from '/imports/both/lib/is-admin';
 
-import { Licenses } from '/both/api/licenses/licenses';
-import { Organizations } from '/both/api/organizations/organizations';
-import { SourceImports } from '/both/api/source-imports/source-imports';
-import { isUserMemberOfOrganizationWithId } from '/both/api/organizations/privileges.js';
+import { Licenses } from '/imports/both/api/licenses/licenses';
+import { Organizations } from '/imports/both/api/organizations/organizations';
+import { SourceImports } from '/imports/both/api/source-imports/source-imports';
+import { isUserMemberOfOrganizationWithId } from '/imports/both/api/organizations/privileges.js';
 
 export const Sources = new Mongo.Collection('Sources');
 

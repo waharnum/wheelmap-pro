@@ -2,9 +2,9 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 import { GlobalStats } from '../global-stats';
-import { PlaceInfos } from '/both/api/place-infos/place-infos';
-import { Sources } from '/both/api/sources/sources';
-import { Organizations } from '/both/api/organizations/organizations';
+import { PlaceInfos } from '/imports/both/api/place-infos/place-infos';
+import { Sources } from '/imports/both/api/sources/sources';
+import { Organizations } from '/imports/both/api/organizations/organizations';
 
 export function saveCount({ collection, countName, selector = {} }) {
   check(collection, Mongo.Collection);

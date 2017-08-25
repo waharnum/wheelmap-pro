@@ -2,11 +2,11 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
-import { Organizations } from '/both/api/organizations/organizations';
+import { Organizations } from '/imports/both/api/organizations/organizations';
 import { roles } from './roles';
 
-import { getDisplayedNameForUser } from '/both/lib/user-name';
-import { getIconHTMLForUser, getGravatarImageUrl } from '/both/lib/user-icon';
+import { getDisplayedNameForUser } from '/imports/both/lib/user-name';
+import { getIconHTMLForUser, getGravatarImageUrl } from '/imports/both/lib/user-icon';
 
 export const OrganizationMembers = new Mongo.Collection('OrganizationMembers');
 

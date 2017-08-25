@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import { Apps } from '/both/api/apps/apps';
-import { Organizations } from '/both/api/organizations/organizations';
+import { Apps } from '/imports/both/api/apps/apps';
+import { Organizations } from '/imports/both/api/organizations/organizations';
 
 // Returns the app that is authenticated for the given token string, or undefined if the token
 // is not valid / not found.

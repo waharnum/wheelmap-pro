@@ -1,5 +1,5 @@
-import { PlaceInfos } from '/both/api/place-infos/place-infos';
-import { Sources } from '/both/api/sources/sources';
+import { PlaceInfos } from '/imports/both/api/place-infos/place-infos';
+import { Sources } from '/imports/both/api/sources/sources';
 import sampleSize from 'lodash/sampleSize';
 
 const MAX_ELIGIBLE_PLACE_INFO_ID_COUNT = 100000;

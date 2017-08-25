@@ -1,6 +1,6 @@
 import pick from 'lodash/pick';
 import SimpleSchema from 'simpl-schema';
-import { FilterPresets } from '/both/api/filter-presets/filter-presets';
+import { FilterPresets } from '/imports/both/api/filter-presets/filter-presets';
 
 // Returns MongoDB query options for given request
 

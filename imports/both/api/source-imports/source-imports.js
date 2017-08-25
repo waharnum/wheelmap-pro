@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import moment from 'moment';
 import some from 'lodash/some';
-import { Sources } from '/both/api/sources/sources';
+import { Sources } from '/imports/both/api/sources/sources';
 
 export const SourceImports = new Mongo.Collection('SourceImports');
 

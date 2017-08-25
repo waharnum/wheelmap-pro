@@ -17,7 +17,7 @@ import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import { WebApp } from 'meteor/webapp';
 
-import { UploadedFiles } from '/both/api/uploaded-files/uploaded-files';
+import { UploadedFiles } from '/imports/both/api/uploaded-files/uploaded-files';
 
 const tokensToUserIds = {};
 const path = '/file-upload';
