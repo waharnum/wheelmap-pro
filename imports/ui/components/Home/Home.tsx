@@ -1,3 +1,12 @@
 import * as React from 'react';
-const Home = () => <h1>Home</h1>;
-export default Home;
+import styled, { keyframes } from 'styled-components';
+
+const Home = (props) => (
+    <div className={`${props.className}`}>
+        <h1>Home!</h1>
+    </div>
+);
+
+export default styled(Home) `
+    color:red;
+`;
