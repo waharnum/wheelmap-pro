@@ -76,10 +76,14 @@ Organizations.schema = new SimpleSchema({
     type: String,
     max: 2000,
     optional: true,
+    uniforms: {
+      placeholder: 'Shashashsa',
+    },
   },
   tocForOrganizationsAccepted: {
     type: Boolean,
     allowedValues: [true],
+    defaultValue: false,
   },
 });
 

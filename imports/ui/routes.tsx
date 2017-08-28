@@ -12,6 +12,7 @@ import Home from './pages/Home';
 import Admin from './pages/Admin';
 import NotFound from './pages/NotFound/NotFound';
 
+import CreateOrganization from './pages/Organizations/Create';
 import ShowOrganization from './pages/Organizations/Show';
 
 function acceptInvitationOnLogin() {
@@ -49,25 +50,16 @@ function acceptInvitationOnLogin() {
   });
 }
 
-// <Route path='/organizations/:_id/accept-invitation/:invitationToken' onEnter={() => {
-//     Session.set('invitationToken', this.getParam('invitationToken'));
-//     Session.set('organizationId', this.getParam('_id'));
-//     if (!Meteor.userId()) {
-//         window.location.href = '/';
-//     }
-//     acceptInvitationOnLogin();
-// }} />
-
 export default (
     <Router>
         <Route path="/" component={App}>
             <IndexRoute component={Home} />
             <Route path="/signin" component={() => <Accounts.ui.LoginForm />} />
             <Route path="/signup" component={() => <Accounts.ui.LoginForm formState={STATES.SIGN_UP} />} />
-            {/* <Route path="/hello/:name" component={ Hello } /> */}
             <Route path="/admin" component={App}>
                 <IndexRoute component={Admin} />
             </Route>
+            <Route path="/organizations/create" component={CreateOrganization} />
             <Route path="/organizations/:_id" component={ShowOrganization} />
             <Route path="*" component={NotFound} />
         </Route>
