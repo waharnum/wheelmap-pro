@@ -12,10 +12,6 @@ interface IStyledComponentProps {
   className?: string;
 }
 
-interface IDataBindingProps {
-  currentUser: Meteor.User;
-}
-
 interface ICreateProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
 }
@@ -40,7 +36,7 @@ schema.extend({
   },
 });
 
-class Create extends React.Component<ICreateProps & IDataBindingProps & IStyledComponentProps, ICreateState> {
+class Create extends React.Component<ICreateProps & IStyledComponentProps, ICreateState> {
   public state = {
     model: {} as IOrganization,
     isSaving: false,
@@ -92,13 +88,6 @@ class Create extends React.Component<ICreateProps & IDataBindingProps & IStyledC
   }
 };
 
-const CreateContainer = createContainer((props: ICreateProps) => {
-  const handle = Meteor.subscribe('Organizations');
-  return {
-    currentUser: Meteor.user(),
-  };
-}, Create);
-
-export default styled(CreateContainer) `
+export default styled(Create) `
     color:#444;
 `;

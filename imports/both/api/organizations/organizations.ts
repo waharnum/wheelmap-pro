@@ -23,8 +23,6 @@ const ACCESS_REQUEST_APPROVING_ROLES = [
   'member',
 ];
 
-export const Organizations = new Mongo.Collection('Organizations');
-
 export interface IOrganization {
   _id?: Mongo.ObjectID;
   name: string;
@@ -33,6 +31,8 @@ export interface IOrganization {
   logo?: string;
   tocForOrganizationsAccepted: boolean;
 };
+
+export const Organizations = new Mongo.Collection<IOrganization>('Organizations');
 
 // allow custom uniforms fields
 SimpleSchema.extendOptions(['uniforms']);
@@ -114,11 +114,11 @@ Organizations.helpers({
   },
 });
 
-Organizations.whereCurrentUserIsMember = () => {
-  const userId = Meteor.userId();
-  const options = { transform: null, fields: { organizationId: 1 } };
-  const orgIds = OrganizationMembers.find({ userId }, options).fetch().map((m) => m.organizationId);
-  return Organizations.find({ _id: { $in: orgIds } });
-};
+// Organizations.whereCurrentUserIsMember = () => {
+//   const userId = Meteor.userId();
+//   const options = { transform: null, fields: { organizationId: 1 } };
+//   const orgIds = OrganizationMembers.find({ userId }, options).fetch().map((m) => m.organizationId);
+//   return Organizations.find({ _id: { $in: orgIds } });
+// };
 
 Organizations.attachSchema(Organizations.schema);

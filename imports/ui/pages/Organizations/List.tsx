@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { createContainer } from 'meteor/react-meteor-data';
+import { reactiveModelSubscription, IListModelProps } from './reactiveModelSubscription';
 
 import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
 import Button from '../../components/Button';
@@ -20,24 +20,19 @@ interface IListEntryModelProps {
   model: IOrganization;
 }
 
-interface IListModelProps {
-  model: IOrganization[];
-  ready: boolean;
-}
-
 const ListEntry = (props: IStyledComponentProps & IListEntryModelProps) => {
   return (
     <div className={props.className || ''}>
       {props.model.name}
       {props.model.description} 
       {props.model.webSite}
-      <Button to={`/organizations/${props.model._id}`}>View</Button> 
-      <Button to={`/organizations/edit/${props.model._id}`}>Edit</Button> 
+      <Button to={`/organizations/${props.model._id}`}>View</Button>
+      <Button to={`/organizations/edit/${props.model._id}`}>Edit</Button>
     </div>
   );
 };
 
-const List = (props: IStyledComponentProps & IListModelProps) => {
+const List = (props: IStyledComponentProps & IListModelProps<IOrganization>) => {
   if (!props.ready) {
     return (
       <div className={props.className || ''}>Loading…</div>
@@ -53,18 +48,8 @@ const List = (props: IStyledComponentProps & IListModelProps) => {
   );
 };
 
-const ShowContainer = createContainer((props: IShowProps & IListModelProps) => {
-  const id = props.params._id;
-  const handle = Meteor.subscribe('organizations');
-  const ready = handle.ready();
+const ListContainer = reactiveModelSubscription(List, Organizations, 'organizations');
 
-  return {
-    currentUser: Meteor.user(),
-    ready,
-    model: ready ? Organizations.find().fetch() : [],
-  };
-}, List);
-
-export default styled(ShowContainer) `
+export default styled(ListContainer) `
     color:#444;
 `;
