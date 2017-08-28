@@ -30,51 +30,24 @@ SimpleSchema.extendOptions(['uniforms']);
 
 Organizations.schema = new SimpleSchema({
   name: {
-    label: 'Name of company or individual',
+    label: 'Name',
     type: String,
     max: 1000,
     uniforms: {
-      placeholder: 'e.g. Organization name',
+      placeholder: 'e.g. Organization Name',
     },
   },
-  address: {
-    label: 'Address',
+  description: {
+    label: 'Description (optional)',
     type: String,
-    max: 1000,
+    max: 2000,
     optional: true,
-  },
-  addressAdditional: {
-    label: 'Address (Additional)',
-    type: String,
-    max: 1000,
-    optional: true,
-  },
-  zipCode: {
-    label: 'ZIP-Code',
-    type: String,
-    max: 1000,
-    optional: true,
-  },
-  city: {
-    label: 'City',
-    type: String,
-    optional: true,
-    max: 100,
-  },
-  country: {
-    label: 'Country',
-    type: String,
-    optional: true,
-    max: 100,
-  },
-  phoneNumber: {
-    label: 'Phone number',
-    type: String,
-    max: 100,
-    optional: true,
+    uniforms: {
+      placeholder: 'e.g. Our organization is…',
+    },
   },
   webSite: {
-    label: 'Organization link',
+    label: 'Organization Link',
     type: String,
     regEx: SimpleSchema.RegEx.Url,
     max: 1000,
@@ -83,13 +56,13 @@ Organizations.schema = new SimpleSchema({
       placeholder: 'e.g. http://www.example.com',
     },
   },
-  description: {
-    label: 'Short description',
+  logo: {
+    label: 'URL to Organization Logo',
     type: String,
-    max: 2000,
+    max: 1000,
     optional: true,
     uniforms: {
-      placeholder: 'e.g. Our organization is…',
+      placeholder: 'e.g. http://www.example.com/logo.png',
     },
   },
   tocForOrganizationsAccepted: {
