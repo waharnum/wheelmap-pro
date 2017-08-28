@@ -42,7 +42,7 @@ function acceptInvitationOnLogin() {
         Session.set('invitationToken', null);
         Session.set('organizationId', null);
         window.location.href = '/';
-      }
+      },
     );
 
     c.stop();
@@ -57,7 +57,6 @@ function acceptInvitationOnLogin() {
 //     }
 //     acceptInvitationOnLogin();
 // }} />
-
 
 export default (
     <Router>
