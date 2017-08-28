@@ -1,7 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Mongo } from 'meteor/mongo';
+
+import sortBy from 'lodash/sortBy';
+
 import SimpleSchema from 'simpl-schema';
+
 import { Sources } from '../../../../imports/both/api/sources/sources';
 import { OrganizationMembers } from '../../../../imports/both/api/organization-members/organization-members';
 import { Apps } from '../../../../imports/both/api/apps/apps';
@@ -11,7 +15,6 @@ import {
   userHasFullAccessToOrganizationId,
   isUserMemberOfOrganizationWithId,
 } from '../../../../imports/both/api/organizations/privileges';
-import sortBy from 'lodash/sortBy';
 
 const ACCESS_REQUEST_APPROVING_ROLES = [
   'developer',
@@ -22,11 +25,17 @@ const ACCESS_REQUEST_APPROVING_ROLES = [
 
 export const Organizations = new Mongo.Collection('Organizations');
 
+// allow custom uniforms fields
+SimpleSchema.extendOptions(['uniforms']);
+
 Organizations.schema = new SimpleSchema({
   name: {
     label: 'Name of company or individual',
     type: String,
     max: 1000,
+    uniforms: {
+      placeholder: 'e.g. Organization name',
+    },
   },
   address: {
     label: 'Address',
@@ -65,19 +74,22 @@ Organizations.schema = new SimpleSchema({
     optional: true,
   },
   webSite: {
-    label: 'Web-Site',
+    label: 'Organization link',
     type: String,
     regEx: SimpleSchema.RegEx.Url,
     max: 1000,
     optional: true,
+    uniforms: {
+      placeholder: 'e.g. http://www.example.com',
+    },
   },
   description: {
-    label: 'Short description (optional)',
+    label: 'Short description',
     type: String,
     max: 2000,
     optional: true,
     uniforms: {
-      placeholder: 'Shashashsa',
+      placeholder: 'e.g. Our organization is…',
     },
   },
   tocForOrganizationsAccepted: {
