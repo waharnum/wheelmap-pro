@@ -1,6 +1,125 @@
 /* CSS declarations go here */
 @import "../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 
+
+
+/* ---------------------------- Roboto as base type ---------------------------------- */
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/public/fonts/Roboto-Regular.woff') format('woff'),
+      url('/public/fonts/Roboto-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('/public/fonts/Roboto-Italic.woff') format('woff'),
+      url('/public/fonts/Roboto-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+font-family: 'Roboto';
+src: url('/public/fonts/Roboto-Light.woff') format('woff'),
+    url('/public/fonts/Roboto-Light.ttf') format('truetype');
+font-weight: 300;
+font-style: normal;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/public/fonts/Roboto-LightItalic.woff') format('woff'),
+      url('/public/fonts/Roboto-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/public/fonts/Roboto-Thin.woff') format('woff'),
+      url('/public/fonts/Roboto-Thin.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('/public/fonts/Roboto-ThinItalic.woff') format('woff'),
+      url('/public/fonts/Roboto-ThinItalic.ttf') format('truetype');
+  font-weight: 200;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/public/fonts/Roboto-Black.woff') format('woff'),
+       url('/public/fonts/Roboto-Black.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+/* -------------------------- iconfield for base icons ------------------------*/
+
+@font-face {
+  font-family: 'iconfield';
+    src: url('/public/fonts/iconfield-v03.woff') format('woff'),
+      url('/public/fonts/iconfield-v03.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* -------------------------- base element definitions ------------------------*/
+
 body {
-    background-color: #fefefe;
-} 
+  background-color: #F2F3F5;
+  color:#37404D;
+  margin: 0;
+  padding: 0;
+  -moz-osx-font-smoothing: grayscale; /* Firefox font render fix on OSX*/
+  -webkit-font-smoothing: antialiased;
+  font-family: 'Roboto', Helvetica, Arial, sans-serif !important;
+  font-size: 16px;
+  font-weight: 300;
+  font-style: normal;
+}
+
+* {
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+}
+
+label,
+.noTextSelect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none; 
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
+
+input,
+textarea,
+select,
+button,
+aside {
+
+}
+
+.btn {
+  padding: 0 20px;
+  text-transform: uppercase;
+  color: white;
+  background-color: #29A3CB;
+  border-radius: 0;
+  border: none;
+  outline: 0;
+}
+
+.btn-primary {
+  font-size: 18px;
+  line-height: 48px;
+}
