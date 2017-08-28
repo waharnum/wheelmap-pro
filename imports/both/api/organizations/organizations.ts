@@ -2,15 +2,15 @@ import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { Sources } from '/imports/both/api/sources/sources';
-import { OrganizationMembers } from '/imports/both/api/organization-members/organization-members';
-import { Apps } from '/imports/both/api/apps/apps';
-import { countriesOfTheWorld } from '/imports/both/lib/all-countries';
-import { isAdmin } from '/imports/both/lib/is-admin';
+import { Sources } from '../../../../imports/both/api/sources/sources';
+import { OrganizationMembers } from '../../../../imports/both/api/organization-members/organization-members';
+import { Apps } from '../../../../imports/both/api/apps/apps';
+import { countriesOfTheWorld } from '../../../../imports/both/lib/all-countries';
+import { isAdmin } from '../../../../imports/both/lib/is-admin';
 import {
   userHasFullAccessToOrganizationId,
   isUserMemberOfOrganizationWithId,
-} from '/imports/both/api/organizations/privileges';
+} from '../../../../imports/both/api/organizations/privileges';
 import sortBy from 'lodash/sortBy';
 
 const ACCESS_REQUEST_APPROVING_ROLES = [
@@ -83,7 +83,6 @@ Organizations.schema = new SimpleSchema({
   },
 });
 
-
 Organizations.helpers({
   editableBy(userId) {
     if (!userId) return false;
@@ -120,7 +119,7 @@ Organizations.helpers({
 Organizations.whereCurrentUserIsMember = () => {
   const userId = Meteor.userId();
   const options = { transform: null, fields: { organizationId: 1 } };
-  const orgIds = OrganizationMembers.find({ userId }, options).fetch().map(m => m.organizationId);
+  const orgIds = OrganizationMembers.find({ userId }, options).fetch().map((m) => m.organizationId);
   return Organizations.find({ _id: { $in: orgIds } });
 };
 
