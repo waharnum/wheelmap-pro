@@ -33,6 +33,5 @@ mdg:validated-method
 browser-policy
 react-meteor-data
 fourseven:scss
-autopublish
 meteortypescript:typescript-libs
 underscorestring:underscore.string

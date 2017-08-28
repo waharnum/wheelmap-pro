@@ -1,24 +1,52 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { createContainer } from 'meteor/react-meteor-data';
-import { Organizations } from '../../../both/api/organizations/organizations';
+import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
 
-const Show = (props) => {
+// this interface is shared by all components using styled(), align this with the actual ts def later
+interface IStyledComponentProps {
+  className?: string;
+}
+
+interface IShowProps {
+  params: {
+    _id: Mongo.ObjectID;
+  };
+}
+
+interface IShowModelProps {
+  model: IOrganization;
+  ready: boolean;
+}
+
+const Show = (props: IShowProps & IStyledComponentProps & IShowModelProps) => {
   const _id = props.params._id;
 
-  return (<div className={`${props.className}`}>
-    <h1>{props.organization ? props.organization.name : null}</h1>
-    {/* {props.isLoading ? <div>Loading…</div> : null} */}
-  </div>);
+  if (props.model == null) {
+    return (
+      <div>Object with {_id} was not found!</div>
+    );
+  }
+
+  return (
+  <div className={props.className || ''}>
+    <h1>{props.model.name}</h1>
+    <div>{props.model.description}</div>
+    <div>{props.model.webSite}</div>
+    {!props.ready ? <div>Loading…</div> : null}
+  </div>
+  );
 };
 
-const ShowContainer = createContainer((props) => {
-  const handle = Meteor.subscribe('Organizations');
+const ShowContainer = createContainer((props: IShowProps & IShowModelProps) => {
+  const id = props.params._id;
+  const handle = Meteor.subscribe('organizations.by_id', id);
+  const ready = handle.ready();
 
   return {
     currentUser: Meteor.user(),
-    isLoading: !handle.ready(),
-    organization: Organizations.findOne(props.params._id),
+    ready,
+    model: ready ? Organizations.findOne(id) : null,
   };
 }, Show);
 

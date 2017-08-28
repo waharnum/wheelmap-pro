@@ -94,7 +94,7 @@ class Create extends React.Component<ICreateProps & IDataBindingProps & IStyledC
   }
 };
 
-const CreateContainer = createContainer((props: ICreateProps & IStyledComponentProps) => {
+const CreateContainer = createContainer((props: ICreateProps) => {
   const handle = Meteor.subscribe('Organizations');
   return {
     currentUser: Meteor.user(),
