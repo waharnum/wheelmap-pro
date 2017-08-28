@@ -22,9 +22,15 @@ interface IShowModelProps {
 const Show = (props: IShowProps & IStyledComponentProps & IShowModelProps) => {
   const _id = props.params._id;
 
+  if (!props.ready) {
+    return (
+      <div className={props.className || ''}>Loading…</div>
+    );
+  }
+
   if (props.model == null) {
     return (
-      <div>Object with {_id} was not found!</div>
+      <div className={props.className || ''}>Object with id:{props.params._id} was not found!</div>
     );
   }
 
@@ -33,7 +39,6 @@ const Show = (props: IShowProps & IStyledComponentProps & IShowModelProps) => {
     <h1>{props.model.name}</h1>
     <div>{props.model.description}</div>
     <div>{props.model.webSite}</div>
-    {!props.ready ? <div>Loading…</div> : null}
   </div>
   );
 };
@@ -46,7 +51,7 @@ const ShowContainer = createContainer((props: IShowProps & IShowModelProps) => {
   return {
     currentUser: Meteor.user(),
     ready,
-    model: ready ? Organizations.findOne(id) : null,
+    model: ready ? Organizations.findOne({_id: id}) : null,
   };
 }, Show);
 

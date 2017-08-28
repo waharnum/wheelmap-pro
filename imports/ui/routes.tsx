@@ -14,6 +14,7 @@ import NotFound from './pages/NotFound/NotFound';
 
 import CreateOrganization from './pages/Organizations/Create';
 import ShowOrganization from './pages/Organizations/Show';
+import ListOrganizations from './pages/Organizations/List';
 
 function acceptInvitationOnLogin() {
   Tracker.autorun((c) => {
@@ -59,6 +60,7 @@ export default (
         <Route path="/admin" component={App}>
           <IndexRoute component={Admin} />
         </Route>
+        <Route path="/organizations/list" component={ListOrganizations} />
         <Route path="/organizations/create" component={() => <CreateOrganization afterSubmit={(_id) => { history.pushState(null, null, `/organizations/${_id}`);  history.go(); }}/>} />
         <Route path="/organizations/:_id" component={ShowOrganization} />
         <Route path="*" component={NotFound} />

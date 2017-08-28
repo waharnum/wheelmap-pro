@@ -7,8 +7,6 @@ import AutoForm from 'uniforms-bootstrap3/AutoForm';
 import BoolField from 'uniforms-bootstrap3/BoolField';
 import LongTextField from 'uniforms-bootstrap3/LongTextField';
 
-import { Redirect, RoutePattern, Route } from 'react-router';
-
 // this interface is shared by all components using styled(), align this with the actual ts def later
 interface IStyledComponentProps {
   className?: string;
