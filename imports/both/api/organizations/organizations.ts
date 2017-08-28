@@ -25,6 +25,15 @@ const ACCESS_REQUEST_APPROVING_ROLES = [
 
 export const Organizations = new Mongo.Collection('Organizations');
 
+export interface IOrganization {
+  _id?: Mongo.ObjectID;
+  name: string;
+  description?: string;
+  webSite?: string;
+  logo?: string;
+  tocForOrganizationsAccepted: boolean;
+};
+
 // allow custom uniforms fields
 SimpleSchema.extendOptions(['uniforms']);
 

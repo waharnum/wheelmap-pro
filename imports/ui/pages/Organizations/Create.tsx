@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { createContainer } from 'meteor/react-meteor-data';
-import { Organizations } from '../../../both/api/organizations/organizations';
+import { Organizations, IOrganization } from '../../../both/api/organizations/organizations';
 
 import AutoForm from 'uniforms-bootstrap3/AutoForm';
 import BoolField from 'uniforms-bootstrap3/BoolField';
@@ -22,12 +22,8 @@ interface ICreateProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
 }
 
-interface IModel {
-  _id?: Mongo.ObjectID;
-}
-
 interface ICreateState {
-  model?: IModel;
+  model?: IOrganization;
   isSaving: boolean;
 }
 
@@ -48,7 +44,7 @@ schema.extend({
 
 class Create extends React.Component<ICreateProps & IDataBindingProps & IStyledComponentProps, ICreateState> {
   public state = {
-    model: {} as IModel,
+    model: {} as IOrganization,
     isSaving: false,
   };
 
@@ -80,7 +76,7 @@ class Create extends React.Component<ICreateProps & IDataBindingProps & IStyledC
       console.log('Updating doc', doc, id);
       Organizations.update(id, doc, (error, _id: Mongo.ObjectID) => {
         console.log('Saved as ' + _id);
-        this.setState({model: {_id}, isSaving: false});
+        this.setState({model: {_id} as IOrganization, isSaving: false});
         if (this.props.afterSubmit) {
           this.props.afterSubmit(_id);
           this.props.afterSubmit(_id);
@@ -90,8 +86,8 @@ class Create extends React.Component<ICreateProps & IDataBindingProps & IStyledC
       console.log('Creating doc', doc);
       Organizations.insert(doc, (error, _id: Mongo.ObjectID) => {
         console.log('Saved as ' + _id);
-        this.setState({model: {_id}});
-        this.setState({model: {_id}, isSaving: false});
+        this.setState({model: {_id} as IOrganization});
+        this.setState({model: {_id} as IOrganization, isSaving: false});
         this.props.afterSubmit(_id);
       });
     }
