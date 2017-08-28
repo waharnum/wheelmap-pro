@@ -5,10 +5,7 @@ import { reactiveModelSubscription, IListModelProps } from './reactiveModelSubsc
 import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
 import Button from '../../components/Button';
 
-// this interface is shared by all components using styled(), align this with the actual ts def later
-interface IStyledComponentProps {
-  className?: string;
-}
+import { IStyledComponent } from '../../IStyledComponent';
 
 interface IShowProps {
   params: {
@@ -20,7 +17,7 @@ interface IListEntryModelProps {
   model: IOrganization;
 }
 
-const ListEntry = (props: IStyledComponentProps & IListEntryModelProps) => {
+const ListEntry = (props: IStyledComponent & IListEntryModelProps) => {
   return (
     <div className={props.className || ''}>
       {props.model.name}
@@ -32,7 +29,10 @@ const ListEntry = (props: IStyledComponentProps & IListEntryModelProps) => {
   );
 };
 
-const List = (props: IStyledComponentProps & IListModelProps<IOrganization>) => {
+const StyledListEntry = styled(ListEntry) `
+`;
+
+const List = (props: IStyledComponent & IListModelProps<IOrganization>) => {
   if (!props.ready) {
     return (
       <div className={props.className || ''}>Loading…</div>
@@ -41,7 +41,7 @@ const List = (props: IStyledComponentProps & IListModelProps<IOrganization>) => 
 
   return (
     <div className={props.className || ''}>
-      {props.model.map((m) => <ListEntry key={m._id as React.Key} model={m} /> )}
+      {props.model.map((m) => <StyledListEntry key={m._id as React.Key} model={m} /> )}
 
       <Button to="/organizations/create">Create new organization</Button> 
     </div>
@@ -51,5 +51,4 @@ const List = (props: IStyledComponentProps & IListModelProps<IOrganization>) => 
 const ListContainer = reactiveModelSubscription(List, Organizations, 'organizations');
 
 export default styled(ListContainer) `
-    color:#444;
 `;

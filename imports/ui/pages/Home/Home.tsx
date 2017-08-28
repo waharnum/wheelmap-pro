@@ -16,5 +16,4 @@ const Home = (props) => (
 );
 
 export default styled(Home) `
-    color:#444;
 `;

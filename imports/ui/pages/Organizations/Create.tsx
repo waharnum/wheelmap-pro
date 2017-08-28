@@ -7,10 +7,7 @@ import AutoForm from 'uniforms-bootstrap3/AutoForm';
 import BoolField from 'uniforms-bootstrap3/BoolField';
 import LongTextField from 'uniforms-bootstrap3/LongTextField';
 
-// this interface is shared by all components using styled(), align this with the actual ts def later
-interface IStyledComponentProps {
-  className?: string;
-}
+import { IStyledComponent } from '../../IStyledComponent';
 
 interface ICreateProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
@@ -36,7 +33,7 @@ schema.extend({
   },
 });
 
-class Create extends React.Component<ICreateProps & IStyledComponentProps, ICreateState> {
+class Create extends React.Component<ICreateProps & IStyledComponent, ICreateState> {
   public state = {
     model: {} as IOrganization,
     isSaving: false,
@@ -89,5 +86,4 @@ class Create extends React.Component<ICreateProps & IStyledComponentProps, ICrea
 };
 
 export default styled(Create) `
-    color:#444;
 `;

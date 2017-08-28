@@ -5,12 +5,9 @@ import { IOrganization, Organizations } from '../../../both/api/organizations/or
 import Button from '../../components/Button';
 import { reactiveModelSubscriptionById, IModelProps } from './reactiveModelSubscription';
 
-// this interface is shared by all components using styled(), align this with the actual ts def later
-interface IStyledComponentProps {
-  className?: string;
-}
+import { IStyledComponent } from '../../IStyledComponent';
 
-const Show = (props: IModelProps<IOrganization> & IStyledComponentProps) => {
+const Show = (props: IModelProps<IOrganization> & IStyledComponent) => {
   const _id = props.params._id;
 
   if (!props.ready) {
@@ -38,5 +35,4 @@ const Show = (props: IModelProps<IOrganization> & IStyledComponentProps) => {
 const ShowContainer = reactiveModelSubscriptionById(Show, Organizations, 'organizations.by_id');
 
 export default styled(ShowContainer) `
-    color:#444;
 `;
