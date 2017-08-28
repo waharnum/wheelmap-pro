@@ -52,16 +52,16 @@ function acceptInvitationOnLogin() {
 
 export default (
     <Router>
-        <Route path="/" component={App}>
-            <IndexRoute component={Home} />
-            <Route path="/signin" component={() => <Accounts.ui.LoginForm />} />
-            <Route path="/signup" component={() => <Accounts.ui.LoginForm formState={STATES.SIGN_UP} />} />
-            <Route path="/admin" component={App}>
-                <IndexRoute component={Admin} />
-            </Route>
-            <Route path="/organizations/create" component={CreateOrganization} />
-            <Route path="/organizations/:_id" component={ShowOrganization} />
-            <Route path="*" component={NotFound} />
+      <Route path="/" component={App}>
+        <IndexRoute component={Home} />
+        <Route path="/signin" component={() => <Accounts.ui.LoginForm />} />
+        <Route path="/signup" component={() => <Accounts.ui.LoginForm formState={STATES.SIGN_UP} />} />
+        <Route path="/admin" component={App}>
+          <IndexRoute component={Admin} />
         </Route>
+        <Route path="/organizations/create" component={() => <CreateOrganization afterSubmit={(_id) => { history.pushState(null, null, `/organizations/${_id}`);  history.go(); }}/>} />
+        <Route path="/organizations/:_id" component={ShowOrganization} />
+        <Route path="*" component={NotFound} />
+      </Route>
     </Router>
 );
