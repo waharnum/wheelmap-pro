@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import { Tracker } from 'meteor/tracker';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { Router, Route, IndexRoute, Redirect, browserHistory } from 'react-router';
 
 import App from './App';
 import Home from './pages/Home';
@@ -22,8 +22,9 @@ import { Accounts, STATES } from 'meteor/std:accounts-ui';
 
 export default (
     <Router>
-      <Route path="/" component={App}>
-        <IndexRoute component={Home} />
+      <Route component={App}>
+        <Redirect from="/" to="/welcome"/>
+        <Route path="/welcome" component={Home} />
                 
         <Route path="/signin" component={() => <Accounts.ui.LoginForm />} />
         <Route path="/signup" component={() => <Accounts.ui.LoginForm formState={STATES.SIGN_UP} />} />
@@ -43,3 +44,4 @@ export default (
       </Route>
     </Router>
 );
+; ;
