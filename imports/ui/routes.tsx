@@ -16,6 +16,8 @@ import ListOrganizations from './pages/Organizations/List';
 import EditOrganization from './pages/Organizations/Edit';
 import EnsureUserLoggedIn from './pages/Accounts/EnsureUserLoggedIn';
 
+import AppLayoutScrollable from './_layouts/AppLayoutScrollable'
+
 import { Accounts, STATES } from 'meteor/std:accounts-ui';
 
 export default (
@@ -36,6 +38,7 @@ export default (
           <Route path="/organizations/:_id" component={ShowOrganization} />
         </Route>
 
+        <Route path="/testlayout" component={AppLayoutScrollable} />
         <Route path="*" component={NotFound} />
       </Route>
     </Router>
