@@ -21,7 +21,7 @@ const Home = (props) => (
         <div className="wrapper">
           <h2>Let’s build comunities to map and spread accessibity.</h2>
           <p>We are a NGO that believes in an inclusive world. Our mission is to make accessibility information easier to find—wherever people need it. That’s why we want to encourage everybody to share this kind of data with each other.</p>
-          <button className="btn btn-primary">start here</button>
+          <Button to="/organizations/create" className="btn-primary">start here</Button>
         </div>
       </section>
     </div>

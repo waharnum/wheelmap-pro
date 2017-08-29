@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { IStyledComponent } from '../IStyledComponent';
 
 const Button = (props: LinkProps & IStyledComponent) => {
-  return (<Link {...props} className={props.className + ' btn btn-default'} />);
+  return (<Link {...props} className={props.className + ' btn'} />);
 };
 
 export default styled(Button) `
