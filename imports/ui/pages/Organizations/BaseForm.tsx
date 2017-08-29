@@ -90,13 +90,13 @@ class BaseForm extends React.Component<IBaseFormProps & IStyledComponent, IBaseF
       });
     } else {
       console.log('Creating doc', doc);
-      Organizations.insert(doc, (error, _id: Mongo.ObjectID) => {
+      Meteor.call('organizations.insert', doc, (error, resultId: Mongo.ObjectID) => {
         // TODO handle errors
-        console.log('Saved as ', _id, error);
+        console.log('Saved as ', resultId, error);
         if (!error) {
-          this.setState({model: {_id} as IOrganization, isSaving: false});
+          this.setState({model: {_id: resultId} as IOrganization, isSaving: false});
           if (this.props.afterSubmit) {
-            this.props.afterSubmit(_id);
+            this.props.afterSubmit(resultId);
           }
         } else {
           this.setState({isSaving: false});

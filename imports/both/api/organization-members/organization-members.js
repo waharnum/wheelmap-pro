@@ -10,7 +10,6 @@ import { getIconHTMLForUser, getGravatarImageUrl } from '/imports/both/lib/user-
 
 export const OrganizationMembers = new Mongo.Collection('OrganizationMembers');
 
-
 OrganizationMembers.schema = new SimpleSchema({
   organizationId: {
     type: String,
@@ -60,7 +59,7 @@ OrganizationMembers.schema = new SimpleSchema({
   },
   role: {
     type: String,
-    allowedValues: roles,
+    allowedValues: roles.values,
   },
 });
 

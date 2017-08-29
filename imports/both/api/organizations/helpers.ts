@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
-import sortBy from 'lodash/sortBy';
+import { sortBy } from 'lodash';
 
 import { Apps } from '../apps/apps';
 import { isAdmin } from '../../lib/is-admin';
@@ -14,6 +14,14 @@ const ACCESS_REQUEST_APPROVING_ROLES = [
   'founder',
   'member',
 ];
+
+export interface IHelpers {
+  editableBy: (userId: Mongo.ObjectID) => boolean;
+  isFullyVisibleForUserId: (userId: Mongo.ObjectID) => boolean;
+  getSources: () => any[];
+  getApps: () => any[];
+  getMostAuthoritativeUserThatCanApproveAccessRequests: () => any[];
+}
 
 export const Helpers = {
   editableBy(userId: Mongo.ObjectID) {

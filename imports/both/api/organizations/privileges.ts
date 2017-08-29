@@ -3,7 +3,7 @@ import { isApproved } from '../../../../imports/both/lib/is-approved';
 import { check } from 'meteor/check';
 import { OrganizationMembers } from '../../../../imports/both/api/organization-members/organization-members';
 import { IOrganization, Organizations } from '../../../../imports/both/api/organizations/organizations';
-import uniq from 'lodash/uniq';
+import { uniq } from 'lodash';
 
 export function isUserMemberOfOrganizationWithId(userId: Mongo.ObjectID, organizationId: Mongo.ObjectID) {
   if (!userId || !organizationId) {

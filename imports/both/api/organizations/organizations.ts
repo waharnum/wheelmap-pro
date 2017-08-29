@@ -2,10 +2,10 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
 import { OrganizationSchema } from './schema';
-import { Helpers } from './helpers';
+import { IHelpers, Helpers } from './helpers';
 import { OrganizationMembers } from '../organization-members/organization-members';
 
-export interface IOrganization {
+export interface IOrganization extends IHelpers {
   // mongo id
   _id?: Mongo.ObjectID;
   // fields
@@ -20,12 +20,6 @@ export interface IOrganization {
   webSite?: string;
   logo?: string;
   tocForOrganizationsAccepted: boolean;
-  // Helpers
-  editableBy: (userId: Mongo.ObjectID) => boolean;
-  isFullyVisibleForUserId: (userId: Mongo.ObjectID) => boolean;
-  getSources: () => any[];
-  getApps: () => any[];
-  getMostAuthoritativeUserThatCanApproveAccessRequests: () => any[];
 };
 
 export const Organizations = new Mongo.Collection<IOrganization>('Organizations');
