@@ -1,6 +1,9 @@
 import * as React from 'react';
+import { Session } from 'meteor/session';
 import { Accounts, STATES } from 'meteor/std:accounts-ui';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+
+let loginRedirect: string;
 
 Accounts.config({
   sendVerificationEmail: true,
@@ -13,8 +16,8 @@ Accounts.ui.config({
   signUpPath: '/signup',
   resetPasswordPath: '/reset-password',
   profilePath: '/profile',
-  onSignedInHook: () => browserHistory.push('/profile'),
-  onSignedOutHook: () => browserHistory.push('/signin'),
+  onSignedInHook: () => { loginRedirect ? browserHistory.replace(loginRedirect) : browserHistory.push('/profile'); },
+  onSignedOutHook: () => browserHistory.push('/'),
   minimumPasswordLength: 6,
 });
 
@@ -39,16 +42,20 @@ export function acceptInvitationOnLogin() {
       { organizationId, invitationToken },
       (error) => {
         if (error) {
-          alert(`Could not accept invitation: ${error.reason}`); // eslint-disable-line no-alert
-          window.location.href = '/';
+          console.error(`Could not accept invitation: ${error.reason}`);
+          browserHistory.replace('/');
           return;
         }
         Session.set('invitationToken', null);
         Session.set('organizationId', null);
-        window.location.href = '/';
+        browserHistory.replace('/');
       },
     );
 
     c.stop();
   });
 }
+
+export function setLoginRedirect(redirect: string) {
+  loginRedirect = redirect;
+};
