@@ -1,11 +1,12 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import Button from '../../components/Button';
+import { Link } from 'react-router';
 import TextBlock from './TextBlock';
 
 const Home = (props) => (
   <div className={`${props.className}`}>
-    <div className="alert alert-primary" role="alert">
+    <div className="alert alert-primary hidden" role="alert">
       This is a primary alert—check it out!
     </div>
     <header className="header beforeLogin onHomepage">
@@ -13,7 +14,9 @@ const Home = (props) => (
           <h1>make accessible maps</h1>
         </span>
         <span className="loginState">
-          FIXME: add sign-up/login here
+          {!Meteor.user() ? <Link to="/signup" className="onDark">Sign Up</Link> : null}
+          {!Meteor.user() ? <Link to="/signin" className="onDark">Sign In</Link> : null}
+          {Meteor.user() ? <Link to="/profile" className="onDark">Profile</Link> : null}
         </span> 
     </header>
     <div className="wrapper sawblade">
@@ -59,8 +62,8 @@ const Home = (props) => (
     <div className="wrapper onDarkGrey">
       <footer>
         <div className="wrapper">
-          <a href="." className="onDark">About us</a>
-          <a href="." className="onDark">Imprint</a>
+          <Link to="/" className="onDark">About us</Link>
+          <Link to="/" className="onDark">Imprint</Link>
         </div>
       </footer>
     </div>
