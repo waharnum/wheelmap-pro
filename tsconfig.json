@@ -6,6 +6,10 @@
         "moduleResolution": "node",
         "types": [
             "node"
+        ],
+        "lib": [
+            "es2016"
         ]
-    }
+    },
+    "compileOnSave": true
 }

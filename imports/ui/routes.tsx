@@ -16,7 +16,7 @@ import ListOrganizations from './pages/Organizations/List';
 import EditOrganization from './pages/Organizations/Edit';
 import EnsureUserLoggedIn from './pages/Accounts/EnsureUserLoggedIn';
 
-import AppLayoutScrollable from './_layouts/AppLayoutScrollable'
+import AppLayoutScrollable from './_layouts/AppLayoutScrollable';
 
 import { Accounts, STATES } from 'meteor/std:accounts-ui';
 
@@ -44,4 +44,3 @@ export default (
       </Route>
     </Router>
 );
-; ;
