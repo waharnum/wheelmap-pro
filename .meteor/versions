@@ -100,7 +100,8 @@ standard-minifier-js@2.1.1
 staringatlights:fast-render@2.16.5
 staringatlights:inject-data@2.0.5
 static-html@1.2.2
-std:accounts-ui@1.1.15
+std:accounts-bootstrap@1.2.0
+std:accounts-ui@1.2.9
 tap:i18n@1.8.2
 templating@1.2.15
 templating-compiler@1.2.15

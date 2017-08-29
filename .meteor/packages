@@ -35,3 +35,4 @@ react-meteor-data
 fourseven:scss
 meteortypescript:typescript-libs
 underscorestring:underscore.string
+std:accounts-bootstrap
