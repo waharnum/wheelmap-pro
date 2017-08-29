@@ -1,14 +1,13 @@
 import { Meteor } from 'meteor/meteor';
-import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import SimpleSchema from 'simpl-schema';
-import { Organizations } from '../organizations';
-import { OrganizationMembers } from '/imports/both/api/organization-members/organization-members';
-
+import { ValidatedMethod } from 'meteor/mdg:validated-method';
+import { OrganizationMembers } from '../../organization-members/organization-members';
+import { IOrganization, Organizations } from '../organizations';
 
 export const insert = new ValidatedMethod({
   name: 'organizations.insert',
-  validate: Organizations.simpleSchema().validator(),
-  run(doc) {
+  validate: Organizations.schema.validator(),
+  run(doc: IOrganization) {
     console.log('Inserting organization and first membership:', doc, 'for user id', this.userId);
     const organizationId = Organizations.insert(doc);
     OrganizationMembers.insert({
@@ -19,7 +18,6 @@ export const insert = new ValidatedMethod({
     return organizationId;
   },
 });
-
 
 export const remove = new ValidatedMethod({
   name: 'organizations.remove',
@@ -33,8 +31,7 @@ export const remove = new ValidatedMethod({
     const organization = Organizations.findOne(organizationId);
 
     if (!organization.editableBy(this.userId)) {
-      throw new Meteor.Error(403,
-        'You don\'t have permission to remove this organization.');
+      throw new Meteor.Error(403, 'You don\'t have permission to remove this organization.');
     }
 
     OrganizationMembers.remove({ organizationId });
