@@ -17,7 +17,6 @@ import ListOrganizations from './pages/Organizations/List';
 import EditOrganization from './pages/Organizations/Edit';
 
 import { Accounts, STATES } from 'meteor/std:accounts-ui';
-import './pages/Accounts/accounts';
 
 export default (
     <Router>
