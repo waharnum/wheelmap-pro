@@ -92,8 +92,6 @@ export function userHasFullAccessToOrganization(userId: Mongo.ObjectID, organiza
   check(userId, String);
   check(organization._id, String);
 
-  console.log('userHasFullAccessToOrganization', userId, organization._id);
-
   return userHasFullAccessToOrganizationId(userId, organization._id);
 }
 
