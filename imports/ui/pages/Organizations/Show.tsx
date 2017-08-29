@@ -27,6 +27,7 @@ const Show = (props: IModelProps<IOrganization> & IStyledComponent) => {
     <h1>{props.model.name}</h1> 
     <div>{props.model.description}</div>
     <div>{props.model.webSite}</div>
+    <div>{props.model.logo}</div>
     <Button to={`/organizations/edit/${_id}`}>Edit</Button>
   </div>
   );

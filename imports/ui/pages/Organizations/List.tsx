@@ -23,6 +23,7 @@ const ListEntry = (props: IStyledComponent & IListEntryModelProps) => {
       {props.model.name}
       {props.model.description} 
       {props.model.webSite}
+      {props.model.logo}
       <Button to={`/organizations/${props.model._id}`}>View</Button>
       <Button to={`/organizations/edit/${props.model._id}`}>Edit</Button>
     </div>
