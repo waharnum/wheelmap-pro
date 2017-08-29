@@ -2,6 +2,8 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import AutoForm from 'uniforms-bootstrap3/AutoForm';
+import AutoFields from 'uniforms-bootstrap3/AutoFields';
+import SubmitField from 'uniforms-bootstrap3/SubmitField';
 import BoolField from 'uniforms-bootstrap3/BoolField';
 import LongTextField from 'uniforms-bootstrap3/LongTextField';
 
@@ -56,8 +58,11 @@ class BaseForm extends React.Component<IBaseFormProps & IStyledComponent, IBaseF
         schema={schema}
         placeholder={true}
         onSubmit={this.onSubmit}
-        onChangeModel={this.onChangeModel}
-        />
+        showInlineError={true}
+        onChangeModel={this.onChangeModel}>
+        <AutoFields fields={['name', 'description', 'webSite', 'logo', 'tocForOrganizationsAccepted']} />
+        <SubmitField />
+      </AutoForm>
     </div>);
   }
 
