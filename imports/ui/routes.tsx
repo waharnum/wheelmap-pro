@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import { Tracker } from 'meteor/tracker';
-import { Router, Route, IndexRoute } from 'react-router';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { Accounts, STATES } from 'meteor/std:accounts-ui';
 
 import App from './App';
@@ -62,7 +62,7 @@ export default (
           <IndexRoute component={Admin} />
         </Route>
         <Route path="/organizations/list" component={ListOrganizations} />
-        <Route path="/organizations/create" component={() => <CreateOrganization afterSubmit={(_id) => { history.pushState(null, null, `/organizations/${_id}`);  history.go(); }}/>} />
+        <Route path="/organizations/create" component={() => <CreateOrganization afterSubmit={(_id) => { browserHistory.push(`/organizations/${_id}`); }}/>} />
         <Route path="/organizations/edit/:_id" component={EditOrganization} />
         <Route path="/organizations/:_id" component={ShowOrganization} />
         <Route path="*" component={NotFound} />
