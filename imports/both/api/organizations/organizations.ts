@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
 import { OrganizationSchema } from './schema';
-import { Helpers } from './methods';
+import { Helpers } from './helpers';
 import { OrganizationMembers } from '../organization-members/organization-members';
 
 export interface IOrganization {
