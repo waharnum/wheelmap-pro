@@ -22,8 +22,10 @@ export interface IOrganization extends IHelpers {
   tocForOrganizationsAccepted: boolean;
 };
 
-export const Organizations = new Mongo.Collection<IOrganization>('Organizations');
+export const Organizations = new Mongo.Collection<IOrganization & IHelpers>('Organizations');
 Organizations.schema = OrganizationSchema;
+Organizations.helpers(Helpers);
+Organizations.attachSchema(Organizations.schema);
 
 export const OrganizationWhereCurrentUserIsMember = () => {
   const userId = Meteor.userId();
@@ -31,6 +33,3 @@ export const OrganizationWhereCurrentUserIsMember = () => {
   const orgIds = OrganizationMembers.find({ userId }, options).fetch().map((m) => m.organizationId);
   return Organizations.find({ _id: { $in: orgIds } });
 };
-
-Organizations.helpers(Helpers);
-Organizations.attachSchema(Organizations.schema);

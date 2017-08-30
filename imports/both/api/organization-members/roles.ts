@@ -1,3 +1,5 @@
+export type RoleType = 'manager' | 'developer' | 'founder' | 'volunteer' | 'member';
+
 export const roles = [
   { label: 'Manager', value: 'manager' },
   { label: 'Developer', value: 'developer' },

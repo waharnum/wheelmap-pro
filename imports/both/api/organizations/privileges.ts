@@ -77,7 +77,8 @@ export function userHasRole(userId: Mongo.ObjectID, organizationId: Mongo.Object
 // Returns true if the user is admin or can manage the organization with the given id, false
 // otherwise. Admins are considered as having all roles in every organization.
 
-export function userHasFullAccessToOrganizationId(userId: Mongo.ObjectID, organizationId: Mongo.ObjectID) {
+export function userHasFullAccessToOrganizationId(userId: Mongo.ObjectID,
+                                                  organizationId: Mongo.ObjectID) {
   console.log('userHasFullAccessToOrganizationId', userId, organizationId);
   if (!userId || !organizationId) {
     return false;
@@ -90,7 +91,8 @@ export function userHasFullAccessToOrganizationId(userId: Mongo.ObjectID, organi
     userHasRole(userId, organizationId, ['manager', 'developer', 'founder']);
 }
 
-export function userHasFullAccessToOrganization(userId: Mongo.ObjectID, organization: IOrganization) {
+export function userHasFullAccessToOrganization(userId: Mongo.ObjectID,
+                                                organization: IOrganization) {
   if (!userId || !organization) {
     return false;
   }
@@ -103,7 +105,8 @@ export function userHasFullAccessToOrganization(userId: Mongo.ObjectID, organiza
 // Returns true if the user is admin or can manage the organization referenced in the given MongoDB
 // document, false otherwise.
 
-export function userHasFullAccessToReferencedOrganization(userId: Mongo.ObjectID, doc: {organizationId: Mongo.ObjectID}) {
+export function userHasFullAccessToReferencedOrganization(userId: Mongo.ObjectID,
+                                                          doc: {organizationId: Mongo.ObjectID}) {
   if (!userId || !doc) {
     return false;
   }

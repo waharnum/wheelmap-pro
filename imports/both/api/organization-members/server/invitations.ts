@@ -1,13 +1,13 @@
 import { Meteor } from 'meteor/meteor';
-import map from 'lodash/map';
+import { map } from 'lodash';
 import { Random } from 'meteor/random';
 import { Email } from 'meteor/email';
 import { check } from 'meteor/check';
 
-import { OrganizationMembers } from '../organization-members';
-import { Organizations } from '/imports/both/api/organizations/organizations';
-import { getDisplayedNameForUser } from '/imports/both/lib/user-name';
-import { getGravatarHashForEmailAddress } from '/imports/both/lib/user-icon';
+import { Organizations } from '../../organizations/organizations';
+import { getDisplayedNameForUser } from '../../../lib/user-name';
+import { getGravatarHashForEmailAddress } from '../../../lib/user-icon';
+import { IOrganizationMember, OrganizationMembers } from '../organization-members';
 
 const invitationEmailBody = ({ userName, organizationId, organizationName, token }) =>
 `Hi,
@@ -19,17 +19,17 @@ Use this link to sign up and get access:
 
 ${Meteor.absoluteUrl(
   `organizations/${organizationId}/accept-invitation/${token}`,
-  { secure: true }
+  { secure: true },
 )}
 
 All the best,
 Your accessibility.cloud team.
 `;
 
-
 function insertPlaceholderMembership(options) {
   const member = {
     organizationId: options.organizationId,
+    userId: null, // empty as not existing when invited
     invitationToken: options.token,
     invitationEmailAddress: options.emailAddress,
     role: options.role,
@@ -43,7 +43,6 @@ function insertPlaceholderMembership(options) {
   const id = OrganizationMembers.insert(member);
   return OrganizationMembers.findOne(id);
 }
-
 
 function sendInvitationEmailTo(userEmailAddress, organizationId, role) {
   check(userEmailAddress, String);
@@ -102,7 +101,7 @@ function useTokenToVerifyEmailAddressIfPossible(userId, memberId, token) {
     return true;
   }
 
-  console.log("Verifying email address '${emailAddress}' via invitation token...");
+  console.log('Verifying email address \'${emailAddress}\' via invitation token...');
   Meteor.users.update({ _id: userId }, { $set: { [`emails.${index}.verified`]: true } });
   return true;
 }
@@ -121,12 +120,12 @@ export function inviteUserToOrganization(emailAddress, organizationId, role) {
 
   const addressRegExp = invitationEmailAddress.replace(/([^a-zA-Z0-9])/g, '\\$1');
   const user = Meteor.users.findOne(
-    { 'emails.address': { $regex: addressRegExp, $options: 'i' } }
+    { 'emails.address': { $regex: addressRegExp, $options: 'i' } },
   );
 
   if (user) {
     console.log(
-      `${invitationEmailAddress} already registered (${user._id}), adding a member if necessary…`
+      `${invitationEmailAddress} already registered (${user._id}), adding a member if necessary…`,
     );
     member = OrganizationMembers.findOne({ userId: user._id, organizationId });
     if (member) {
@@ -172,7 +171,7 @@ export function acceptInvitation(userId, organizationId, token) {
     {
       $set: { userId, invitationState: 'accepted' },
       $unset: { invitationToken: 1 },
-    }
+    },
   );
 
   const memberAfterUpdate = OrganizationMembers.findOne(member._id);
