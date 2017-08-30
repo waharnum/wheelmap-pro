@@ -1,7 +1,11 @@
 {
     "editor.tabSize": 2,
     "files.exclude": {
+        ".idea/": true,
+        ".meteor/local/": true,
         "node_modules/": true,
-        "*meteor/local/": true
+        ".vscode/typings": true,
+        "package-lock.json": true,
+        "yarn.lock": true
     }
 }
