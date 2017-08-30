@@ -1,13 +1,12 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
+import { reactiveModelSubscriptionById, IModelProps } from '../../components/reactiveModelSubscription';
 import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
+import { IStyledComponent } from '../../components/IStyledComponent';
 import Button from '../../components/Button';
-import { reactiveModelSubscriptionById, IModelProps } from './reactiveModelSubscription';
 
-import { IStyledComponent } from '../../IStyledComponent';
-
-const Show = (props: IModelProps<IOrganization> & IStyledComponent) => {
+const ShowOrganizationPage = (props: IModelProps<IOrganization> & IStyledComponent) => {
   const _id = props.params._id;
 
   if (!props.ready) {
@@ -33,7 +32,7 @@ const Show = (props: IModelProps<IOrganization> & IStyledComponent) => {
   );
 };
 
-const ShowContainer = reactiveModelSubscriptionById(Show, Organizations, 'organizations.by_id');
+const ShowContainer = reactiveModelSubscriptionById(ShowOrganizationPage, Organizations, 'organizations.by_id');
 
 export default styled(ShowContainer) `
 `;

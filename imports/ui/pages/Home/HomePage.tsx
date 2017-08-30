@@ -2,9 +2,8 @@ import * as React from 'react';
 import styled from 'styled-components';
 import Button from '../../components/Button';
 import { Link } from 'react-router';
-import TextBlock from './TextBlock';
 
-const Home = (props) => (
+const HomePage = (props) => (
   <div className={`${props.className}`}>
     <div className="alert alert-primary hidden" role="alert">
       This is a primary alert—check it out!
@@ -47,7 +46,6 @@ const Home = (props) => (
         <h2>Watch a short video introduction.</h2>
         <div className="Media">
           <div className="media-left">
-
           </div>
         </div>
       </section>
@@ -70,7 +68,7 @@ const Home = (props) => (
   </div>
 );
 
-export default styled(Home) `
+export default styled(HomePage) `
 
   .alert {
     position: absolute;

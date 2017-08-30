@@ -3,7 +3,7 @@ import * as React from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import { browserHistory } from 'react-router';
 
-import { setLoginRedirect } from '../../../both/api/users/accounts';
+import { setLoginRedirect } from '../../both/api/users/accounts';
 
 interface IUserProps {
   user: Meteor.User;

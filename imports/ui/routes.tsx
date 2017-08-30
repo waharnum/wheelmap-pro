@@ -6,15 +6,14 @@ import { Tracker } from 'meteor/tracker';
 import { Router, Route, IndexRoute, Redirect, browserHistory } from 'react-router';
 
 import App from './App';
-import Home from './pages/Home';
-import Admin from './pages/Admin';
-import NotFound from './pages/NotFound/NotFound';
+import Home from './pages/Home/HomePage';
+import NotFound from './pages/NotFound/NotFoundPage';
 
-import CreateOrganization from './pages/Organizations/Create';
-import ShowOrganization from './pages/Organizations/Show';
-import ListOrganizations from './pages/Organizations/List';
-import EditOrganization from './pages/Organizations/Edit';
-import EnsureUserLoggedIn from './pages/Accounts/EnsureUserLoggedIn';
+import CreateOrganization from './pages/Organizations/CreateOrganizationPage';
+import ShowOrganization from './pages/Organizations/ShowOrganizationPage';
+import ListOrganizations from './pages/Organizations/ListOrganizationsPage';
+import EditOrganization from './pages/Organizations/EditOrganizationPage';
+import EnsureUserLoggedIn from './components/EnsureUserLoggedIn';
 
 import AppLayoutScrollable from './_layouts/AppLayoutScrollable';
 

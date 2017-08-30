@@ -8,7 +8,7 @@ import BoolField from 'uniforms-bootstrap3/BoolField';
 import LongTextField from 'uniforms-bootstrap3/LongTextField';
 
 import { Organizations, IOrganization } from '../../../both/api/organizations/organizations';
-import { IStyledComponent } from '../../IStyledComponent';
+import { IStyledComponent } from '../../components/IStyledComponent';
 
 export interface IBaseFormProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
@@ -36,7 +36,7 @@ schema.extend({
   },
 });
 
-class BaseForm extends React.Component<IBaseFormProps & IStyledComponent, IBaseFormState> {
+class OrganizationBaseForm extends React.Component<IBaseFormProps & IStyledComponent, IBaseFormState> {
   public state = {
     model: {} as IOrganization,
     isSaving: false,
@@ -106,5 +106,5 @@ class BaseForm extends React.Component<IBaseFormProps & IStyledComponent, IBaseF
   }
 };
 
-export default styled(BaseForm) `
+export default styled(OrganizationBaseForm) `
 `;

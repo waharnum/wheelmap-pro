@@ -1,12 +1,12 @@
 import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-import { IStyledComponent } from '../IStyledComponent';
+import { IStyledComponent } from '../components/IStyledComponent';
 
 interface Props {
-  headerTitle: string,
-  bodyText: string,
-  className?: string,
+  headerTitle: string;
+  bodyText: string;
+  className?: string;
 };
 
 const AppLayoutScrollable = (props: Props) => (

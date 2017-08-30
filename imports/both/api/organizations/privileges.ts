@@ -45,6 +45,8 @@ export function getAccessibleOrganizationIdsForRoles(userId: Mongo.ObjectID, inc
     return Organizations.find({}, { transform: null, fields: { _id: 1 } }).fetch().map((o) => o._id);
   }
 
+  console.log('getAccessibleOrganizationIdsForRoles', userId, includedRoles);
+
   return uniq(OrganizationMembers.find({
     userId,
     $or: includedRoles.map((role) => ({ role })),
@@ -55,6 +57,8 @@ export function getAccessibleOrganizationIdsForRoles(userId: Mongo.ObjectID, inc
 // Admins are considered as having all roles in every organization.
 
 export function userHasRole(userId: Mongo.ObjectID, organizationId: Mongo.ObjectID, includedRoles = []) {
+
+  console.log('userHasRole', userId, organizationId, includedRoles);
   if (!userId || !organizationId || !includedRoles) {
     return false;
   }
@@ -74,6 +78,7 @@ export function userHasRole(userId: Mongo.ObjectID, organizationId: Mongo.Object
 // otherwise. Admins are considered as having all roles in every organization.
 
 export function userHasFullAccessToOrganizationId(userId: Mongo.ObjectID, organizationId: Mongo.ObjectID) {
+  console.log('userHasFullAccessToOrganizationId', userId, organizationId);
   if (!userId || !organizationId) {
     return false;
   }

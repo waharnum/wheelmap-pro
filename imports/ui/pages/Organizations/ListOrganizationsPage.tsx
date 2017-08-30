@@ -1,11 +1,10 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { reactiveModelSubscription, IListModelProps } from './reactiveModelSubscription';
 
+import { reactiveModelSubscription, IListModelProps } from '../../components/reactiveModelSubscription';
 import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
+import { IStyledComponent } from '../../components/IStyledComponent';
 import Button from '../../components/Button';
-
-import { IStyledComponent } from '../../IStyledComponent';
 
 interface IShowProps {
   params: {
@@ -25,7 +24,7 @@ const ListEntry = (props: IStyledComponent & IListEntryModelProps) => {
       {props.model.webSite}
       {props.model.logo}
       <Button to={`/organizations/${props.model._id}`}>View</Button>
-      <Button to={`/organizations/edit/${props.model._id}`}>Edit</Button>
+      {props.model.editableBy(Meteor.user()._id) ? <Button to={`/organizations/edit/${props.model._id}`}>Edit</Button> : ''}
     </div>
   );
 };

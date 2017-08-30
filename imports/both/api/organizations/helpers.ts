@@ -25,6 +25,7 @@ export interface IHelpers {
 
 export const Helpers = {
   editableBy(userId: Mongo.ObjectID) {
+    console.log('editableBy', userId);
     if (!userId) { return false; };
     check(userId, String);
     return userHasFullAccessToOrganizationId(userId, this._id);
