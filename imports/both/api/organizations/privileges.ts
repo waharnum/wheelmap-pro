@@ -45,8 +45,6 @@ export function getAccessibleOrganizationIdsForRoles(userId: Mongo.ObjectID, inc
     return Organizations.find({}, { transform: null, fields: { _id: 1 } }).fetch().map((o) => o._id);
   }
 
-  console.log('getAccessibleOrganizationIdsForRoles', userId, includedRoles);
-
   return uniq(OrganizationMembers.find({
     userId,
     $or: includedRoles.map((role) => ({ role })),
