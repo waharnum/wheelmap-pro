@@ -32,7 +32,7 @@ const ListEntry = (props: IStyledComponent & IListEntryModelProps) => {
 const StyledListEntry = styled(ListEntry) `
 `;
 
-const List = (props: IStyledComponent & IListModelProps<IOrganization>) => {
+const ListOrganizationPage = (props: IStyledComponent & IListModelProps<IOrganization>) => {
   if (!props.ready) {
     return (
       <div className={props.className || ''}>Loading…</div>
@@ -48,7 +48,8 @@ const List = (props: IStyledComponent & IListModelProps<IOrganization>) => {
   );
 };
 
-const ListContainer = reactiveModelSubscription(List, Organizations, 'organizations');
-
-export default styled(ListContainer) `
+const ReactiveListOrganizationPage = reactiveModelSubscription(ListOrganizationPage, Organizations, 'organizations');
+const StyledReactiveListOrganizationPage = styled(ReactiveListOrganizationPage) `
 `;
+
+export default StyledReactiveListOrganizationPage;

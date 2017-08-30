@@ -35,8 +35,6 @@ const AdminHeader = (props: IAdminHeaderProps & IStyledComponent) => {
 };
 
 export default styled(AdminHeader) `
-  color: red;
-
   header {
     padding-left: 24px;
   }

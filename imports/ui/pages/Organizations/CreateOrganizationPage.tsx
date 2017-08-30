@@ -10,11 +10,13 @@ const CreateOrganizationPage = (props: IBaseFormProps) => {
     <ScrollableLayout>
       <AdminHeader title="Create Organization" /> 
       <div className="content-area scrollable">
-      <OrganizationBaseForm  {...props} />
+        <OrganizationBaseForm  {...props} />
       </div>
     </ScrollableLayout>
   );
 };
 
-export default styled<IBaseFormProps>(CreateOrganizationPage) `
+const StyledCreateOrganizationPage = styled<IBaseFormProps>(CreateOrganizationPage) `
 `;
+
+export default StyledCreateOrganizationPage;

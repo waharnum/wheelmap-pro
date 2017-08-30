@@ -13,7 +13,6 @@ class EnsureUserLoggedIn extends React.Component<any & IUserProps> {
 
   constructor(props) {
     super(props);
-
     // save page to go back to
     setLoginRedirect(this.props.location);
 
@@ -22,19 +21,18 @@ class EnsureUserLoggedIn extends React.Component<any & IUserProps> {
     }
   }
 
-  public render(): JSX.Element {
+  public render(): JSX.Element | null | false {
     if (this.props.user) {
       return this.props.children;
     } else {
-      return null;
+      return false;
     }
   }
 }
 
 export default createContainer((props) => {
   const user = Meteor.user();
-
   return {
     user,
-  } as IUserProps;
+  };
 }, EnsureUserLoggedIn);

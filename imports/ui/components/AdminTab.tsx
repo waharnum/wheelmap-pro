@@ -12,7 +12,10 @@ interface IAdminTabProps {
 const AdminTab = (props: IAdminTabProps & LinkProps & IStyledComponent) => {
   return (
     <li className={props.active === true ? 'active' : ''}>
-    <Link {...props as LinkProps} className={props.className} >{props.title}</Link>
+    <Link
+      to={props.to} onlyActiveOnIndex={props.onlyActiveOnIndex}
+        activeClassName={props.activeClassName} activeStyle={props.activeStyle}
+      className={props.className} >{props.title}</Link>
     </li>);
 };
 
