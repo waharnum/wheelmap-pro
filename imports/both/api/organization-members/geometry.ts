@@ -50,7 +50,7 @@ export function distanceSearchSelector(req: { query: ILocation }) {
       $nearSphere: {
         $geometry: {
           type: 'Point',
-          // FIXME this needs to be latitude, longitude - no one does it any other way
+          // FIXME: this needs to be latitude, longitude - no one does it any other way
           coordinates: [locationQuery.longitude, locationQuery.latitude],
         },
         $maxDistance: locationQuery.accuracy,

@@ -55,8 +55,6 @@ export function getAccessibleOrganizationIdsForRoles(userId: Mongo.ObjectID, inc
 // Admins are considered as having all roles in every organization.
 
 export function userHasRole(userId: Mongo.ObjectID, organizationId: Mongo.ObjectID, includedRoles = []) {
-
-  console.log('userHasRole', userId, organizationId, includedRoles);
   if (!userId || !organizationId || !includedRoles) {
     return false;
   }
@@ -77,7 +75,6 @@ export function userHasRole(userId: Mongo.ObjectID, organizationId: Mongo.Object
 
 export function userHasFullAccessToOrganizationId(userId: Mongo.ObjectID,
                                                   organizationId: Mongo.ObjectID) {
-  console.log('userHasFullAccessToOrganizationId', userId, organizationId);
   if (!userId || !organizationId) {
     return false;
   }

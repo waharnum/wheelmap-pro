@@ -24,24 +24,25 @@ export interface IHelpers {
 }
 
 export const Helpers = {
-  editableBy(userId: Mongo.ObjectID) {
-    console.log('editableBy', userId);
+  editableBy(userId: Mongo.ObjectID): boolean {
     if (!userId) { return false; };
     check(userId, String);
     return userHasFullAccessToOrganizationId(userId, this._id);
   },
-  isFullyVisibleForUserId(userId: Mongo.ObjectID) {
+  isFullyVisibleForUserId(userId: Mongo.ObjectID): boolean {
     if (!userId) { return false; };
     return isAdmin(userId) || isUserMemberOfOrganizationWithId(userId, this._id);
   },
+  // TODO: Use correct type once Sources has been ported
   getSources() {
     const sources = Sources.find({ organizationId: this._id }).fetch();
     return sortBy(sortBy(sources, (s) => -s.placeInfoCount), 'isDraft');
   },
+  // TODO: Use correct type once App has been ported
   getApps() {
     return Apps.find({ organizationId: this._id });
   },
-  getMostAuthoritativeUserThatCanApproveAccessRequests() {
+  getMostAuthoritativeUserThatCanApproveAccessRequests(): Meteor.User {
     for (const role of ACCESS_REQUEST_APPROVING_ROLES) {
       const result = OrganizationMembers.findOne({
         organizationId: this._id,

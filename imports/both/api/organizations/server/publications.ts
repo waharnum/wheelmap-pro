@@ -3,11 +3,12 @@ import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
 import { Organizations } from '../organizations.js';
+import {publishAndLog} from '../../../../server/publish';
 
-Meteor.publish('organizations', () => {
+publishAndLog('organizations', () => {
   return Organizations.find();
 });
 
-Meteor.publish('organizations.by_id', (_id: Mongo.ObjectID) => {
+publishAndLog('organizations.by_id', (_id: Mongo.ObjectID) => {
   return Organizations.find({_id});
 });

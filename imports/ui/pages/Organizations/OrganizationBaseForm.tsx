@@ -75,7 +75,7 @@ class OrganizationBaseForm extends React.Component<IBaseFormProps & IStyledCompo
       const {_id, ...strippedDoc} = doc;
       console.log('Updating doc', strippedDoc, id);
       Organizations.update({_id: id}, {$set: strippedDoc}, (count) => {
-        // TODO handle errors
+        // TODO: handle errors
         console.log('Updated ', _id, count);
         if (count !== false) {
           if (this.props.afterSubmit) {
@@ -88,7 +88,7 @@ class OrganizationBaseForm extends React.Component<IBaseFormProps & IStyledCompo
     } else {
       console.log('Creating doc', doc);
       Meteor.call('organizations.insert', doc, (error, resultId: Mongo.ObjectID) => {
-        // TODO handle errors
+        // TODO: handle errors
         console.log('Saved as ', resultId, error);
         if (!error) {
           this.setState({model: {_id: resultId} as IOrganization, isSaving: false});
