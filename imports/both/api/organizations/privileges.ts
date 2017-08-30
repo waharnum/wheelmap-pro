@@ -9,8 +9,6 @@ export function isUserMemberOfOrganizationWithId(userId: Mongo.ObjectID, organiz
   if (!userId || !organizationId) {
     return false;
   }
-  check(userId, String);
-  check(organizationId, String);
   return OrganizationMembers.find({ userId, organizationId }).count() > 0;
 }
 
@@ -20,7 +18,6 @@ export function getAccessibleOrganizationIdsForUserId(userId: Mongo.ObjectID) {
   if (!userId) {
     return [];
   }
-  check(userId, String);
 
   const selector = isAdmin(userId) ? {} : { userId };
 
@@ -33,13 +30,10 @@ export function getAccessibleOrganizationIdsForUserId(userId: Mongo.ObjectID) {
 // Functions for retrieving which roles a user has in which organization.
 // Note that admins are regarded as having all roles in all organizations.
 
-export function getAccessibleOrganizationIdsForRoles(userId: Mongo.ObjectID, includedRoles = []) {
+export function getAccessibleOrganizationIdsForRoles(userId: Mongo.ObjectID, includedRoles: string[] = []) {
   if (!userId) {
     return [];
   }
-
-  check(includedRoles, [String]);
-  check(userId, String);
 
   if (isAdmin(userId)) {
     return Organizations.find({}, { transform: null, fields: { _id: 1 } }).fetch().map((o) => o._id);
@@ -54,18 +48,14 @@ export function getAccessibleOrganizationIdsForRoles(userId: Mongo.ObjectID, inc
 // Returns true if the user has one of the given roles in the given organization, false otherwise.
 // Admins are considered as having all roles in every organization.
 
-export function userHasRole(userId: Mongo.ObjectID, organizationId: Mongo.ObjectID, includedRoles = []) {
+export function userHasRole(userId: Mongo.ObjectID, organizationId: Mongo.ObjectID, includedRoles: string[] = []) {
   if (!userId || !organizationId || !includedRoles) {
     return false;
   }
-  check(userId, String);
-  check(organizationId, String);
-  check(includedRoles, [String]);
 
   if (isAdmin(userId)) {
     return true;
   }
-
   const organizationIds = getAccessibleOrganizationIdsForRoles(userId, includedRoles);
   return organizationIds.includes(organizationId);
 }
@@ -78,8 +68,6 @@ export function userHasFullAccessToOrganizationId(userId: Mongo.ObjectID,
   if (!userId || !organizationId) {
     return false;
   }
-  check(userId, String);
-  check(organizationId, String);
 
   return isAdmin(userId) ||
     isApproved(userId) &&
@@ -91,8 +79,6 @@ export function userHasFullAccessToOrganization(userId: Mongo.ObjectID,
   if (!userId || !organization) {
     return false;
   }
-  check(userId, String);
-  check(organization._id, String);
 
   return userHasFullAccessToOrganizationId(userId, organization._id);
 }
@@ -105,8 +91,6 @@ export function userHasFullAccessToReferencedOrganization(userId: Mongo.ObjectID
   if (!userId || !doc) {
     return false;
   }
-  check(userId, String);
-  check(doc.organizationId, String);
 
   return userHasFullAccessToOrganizationId(userId, doc.organizationId);
 }
