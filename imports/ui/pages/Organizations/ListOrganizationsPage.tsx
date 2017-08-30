@@ -24,7 +24,7 @@ const ListEntry = (props: IStyledComponent & IListEntryModelProps) => {
       {props.model.webSite}
       {props.model.logo}
       <Button to={`/organizations/${props.model._id}`}>View</Button>
-      {props.model.editableBy(Meteor.user()._id) ? <Button to={`/organizations/edit/${props.model._id}`}>Edit</Button> : ''}
+      {props.model.editableBy(Meteor.userId()) ? <Button to={`/organizations/edit/${props.model._id}`}>Edit</Button> : ''}
     </div>
   );
 };
@@ -48,7 +48,7 @@ const ListOrganizationPage = (props: IStyledComponent & IListModelProps<IOrganiz
   );
 };
 
-const ReactiveListOrganizationPage = reactiveModelSubscription(ListOrganizationPage, Organizations, 'organizations', 'organizationMembers.public');
+const ReactiveListOrganizationPage = reactiveModelSubscription(ListOrganizationPage, Organizations, 'organizations.my.private', 'organizationMembers.public');
 const StyledReactiveListOrganizationPage = styled(ReactiveListOrganizationPage) `
 `;
 

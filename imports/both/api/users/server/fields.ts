@@ -21,7 +21,7 @@ export const UserPublicFields = {
 function getUserSelectorForMemberSelector(selector) {
   const members = OrganizationMembers.find(
     selector,
-    { fields: { userId: 1 }, transform: null },
+    { fields: { userId: 1 } },
   ).fetch();
   return { _id: { $in: compact(uniq(map(members, ((m) => m.userId)))) } };
 }

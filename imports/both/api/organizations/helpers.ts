@@ -42,14 +42,14 @@ export const Helpers = {
   getApps() {
     return Apps.find({ organizationId: this._id });
   },
-  getMostAuthoritativeUserThatCanApproveAccessRequests(): Meteor.User {
+  getMostAuthoritativeUserThatCanApproveAccessRequests(): Meteor.User | null {
     for (const role of ACCESS_REQUEST_APPROVING_ROLES) {
       const result = OrganizationMembers.findOne({
         organizationId: this._id,
         role,
       });
 
-      if (result) {
+      if (result && result.userId) {
         return Meteor.users.findOne(result.userId);
       }
     }

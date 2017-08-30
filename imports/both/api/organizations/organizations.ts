@@ -29,7 +29,7 @@ Organizations.attachSchema(Organizations.schema);
 
 export const OrganizationWhereCurrentUserIsMember = () => {
   const userId = Meteor.userId();
-  const options = { transform: null, fields: { organizationId: 1 } };
+  const options = { fields: { organizationId: 1 } };
   const orgIds = OrganizationMembers.find({ userId }, options).fetch().map((m) => m.organizationId);
   return Organizations.find({ _id: { $in: orgIds } });
 };

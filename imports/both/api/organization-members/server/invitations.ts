@@ -1,3 +1,4 @@
+import { RoleType } from '../roles';
 import { Meteor } from 'meteor/meteor';
 import { map } from 'lodash';
 import { Random } from 'meteor/random';
@@ -44,7 +45,7 @@ function insertPlaceholderMembership(options) {
   return OrganizationMembers.findOne(id);
 }
 
-function sendInvitationEmailTo(userEmailAddress, organizationId, role) {
+function sendInvitationEmailTo(userEmailAddress: string, organizationId: Mongo.ObjectID, role) {
   check(userEmailAddress, String);
   check(organizationId, String);
   check(role, String);
@@ -74,7 +75,7 @@ function sendInvitationEmailTo(userEmailAddress, organizationId, role) {
   return member;
 }
 
-function useTokenToVerifyEmailAddressIfPossible(userId, memberId, token) {
+function useTokenToVerifyEmailAddressIfPossible(userId: Mongo.ObjectID, memberId: Mongo.ObjectID, token) {
   check(userId, String);
   check(memberId, String);
   check(token, String);
@@ -85,6 +86,10 @@ function useTokenToVerifyEmailAddressIfPossible(userId, memberId, token) {
   }
 
   const emailAddress = member.invitationEmailAddress;
+  if (!emailAddress) {
+    throw new Meteor.Error(404, `No member with email ${emailAddress} existing.`);
+  }
+
   const user = Meteor.user();
   const addresses = map(user.emails, 'address');
   const index = addresses.indexOf(emailAddress);
@@ -93,6 +98,10 @@ function useTokenToVerifyEmailAddressIfPossible(userId, memberId, token) {
     console.log(`Can't use token for email verification, invitation went to '${emailAddress}'.`);
     console.log(`User's email addresses are ${JSON.stringify(map(user.emails, 'address'))}.`);
     return false;
+  }
+
+  if (!user.emails) {
+    throw new Meteor.Error(404, `User ${user._id} has mp assigned emails.`);
   }
 
   if (user.emails[index].verified) {
@@ -106,7 +115,7 @@ function useTokenToVerifyEmailAddressIfPossible(userId, memberId, token) {
   return true;
 }
 
-export function inviteUserToOrganization(emailAddress, organizationId, role) {
+export function inviteUserToOrganization(emailAddress: string, organizationId: Mongo.ObjectID, role: RoleType) {
   const invitationEmailAddress = emailAddress.toLowerCase().trim();
 
   console.log(`Inviting ${emailAddress} to organization ${organizationId}...`);
@@ -123,7 +132,7 @@ export function inviteUserToOrganization(emailAddress, organizationId, role) {
     { 'emails.address': { $regex: addressRegExp, $options: 'i' } },
   );
 
-  if (user) {
+  if (user && user._id) {
     console.log(
       `${invitationEmailAddress} already registered (${user._id}), adding a member if necessary…`,
     );
@@ -143,7 +152,7 @@ export function inviteUserToOrganization(emailAddress, organizationId, role) {
   return member;
 }
 
-export function acceptInvitation(userId, organizationId, token) {
+export function acceptInvitation(userId: Mongo.ObjectID, organizationId: Mongo.ObjectID, token) {
   check(userId, String);
   check(organizationId, String);
   check(token, String);
@@ -152,7 +161,7 @@ export function acceptInvitation(userId, organizationId, token) {
 
   const member = OrganizationMembers.findOne({ organizationId, invitationToken: token });
 
-  if (!member) {
+  if (!member || !member._id) {
     console.log(`No invitation found to ${organizationId} with token ${token}.`);
     return null;
   }

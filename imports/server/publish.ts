@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
 export interface IPublicationFields { [id: string]: number; };
-export type SelectorFunction = (userId: Mongo.ObjectID) => object;
+export type SelectorFunction = (userId: Mongo.ObjectID) => object | null;
 
 export const publishAndLog = (name: string, publishFunction: Function) => {
   console.log('Publishing', name, '…');
@@ -22,7 +22,7 @@ const publishFields = (
     `${publicationName}`,
     function publish() {
       const visibleSelector = documentVisibleSelectorForUserId(this.userId);
-      const selector = { $and: ([visibleSelector].filter(Boolean)) };
+      const selector = { $and: [visibleSelector].filter(Boolean) };
       return collection.find(
         selector,
         Object.assign({}, options, { fields: publicFields }),

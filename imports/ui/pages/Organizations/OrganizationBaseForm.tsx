@@ -77,7 +77,7 @@ class OrganizationBaseForm extends React.Component<IBaseFormProps & IStyledCompo
       Organizations.update({_id: id}, {$set: strippedDoc}, (count) => {
         // TODO: handle errors
         console.log('Updated ', _id, count);
-        if (count !== false) {
+        if (count !== false && _id) {
           if (this.props.afterSubmit) {
             this.props.afterSubmit(_id);
           }

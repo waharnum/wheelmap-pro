@@ -12,7 +12,7 @@ export interface IOrganizationMember {
   _id?: Mongo.ObjectID;
   // fields
   organizationId: Mongo.ObjectID;
-  userId: Mongo.ObjectID;
+  userId: Mongo.ObjectID | null;
   gravatarHash?: string;
   invitationState?: string; // 'queuedForSending' | 'sent' | 'accepted' | 'error';
   invitationError?: string;
