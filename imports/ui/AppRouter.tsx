@@ -30,7 +30,7 @@ const AppRouter = (
           <Route path="/dashboard" component={DashboardPage} />
           <Route path="/profile" component={() => <Accounts.ui.LoginForm formState={STATES.PROFILE} />} />
           <Route path="/organizations/list" component={ListOrganizationsPage} />
-          <Route path="/organizations/create" component={() => <CreateOrganizationPage afterSubmit={(_id) => { browserHistory.push(`/organizations/${_id}`); }}/>} />
+          <Route path="/organizations/create" component={CreateOrganizationPage} />
           <Route path="/organizations/edit/:_id" component={EditOrganizationPage} />
           <Route path="/organizations/:_id" component={ShowOrganizationPage} />
         </Route>
