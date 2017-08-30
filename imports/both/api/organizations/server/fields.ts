@@ -11,6 +11,3 @@ export const OrganizationsPublicFields = {
   logo: 1,
   tocForOrganizationsAccepted: 1,
 };
-
-export const OrganizationsVisibleSelectorForUserId = () => ({});
-export const OrganizationsVisibleSelectorForAppId = () => ({});

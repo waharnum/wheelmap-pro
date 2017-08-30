@@ -1,5 +1,3 @@
-
-
 declare module "meteor/mongo" {
   import SimpleSchema from 'simpl-schema';
 

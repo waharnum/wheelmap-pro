@@ -5,7 +5,7 @@ import { compact } from 'lodash';
 
 import { Apps } from '../../apps/apps';
 import { OrganizationMembers } from '../../organization-members/organization-members';
-import { OrganizationMemberVisibleSelectorForUserId } from '../../organization-members/server/fields';
+import { OrganizationMemberVisibleForUserIdSelector } from '../../organization-members/server/fields';
 
 export const UserPublicFields = {
   'emails.address': 1,
@@ -28,7 +28,7 @@ function getUserSelectorForMemberSelector(selector) {
 
 export const UserVisibleSelectorForUserId = (userId) => {
   check(userId, String);
-  getUserSelectorForMemberSelector(OrganizationMemberVisibleSelectorForUserId(userId));
+  getUserSelectorForMemberSelector(OrganizationMemberVisibleForUserIdSelector(userId));
 };
 
 export const UserVisibleSelectorForAppId = (appId) => {

@@ -11,7 +11,7 @@ export const OrganizationMembersPublicFields = {
   gravatarHash: 1,
 };
 
-export const OrganizationMemberVisibleSelectorForUserId = (userId: Mongo.ObjectID) => {
+export const OrganizationMemberVisibleForUserIdSelector = (userId: Mongo.ObjectID) => {
   if (!userId) {
     return null;
   }
@@ -20,7 +20,16 @@ export const OrganizationMemberVisibleSelectorForUserId = (userId: Mongo.ObjectI
   };
 };
 
-export const OrganizationMemberVisibleSelectorForAppId = (appId: Mongo.ObjectID) => {
+export const OrganizationVisibleForUserIdSelector = (userId: Mongo.ObjectID) => {
+  if (!userId) {
+    return null;
+  }
+  return {
+    _id: { $in: getAccessibleOrganizationIdsForUserId(userId) },
+  };
+};
+
+export const OrganizationMembersVisibleForAppIdSelector = (appId: Mongo.ObjectID) => {
   const app = Apps.findOne(appId);
   return { organizationId: app.organizationId };
 };

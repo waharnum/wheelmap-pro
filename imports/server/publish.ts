@@ -1,8 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
-import { check, Match } from 'meteor/check';
 
-export type PublicationFields = { [id: string]: number };
+export interface IPublicationFields { [id: string]: number; };
 export type SelectorFunction = (userId: Mongo.ObjectID) => object;
 
 export const publishAndLog = (name: string, publishFunction: Function) => {
@@ -12,10 +11,10 @@ export const publishAndLog = (name: string, publishFunction: Function) => {
 
 // Publishes the given fields for a collection.
 // You can optionally supply a function to specify which documents' fields should be published.
-const publishFields = <T>(
+const publishFields = (
   publicationName: string,
-  collection: Mongo.Collection<T>,
-  publicFields: PublicationFields,
+  collection: Mongo.Collection<any>,
+  publicFields: IPublicationFields,
   documentVisibleSelectorForUserId: SelectorFunction = () => ({}),
   options: object = {},
 ) => {
@@ -32,10 +31,10 @@ const publishFields = <T>(
   );
 };
 
-export const publishPublicFields = <T>(
+export const publishPublicFields = (
   publicationName: string,
-  collection: Mongo.Collection<T>,
-  publicFields: PublicationFields,
+  collection: Mongo.Collection<any>,
+  publicFields: IPublicationFields,
   documentVisibleSelectorForUserId: SelectorFunction = () => ({}),
   options: object = {},
 ) => {
@@ -43,10 +42,10 @@ export const publishPublicFields = <T>(
       publicFields, documentVisibleSelectorForUserId, options);
 };
 
-export const publishPrivateFields = <T>(
+export const publishPrivateFields = (
   publicationName: string,
-  collection: Mongo.Collection<T>,
-  privateFields: PublicationFields,
+  collection: Mongo.Collection<any>,
+  privateFields: IPublicationFields,
   documentVisibleSelectorForUserId: SelectorFunction = () => ({}),
   options: object = {},
 ) => {

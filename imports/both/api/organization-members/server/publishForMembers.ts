@@ -1,5 +1,5 @@
 import {getAccessibleOrganizationIdsForUserId} from '../../organizations/privileges';
-import {SelectorFunction, PublicationFields} from '../../../../server/publish';
+import {SelectorFunction, IPublicationFields} from '../../../../server/publish';
 
 // Publishes private fields for all documents that reference an organization you
 // are member of.
@@ -7,7 +7,7 @@ import {SelectorFunction, PublicationFields} from '../../../../server/publish';
 // The function is called with a userId argument and should return a selector.
 export const publishPrivateFieldsForMembers = <T>(publicationName: string,
                                                   collection: Mongo.Collection<T>,
-                                                  privateFields: PublicationFields,
+                                                  privateFields: IPublicationFields,
                                                   selectorFn: SelectorFunction = () => ({}),
                                                   options: any = {} ) => {
   const name = `${publicationName}.private`;
