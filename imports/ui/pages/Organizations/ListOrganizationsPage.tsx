@@ -12,9 +12,9 @@ interface IListEntryModelProps {
 
 const ListEntry = (props: IStyledComponent & IListEntryModelProps) => {
   return (
-    <div className={props.className || ''}>
+    <div className="list-entry">
       {props.model.name}
-      {props.model.description} 
+      {props.model.description}
       {props.model.webSite}
       {props.model.logo}
       <Button to={`/organizations/${props.model._id}`}>View</Button>
@@ -22,9 +22,6 @@ const ListEntry = (props: IStyledComponent & IListEntryModelProps) => {
     </div>
   );
 };
-
-const StyledListEntry = styled(ListEntry) `
-`;
 
 const ListOrganizationPage = (props: IStyledComponent & IListModelProps<IOrganization>) => {
   if (!props.ready) {
@@ -35,15 +32,22 @@ const ListOrganizationPage = (props: IStyledComponent & IListModelProps<IOrganiz
 
   return (
     <div className={props.className || ''}>
-      {props.model.map((m) => <StyledListEntry key={m._id as React.Key} model={m} /> )}
-
-      <Button to="/organizations/create">Create new organization</Button> 
+      <h2>All Organizations</h2>
+      {props.model.map((m) => <ListEntry key={m._id as React.Key} model={m} />)}
+      <Button to="/organizations/create">Create new organization</Button>
     </div>
   );
 };
 
 const ReactiveListOrganizationPage = reactiveModelSubscription(ListOrganizationPage, Organizations, 'organizations', 'organizationMembers.public');
 const StyledReactiveListOrganizationPage = styled(ReactiveListOrganizationPage) `
+  .list-entry {
+    margin:4px;
+    padding:10px;
+    background-color:white;
+    box-shadow:0 0 4px rgba(0,0,0,0.5);
+    max-width:800px;
+  }
 `;
 
 export default StyledReactiveListOrganizationPage;

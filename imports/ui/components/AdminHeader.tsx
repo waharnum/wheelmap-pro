@@ -8,29 +8,30 @@ import AdminTab from './AdminTab';
 
 interface IAdminHeaderProps {
   title: string;
+  children?: JSX.Element | JSX.Element[];
+  tabs?: JSX.Element;
+  logo?: JSX.Element;
 }
 
 const AdminHeader = (props: IAdminHeaderProps & IStyledComponent) => {
   return (
-  <div className={props.className} >
-    <header className="main-header on-dark">
-      <div className="wrapper">
-        <ol className="secondary-tools">
-          <PreviewToggle />
-          <UserMenu />
+    <div className={props.className} >
+      <header className="main-header on-dark">
+        <div className="wrapper">
+          <ol className="secondary-tools">
+            <PreviewToggle />
+            <UserMenu />
+          </ol>
+        </div>
+        <div className="title-bar">
+          {props.logo}
+          <h1>{props.title}</h1>
+        </div>
+        <ol className="tabs-header">
+          {props.tabs}
         </ol>
-      </div>
-      <div className="title-bar">
-        <div className="organisation-logo" />
-        <h1>{props.title}</h1>
-      </div>
-      <ol className="tabs-header">
-        <AdminTab to="/" title="Dashboard" active={true} />
-        <AdminTab to="/" title="Statistics"  />
-        <AdminTab to="/" title="Customize" />
-      </ol>
-    </header>
-  </div>
+      </header>
+    </div>
   );
 };
 

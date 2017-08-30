@@ -4,7 +4,11 @@ import { browserHistory } from 'react-router';
 
 import { IStyledComponent } from '../../components/IStyledComponent';
 import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
+import AdminTab from '../../components/AdminTab';
 import OrganizationBaseForm, { IBaseFormProps } from './OrganizationBaseForm';
+import ScrollableLayout from '../../layouts/ScrollableLayout';
+import AdminHeader from '../../components/AdminHeader';
+
 import { reactiveModelSubscriptionById, IModelProps } from '../../components/reactiveModelSubscription';
 
 interface IEditOrganizationFormProps {
@@ -12,7 +16,7 @@ interface IEditOrganizationFormProps {
 }
 
 class EditOrganizationForm extends React.Component<
-    IModelProps<IOrganization> & IEditOrganizationFormProps & IStyledComponent> {
+  IModelProps<IOrganization> & IEditOrganizationFormProps & IStyledComponent> {
   public render(): JSX.Element {
     if (!this.props.ready) {
       return (
@@ -27,9 +31,14 @@ class EditOrganizationForm extends React.Component<
     }
 
     return (
-      <OrganizationBaseForm
-        initialModel={this.props.model}
-        afterSubmit={() => { browserHistory.push('/dashboard'); }} />
+      <ScrollableLayout className={this.props.className}>
+        <AdminHeader title="Edit Organization" />
+        <div className="content-area scrollable">
+          <OrganizationBaseForm
+            initialModel={this.props.model}
+            afterSubmit={() => { browserHistory.push('/dashboard'); }} />
+        </div>
+      </ScrollableLayout>
     );
   }
 }
