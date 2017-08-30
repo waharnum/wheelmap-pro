@@ -12,7 +12,6 @@ import { IStyledComponent } from '../../components/IStyledComponent';
 
 export interface IBaseFormProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
-  title?: string;
   initialModel?: IOrganization;
 }
 
@@ -50,8 +49,6 @@ class OrganizationBaseForm extends React.Component<IBaseFormProps & IStyledCompo
   public render(): JSX.Element {
     return (
     <div className={this.props.className || ''} >
-      <h1>{this.props.title}</h1>
-
       <AutoForm
         model={this.state.model}
         disabled={this.state.isSaving}

@@ -21,7 +21,7 @@ class EditOrganizationForm extends React.Component<IModelProps<IOrganization> & 
     }
 
     return (
-      <OrganizationBaseForm title="Edit community" initialModel={this.props.model} {...this.props} />
+      <OrganizationBaseForm initialModel={this.props.model} {...this.props} />
     );
   }
 }

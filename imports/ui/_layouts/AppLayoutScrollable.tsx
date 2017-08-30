@@ -4,7 +4,6 @@ import styled, { keyframes } from 'styled-components';
 import { IStyledComponent } from '../components/IStyledComponent';
 
 interface Props {
-  headerTitle: string;
   bodyText: string;
   className?: string;
 };
