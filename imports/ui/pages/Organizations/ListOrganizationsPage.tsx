@@ -6,12 +6,6 @@ import { IOrganization, Organizations } from '../../../both/api/organizations/or
 import { IStyledComponent } from '../../components/IStyledComponent';
 import Button from '../../components/Button';
 
-interface IShowProps {
-  params: {
-    _id: Mongo.ObjectID;
-  };
-}
-
 interface IListEntryModelProps {
   model: IOrganization;
 }
@@ -48,7 +42,7 @@ const ListOrganizationPage = (props: IStyledComponent & IListModelProps<IOrganiz
   );
 };
 
-const ReactiveListOrganizationPage = reactiveModelSubscription(ListOrganizationPage, Organizations, 'organizations.my.private', 'organizationMembers.public');
+const ReactiveListOrganizationPage = reactiveModelSubscription(ListOrganizationPage, Organizations, 'organizations', 'organizationMembers.public');
 const StyledReactiveListOrganizationPage = styled(ReactiveListOrganizationPage) `
 `;
 
