@@ -22,14 +22,12 @@ const publishFields = <T>(
   publishAndLog(
     `${publicationName}`,
     function publish() {
-      this.autorun(() => {
-        const visibleSelector = documentVisibleSelectorForUserId(this.userId);
-        const selector = { $and: ([visibleSelector].filter(Boolean)) };
-        return collection.find(
-          selector,
-          Object.assign({}, options, { fields: publicFields }),
-        );
-      });
+      const visibleSelector = documentVisibleSelectorForUserId(this.userId);
+      const selector = { $and: ([visibleSelector].filter(Boolean)) };
+      return collection.find(
+        selector,
+        Object.assign({}, options, { fields: publicFields }),
+      );
     },
   );
 };

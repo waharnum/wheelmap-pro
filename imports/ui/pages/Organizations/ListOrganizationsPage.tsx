@@ -48,7 +48,7 @@ const ListOrganizationPage = (props: IStyledComponent & IListModelProps<IOrganiz
   );
 };
 
-const ReactiveListOrganizationPage = reactiveModelSubscription(ListOrganizationPage, Organizations, 'organizations');
+const ReactiveListOrganizationPage = reactiveModelSubscription(ListOrganizationPage, Organizations, 'organizations', 'organizationMembers.public');
 const StyledReactiveListOrganizationPage = styled(ReactiveListOrganizationPage) `
 `;
 

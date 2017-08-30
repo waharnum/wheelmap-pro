@@ -40,14 +40,16 @@ export interface IListModelProps<TModel> {
 export const reactiveModelSubscription = <T, InP extends IListModelProps<T>>(
   reactComponent: ComponentConstructor<InP>,
   collection: Mongo.Collection<T>,
-  subscription: string) : ComponentConstructor<InP> => {
+  ...subscriptions: string[]) : ComponentConstructor<InP> => {
     const result = createContainer((props: InP) => {
-      const handle = Meteor.subscribe(subscription);
-      const ready = handle.ready();
+      const allReady = subscriptions.reduce((prev, subscription) => {
+        const handle = Meteor.subscribe(subscription);
+        return handle.ready();
+      }, true);
 
       return {
-        ready,
-        model: ready ? collection.find().fetch() : [],
+        ready: allReady,
+        model: allReady ? collection.find().fetch() : [],
       } as IListModelProps<T>;
     }, reactComponent);
 
