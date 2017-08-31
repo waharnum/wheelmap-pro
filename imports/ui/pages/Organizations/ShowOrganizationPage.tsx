@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 
 import AdminTab from '../../components/AdminTab';
-import AdminHeader from '../../components/AdminHeader';
+import { default as AdminHeader, HeaderTitle } from '../../components/AdminHeader';
 
 import { reactiveModelSubscriptionById, IModelProps } from '../../components/reactiveModelSubscription';
 import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
@@ -29,10 +29,10 @@ const ShowOrganizationPage = (props: IModelProps<IOrganization> & IStyledCompone
   return (
     <ScrollableLayout className={props.className}>
       <AdminHeader
-        title={props.model.name}
-        logo={(
-          <div className="organisation-logo" />
-        )}
+        titleComponent={
+          <HeaderTitle
+            title={props.model.name}
+            logo={<div className="organisation-logo" />} />}
         tabs={(
           <div>
             <AdminTab to="/" title="Dashboard" active={true} />
@@ -40,11 +40,9 @@ const ShowOrganizationPage = (props: IModelProps<IOrganization> & IStyledCompone
             <AdminTab to="/" title="Customize" />
           </div>
         )}
-      >
-      </AdminHeader>
+      />
       <div className="content-area scrollable">
         <div className={props.className || ''}>
-          <h1>{props.model.name}</h1>
           <div>{props.model.description}</div>
           <div>{props.model.webSite}</div>
           <div>{props.model.logo}</div>
@@ -59,6 +57,7 @@ const ShowContainer = reactiveModelSubscriptionById(ShowOrganizationPage, Organi
 
 export default styled(ShowContainer) `
   .organisation-logo::after {
-    display:none;
+    display: none;
   }
 `;
+; ;

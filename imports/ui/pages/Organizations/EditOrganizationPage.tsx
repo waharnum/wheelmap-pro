@@ -32,7 +32,7 @@ class EditOrganizationForm extends React.Component<
 
     return (
       <ScrollableLayout className={this.props.className}>
-        <AdminHeader title="Edit Organization" />
+        <AdminHeader titleComponent={<h1>Edit Organization</h1>} />
         <div className="content-area scrollable">
           <OrganizationBaseForm
             initialModel={this.props.model}
