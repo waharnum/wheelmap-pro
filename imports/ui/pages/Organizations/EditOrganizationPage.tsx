@@ -36,7 +36,7 @@ class EditOrganizationForm extends React.Component<
         <div className="content-area scrollable">
           <OrganizationBaseForm
             initialModel={this.props.model}
-            afterSubmit={() => { browserHistory.push('/dashboard'); }} />
+            afterSubmit={() => { browserHistory.push('/'); }} />
         </div>
       </ScrollableLayout>
     );

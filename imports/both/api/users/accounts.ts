@@ -16,7 +16,7 @@ Accounts.ui.config({
   signUpPath: '/signup',
   resetPasswordPath: '/reset-password',
   profilePath: '/profile',
-  onSignedInHook: () => { loginRedirect ? browserHistory.replace(loginRedirect) : browserHistory.push('/dashboard'); },
+  onSignedInHook: () => { loginRedirect ? browserHistory.replace(loginRedirect) : browserHistory.push('/'); },
   onSignedOutHook: () => browserHistory.push('/'),
   minimumPasswordLength: 6,
 });

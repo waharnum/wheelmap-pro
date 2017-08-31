@@ -21,7 +21,7 @@ const DashboardPage = (props: IAsyncDataProps<IOrganization> ) => (
         )}
         tabs={(
           <div>
-            <AdminTab to="/dashboard" title="Dashboard" active={true} />
+            <AdminTab to="/" title="Dashboard" active={true} />
             <AdminTab to={`/organizations/statistics/${props.model._id}`} title="Statistics" />
             <AdminTab to={`/organizations/edit/${props.model._id}`} title="Customize" />
           </div>
