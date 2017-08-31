@@ -15,11 +15,17 @@ const OrganizationEntry = (props: IListEntryModelProps) => {
   );
 };
 
+interface IOrganizationDropdownProps {
+  children: JSX.Element | JSX.Element[];
+}
+
+type OrganizationDropdownInternalType = IOrganizationDropdownProps & IStyledComponent & IListModelProps<IOrganization>;
+
 // An organization chooser
-const OrganizationDropdown = (props: IStyledComponent & IListModelProps<IOrganization>) => {
+const OrganizationDropdown = (props: OrganizationDropdownInternalType) => {
   if (!props.ready) {
     return (
-      <div className={props.className || ''}>Loading…</div>
+      <div className={props.className}>Loading…</div>
     );
   }
 
@@ -31,6 +37,7 @@ const OrganizationDropdown = (props: IStyledComponent & IListModelProps<IOrganiz
       </h1>
       <ul className="dropdown-menu" aria-labelledby="OrganizationDropdown">
         {props.model.map((m) => <OrganizationEntry key={m._id as React.Key} model={m} /> )}
+        {props.children}
       </ul>
     </div>
   );
