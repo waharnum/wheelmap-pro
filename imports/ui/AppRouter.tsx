@@ -18,7 +18,9 @@ import HomePage from './pages/Home/HomePage';
 
 import EnsureUserLoggedIn from './components/EnsureUserLoggedIn';
 
-import AppLayoutScrollable from './_layouts/AppLayoutScrollable';
+{/* Only as styling props – has to be removed later !*/}
+import AppLayoutScrollableAdmin from './_layouts/AppLayoutScrollableAdmin';
+import AppLayoutPublic from './_layouts/AppLayoutPublic';
 
 // tslint:disable:jsx-no-lambda
 // tslint:disable:max-line-length
@@ -44,7 +46,9 @@ const AppRouter = (
         <Route path="/reset-password" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET} />} />
         <Route path="/#/reset-password/:id" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET} />} />
 
-        <Route path="/testlayout" component={AppLayoutScrollable} />
+        {/* Only as styling props – has to be removed later !*/}
+        <Route path="/testlayoutadmin" component={AppLayoutScrollableAdmin} />
+        <Route path="/testlayoutpublic" component={AppLayoutPublic} />
 
         <Route path="404" component={NotFoundPage} />
         <Redirect from="*" to="404" />

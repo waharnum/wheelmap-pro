@@ -8,25 +8,20 @@ interface Props {
   className?: string;
 };
 
-const AppLayoutScrollable = (props: Props) => (
+const AppLayoutPublic = (props: Props) => (
   <div className={`${props.className}`}>
-    <header className="main-header on-dark">
+    <header className="main-header on-white">
+      <div className="title-bar">
+        <div className="organisation-logo"></div>
+        <h1>Canadian Abilities Foundation</h1>
+        <p>We are an international organization for medical emergency relief. We provide medical emergency assistance in crisis and war zones. We collect medical facilities.</p>
+      </div>
       <div className="wrapper">
         <ol className="secondary-tools">
           <li className="public-view"><a href="." >Public view</a></li>
           <li className="user-menu"><a href="#" >Alex Bright</a></li>
         </ol>
       </div>
-      <div className="title-bar">
-        <div className="organisation-logo">
-        </div>
-        <h1>Canadian Abilities Foundation</h1>
-      </div>
-      <ol className="tabs-header">
-        <li className="active"><a href=".">Dashboard</a></li>
-        <li><a href=".">Statistics</a></li>
-        <li><a href=".">Customize</a></li>
-      </ol>
     </header>
     <div className="content-area scrollable">
       <article>{props.bodyText}</article>
@@ -34,17 +29,24 @@ const AppLayoutScrollable = (props: Props) => (
   </div>
 );
 
-export default styled(AppLayoutScrollable) `
+export default styled(AppLayoutPublic) `
 
-header {
+/* ----------------------------- base header styles -----------------------------*/
+
+header.main-header {
   padding-left: 24px;
-}
 
-.main-header {
-  min-height: 128px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  .title-bar {
+    display: flex;
+    
+    .organisation-logo {
+      flex-shrink: 0;
+      background-image: url(/images/organisations/logo-abilities.png); 
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+  }
 
   .wrapper {
     display: flex;
@@ -97,20 +99,30 @@ header {
       }
     }
   }
+}
+
+/* ----------------------------- dark admin version -----------------------*/
+
+.main-header.on-dark {
+  min-height: 128px;
+  color: #DEE1E7;
+  background-color: #37404D;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  a {
+    color: #DEE1E7;
+  }
 
   .title-bar {
-    display: flex;
     
     .organisation-logo {
-      flex-shrink: 0;
       position: relative;
-      width: 95px;
+      width: 95px; /* FIXME: width should be dynamic */
       height: 52px;
       margin-right: 30px;
-      background-image: url(/images/organisations/logo-abilities.png); 
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-size: 100% 100%;
       
       &::after {
         position: absolute;
@@ -129,12 +141,12 @@ header {
     h1 {
       margin: 0;
       padding-top: 11px;
-      line-height: 30px;
       font-size: 30px;
+      line-height: 30px;
       font-weight: 800;
     }
   }
-  
+
   ol.tabs-header {
     margin: 0;
 
@@ -161,16 +173,61 @@ header {
       }
     }
   }
-}
-
-.on-dark {
-  color: #DEE1E7;
-  background-color: #37404D;
-
-  a {
-    color: #DEE1E7;
+ 
+  .wrapper ol.secondary-tools li.public-view::before {
+    background-image: url(/images/icon-public-view@2x.png); 
   }
 }
+
+/* ----------------------------- white public version -----------------------*/
+
+.main-header.on-white{
+  min-height: 128px;
+  position: relative;
+  color: #37404D;
+  background-color: white;
+
+  a {
+    color: #37404D;
+  }
+
+  .title-bar {
+    flex-direction: column;
+    justify-content: flex-end;
+    
+    .organisation-logo {
+      width: 192px; /* FIXME: width should be dynamic */
+      height: 105px;
+    }
+    
+    h1 {     
+      margin-bottom: 4px;
+      margin-top: 0px;
+      font-size: 28px;
+      line-height: 28px;
+      font-weight: 300;
+    }
+    
+    p {
+      font-size: 14px;
+      font-weight: 400;
+      max-width: 540px;
+    }
+  }
+
+  .wrapper {
+    position: absolute;
+    display: inline-block;
+    right: 0;
+    top: 0;
+
+    ol.secondary-tools li.public-view::before {
+      background-image: url(/images/icon-admin-view@2x.png); 
+    }
+  }
+}
+
+/* ----------------------------- more layout styles -----------------------*/
 
 .content-area {
   padding: 24px;

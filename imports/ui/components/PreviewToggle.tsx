@@ -29,9 +29,17 @@ export default styled(PreviewToggle) `
     height: 24px;
     top: 8px;
     left: 0;
-    background-image: url(/images/icon-public-view@2x.png); 
+    background-image: url(/images/icon-public-view@2x.png); /* FIXME: to be moved to admin-area */
     background-position: center center;
     background-repeat: no-repeat;
     background-size: 100% 100%;
+  }
+
+  &.admin-area::before {
+    background-image: url(/images/icon-admin-view@2x.png); /* white version */     
+  }
+
+  &.public-area::before{
+    background-image: url(/images/icon-public-view@2x.png); /* anthracite version */      
   }
 `;
