@@ -20,7 +20,8 @@ import EnsureUserLoggedIn from './components/EnsureUserLoggedIn';
 
 {/* Only as styling props – has to be removed later !*/}
 import AppLayoutScrollableAdmin from './_layouts/AppLayoutScrollableAdmin';
-import AppLayoutPublic from './_layouts/AppLayoutPublic';
+import AppLayoutPublicOrganization from './_layouts/AppLayoutPublicOrganization';
+import AppLayoutPublicEvent from './_layouts/AppLayoutPublicEvent';
 
 // tslint:disable:jsx-no-lambda
 // tslint:disable:max-line-length
@@ -48,7 +49,8 @@ const AppRouter = (
 
         {/* Only as styling props – has to be removed later !*/}
         <Route path="/testlayoutadmin" component={AppLayoutScrollableAdmin} />
-        <Route path="/testlayoutpublic" component={AppLayoutPublic} />
+        <Route path="/testlayoutpublicorg" component={AppLayoutPublicOrganization} />
+        <Route path="/testlayoutpublicevent" component={AppLayoutPublicEvent} />
 
         <Route path="404" component={NotFoundPage} />
         <Redirect from="*" to="404" />

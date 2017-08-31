@@ -8,25 +8,22 @@ interface Props {
   className?: string;
 };
 
-const AppLayoutScrollableAdmin = (props: Props) => (
+const AppLayoutPublicEvent = (props: Props) => (
   <div className={`${props.className}`}>
-    <header className="main-header on-dark">
+    <header className="main-header on-white for-event">
+      <div className="title-bar">
+        <div className="organisation-logo"></div>
+        <div className="meta-information">
+          <h1>Mapathon Montreal</h1>
+          <p>We are an international organization for medical emergency relief. We provide medical emergency assistance in crisis and war zones. We collect medical facilities.</p>
+        </div>
+      </div>
       <div className="wrapper">
         <ol className="secondary-tools">
-          <li className="public-view"><a href="." >Public view</a></li>
-          <li className="user-menu"><a href="#" >Alex Bright</a></li>
+          <li className="public-view"><a href=".">Public view</a></li>
+          <li className="user-menu"><a href="#">Alex Bright</a></li>
         </ol>
       </div>
-      <div className="title-bar">
-        <div className="organisation-logo">
-        </div>
-        <h1>Canadian Abilities Foundation</h1>
-      </div>
-      <ol className="tabs-header">
-        <li className="active"><a href=".">Dashboard</a></li>
-        <li><a href=".">Statistics</a></li>
-        <li><a href=".">Customize</a></li>
-      </ol>
     </header>
     <div className="content-area scrollable">
       <article>{props.bodyText}</article>
@@ -34,7 +31,7 @@ const AppLayoutScrollableAdmin = (props: Props) => (
   </div>
 );
 
-export default styled(AppLayoutScrollableAdmin) `
+export default styled(AppLayoutPublicEvent) `
 
 /* ----------------------------- base header styles -----------------------------*/
 
