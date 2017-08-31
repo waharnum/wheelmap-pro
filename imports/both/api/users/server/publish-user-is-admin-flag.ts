@@ -1,6 +1,7 @@
+import { publishAndLog } from '../../../../server/publish';
 import { Meteor } from 'meteor/meteor';
 
-Meteor.publish('currentUserData', function currentUserInfo() {
+publishAndLog('currentUserData', function currentUserInfo() {
   if (this.userId) {
     return Meteor.users.find(
       { _id: this.userId },

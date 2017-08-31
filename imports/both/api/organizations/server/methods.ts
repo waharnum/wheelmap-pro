@@ -2,19 +2,21 @@ import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { OrganizationMembers } from '../../organization-members/organization-members';
-import { IOrganization, Organizations } from '../organizations';
+import { IOrganization, Organizations, setActiveOrganization } from '../organizations';
 
 export const insert = new ValidatedMethod({
   name: 'organizations.insert',
   validate: Organizations.schema.validator(),
   run(doc: IOrganization) {
-    console.log('Inserting organization and first membership:', doc, 'for user id', this.userId);
+    console.log('Inserting organization and first membership:', doc, 'for user id', this.userId, ', setting as active.');
     const organizationId = Organizations.insert(doc);
+    setActiveOrganization(this.userId, organizationId);
     OrganizationMembers.insert({
       organizationId,
       userId: this.userId,
       role: 'manager',
     });
+    Organizations;
     return organizationId;
   },
 });

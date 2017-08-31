@@ -27,9 +27,24 @@ Organizations.schema = OrganizationSchema;
 Organizations.helpers(Helpers);
 Organizations.attachSchema(Organizations.schema);
 
-export const OrganizationWhereCurrentUserIsMember = () => {
+export const getOrganizationsWhereCurrentUserIsMember = () => {
   const userId = Meteor.userId();
   const options = { fields: { organizationId: 1 } };
   const orgIds = OrganizationMembers.find({ userId }, options).fetch().map((m) => m.organizationId);
   return Organizations.find({ _id: { $in: orgIds } });
+};
+
+export const setActiveOrganization = (userId: Mongo.ObjectID,
+  activeOrganizationId: Mongo.ObjectID, callback?: Function) : number => {
+  return Meteor.users.update(userId, { $set: { 'profile.activeOrganization': activeOrganizationId } }, {}, callback);
+};
+
+export const getActiveOrganizationId = (userId: Mongo.ObjectID) : Mongo.ObjectID | null => {
+  const user = Meteor.users.findOne(userId);
+  return user ? user.profile.activeOrganizationId : null;
+};
+
+export const getActiveOrganization = (userId: Mongo.ObjectID) : IOrganization | null => {
+  const activeOrganizationId = getActiveOrganizationId(userId);
+  return activeOrganizationId ? Organizations.findOne(activeOrganizationId) : null;
 };

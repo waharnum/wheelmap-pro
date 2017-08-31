@@ -22,7 +22,8 @@ const publishFields = (
     `${publicationName}`,
     function publish() {
       const visibleSelector = documentVisibleSelectorForUserId(this.userId);
-      const selector = { $and: [visibleSelector].filter(Boolean) };
+
+      const selector = visibleSelector ? { $and: [visibleSelector].filter(Boolean) } : {};
       return collection.find(
         selector,
         Object.assign({}, options, { fields: publicFields }),
