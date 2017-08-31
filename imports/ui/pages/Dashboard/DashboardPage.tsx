@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 
 import Button from '../../components/Button';
@@ -6,30 +7,35 @@ import AdminHeader from '../../components/AdminHeader';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 import OrganizationsDropdown from '../../components/OrganizationsDropdown';
 
-const DashboardPage = (props) => (
-  <ScrollableLayout>
+import { wrapDataComponent } from '../../components/AsyncDataComponent';
+import { getActiveOrganization, IOrganization } from '../../../both/api/organizations/organizations';
+import { IModelProps, reactiveSubscription, IGenericSubscription } from '../../components/reactiveModelSubscription';
 
+const DashboardPage = (props: IGenericSubscription<IOrganization> ) => (
+  <ScrollableLayout>
     <AdminHeader
         titleComponent={(
-          <OrganizationsDropdown>
+          <OrganizationsDropdown current={props.model} >
             <Button to="/organizations/create" className="btn-primary" >Create Organization</Button>
           </OrganizationsDropdown>
         )}
         tabs={(
           <div>
             <AdminTab to="/dashboard" title="Dashboard" active={true} />
-            <AdminTab to="/organization/statistics/ID_HERE" title="Statistics" />
-            <AdminTab to="/edit/ID_HERE" title="Customize" />
+            <AdminTab to="/organizations/statistics/ID_HERE" title="Statistics" />
+            <AdminTab to={`/organizations/edit/${props.model._id}`} title="Customize" />
           </div>
         )}
-      />
+    />
     <div className="content-area scrollable">
-      
-      <section>Please create your first organization or wait until you are invited.</section>
-      <section><Button to="/organizations/list" className="btn-primary" >All Organizations</Button></section>
+      <section><Button to="/events/create" className="btn-primary" >Create your first event</Button></section>
     </div>
   </ScrollableLayout>
 );
 
-export default DashboardPage;
-; ;
+const ReactiveDashboardPage = reactiveSubscription(wrapDataComponent(DashboardPage), () => {
+    const org = getActiveOrganization(Meteor.userId());
+    return org;
+  }, 'organizations.my.active.private', 'organizationMembers.public', 'users.public');
+
+export default ReactiveDashboardPage;

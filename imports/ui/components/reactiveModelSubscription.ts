@@ -4,12 +4,16 @@ import { Mongo } from 'meteor/mongo';
 import * as React from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 
-export interface IModelProps<TModel> {
+export interface IAsyncDataProps {
+  ready: boolean;
+  model: any | null;
+}
+
+export interface IModelProps<TModel> extends IAsyncDataProps {
   params: {
     _id: Mongo.ObjectID;
   };
   model: TModel | null;
-  ready: boolean;
 }
 
 type ComponentConstructor<P> = React.ComponentClass<P> | React.StatelessComponent<P>;
@@ -32,14 +36,24 @@ export const reactiveModelSubscriptionById = <T, InP extends IModelProps<T>>(
     return result;
 };
 
-export interface IListModelProps<TModel> {
+export interface IListModelProps<TModel> extends IAsyncDataProps {
   model: TModel[];
-  ready: boolean;
 }
 
 export const reactiveModelSubscription = <T, InP extends IListModelProps<T>>(
   reactComponent: ComponentConstructor<InP>,
   collection: Mongo.Collection<T>,
+  ...subscriptions: string[]) : ComponentConstructor<InP> => {
+    return reactiveSubscription(reactComponent, () => collection.find().fetch(), ...subscriptions);
+};
+
+export interface IGenericSubscription<T> extends IAsyncDataProps {
+  model: T | null;
+}
+
+export const reactiveSubscription = <T, InP extends IGenericSubscription<T>>(
+  reactComponent: ComponentConstructor<InP>,
+  fetchFunction: () => T,
   ...subscriptions: string[]) : ComponentConstructor<InP> => {
     const result = createContainer((props: InP) => {
       const allReady = subscriptions.reduce((prev, subscription) => {
@@ -49,8 +63,8 @@ export const reactiveModelSubscription = <T, InP extends IListModelProps<T>>(
 
       return {
         ready: allReady,
-        model: allReady ? collection.find().fetch() : [],
-      } as IListModelProps<T>;
+        model: allReady ? fetchFunction() : null,
+      };
     }, reactComponent);
 
     return result;

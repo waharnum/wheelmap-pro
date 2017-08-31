@@ -7,16 +7,18 @@ import { IStyledComponent } from './IStyledComponent';
 
 interface IListEntryModelProps {
   model: IOrganization;
+  active: boolean;
 }
 
 const OrganizationEntry = (props: IListEntryModelProps) => {
   return (
-    <li>{props.model.name}</li>
+    <li className={props.active ? 'active' : ''}>{props.model.name}</li>
   );
 };
 
 interface IOrganizationDropdownProps {
   children: JSX.Element | JSX.Element[];
+  current: IOrganization;
 }
 
 type OrganizationDropdownInternalType = IOrganizationDropdownProps & IStyledComponent & IListModelProps<IOrganization>;
@@ -33,10 +35,10 @@ const OrganizationDropdown = (props: OrganizationDropdownInternalType) => {
     <div className={props.className + ' dropdown'}>
       <h1 className="dropdown-toggle" id="OrganizationDropdown" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="true">
-        &lt; current active &gt;
+        {props.current.name}
       </h1>
       <ul className="dropdown-menu" aria-labelledby="OrganizationDropdown">
-        {props.model.map((m) => <OrganizationEntry key={m._id as React.Key} model={m} /> )}
+        {props.model.map((m) => <OrganizationEntry key={m._id as React.Key} model={m} active={props.current === m._id}/> )}
         {props.children}
       </ul>
     </div>
