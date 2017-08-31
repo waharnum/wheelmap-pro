@@ -5,11 +5,13 @@ import { IStyledComponent } from '../components/IStyledComponent';
 import PreviewToggle from './PreviewToggle';
 import UserMenu from './UserMenu';
 import AdminTab from './AdminTab';
+import {LocationDescriptor} from 'history';
 
 interface IAdminHeaderProps {
+  titleComponent: JSX.Element | string;
   children?: JSX.Element | JSX.Element[];
   tabs?: JSX.Element;
-  titleComponent: JSX.Element | string;
+  publicLink?: LocationDescriptor;
 }
 
 interface IHeaderTitleProps {
@@ -32,7 +34,7 @@ const AdminHeader = (props: IAdminHeaderProps & IStyledComponent) => {
       <header className="main-header on-dark">
         <div className="wrapper">
           <ol className="secondary-tools">
-            <PreviewToggle />
+            <PreviewToggle to={props.publicLink} />
             <UserMenu />
           </ol>
         </div>

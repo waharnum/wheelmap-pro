@@ -3,10 +3,15 @@ import {Link} from 'react-router';
 import styled from 'styled-components';
 
 import { IStyledComponent } from '../components/IStyledComponent';
+import { LocationDescriptor } from 'history';
 
-const PreviewToggle = (props : IStyledComponent) => {
+const PreviewToggle = (props: IStyledComponent & {to?: LocationDescriptor}) => {
+  if (!props.to) {
+    return null;
+  }
+
   return (
-    <li className={props.className}><Link to="#">Public view</Link></li>
+    <li className={props.className}><Link to={props.to}>Public view</Link></li>
   );
 };
 
