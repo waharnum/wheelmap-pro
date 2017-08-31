@@ -11,13 +11,13 @@ interface ICreateOrganizationFormProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
 }
 
+const GoToOrganizationPage = (_id) => { browserHistory.push(`/organizations/${_id}`); };
 const CreateOrganizationPage = (props: ICreateOrganizationFormProps & IStyledComponent) => {
   return (
     <ScrollableLayout className={props.className}>
       <AdminHeader titleComponent={<h1>Create Organization</h1>} />
       <div className="content-area scrollable">
-        <OrganizationBaseForm
-          afterSubmit={(_id) => { browserHistory.push(`/organizations/${_id}`); }} />
+        <OrganizationBaseForm afterSubmit={GoToOrganizationPage} />
       </div>
     </ScrollableLayout>
   );
@@ -27,4 +27,3 @@ const StyledCreateOrganizationPage = styled<IBaseFormProps>(CreateOrganizationPa
 `;
 
 export default StyledCreateOrganizationPage;
-;

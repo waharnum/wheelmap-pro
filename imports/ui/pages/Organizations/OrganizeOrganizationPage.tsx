@@ -9,9 +9,9 @@ import OrganizationsDropdown from '../../components/OrganizationsDropdown';
 
 import { wrapDataComponent } from '../../components/AsyncDataComponent';
 import { getActiveOrganization, IOrganization } from '../../../both/api/organizations/organizations';
-import { IModelProps, reactiveSubscription, IGenericSubscription } from '../../components/reactiveModelSubscription';
+import { IModelProps, reactiveSubscription, IAsyncDataProps } from '../../components/reactiveModelSubscription';
 
-const DashboardPage = (props: IGenericSubscription<IOrganization> ) => (
+const DashboardPage = (props: IAsyncDataProps<IOrganization> ) => (
   <ScrollableLayout>
     <AdminHeader
         titleComponent={(
@@ -22,7 +22,7 @@ const DashboardPage = (props: IGenericSubscription<IOrganization> ) => (
         tabs={(
           <div>
             <AdminTab to="/dashboard" title="Dashboard" active={true} />
-            <AdminTab to="/organizations/statistics/ID_HERE" title="Statistics" />
+            <AdminTab to={`/organizations/statistics/${props.model._id}`} title="Statistics" />
             <AdminTab to={`/organizations/edit/${props.model._id}`} title="Customize" />
           </div>
         )}
