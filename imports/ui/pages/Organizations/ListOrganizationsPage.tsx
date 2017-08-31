@@ -1,16 +1,19 @@
+
 import * as React from 'react';
 import styled from 'styled-components';
 
 import { reactiveModelSubscription, IListModelProps } from '../../components/reactiveModelSubscription';
+import { default as AdminHeader, HeaderTitle } from '../../components/AdminHeader';
 import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
 import { IStyledComponent } from '../../components/IStyledComponent';
+import ScrollableLayout from '../../layouts/ScrollableLayout';
 import Button from '../../components/Button';
 
 interface IListEntryModelProps {
   model: IOrganization;
 }
 
-const ListEntry = (props: IStyledComponent & IListEntryModelProps) => {
+const ListEntry = (props: IListEntryModelProps) => {
   return (
     <div className="list-entry">
       {props.model.name}
@@ -26,16 +29,16 @@ const ListEntry = (props: IStyledComponent & IListEntryModelProps) => {
 const ListOrganizationPage = (props: IStyledComponent & IListModelProps<IOrganization>) => {
   if (!props.ready) {
     return (
-      <div className={props.className || ''}>Loading…</div>
+      <div className={props.className}>Loading…</div>
     );
   }
 
   return (
-    <div className={props.className || ''}>
-      <h2>All Organizations</h2>
-      {props.model.map((m) => <ListEntry key={m._id as React.Key} model={m} />)}
+    <ScrollableLayout className={props.className}>
+      <AdminHeader titleComponent={<HeaderTitle title="All Organizations" />} />   
+            {props.model.map((m) => <ListEntry key={m._id as React.Key} model={m} />)}
       <Button to="/organizations/create">Create new organization</Button>
-    </div>
+    </ScrollableLayout>
   );
 };
 

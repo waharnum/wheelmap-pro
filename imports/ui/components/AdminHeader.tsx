@@ -7,11 +7,24 @@ import UserMenu from './UserMenu';
 import AdminTab from './AdminTab';
 
 interface IAdminHeaderProps {
-  title: string;
   children?: JSX.Element | JSX.Element[];
   tabs?: JSX.Element;
+  titleComponent: JSX.Element | string;
+}
+
+interface IHeaderTitleProps {
+  title: string;
   logo?: JSX.Element;
 }
+
+export const HeaderTitle = (props: IHeaderTitleProps) => {
+  return (
+    <div>
+      {props.logo}
+      <h1>{props.title}</h1>
+    </div>
+  );
+};
 
 const AdminHeader = (props: IAdminHeaderProps & IStyledComponent) => {
   return (
@@ -24,8 +37,7 @@ const AdminHeader = (props: IAdminHeaderProps & IStyledComponent) => {
           </ol>
         </div>
         <div className="title-bar">
-          {props.logo}
-          <h1>{props.title}</h1>
+          {props.titleComponent || <HeaderTitle title="Please specificy title component" />}
         </div>
         <ol className="tabs-header">
           {props.tabs}

@@ -15,6 +15,7 @@ const OrganizationEntry = (props: IListEntryModelProps) => {
   );
 };
 
+// An organization chooser
 const OrganizationDropdown = (props: IStyledComponent & IListModelProps<IOrganization>) => {
   if (!props.ready) {
     return (
@@ -24,11 +25,10 @@ const OrganizationDropdown = (props: IStyledComponent & IListModelProps<IOrganiz
 
   return (
     <div className={props.className + ' dropdown'}>
-      <button className="btn btn-default dropdown-toggle" type="button"
-          id="OrganizationDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">      
-        <span className="caret"></span>
+      <h1 className="dropdown-toggle" id="OrganizationDropdown" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="true">
         &lt; current active &gt;
-      </button>
+      </h1>
       <ul className="dropdown-menu" aria-labelledby="OrganizationDropdown">
         {props.model.map((m) => <OrganizationEntry key={m._id as React.Key} model={m} /> )}
       </ul>
@@ -36,7 +36,9 @@ const OrganizationDropdown = (props: IStyledComponent & IListModelProps<IOrganiz
   );
 };
 
-const ReactiveOrganizationDropdown = reactiveModelSubscription(OrganizationDropdown, Organizations, 'organizations.my.private');
+const ReactiveOrganizationDropdown = reactiveModelSubscription(
+    OrganizationDropdown, Organizations, 'organizations.my.private');
+
 const StyledReactiveOrganizationDropdown = styled(ReactiveOrganizationDropdown) `
 `;
 

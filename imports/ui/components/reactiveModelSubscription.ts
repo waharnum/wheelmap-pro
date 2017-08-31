@@ -8,7 +8,7 @@ export interface IModelProps<TModel> {
   params: {
     _id: Mongo.ObjectID;
   };
-  model: TModel;
+  model: TModel | null;
   ready: boolean;
 }
 

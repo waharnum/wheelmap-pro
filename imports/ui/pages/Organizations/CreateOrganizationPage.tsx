@@ -14,7 +14,7 @@ interface ICreateOrganizationFormProps {
 const CreateOrganizationPage = (props: ICreateOrganizationFormProps & IStyledComponent) => {
   return (
     <ScrollableLayout className={props.className}>
-      <AdminHeader title="Create Organization" />
+      <AdminHeader titleComponent={<h1>Create Organization</h1>} />
       <div className="content-area scrollable">
         <OrganizationBaseForm
           afterSubmit={(_id) => { browserHistory.push(`/organizations/${_id}`); }} />
@@ -27,3 +27,4 @@ const StyledCreateOrganizationPage = styled<IBaseFormProps>(CreateOrganizationPa
 `;
 
 export default StyledCreateOrganizationPage;
+;
