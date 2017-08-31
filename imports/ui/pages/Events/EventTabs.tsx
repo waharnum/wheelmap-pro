@@ -16,4 +16,3 @@ const EventTabs = (props: IStyledComponent) => {
 
 export default styled(EventTabs) `
 `;
-;;
