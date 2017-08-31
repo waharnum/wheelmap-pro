@@ -12,7 +12,7 @@ import CreateOrganizationPage from './pages/Organizations/CreateOrganizationPage
 import ShowOrganizationPage from './pages/Organizations/ShowOrganizationPage';
 import ListOrganizationsPage from './pages/Organizations/ListOrganizationsPage';
 import EditOrganizationPage from './pages/Organizations/EditOrganizationPage';
-import DashboardPage from './pages/Dashboard/DashboardPage';
+import OrganizeOrganizationPage from './pages/Organizations/OrganizeOrganizationPage';
 import NotFoundPage from './pages/NotFound/NotFoundPage';
 import HomePage from './pages/Home/HomePage';
 import OrganizeEventPage from './pages/Events/OrganizeEventPage';
@@ -29,14 +29,17 @@ import AppLayoutPublicEvent from './_layouts/AppLayoutPublicEvent';
 const AppRouter = (
   <Router>
     <Route component={App}>
-
       <Route component={EnsureUserLoggedIn}>
-        <Route path="/dashboard" component={DashboardPage} />
+        <Route path="/dashboard" component={OrganizeOrganizationPage} />
         <Route path="/profile" component={() => <Accounts.ui.LoginForm formState={STATES.PROFILE} />} />
         <Route path="/organizations/list" component={ListOrganizationsPage} />
         <Route path="/organizations/create" component={CreateOrganizationPage} />
         <Route path="/organizations/edit/:_id" component={EditOrganizationPage} />
         <Route path="/organizations/:_id" component={ShowOrganizationPage} />
+      <Route path="/events/:_id" component={OrganizeEventPage} />
+
+      {/* Use meteor.user onEnter, as this gets re-evaluated each time */}
+      <Route path="/" onEnter={() => { browserHistory.replace(Meteor.user() ? '/dashboard' : '/welcome'); }} />
         <Route path="/events/:_id" component={OrganizeEventPage} />
       </Route>
 
