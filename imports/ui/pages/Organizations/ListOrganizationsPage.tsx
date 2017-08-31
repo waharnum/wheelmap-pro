@@ -35,14 +35,17 @@ const ListOrganizationPage = (props: IStyledComponent & IListModelProps<IOrganiz
 
   return (
     <ScrollableLayout className={props.className}>
-      <AdminHeader titleComponent={<HeaderTitle title="All Organizations" />} />   
-            {props.model.map((m) => <ListEntry key={m._id as React.Key} model={m} />)}
+      <AdminHeader titleComponent={<HeaderTitle title="All Organizations" />} />
+      <section>
+      {props.model.map((m) => <ListEntry key={m._id as React.Key} model={m} />)}
+      </section>
       <Button to="/organizations/create">Create new organization</Button>
     </ScrollableLayout>
   );
 };
 
 const ReactiveListOrganizationPage = reactiveModelSubscription(ListOrganizationPage, Organizations, 'organizations', 'organizationMembers.public');
+
 const StyledReactiveListOrganizationPage = styled(ReactiveListOrganizationPage) `
   .list-entry {
     margin:4px;
