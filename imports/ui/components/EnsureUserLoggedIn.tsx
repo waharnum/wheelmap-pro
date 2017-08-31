@@ -11,8 +11,7 @@ interface IUserProps {
 
 class EnsureUserLoggedIn extends React.Component<any & IUserProps> {
 
-  constructor(props) {
-    super(props);
+  public componentWillMount() {
     // save page to go back to
     setLoginRedirect(this.props.location);
 
