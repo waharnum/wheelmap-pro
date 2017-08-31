@@ -1,0 +1,26 @@
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+@import "./colors.scss";
+@import "./fonts.scss";
+
+body {
+  background-color: $bg-grey !important;
+  color: black;
+  margin: 0;
+  padding: 0;
+  -moz-osx-font-smoothing: grayscale; /* Firefox font render fix on OSX*/
+  -webkit-font-smoothing: antialiased;
+  font-family: 'Roboto', Helvetica, Arial, sans-serif !important;
+  font-size: 16px;
+  font-weight: 300;
+  font-style: normal;
+}
+
+* {
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none !important;
+}

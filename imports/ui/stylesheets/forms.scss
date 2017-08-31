@@ -1,0 +1,173 @@
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+@import "./colors.scss";
+@import "./fonts.scss";
+
+label,
+.noTextSelect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none; 
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
+
+.btn {
+  padding: 0 20px;
+  text-transform: uppercase;
+  color: white;
+  background-color: $cta-blue;
+  border-radius: 0;
+  border: none;
+  outline: 0;
+
+  &:hover {
+    background-color: $cta-blue-lighter;
+  }
+}
+
+.btn-primary {
+  font-size: 18px;
+  line-height: 48px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  .form-group,
+  .input,
+  .panel-danger {
+    margin-top: 16px;
+    width: 26em;
+    max-width: 90vv;
+
+    input,
+    select,
+    textarea {
+      width:100%;
+      border: 1px solid $error-red;
+      font-weight: 400;
+      font-size: 16px; 
+      padding: 8px;
+      transition: 0.5s;
+    
+      &:focus,
+      &:hover {
+        border: 1px solid $cta-blue;
+        box-shadow: none;
+        transition: 0.5s; 
+      }
+    }
+
+    input {
+      padding: 4px 8px;
+      min-height: 2.5em;
+      border-radius: 6px;
+  
+      &[type="checkbox"] {
+        width: auto;
+        margin-right: 10px;
+      }
+    }
+
+    input,
+    textarea {
+      &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+        // color:blue !important;
+        font-style: italic;
+      }
+      &::-moz-placeholder { /* Firefox 19+ */
+        font-style: italic;
+      }
+      &:-ms-input-placeholder { /* IE 10+ */
+        font-style: italic;
+      }
+      &:-moz-placeholder { /* Firefox 18- */
+        font-style: italic;
+      }
+    }
+
+    label {
+      color: $bg-anthracite;
+      font-size: 14px; 
+      font-weight: 400;
+
+      &:focus {
+        transition: 0.5s;
+      }
+    }
+    
+    div.checkbox label {
+      font-size: 16px;
+    }
+
+    span.help-block {
+      font-weight: 400;
+      line-height: 32px;
+      color: $error-red;
+      transition: 0.5s;
+    }
+    
+    i.glyphicon {
+      top: 26px;
+      right: -36px;
+
+      &:before {
+        font-family: 'iconfield-v03';
+        font-size: 18px;
+      }
+    }
+
+    i.glyphicon-remove::before {
+      content: "A";
+    }      
+    
+    &.has-error,
+    &.form-control-feedback {
+      transition: 0.5s;
+      
+      label {
+        color: $error-red;
+      }
+
+      input,
+      input:focus {
+        border: 1px solid $error-red;
+        box-shadow: none;
+      }
+
+      i.glyphicon::before {
+        color: $error-red;
+      }
+    }
+  }
+
+  .has-danger .btn,
+  .has-danger .btn:hover {
+    background-color: $cta-disabled-grey;
+  }
+  
+  .panel-danger { /* box with error feedback*/
+    color: white;
+    background-color: $bg-anthracite;
+    border: none;
+    border-radius: 0;
+
+    .panel-body div {
+      position: relative;
+      padding-left: 20px;
+
+      &:before {
+        position: absolute;
+        left: 0;
+        content: "D";
+        color: $error-red;
+        font-family: 'iconfield-v03';
+        font-size: 14px;
+      }
+    }
+  }
+}
