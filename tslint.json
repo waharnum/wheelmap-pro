@@ -3,6 +3,7 @@
   "rules": {
     "quotemark": [true, "single", "jsx-double"],
     "ordered-imports": false,
-    "no-var-requires": false
+    "no-var-requires": false,
+    "jsx-no-multiline-js": false
   }
 }
