@@ -8,10 +8,10 @@ import ScrollableLayout from '../../layouts/ScrollableLayout';
 import OrganizationsDropdown from '../../components/OrganizationsDropdown';
 
 import { wrapDataComponent } from '../../components/AsyncDataComponent';
-import { getActiveOrganization, IOrganization } from '../../../both/api/organizations/organizations';
-import { IModelProps, reactiveSubscription, IAsyncDataProps } from '../../components/reactiveModelSubscription';
+import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
+import { IModelProps, reactiveModelSubscriptionById } from '../../components/reactiveModelSubscription';
 
-const DashboardPage = (props: IAsyncDataProps<IOrganization> ) => (
+const DashboardPage = (props: IModelProps<IOrganization> ) => (
   <ScrollableLayout>
     <AdminHeader
         titleComponent={(
@@ -21,9 +21,10 @@ const DashboardPage = (props: IAsyncDataProps<IOrganization> ) => (
         )}
         tabs={(
           <div>
-            <AdminTab to="/" title="Dashboard" active={true} />
+            <AdminTab to="" title="Dashboard" active={true} />
             <AdminTab to={`/organizations/statistics/${props.model._id}`} title="Statistics" />
-            <AdminTab to={`/organizations/edit/${props.model._id}`} title="Customize" />
+            <AdminTab to={`/organizations/${props.model._id}/edit`} title="Customize" />
+            <AdminTab to={`/organizations/${props.model._id}/members`} title="Members" />
           </div>
         )}
     />
@@ -33,9 +34,8 @@ const DashboardPage = (props: IAsyncDataProps<IOrganization> ) => (
   </ScrollableLayout>
 );
 
-const ReactiveDashboardPage = reactiveSubscription(wrapDataComponent(DashboardPage), () => {
-    const org = getActiveOrganization(Meteor.userId());
-    return org;
-  }, 'organizations.my.active.private', 'organizationMembers.public', 'users.public');
+const ReactiveDashboardPage = reactiveModelSubscriptionById(
+  wrapDataComponent<IOrganization, IModelProps<IOrganization | null>, IModelProps<IOrganization>>(DashboardPage),
+  Organizations, 'organizations.by_id');
 
 export default ReactiveDashboardPage;

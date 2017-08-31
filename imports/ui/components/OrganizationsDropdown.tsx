@@ -1,10 +1,11 @@
-import { wrapDataComponent } from './AsyncDataComponent';
-import * as React from 'react';
+import {Link} from 'react-router';
 import styled from 'styled-components';
+import * as React from 'react';
+import { wrapDataComponent } from './AsyncDataComponent';
 
-import { reactiveModelSubscription, IListModelProps } from './reactiveModelSubscription';
-import { IOrganization, Organizations } from '../../both/api/organizations/organizations';
 import { IStyledComponent } from './IStyledComponent';
+import { IOrganization, Organizations } from '../../both/api/organizations/organizations';
+import { IAsyncDataProps, reactiveModelSubscription } from './reactiveModelSubscription';
 
 interface IListEntryModelProps {
   model: IOrganization;
@@ -13,7 +14,9 @@ interface IListEntryModelProps {
 
 const OrganizationEntry = (props: IListEntryModelProps) => {
   return (
-    <li className={props.active ? 'active' : ''}>{props.model.name}</li>
+    <li className={props.active ? 'active' : ''}>
+      <Link to={`/organizations/${props.model._id}/organize`}>{props.model.name}</Link>
+    </li>
   );
 };
 
@@ -22,7 +25,7 @@ interface IOrganizationDropdownProps {
   current: IOrganization;
 }
 
-type OrganizationDropdownInternalType = IOrganizationDropdownProps & IStyledComponent & IListModelProps<IOrganization>;
+type OrganizationDropdownInternalType = IOrganizationDropdownProps & IStyledComponent & IAsyncDataProps<IOrganization[]>;
 
 // An organization chooser
 const OrganizationDropdown = (props: OrganizationDropdownInternalType) => {
@@ -33,17 +36,22 @@ const OrganizationDropdown = (props: OrganizationDropdownInternalType) => {
         {props.current.name}
       </h1>
       <ul className="dropdown-menu" aria-labelledby="OrganizationDropdown">
-        {props.model.map((m) => <OrganizationEntry key={m._id as React.Key} model={m} active={props.current === m._id}/> )}
+        {props.model.map((m) =>
+          <OrganizationEntry key={m._id as React.Key} model={m} active={props.current === m._id}/> )}
         {props.children}
       </ul>
     </div>
   );
 };
 
-const ReactiveOrganizationDropdown =
-    reactiveModelSubscription(wrapDataComponent(OrganizationDropdown), Organizations, 'organizations.my.private');
+const ReactiveOrganizationDropdown = reactiveModelSubscription(
+    wrapDataComponent<IOrganization[], IAsyncDataProps<IOrganization[] | null>, IAsyncDataProps<IOrganization[]>>(OrganizationDropdown),
+    Organizations, 'organizations.my.private');
 
 const StyledReactiveOrganizationDropdown = styled(ReactiveOrganizationDropdown) `
+  .dropdown-toggle {
+    cursor: pointer;
+  }
 `;
 
 export default StyledReactiveOrganizationDropdown;

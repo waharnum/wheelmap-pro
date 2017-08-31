@@ -16,8 +16,6 @@ export interface IModelProps<TModel> extends IAsyncDataProps<TModel> {
     _id: Mongo.ObjectID;
   };
 }
-// async data props for an array of TModel
-export type IListModelProps<TModel> = IAsyncDataProps<TModel[]>;
 
 // react component input type
 type ComponentConstructor<P> = React.ComponentClass<P> | React.StatelessComponent<P>;
@@ -52,11 +50,11 @@ export const reactiveModelSubscriptionById = <T, InP extends IModelProps<T>>(
  * Wraps a reactComponent into a reactive container that gets updated
  * whenever any of the subscriptions changes
  *
- * @param reactComponent The component to wrap, needs properties implementing IListModelProps
+ * @param reactComponent The component to wrap, needs properties implementing IAsyncDataProps
  * @param collection The mongo collection to fetch data from, make sure it is covered by the subcriptions
  * @param subscriptions The subscriptions that will indicate when the component needs to be updated
  */
-export const reactiveModelSubscription = <T, InP extends IListModelProps<T>>(
+export const reactiveModelSubscription = <T, InP extends IAsyncDataProps<T[]>>(
   reactComponent: ComponentConstructor<InP>,
   collection: Mongo.Collection<T>,
   ...subscriptions: string[]) : ComponentConstructor<InP> => {
@@ -67,7 +65,7 @@ export const reactiveModelSubscription = <T, InP extends IListModelProps<T>>(
  * Wraps a reactComponent into a reactive container that gets updated
  * whenever any of the subscriptions changes
  *
- * @param reactComponent The component to wrap, needs properties implementing IListModelProps
+ * @param reactComponent The component to wrap, needs properties implementing IAsyncDataProps
  * @param fetchFunction The function used to fetch data, make sure it is covered by the subcriptions
  * @param subscriptions he subscriptions that will indicate when the component needs to be updated
  */
