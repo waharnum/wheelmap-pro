@@ -1,3 +1,4 @@
+import { wrapDataComponent } from './AsyncDataComponent';
 import * as React from 'react';
 import styled from 'styled-components';
 
@@ -25,12 +26,6 @@ type OrganizationDropdownInternalType = IOrganizationDropdownProps & IStyledComp
 
 // An organization chooser
 const OrganizationDropdown = (props: OrganizationDropdownInternalType) => {
-  if (!props.ready) {
-    return (
-      <div className={props.className}>Loading…</div>
-    );
-  }
-
   return (
     <div className={props.className + ' dropdown'}>
       <h1 className="dropdown-toggle" id="OrganizationDropdown" data-toggle="dropdown"
@@ -45,8 +40,8 @@ const OrganizationDropdown = (props: OrganizationDropdownInternalType) => {
   );
 };
 
-const ReactiveOrganizationDropdown = reactiveModelSubscription(
-    OrganizationDropdown, Organizations, 'organizations.my.private');
+const ReactiveOrganizationDropdown =
+    reactiveModelSubscription(wrapDataComponent(OrganizationDropdown), Organizations, 'organizations.my.private');
 
 const StyledReactiveOrganizationDropdown = styled(ReactiveOrganizationDropdown) `
 `;
