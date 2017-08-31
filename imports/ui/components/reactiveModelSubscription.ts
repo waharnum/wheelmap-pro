@@ -7,7 +7,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 // base type for all data fetched by subscriptions
 export interface IAsyncDataProps<T> {
   ready: boolean; // indicates subscriptions are ready
-  model: T | null; // fetched data (or null when not yet loaded)
+  model: T; // fetched data (or null when not yet loaded)
 }
 
 // async data props with page params._id
@@ -42,7 +42,7 @@ export const reactiveModelSubscriptionById = <T, InP extends IModelProps<T>>(
       return {
         ready,
         model: ready ? collection.findOne({_id: id}) : null,
-      } as IModelProps<T>;
+      };
     }, reactComponent);
 
     return result;

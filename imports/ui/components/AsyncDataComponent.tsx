@@ -3,12 +3,6 @@ import * as React from 'react';
 import { IAsyncDataProps } from './reactiveModelSubscription';
 import { ComponentConstructor } from 'meteor/react-meteor-data';
 
-interface IAsyncDataComponentProps {
-  notReadyComponent: JSX.Element;
-  dataNotFoundComponent: JSX.Element;
-  children: JSX.Element;
-}
-
 const Loading = (props: any) => {
   return (<p>Loading</p>);
 };
@@ -17,33 +11,23 @@ const DataNotFound = (props: any) => {
   return (<p>Missing data</p>);
 };
 
-class AsyncDataComponent extends React.Component<IAsyncDataProps & IAsyncDataComponentProps> {
-  public render() {
-    if (!this.props.ready) {
-      return this.props.notReadyComponent;
-    }
-    if (!this.props.model) {
-      return this.props.dataNotFoundComponent;
-    }
-    return this.props.children;
-  }
-};
+type InputProps<T> = IAsyncDataProps<T | null>;
+type InputPropsComponent<T> = React.ComponentClass<InputProps<T>> | React.StatelessComponent<InputProps<T>>;
+type WrappedProps<T> = IAsyncDataProps<any>;
 
-export default AsyncDataComponent;
+export const wrapDataComponent = <T, Dummy>(WrappedComponent: InputPropsComponent<T>,
+  notReadyComponent?: JSX.Element, dataNotFoundComponent?: JSX.Element) => {
 
-type ExpectedType = React.ComponentClass<IAsyncDataProps> | React.StatelessComponent<IAsyncDataProps>;
-
-export const wrapDataComponent = (WrappedComponent: ExpectedType) => {
-  // tslint:disable-next-line:max-classes-per-file
-  return class extends React.Component<IAsyncDataProps> {
+  return class extends React.Component<WrappedProps<T>> {
     public render() {
-      return (
-        <AsyncDataComponent ready={this.props.ready} model={this.props.model}
-          notReadyComponent={<Loading />}
-          dataNotFoundComponent={<DataNotFound/>}>
-          <WrappedComponent {...this.props}/>
-        </AsyncDataComponent>
-      );
+      if (!this.props.ready) {
+        return notReadyComponent || <Loading />;
+      }
+      if (!this.props.model) {
+        return dataNotFoundComponent || <DataNotFound />;
+      }
+
+      return <WrappedComponent {...this.props}/>;
     }
   };
 };
