@@ -21,12 +21,12 @@ const CreateEventPage = (props: ICreateEventFormProps & IStyledComponent) => {
     <ScrollableLayout className={props.className}>
       <AdminHeader
         titleComponent={<h1>{TAPi18n.__('Create Event')}</h1>}
-        tabs={
+        tabs={(
           <section>
             <AdminTab to="/" title={TAPi18n.__('Dashboard')}/>
             <AdminTab to="" title={TAPi18n.__('Create')} active={true} />
           </section>
-          }
+        )}
         />
       <div className="content-area scrollable">
         <EventBaseForm afterSubmit={GoToEventPage} />

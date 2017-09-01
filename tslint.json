@@ -4,6 +4,7 @@
     "quotemark": [true, "single", "jsx-double"],
     "ordered-imports": false,
     "no-var-requires": false,
-    "jsx-no-multiline-js": false
+    "jsx-no-multiline-js": false,
+    "object-literal-sort-keys": false
   }
 }
