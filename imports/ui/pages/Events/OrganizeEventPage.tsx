@@ -34,7 +34,6 @@ const OrganizeEventPage = (props: IModelProps<IEvent> & IStyledComponent) => {
     visibility: 'public',
   };
 
-  console.log(props);
   return (
     <ScrollableLayout className={props.className}>
       <AdminHeader

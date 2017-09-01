@@ -11,12 +11,12 @@ import ScrollableLayout from '../../layouts/ScrollableLayout';
 
 import EventBaseForm, { IEventBaseFormProps } from './EventBaseForm';
 
-interface ICreateOrganizationFormProps {
+interface ICreateEventFormProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
 }
 
-const GoToOrganizationPage = (_id) => { browserHistory.push(`/organizations/${_id}`); };
-const CreateOrganizationPage = (props: ICreateOrganizationFormProps & IStyledComponent) => {
+const GoToEventPage = (_id) => { browserHistory.push(`/events/${_id}`); };
+const CreateEventPage = (props: ICreateEventFormProps & IStyledComponent) => {
   return (
     <ScrollableLayout className={props.className}>
       <AdminHeader
@@ -29,13 +29,13 @@ const CreateOrganizationPage = (props: ICreateOrganizationFormProps & IStyledCom
           }
         />
       <div className="content-area scrollable">
-        <EventBaseForm afterSubmit={GoToOrganizationPage} />
+        <EventBaseForm afterSubmit={GoToEventPage} />
       </div>
     </ScrollableLayout>
   );
 };
 
-const StyledCreateOrganizationPage = styled<IEventBaseFormProps>(CreateOrganizationPage) `
+const StyledCreateEventPage = styled<IEventBaseFormProps>(CreateEventPage) `
 `;
 
-export default StyledCreateOrganizationPage;
+export default StyledCreateEventPage;
