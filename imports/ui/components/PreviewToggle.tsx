@@ -1,3 +1,4 @@
+import { TAPi18n } from 'meteor/tap:i18n';
 import * as React from 'react';
 import {Link} from 'react-router';
 import styled from 'styled-components';
@@ -5,13 +6,15 @@ import styled from 'styled-components';
 import { IStyledComponent } from '../components/IStyledComponent';
 import { LocationDescriptor } from 'history';
 
-const PreviewToggle = (props: IStyledComponent & {to?: LocationDescriptor}) => {
+const PreviewToggle = (props: IStyledComponent & {to?: LocationDescriptor, toOrganize?: boolean}) => {
   if (!props.to) {
     return null;
   }
 
   return (
-    <li className={props.className}><Link to={props.to}>Public view</Link></li>
+    <li className={props.className}>
+      <Link to={props.to}>{props.toOrganize ? TAPi18n.__('Edit view') : TAPi18n.__('Public View')}</Link>
+    </li>
   );
 };
 

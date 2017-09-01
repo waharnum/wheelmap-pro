@@ -27,6 +27,7 @@ const DashboardPage = (props: IModelProps<IOrganization> ) => (
             <AdminTab to={`/organizations/${props.model._id}/members`} title="Members" />
           </div>
         )}
+        publicLink={`/organizations/${props.model._id}`}
     />
     <div className="content-area scrollable">
       <section><Button to="/events/create" className="btn-primary" >Create your first event</Button></section>

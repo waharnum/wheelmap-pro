@@ -48,6 +48,10 @@ const RedirectAccordingToUser = () => {
 const AppRouter = (
   <Router>
     <Route component={App}>
+      {/* Use meteor.user onEnter, as this gets re-evaluated each time */}
+      <Route path="/" onEnter={RedirectAccordingToUser} />
+
+      {/* organize pages */}
       <Route component={EnsureUserLoggedIn}>
         <Route path="/profile" component={() => <Accounts.ui.LoginForm formState={STATES.PROFILE} />} />
         <Route path="/organizations/none" component={NoOrganizationsPage} />
@@ -55,24 +59,26 @@ const AppRouter = (
         <Route path="/organizations/create" component={CreateOrganizationPage} />
         <Route path="/organizations/edit/:_id" component={EditOrganizationPage} />
         <Route path="/organizations/:_id/organize" component={OrganizeOrganizationPage} />
-        <Route path="/organizations/:_id" component={ShowOrganizationPage} />
         <Route path="/events/:_id" component={OrganizeEventPage} />
       </Route>
 
-      {/* Use meteor.user onEnter, as this gets re-evaluated each time */}
-      <Route path="/" onEnter={RedirectAccordingToUser} />
+      {/* public pages  */}
+      <Route path="/organizations/:_id" component={ShowOrganizationPage} />
 
       <Route path="/welcome" component={HomePage} />
+
+      {/* user management */}
       <Route path="/signin" component={() => <Accounts.ui.LoginForm />} />
       <Route path="/signup" component={() => <Accounts.ui.LoginForm formState={STATES.SIGN_UP} />} />
       <Route path="/reset-password" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET} />} />
       <Route path="/#/reset-password/:id" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET} />} />
 
-      {/* Only as styling props – has to be removed later !*/}
+      {/* only as styling props – has to be removed later !*/}
       <Route path="/testlayoutadmin" component={AppLayoutScrollableAdmin} />
       <Route path="/testlayoutpublicorg" component={AppLayoutPublicOrganization} />
       <Route path="/testlayoutpublicevent" component={AppLayoutPublicEvent} />
 
+      {/* Not found pages */}
       <Route path="404" component={NotFoundPage} />
       <Redirect from="*" to="404" />
     </Route>

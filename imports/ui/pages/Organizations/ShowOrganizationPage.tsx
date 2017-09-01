@@ -3,8 +3,7 @@ import styled from 'styled-components';
 
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 
-import AdminTab from '../../components/AdminTab';
-import { default as AdminHeader, HeaderTitle } from '../../components/AdminHeader';
+import { default as PublicHeader, HeaderTitle } from '../../components/PublicHeader';
 
 import { reactiveModelSubscriptionById, IModelProps } from '../../components/reactiveModelSubscription';
 import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
@@ -28,25 +27,20 @@ const ShowOrganizationPage = (props: IModelProps<IOrganization> & IStyledCompone
 
   return (
     <ScrollableLayout className={props.className}>
-      <AdminHeader
-        titleComponent={
+      <PublicHeader
+        titleComponent={(
           <HeaderTitle
             title={props.model.name}
-            logo={<div className="organisation-logo" />} />}
-        tabs={(
-          <div>
-            <AdminTab to="/" title="Dashboard" active={true} />
-            <AdminTab to="/" title="Statistics" />
-            <AdminTab to="/" title="Customize" />
-          </div>
+            logo={<div className="organisation-logo" />}
+          />
         )}
+        organizeLink={`/organizations/${props.model._id}/organize`}
       />
       <div className="content-area scrollable">
         <div className={props.className || ''}>
           <div>{props.model.description}</div>
           <div>{props.model.webSite}</div>
           <div>{props.model.logo}</div>
-          <Button to={`/organizations/edit/${_id}`}>Edit</Button>
         </div>
       </div>
     </ScrollableLayout>
@@ -60,4 +54,3 @@ export default styled(ShowContainer) `
     display: none;
   }
 `;
-; ;
