@@ -21,15 +21,14 @@ const OrganizationEntry = (props: IListEntryModelProps) => {
 };
 
 interface IOrganizationDropdownProps {
-  children: JSX.Element | JSX.Element[];
+  children: JSX.Element | JSX.Element[] | null;
   current: IOrganization;
 }
 
-type OrganizationDropdownInternalType =
-    IOrganizationDropdownProps & IStyledComponent & IAsyncDataProps<IOrganization[]>;
+type OrganizationDropdownInternalType = IStyledComponent & IAsyncDataProps<IOrganization[]>;
 
 // An organization chooser
-const OrganizationDropdown = (props: OrganizationDropdownInternalType) => {
+const OrganizationDropdown = (props: OrganizationDropdownInternalType & IOrganizationDropdownProps) => {
   return (
     <div className={props.className + ' dropdown'}>
       <h1 className="dropdown-toggle" id="OrganizationDropdown" data-toggle="dropdown"
@@ -46,11 +45,14 @@ const OrganizationDropdown = (props: OrganizationDropdownInternalType) => {
 };
 
 const ReactiveOrganizationDropdown = reactiveModelSubscription(
-    wrapDataComponent<IOrganization[], IAsyncDataProps<IOrganization[] | null>,
-                                       IAsyncDataProps<IOrganization[]>>(OrganizationDropdown),
+    wrapDataComponent<IOrganization[], IOrganizationDropdownProps & IAsyncDataProps<IOrganization[] | null>,
+                      IOrganizationDropdownProps & IAsyncDataProps<IOrganization[]>>(OrganizationDropdown),
     Organizations, 'organizations.my.private');
 
-const StyledReactiveOrganizationDropdown = styled(ReactiveOrganizationDropdown) `
+// hide all unneeded internal props
+type OrganizationDropdownExternalType = IStyledComponent & IOrganizationDropdownProps;
+
+const StyledReactiveOrganizationDropdown = styled<OrganizationDropdownExternalType>(ReactiveOrganizationDropdown) `
   .dropdown-toggle {
     cursor: pointer;
   }

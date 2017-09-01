@@ -14,12 +14,12 @@ const DataNotFound = (props: any) => {
 type InputPropsComponent<T> = React.ComponentClass<T> | React.StatelessComponent<T>;
 
 export const wrapDataComponent =
-  <T, InP extends IAsyncDataProps<T | null>, OutP extends IAsyncDataProps<T>>
-  (WrappedComponent: InputPropsComponent<InP>,
+  <T, TBeforeProps extends IAsyncDataProps<T | null>, TAfterProps extends IAsyncDataProps<T>>
+  (WrappedComponent: InputPropsComponent<TBeforeProps>,
    notReadyComponent?: JSX.Element,
-   dataNotFoundComponent?: JSX.Element) => {
+   dataNotFoundComponent?: JSX.Element) : React.ComponentClass<TAfterProps> => {
 
-  return class extends React.Component<OutP> {
+  return class extends React.Component<TAfterProps> {
     public render() {
       if (!this.props.ready) {
         return notReadyComponent || <Loading />;
