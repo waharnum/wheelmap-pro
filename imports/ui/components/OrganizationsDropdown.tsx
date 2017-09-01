@@ -25,7 +25,8 @@ interface IOrganizationDropdownProps {
   current: IOrganization;
 }
 
-type OrganizationDropdownInternalType = IOrganizationDropdownProps & IStyledComponent & IAsyncDataProps<IOrganization[]>;
+type OrganizationDropdownInternalType =
+    IOrganizationDropdownProps & IStyledComponent & IAsyncDataProps<IOrganization[]>;
 
 // An organization chooser
 const OrganizationDropdown = (props: OrganizationDropdownInternalType) => {
@@ -45,7 +46,8 @@ const OrganizationDropdown = (props: OrganizationDropdownInternalType) => {
 };
 
 const ReactiveOrganizationDropdown = reactiveModelSubscription(
-    wrapDataComponent<IOrganization[], IAsyncDataProps<IOrganization[] | null>, IAsyncDataProps<IOrganization[]>>(OrganizationDropdown),
+    wrapDataComponent<IOrganization[], IAsyncDataProps<IOrganization[] | null>,
+                                       IAsyncDataProps<IOrganization[]>>(OrganizationDropdown),
     Organizations, 'organizations.my.private');
 
 const StyledReactiveOrganizationDropdown = styled(ReactiveOrganizationDropdown) `

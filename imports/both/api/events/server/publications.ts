@@ -11,3 +11,7 @@ publishAndLog('events', () => {
 publishAndLog('events.by_id', (_id: Mongo.ObjectID) => {
   return Events.find({_id});
 });
+
+publishAndLog('events.by_organizationId', (organizationId: Mongo.ObjectID) => {
+  return Events.find({organizationId: { $in: [organizationId]}});
+});
