@@ -62,43 +62,58 @@ const OrganizeEventPage = (props: IModelProps<IEvent> & IStyledComponent) => {
           </section>
         </div>
         <ol className="event-timeline before-event">
-          <li className="event-timeline-step event-creation completed finished-last">
-            <div className="event-creation-head">
-              <h3>Event created successfully.</h3>
-              <Button to={`/events/edit/${model._id}`}>Edit</Button>
-            </div>
-            <div className={props.className+ " event-details"}>
-              <div className="event-name">{model.name}</div>
+          <li className="event-timeline-step event-details completed finished-last">
+            <div className="notification-completed">Event created successfully.</div>
+            <div className={props.className+ " step-details"}>
+              <div className="event-name">
+                {model.name}
+                <Button to={`/events/edit/${model._id}`}>Edit</Button>
+              </div>
               <div className="event-description">{model.description}</div>
               <div className="event-date">9. September 2017</div>
               <div className="event-location">{model.regionName}</div>
             </div>
           </li>
           <li className="event-timeline-step invite-participants active">
-            <h3>No participants invited.</h3>
-            <Button className="btn-primary" to={`/events/edit/${model._id}`}>Invite participants</Button>
+            <div className="notification-completed">3 invitations sent.</div>
+            <div className="step-status">
+              <h3>No participants invited.</h3>
+              <Button className="btn-primary" to={`/events/edit/${model._id}`}>Invite participants</Button>
+            </div>
           </li>
           <li className="event-timeline-step organizer-tips enabled">
-            <h3>Tips for event organizers</h3>
-            <Button to={`/events/edit/${model._id}`}>Learn more</Button>
+          <div className="notification-completed">2 documents created.</div>
+            <div className="step-status">
+              <h3>Tips for event organizers</h3>
+              <Button to={`/events/edit/${model._id}`}>Learn more</Button>
+            </div>
           </li>
         </ol>
         <ol className="event-timeline during-event">
           <h2>During the event</h2>
           <li className="event-timeline-step start-event disabled">
-            <h3>Mapping event not started</h3>
-            <Button to={`/events/edit/${model._id}`}>Start mapping event</Button>
+            <div className="notification-completed">Your event has been started!</div>
+            <div className="step-status">
+              <h3>Mapping event not started</h3>
+              <Button to={`/events/edit/${model._id}`}>Start mapping event</Button>
+            </div>
           </li>
         </ol>
         <ol className="event-timeline after-event">
           <h2>After the event</h2>
           <li className="event-timeline-step set-event-picture disabled">
-            <h3>Set event picture</h3>
-            <Button to={`/events/edit/${model._id}`}>Edit</Button>
+            <div className="notification-completed">Event picture has been set.</div>
+            <div className="step-status">
+              <h3>Set event picture</h3>
+              <Button to={`/events/edit/${model._id}`}>Edit</Button>
+            </div>
           </li>
           <li className="event-timeline-step share-results disabled">
-            <h3>Share results</h3>
-            <Button to={`/events/edit/${model._id}`}>Share</Button>
+            <div className="notification-completed">Results have been shared</div>
+            <div className="step-status">
+              <h3>Share results</h3>
+              <Button to={`/events/edit/${model._id}`}>Share</Button>
+            </div>
           </li>
         </ol>
       </div>
@@ -107,6 +122,8 @@ const OrganizeEventPage = (props: IModelProps<IEvent> & IStyledComponent) => {
 };
 
 export default styled(OrganizeEventPage) `
+
+/* -------------------------- event stats styling --------------------------------*/
 
 .content-area {
   padding-top: 0;
@@ -187,6 +204,8 @@ export default styled(OrganizeEventPage) `
   }
 }
 
+/* -------------------------- event timeline styling -----------------------------------*/
+
 ol.event-timeline {
   margin-left: 40px;
   margin-right: 20px;
@@ -220,11 +239,11 @@ ol.event-timeline {
     width: 44em;
     max-width: 90vv;
     margin: 14px 0 14px 23px;
-    padding: 20px 20px 20px 48px;
+
     border-radius: 4px;   
     display: flex;
-    justify-content: space-between;
-    
+    flex-direction: column;
+
     &:before{ /* checklist circle */
       content: " ";
       position: absolute;
@@ -239,18 +258,34 @@ ol.event-timeline {
       border-radius: 16px;
     }
 
-    &:after { /* step icon */
-      content: "C";
-      position: absolute;
-      top: 15px;
-      left: 20px;
-      width: 20px;
-      height: 20px;
-      color: ${colors.bgAnthracite};
-      opacity: 0.5;
-      font-family: "iconfield-v03";
-      font-size: 21px;
-      text-align: center;
+    .step-status {
+      position: relative;
+      padding: 20px 20px 20px 48px;
+      display: flex;
+      justify-content: space-between;
+
+      &:before { /* step icon */
+        content: "C";
+        position: absolute;
+        top: 15px;
+        left: 20px;
+        width: 20px;
+        height: 20px;
+        color: ${colors.bgAnthracite};
+        opacity: 0.5;
+        font-family: "iconfield-v03";
+        font-size: 21px;
+        text-align: center;
+      }
+    }
+
+    .notification-completed {
+      display: none;
+      margin: 0;
+      padding: 17px 20px 17px 20px;
+      border-radius: 4px 4px 0 0;
+      font-size: 18px;
+      font-weight: 400;
     }
   }
   
@@ -266,13 +301,11 @@ ol.event-timeline {
     }
   }
 
-  li.enabled {
-
-    a {
-      padding: 0;
-      color: ${colors.ctaBlue};
-      background-color: transparent;
-    }
+  li.enabled a,
+  li.completed a {
+    padding: 0;
+    color: ${colors.ctaBlue};
+    background-color: transparent;
   }
 
   li.disabled {
@@ -294,12 +327,16 @@ ol.event-timeline {
     color: ${colors.doneGreen};
   }
   
-  li.finished-last.event-creation {
+  li.finished-last {
+
+    .notification-completed {
+      display: block;
+    }
 
     &:before,
     &:after,
-    .event-creation-head,
-    .event-creation-head a {
+    .notification-completed,
+    .notification-completed a {
       opacity: 1;
       color: white;
       background-color: ${colors.doneGreen};
@@ -313,8 +350,8 @@ ol.event-timeline {
   li.active {
     
     &:before,
-    &:after {
-      color: #F5A623;
+    .step-status:before {
+      color: ${colors.activeOrange};
       opacity: 1;
     }
 
@@ -323,7 +360,7 @@ ol.event-timeline {
     }
 
     h3 {
-      color: #F5A623;
+      color: ${colors.activeOrange};
       font-weight: 400;
     }
 
@@ -332,38 +369,29 @@ ol.event-timeline {
     }
   }
 
-  li.event-creation:after { content: "¶"; }
-  li.invite-participants:after { content: "∏"; } 
-  li.organizer-tips:after { content: ""; } 
-  li.start-event:after { content: "O"; } 
-  li.set-event-picture:after { content: "π"; }
-  li.share-results:after  { content: ""; }
+  li.event-details .step-status:before { content: " "; }
+  li.invite-participants .step-status:before { content: "∏"; } 
+  li.organizer-tips .step-status:before { content: ""; } 
+  li.start-event .step-status:before { content: "O"; } 
+  li.set-event-picture .step-status:before{ content: "π"; }
+  li.share-results .step-status:before  { content: ""; }
 
-  li.event-creation {
+  li.event-details {
     padding: 0;
     color: initial;
     background-color: white;
     display: flex;
     flex-direction: column;
 
+    &:after {
+      display: none;
+    }
+
     div {
       padding: 20px;
     }
-
-    .event-creation-head {
-      padding: 20px 20px 20px 48px;
-      border-radius: 4px 4px 0 0;
-      display: flex;
-      justify-content: space-between;
-
-      a { 
-        padding: 0;
-        color: ${colors.ctaBlue};
-        background-color: transparent;
-      }
-    }
     
-    .event-details {
+    .step-details {
       padding: 0;
 
       div {
@@ -394,6 +422,8 @@ ol.event-timeline {
 
       .event-name {
         padding-bottom: 0;
+        display: flex;
+        justify-content: space-between;
 
         &:before {
           content: "I";
@@ -403,6 +433,7 @@ ol.event-timeline {
       .event-description {
         padding-top: 0;
         padding-left: 50px;
+        padding-right: 60px;
         font-size: 14px;
 
         &:before {
@@ -410,18 +441,8 @@ ol.event-timeline {
         }
       }
 
-      .event-date {
-        &:before {
-          content: "˙";
-        }
-
-      }
-
-      .event-location { 
-        &:before {
-          content: "y";
-        }
-      }
+      .event-date:before { content: "˙"; }
+      .event-location:before { content: "y"; }
     }
   }
 }
