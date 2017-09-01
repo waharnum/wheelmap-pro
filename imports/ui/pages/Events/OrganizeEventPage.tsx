@@ -16,12 +16,13 @@ import EventTabs from './EventTabs';
 
 const OrganizeEventPage = (props: IModelProps<IEvent> & IStyledComponent) => {
   const model = props.model || {
-    _id: "123",
-    name: "Some mapathon",
+    _id: '123',
+    organizationId: '123',
+    name: 'Some mapathon',
     description: 'asj dflkjsdf ;lajksdf;l akjdfadf',
     regionName: 'Montreal',
-    startTime: new Date("2017-10-10 12:10:12"),
-    endTime: new Date("2017-10-10 15:10:12"),
+    startTime: new Date('2017-10-10 12:10:12'),
+    endTime: new Date('2017-10-10 15:10:12'),
     webSiteUrl: 'https://eventbrite.com',
     photoUrl: 'http://payload487.cargocollective.com/1/14/476606/12056934/prt_400x400_1483600669.jpg',
     invitationToken: '2a2fa3sdf4d34',
@@ -259,4 +260,4 @@ ol.event-timeline {
 }
 
 `;
-;;
+; ;

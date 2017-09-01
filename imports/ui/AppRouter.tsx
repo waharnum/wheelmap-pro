@@ -10,6 +10,7 @@ import App from './App';
 
 import HomePage from './pages/Home/HomePage';
 import NotFoundPage from './pages/NotFound/NotFoundPage';
+import CreateEventPage from './pages/Events/CreateEventPage';
 import OrganizeEventPage from './pages/Events/OrganizeEventPage';
 import AccessForbiddenPage from './pages/NotFound/AccessForbiddenPage';
 import NoOrganizationsPage from './pages/Organizations/NoOrganizationsPage';
@@ -67,7 +68,7 @@ const AppRouter = (
         <Route path="/organizations/:_id/edit" component={EditOrganizationPage} />
         <Route path="/organizations/:_id/organize" component={OrganizeOrganizationPage} />
 
-        <Route path="/events/create" component={OrganizeEventPage} />
+        <Route path="/events/create" component={CreateEventPage} />
         <Route path="/events/:_id" component={OrganizeEventPage} />
       </Route>
       

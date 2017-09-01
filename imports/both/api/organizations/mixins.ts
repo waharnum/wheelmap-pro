@@ -15,7 +15,7 @@ const ACCESS_REQUEST_APPROVING_ROLES = [
   'member',
 ];
 
-export interface IHelpers {
+export interface IOrganizationMixin {
   editableBy: (userId: Mongo.ObjectID) => boolean;
   isFullyVisibleForUserId: (userId: Mongo.ObjectID) => boolean;
   getSources: () => any[];
@@ -23,10 +23,9 @@ export interface IHelpers {
   getMostAuthoritativeUserThatCanApproveAccessRequests: () => any[];
 }
 
-export const Helpers = {
+export const OrganizationMixin = {
   editableBy(userId: Mongo.ObjectID): boolean {
     if (!userId) { return false; };
-    check(userId, String);
     return userHasFullAccessToOrganizationId(userId, this._id);
   },
   isFullyVisibleForUserId(userId: Mongo.ObjectID): boolean {

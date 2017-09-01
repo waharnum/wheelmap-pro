@@ -16,7 +16,6 @@ export const insert = new ValidatedMethod({
       userId: this.userId,
       role: 'manager',
     });
-    Organizations;
     return organizationId;
   },
 });

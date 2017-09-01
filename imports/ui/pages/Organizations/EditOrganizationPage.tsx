@@ -6,7 +6,7 @@ import { browserHistory } from 'react-router';
 import { IStyledComponent } from '../../components/IStyledComponent';
 import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
 import AdminTab from '../../components/AdminTab';
-import OrganizationBaseForm, { IBaseFormProps } from './OrganizationBaseForm';
+import OrganizationBaseForm, { IOrganizationBaseFormProps } from './OrganizationBaseForm';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 import AdminHeader from '../../components/AdminHeader';
 

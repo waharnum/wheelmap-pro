@@ -4,7 +4,7 @@ import SimpleSchema from 'simpl-schema';
 SimpleSchema.extendOptions(['uniforms']);
 
 export const EventSchema = new SimpleSchema({
-  name: {
+  'name': {
     label: 'Name',
     type: String,
     max: 1000,
@@ -12,7 +12,7 @@ export const EventSchema = new SimpleSchema({
       placeholder: 'e.g. Event title',
     },
   },
-  description: {
+  'description': {
     label: 'Description (optional)',
     type: String,
     max: 1000,
@@ -21,78 +21,85 @@ export const EventSchema = new SimpleSchema({
       placeholder: 'e.g. Our organization is…',
     },
   },
-  regionName: {
+  'regionName': {
     label: 'Region name',
     type: String,
     max: 200,
     optional: true,
   },
-  region: {
-    topLeft: {
-      latitude: { type: Number, optional: true, hidden: true },
-      longitude: { type: Number, optional: true, hidden: true },
-    },
-    bottomRight: {
-      latitude: { type: Number, optional: true, hidden: true },
-      longitude: { type: Number, optional: true, hidden: true },
-    },
+  'region': {
+    type: Object,
+    optional: true,
+    uniforms: () => null,
   },
-  startTime: {
+  'region.topLeft': Object,
+  'region.topLeft.latitude': {
+    type: Number,
+  },
+  'region.topLeft.longitude': {
+    type: Number,
+  },
+  'region.bottomRight': Object,
+  'region.bottomRight.latitude': {
+    type: Number,
+  },
+  'region.bottomRight.longitude': {
+    type: Number,
+  },
+  'startTime': {
     label: 'Start Date and Time',
     type: Date,
     optional: true,
   },
-  endTime: {
+  'endTime': {
     label: 'End Date and Time',
     type: Date,
     optional: true,
   },
-  webSiteUrl: {
+  'webSiteUrl': {
     label: 'Website URL',
     type: String,
     regEx: SimpleSchema.RegEx.Url,
     max: 1000,
     optional: true,
-    hidden: true,
     uniforms: {
       placeholder: 'e.g. http://www.example.com',
     },
   },
-  photoUrl: {
+  'photoUrl': {
     label: 'URL to a picture of the event',
     type: String,
     max: 1000,
     optional: true,
     uniforms: {
-      placeholder: 'e.g. http://www.example.com/logo.png',
+      placeholder: 'e.g. http://www.example.com/photo.jpg',
     },
   },
-  invitationToke: {
+  'invitationToken': {
     label: 'Invitation token',
     type: String,
     max: 50,
     optional: true,
-    hidden: true,
   },
-  verifyGpsPositionsOfEdits: {
+  'verifyGpsPositionsOfEdits': {
     type: Boolean,
     defaultValue: false,
   },
-  targets: {
-    mappedPlacesCount: {
-      label: 'Goal for mapped places',
-      type: Number,
-      optional: true,
-    }
+  'targets': {
+    type: Object,
+    optional: true,
   },
-  status: {
-    type: String,
-    options: ['draft', 'planned', 'ongoing', 'completed', 'canceled'],
-    hidden: true,
+  'targets.mappedPlacesCount': {
+    label: 'Goal for mapped places',
+    type: Number,
+    optional: true,
   },
-  visibility: {
+  'status': {
     type: String,
-    options: ['inviteOnly', 'public'],
-    hidden: true,
-  }
+    allowedValues: ['draft', 'planned', 'ongoing', 'completed', 'canceled'],
+  },
+  'visibility': {
+    type: String,
+    allowedValues: ['inviteOnly', 'public'],
+  },
 });

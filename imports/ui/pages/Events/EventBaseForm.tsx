@@ -7,43 +7,30 @@ import SubmitField from 'uniforms-bootstrap3/SubmitField';
 import BoolField from 'uniforms-bootstrap3/BoolField';
 import LongTextField from 'uniforms-bootstrap3/LongTextField';
 
-import { Organizations, IOrganization } from '../../../both/api/organizations/organizations';
+import { Events, IEvent } from '../../../both/api/events/events';
 import { IStyledComponent } from '../../components/IStyledComponent';
 
-export interface IOrganizationBaseFormProps {
+export interface IEventBaseFormProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
-  initialModel?: IOrganization;
+  initialModel?: IEvent;
 }
 
 interface IBaseFormState {
-  model?: IOrganization;
+  model?: IEvent;
   isSaving: boolean;
 }
 
-const schema = Organizations.schema;
-schema.extend({
-  // override field for tocForOrganizationsAccepted
-  tocForOrganizationsAccepted: {
-    uniforms: BoolField,
-  },
-  // this overrides, thus we have to re-add the placeholder
-  description: {
-    uniforms: {
-      component: LongTextField,
-      placeholder: 'e.g. Our organization is…',
-    },
-  },
-});
+const schema = Events.schema;
 
-class OrganizationBaseForm extends React.Component<IOrganizationBaseFormProps & IStyledComponent, IBaseFormState> {
+class EventBaseForm extends React.Component<IEventBaseFormProps & IStyledComponent, IBaseFormState> {
   public state = {
-    model: {} as IOrganization,
+    model: {} as IEvent,
     isSaving: false,
   };
 
-  constructor(props: IOrganizationBaseFormProps & IStyledComponent) {
+  constructor(props: IEventBaseFormProps & IStyledComponent) {
     super(props);
-    this.state.model = this.props.initialModel || {} as IOrganization;
+    this.state.model = this.props.initialModel || {} as IEvent;
   }
 
   public render(): JSX.Element {
@@ -57,7 +44,8 @@ class OrganizationBaseForm extends React.Component<IOrganizationBaseFormProps & 
         onSubmit={this.onSubmit}
         showInlineError={true}
         onChangeModel={this.onChangeModel}>
-        <AutoFields fields={['name', 'description', 'webSite', 'logo', 'tocForOrganizationsAccepted']} />
+        <AutoFields fields={['name', 'description', 'regionName', 'startTime',
+            'verifyGpsPositionsOfEdits', 'visibility']} />
         <SubmitField />
       </AutoForm>
     </div>);
@@ -67,14 +55,14 @@ class OrganizationBaseForm extends React.Component<IOrganizationBaseFormProps & 
     this.setState({model});
   }
 
-  private onSubmit = (doc : IOrganization) => {
+  private onSubmit = (doc : IEvent) => {
     this.setState({isSaving: true});
 
     const id = this.state.model._id;
     if (id != null) {
       const {_id, ...strippedDoc} = doc;
       console.log('Updating doc', strippedDoc, id);
-      Organizations.update({_id: id}, {$set: strippedDoc}, (count) => {
+      Events.update({_id: id}, {$set: strippedDoc}, (count) => {
         // TODO: handle errors
         console.log('Updated ', _id, count);
         if (count !== false && _id) {
@@ -87,11 +75,11 @@ class OrganizationBaseForm extends React.Component<IOrganizationBaseFormProps & 
       });
     } else {
       console.log('Creating doc', doc);
-      Meteor.call('organizations.insert', doc, (error, resultId: Mongo.ObjectID) => {
+      Meteor.call('events.insert', doc, (error, resultId: Mongo.ObjectID) => {
         // TODO: handle errors
         console.log('Saved as ', resultId, error);
         if (!error) {
-          this.setState({model: {_id: resultId} as IOrganization, isSaving: false});
+          this.setState({model: {_id: resultId} as IEvent, isSaving: false});
           if (this.props.afterSubmit) {
             this.props.afterSubmit(resultId);
           }
@@ -103,5 +91,5 @@ class OrganizationBaseForm extends React.Component<IOrganizationBaseFormProps & 
   }
 };
 
-export default styled(OrganizationBaseForm) `
+export default styled(EventBaseForm) `
 `;

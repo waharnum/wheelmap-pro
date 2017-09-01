@@ -2,10 +2,10 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
 import { OrganizationSchema } from './schema';
-import { IHelpers, Helpers } from './helpers';
 import { OrganizationMembers } from '../organization-members/organization-members';
+import { IOrganizationMixin, OrganizationMixin } from './mixins';
 
-export interface IOrganization extends IHelpers {
+export interface IOrganization extends IOrganizationMixin {
   // mongo id
   _id?: Mongo.ObjectID;
   // fields
@@ -22,9 +22,9 @@ export interface IOrganization extends IHelpers {
   tocForOrganizationsAccepted: boolean;
 };
 
-export const Organizations = new Mongo.Collection<IOrganization & IHelpers>('Organizations');
+export const Organizations = new Mongo.Collection<IOrganization & IOrganizationMixin>('Organizations');
 Organizations.schema = OrganizationSchema;
-Organizations.helpers(Helpers);
+Organizations.helpers(OrganizationMixin);
 Organizations.attachSchema(Organizations.schema);
 
 export const getOrganizationsWhereCurrentUserIsMember = () => {

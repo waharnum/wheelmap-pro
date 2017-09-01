@@ -9,7 +9,7 @@ import { IStyledComponent } from '../../components/IStyledComponent';
 
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 
-import OrganizationBaseForm, { IOrganizationBaseFormProps } from './OrganizationBaseForm';
+import EventBaseForm, { IEventBaseFormProps } from './EventBaseForm';
 
 interface ICreateOrganizationFormProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
@@ -20,7 +20,7 @@ const CreateOrganizationPage = (props: ICreateOrganizationFormProps & IStyledCom
   return (
     <ScrollableLayout className={props.className}>
       <AdminHeader
-        titleComponent={<h1>{TAPi18n.__('Create Organization')}</h1>}
+        titleComponent={<h1>{TAPi18n.__('Create Event')}</h1>}
         tabs={
           <section>
             <AdminTab to="/" title={TAPi18n.__('Dashboard')}/>
@@ -29,13 +29,13 @@ const CreateOrganizationPage = (props: ICreateOrganizationFormProps & IStyledCom
           }
         />
       <div className="content-area scrollable">
-        <OrganizationBaseForm afterSubmit={GoToOrganizationPage} />
+        <EventBaseForm afterSubmit={GoToOrganizationPage} />
       </div>
     </ScrollableLayout>
   );
 };
 
-const StyledCreateOrganizationPage = styled<IOrganizationBaseFormProps>(CreateOrganizationPage) `
+const StyledCreateOrganizationPage = styled<IEventBaseFormProps>(CreateOrganizationPage) `
 `;
 
 export default StyledCreateOrganizationPage;
