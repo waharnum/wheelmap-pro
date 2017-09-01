@@ -57,7 +57,7 @@ const AppRouter = (
         <Route path="/organizations/none" component={NoOrganizationsPage} />
         <Route path="/organizations/list" component={ListOrganizationsPage} />
         <Route path="/organizations/create" component={CreateOrganizationPage} />
-        <Route path="/organizations/edit/:_id" component={EditOrganizationPage} />
+        <Route path="/organizations/:_id/edit" component={EditOrganizationPage} />
         <Route path="/organizations/:_id/organize" component={OrganizeOrganizationPage} />
         <Route path="/events/:_id" component={OrganizeEventPage} />
       </Route>

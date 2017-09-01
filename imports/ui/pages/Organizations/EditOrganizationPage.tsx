@@ -1,3 +1,4 @@
+import { wrapDataComponent } from '../../components/AsyncDataComponent';
 import styled from 'styled-components';
 import * as React from 'react';
 import { browserHistory } from 'react-router';
@@ -32,7 +33,17 @@ class EditOrganizationForm extends React.Component<
 
     return (
       <ScrollableLayout className={this.props.className}>
-        <AdminHeader titleComponent={<h1>Edit Organization</h1>} />
+        <AdminHeader
+          titleComponent={<h1>Edit Organization</h1>}
+          tabs={(
+            <div>
+              <AdminTab to={`/organizations/${this.props.model._id}/organize`} title="Dashboard" />
+              <AdminTab to={`/organizations/statistics/${this.props.model._id}`} title="Statistics" />
+              <AdminTab to="" title="Customize" active={true} />
+              <AdminTab to={`/organizations/${this.props.model._id}/members`} title="Members" />
+            </div>
+          )}
+        />
         <div className="content-area scrollable">
           <OrganizationBaseForm
             initialModel={this.props.model}
@@ -43,7 +54,9 @@ class EditOrganizationForm extends React.Component<
   }
 }
 
-const EditFormContainer = reactiveModelSubscriptionById(EditOrganizationForm, Organizations, 'organizations.by_id');
+const EditFormContainer = reactiveModelSubscriptionById(
+  wrapDataComponent<IOrganization, IModelProps<IOrganization | null>, IModelProps<IOrganization>>(EditOrganizationForm),
+  Organizations, 'organizations.by_id');
 
-export default styled<IBaseFormProps>(EditFormContainer) `
+export default styled(EditFormContainer) `
 `;
