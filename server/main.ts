@@ -16,6 +16,12 @@ import '../imports/both/api/organization-members/server/methods';
 import '../imports/both/api/users/server/publications';
 import '../imports/both/api/users/server/methods';
 
+// register events
+import '../imports/both/api/events/server/publications';
+import '../imports/both/api/events/server/indexing';
+import '../imports/both/api/events/server/privileges';
+import '../imports/both/api/events/server/methods';
+
 // configure account system
 import '../imports/both/api/users/accounts';
 

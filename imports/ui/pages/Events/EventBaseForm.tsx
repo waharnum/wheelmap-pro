@@ -30,7 +30,11 @@ class EventBaseForm extends React.Component<IEventBaseFormProps & IStyledCompone
 
   constructor(props: IEventBaseFormProps & IStyledComponent) {
     super(props);
-    this.state.model = this.props.initialModel || {} as IEvent;
+    this.state.model = this.props.initialModel || {
+      organizationId: Meteor.user().profile.activeOrganizationId,
+      status: 'draft',
+      visibility: 'inviteOnly',
+    } as IEvent;
   }
 
   public render(): JSX.Element {

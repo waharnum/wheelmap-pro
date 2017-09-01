@@ -4,6 +4,10 @@ import SimpleSchema from 'simpl-schema';
 SimpleSchema.extendOptions(['uniforms']);
 
 export const EventSchema = new SimpleSchema({
+  'organizationId': {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+  },
   'name': {
     label: 'Name',
     type: String,

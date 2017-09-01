@@ -5,7 +5,7 @@ import { OrganizationMembers } from '../../organization-members/organization-mem
 import { IEvent, Events } from '../events';
 
 export const insert = new ValidatedMethod({
-  name: 'organizations.insert',
+  name: 'events.insert',
   validate: Events.schema.validator(),
   run(doc: IEvent) {
     const eventId = Events.insert(doc);
