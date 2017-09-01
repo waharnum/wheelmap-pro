@@ -1,10 +1,10 @@
-
 import styled from 'styled-components';
 import * as React from 'react';
 import * as moment from 'moment';
 
 import Button from '../../components/Button';
 import AdminTab from '../../components/AdminTab';
+import StaticMap from '../../components/StaticMap';
 import AdminHeader from '../../components/AdminHeader';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 import { IStyledComponent } from '../../components/IStyledComponent';
@@ -17,11 +17,14 @@ import { IOrganization, Organizations } from '../../../both/api/organizations/or
 
 const EventListEntry = (props: {model: IEvent}) => (
   <div className="event-list-entry">
-    <h3>{props.model.name}</h3>
-    <div>{moment(props.model.startTime).format()}</div>
-    <div>{props.model.region}</div>
-    <div>{moment(props.model.startTime).diff(moment(), 'days')} Days Left</div>
-    <Button to={`/events/${props.model._id}`}>Show details</Button>
+    <div className="event-body">
+      <h3>{props.model.name}</h3>
+      <div>{moment(props.model.startTime).format()}</div>
+      <div>{props.model.region}</div>
+      <div>{moment(props.model.startTime).diff(moment(), 'days')} Days Left</div>
+      <Button to={`/events/${props.model._id}`}>Show details</Button>
+    </div>      
+    <StaticMap className="event-mini-map" containerWidth={140}  containerHeight={140} />
   </div>
 );
 
@@ -72,11 +75,23 @@ const StyledReactiveOrganizeOrganisationsPage = styled(ReactiveOrganizeOrganisat
     background: #FFF;
     border: 1px solid #DEDEDE;
     border-radius: 4px;
-    padding: 20px;
     margin-bottom: 20px;
-  }
-  .event-list-entry h3 {
-    margin-top: 0px;
+    display: flex;    
+    box-sizing: content-box;
+
+    .event-body {
+      padding: 20px;
+      flex-grow: 1;
+    }
+
+    .event-mini-map {
+      border-radius: 0 4px 4px 0;
+      overflow: overlay;
+    }
+
+    h3 {
+      margin-top: 0px;
+    }
   }
 `;
 
