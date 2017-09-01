@@ -22,7 +22,7 @@ export const EventSchema = new SimpleSchema({
     max: 1000,
     optional: true,
     uniforms: {
-      placeholder: 'e.g. Our organization is…',
+      placeholder: 'e.g. Healthcare places in…',
     },
   },
   'regionName': {
@@ -30,6 +30,9 @@ export const EventSchema = new SimpleSchema({
     type: String,
     max: 200,
     optional: true,
+    uniforms: {
+      placeholder: 'e.g. Berlin Alexanderplatz',
+    },
   },
   'region': {
     type: Object,

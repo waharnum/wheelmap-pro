@@ -10,6 +10,8 @@ import LongTextField from 'uniforms-bootstrap3/LongTextField';
 import { Events, IEvent } from '../../../both/api/events/events';
 import { IStyledComponent } from '../../components/IStyledComponent';
 
+import * as moment from 'moment';
+
 export interface IEventBaseFormProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
   initialModel?: IEvent;
@@ -30,11 +32,17 @@ class EventBaseForm extends React.Component<IEventBaseFormProps & IStyledCompone
 
   constructor(props: IEventBaseFormProps & IStyledComponent) {
     super(props);
+
     this.state.model = this.props.initialModel || {
       organizationId: Meteor.user().profile.activeOrganizationId,
       status: 'draft',
       visibility: 'inviteOnly',
     } as IEvent;
+
+    // convert the input time from utc to local
+    this.state.model.startTime = this.props.initialModel ?
+        moment(this.props.initialModel.startTime).add(moment().utcOffset(), 'minutes').toDate() :
+        moment().add(7, 'days').add(moment().utcOffset(), 'minutes').minutes(0).seconds(0).toDate();
   }
 
   public render(): JSX.Element {
@@ -59,12 +67,18 @@ class EventBaseForm extends React.Component<IEventBaseFormProps & IStyledCompone
     this.setState({model});
   }
 
-  private onSubmit = (doc : IEvent) => {
+  private onSubmit = (doc: IEvent) => {
     this.setState({isSaving: true});
 
     const id = this.state.model._id;
+
+    // remove id
+    const {_id, ...strippedDoc} = doc;
+
+    // convert local back to utc when saving
+    strippedDoc.startTime = moment(strippedDoc.startTime).subtract(moment().utcOffset(), 'minutes').toDate();
+
     if (id != null) {
-      const {_id, ...strippedDoc} = doc;
       console.log('Updating doc', strippedDoc, id);
       Events.update({_id: id}, {$set: strippedDoc}, (count) => {
         // TODO: handle errors
@@ -78,8 +92,8 @@ class EventBaseForm extends React.Component<IEventBaseFormProps & IStyledCompone
 
       });
     } else {
-      console.log('Creating doc', doc);
-      Meteor.call('events.insert', doc, (error, resultId: Mongo.ObjectID) => {
+      console.log('Creating doc', strippedDoc);
+      Meteor.call('events.insert', strippedDoc, (error, resultId: Mongo.ObjectID) => {
         // TODO: handle errors
         console.log('Saved as ', resultId, error);
         if (!error) {
