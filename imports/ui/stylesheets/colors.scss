@@ -1,12 +1,17 @@
 @import "../../../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 
-$bg-grey: #F2F3F5;            // light grey in background
-$bg-anthracite: #37404D;      // anthracite used in admin headers
+// colors need to be tweaked in this file and also in colors.js !!!
 
-$cta-blue: #1FABD9;           // primary button color
-$cta-blue-lighter: #29A3CB;   // primary button hover color
-$cta-disabled-grey: #CBCED3;  // primary button disabled
+$bg-grey: #F2F3F5;                // light grey in background
+$bg-anthracite: #37404D;          // anthracite used in admin headers
 
-$error-red: #C30400;          // main error color 
+$cta-blue: #1FABD9;               // primary button color
+$cta-blue-lighter: #29A3CB;       // primary button hover color
+$cta-disabled-grey: #CBCED3;      // primary button disabled
 
-$active-orange: #F5A623;       // in event timeline
+$error-red: #C30400;              // main error color 
+$active-orange: #F5A623;          // in event timeline
+$done-green: #96C545;             // in event timeline
+
+$shadow-grey: #DEE1E7;            // used for embossed boxes
+$box-shadow: rgba(55,64,77,0.40); // event timeline icons

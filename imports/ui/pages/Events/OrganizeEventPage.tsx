@@ -1,5 +1,7 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components'; 
+
+import { colors } from '../../stylesheets/colors';
 
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 
@@ -90,7 +92,6 @@ const OrganizeEventPage = (props: IModelProps<IEvent> & IStyledComponent) => {
 };
 
 export default styled(OrganizeEventPage) `
-
 ol.event-timeline {
   margin-left: 20px;
   margin-bottom: 0px;
@@ -149,7 +150,7 @@ ol.event-timeline {
       left: 20px;
       width: 20px;
       height: 20px;
-      color: #37404D;
+      color: ${colors.bgAnthracite};
       opacity: 0.5;
       font-family: "iconfield-v03";
       font-size: 21px;
@@ -161,11 +162,11 @@ ol.event-timeline {
   li.enabled,
   li.active {
     background-color: white;
-    box-shadow: 0 0 2px 0 rgba(55,64,77,0.40);
+    box-shadow: 0 0 2px 0 ${colors.boxShadow};
 
     &:before {
       background-color: white;
-      box-shadow: 0 0 2px 0 rgba(55,64,77,0.40);  
+      box-shadow: 0 0 2px 0 ${colors.boxShadow};  
     }
   }
 
@@ -173,18 +174,18 @@ ol.event-timeline {
 
     a {
       padding: 0;
-      color: #1FABD9;
+      color: ${colors.ctaBlue};
       background-color: transparent;
     }
   }
 
   li.disabled {
-    border: 1px solid #DEE1E7;
-    background: #F2F3F5;
+    border: 1px solid ${colors.shadowGrey};
+    background-color: ${colors.bgGrey};
   
     &:before {
-      border: 1px solid #DEE1E7;
-      background: #F2F3F5;
+      border: 1px solid ${colors.shadowGrey};
+      background-color: ${colors.bgGrey};
     }
 
     a.btn { 
@@ -194,13 +195,13 @@ ol.event-timeline {
 
   li.completed {
     color: white;
-    background-color: #96C545;
+    background-color: ${colors.doneGreen};
 
     &:before,
     &:after { 
       color: white;
       opacity: 1;
-      background-color: #96C545;
+      background-color: ${colors.doneGreen};
     }
     
     &:before {
@@ -251,7 +252,7 @@ ol.event-timeline {
     .event-creation-head {
       padding: 20px 20px 20px 48px;
       color: white;
-      background-color: #96C545;
+      background-color: ${colors.doneGreen};
       border-radius: 4px 4px 0 0;
     }
   }
