@@ -11,6 +11,7 @@ import App from './App';
 import HomePage from './pages/Home/HomePage';
 import NotFoundPage from './pages/NotFound/NotFoundPage';
 import OrganizeEventPage from './pages/Events/OrganizeEventPage';
+import AccessForbiddenPage from './pages/NotFound/AccessForbiddenPage';
 import NoOrganizationsPage from './pages/Organizations/NoOrganizationsPage';
 import ShowOrganizationPage from './pages/Organizations/ShowOrganizationPage';
 import EditOrganizationPage from './pages/Organizations/EditOrganizationPage';
@@ -51,17 +52,25 @@ const AppRouter = (
       {/* Use meteor.user onEnter, as this gets re-evaluated each time */}
       <Route path="/" onEnter={RedirectAccordingToUser} />
 
+      {/* weird admin pages */}
+      <Route component={(props) => <EnsureUserLoggedIn roles={['admin']} {...props} />}>
+        <Route path="/organizations/list" component={ListOrganizationsPage} />
+      </Route>
+
       {/* organize pages */}
       <Route component={EnsureUserLoggedIn}>
+        
         <Route path="/profile" component={() => <Accounts.ui.LoginForm formState={STATES.PROFILE} />} />
+
         <Route path="/organizations/none" component={NoOrganizationsPage} />
-        <Route path="/organizations/list" component={ListOrganizationsPage} />
         <Route path="/organizations/create" component={CreateOrganizationPage} />
         <Route path="/organizations/:_id/edit" component={EditOrganizationPage} />
         <Route path="/organizations/:_id/organize" component={OrganizeOrganizationPage} />
+
+        <Route path="/events/create" component={OrganizeEventPage} />
         <Route path="/events/:_id" component={OrganizeEventPage} />
       </Route>
-
+      
       {/* public pages  */}
       <Route path="/organizations/:_id" component={ShowOrganizationPage} />
 
@@ -80,6 +89,7 @@ const AppRouter = (
 
       {/* Not found pages */}
       <Route path="404" component={NotFoundPage} />
+      <Route path="403" component={AccessForbiddenPage} />
       <Redirect from="*" to="404" />
     </Route>
   </Router>

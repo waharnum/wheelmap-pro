@@ -23,6 +23,10 @@ publishAndLog('users.needApproval', () => {
 // It is unclear why the SimplSchema addition is not applied here
 publishPublicFields('users', Meteor.users, UserPublicFields);
 
+publishAndLog('users.my', () => {
+  return Meteor.users.find(this.userId);
+});
+
 // publish my active organization
 publishPrivateFields(
   'organizations.my.active',

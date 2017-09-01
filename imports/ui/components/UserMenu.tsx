@@ -9,10 +9,16 @@ import { getDisplayedNameForUser } from '../../both/lib/user-name';
 // TODO: needs binding to current user
 
 const UserMenu = (props: IStyledComponent) => {
+  const user = Meteor.user();
+
+  if (!user) {
+    return null;
+  }
+
   return (
     <li className={props.className}>
-      <img src={getGravatarImageUrl(Meteor.user().profile.gravatarHash)} className="user-icon" />
-      <Link to="/profile">{getDisplayedNameForUser(Meteor.user())}</Link>
+      <img src={getGravatarImageUrl(user.profile.gravatarHash)} className="user-icon" />
+      <Link to="/profile">{getDisplayedNameForUser(user)}</Link>
     </li>
   );
 };

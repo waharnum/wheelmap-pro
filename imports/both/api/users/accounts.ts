@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { Session } from 'meteor/session';
 import { Accounts, STATES } from 'meteor/std:accounts-ui';
+import { LocationDescriptor } from 'history';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
-
-let loginRedirect: string;
 
 Accounts.config({
   sendVerificationEmail: true,
@@ -56,6 +55,8 @@ export function acceptInvitationOnLogin() {
   });
 }
 
-export function setLoginRedirect(redirect: string) {
+let loginRedirect: LocationDescriptor;
+
+export function setLoginRedirect(redirect: LocationDescriptor) {
   loginRedirect = redirect;
 };
