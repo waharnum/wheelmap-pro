@@ -29,60 +29,131 @@ export const HeaderTitle = (props: IHeaderTitleProps) => {
 };
 
 const AdminHeader = (props: IAdminHeaderProps & IStyledComponent) => {
-  return (
+  return (  
     <div className={props.className} >
       <header className="main-header on-dark">
-        <div className="wrapper">
+        <div className="left-side">
+          <div className="title-bar">
+            {props.titleComponent || <HeaderTitle title="Please specificy title component" />}
+          </div>
+          <ol className="tabs-header">
+            {props.tabs}
+          </ol>
+        </div>
+        <div className="right-side">
           <ol className="secondary-tools">
             <PreviewToggle to={props.publicLink} />
             <UserMenu />
           </ol>
         </div>
-        <div className="title-bar">
-          {props.titleComponent || <HeaderTitle title="Please specificy title component" />}
-        </div>
-        <ol className="tabs-header">
-          {props.tabs}
-        </ol>
       </header>
     </div>
   );
 };
 
 export default styled(AdminHeader) `
-  header {
-    padding-left: 24px;
+
+/* ----------------------------- base header styles -----------------------------*/
+
+header.main-header {
+  padding: 0 24px 8px 24px;
+  display: flex;
+  justify-content: space-between;
+
+  .title-bar {
+    display: flex;
+    
+    .organisation-logo {
+      flex-shrink: 0;
+      background-image: url(/images/organisations/logo-abilities.png); 
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
   }
 
-  .main-header {
-    min-height: 128px;
+  .right-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    ol.secondary-tools {
+      margin: 0;
+      text-transform: uppercase;
+      
+      li {
+        padding: 8px 10px;
+        text-decoration: none;
+        display: inline-block;
+
+        a {
+          font-size: 14px;
+        }
+        
+        &.user-menu {
+          position: relative;
+          padding-right: 16px;
+
+          &::after {
+            position: absolute;
+            right: 0px;
+            top: 10px;
+            content: "Í";
+            font-family: "iconfield-v03";
+            font-size: 14px;
+          }
+        }
+
+        &.public-view {
+          position: relative;
+          padding-left: 28px;
+          
+          &::before {
+            position: absolute;
+            content: " ";
+            width: 24px;
+            height: 24px;
+            top: 8px;
+            left: 0;
+            background-image: url(/images/icon-public-view@2x.png); 
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* ----------------------------- dark admin version -----------------------*/
+
+.main-header.on-dark {
+  min-height: 128px;
+  padding-bottom: 0;
+  color: #DEE1E7;
+  background-color: #37404D;
+  display: flex;
+
+  a {
+    color: #DEE1E7;
+  }
+
+  .left-side {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
-    .wrapper {
-      display: flex;
-      justify-content: flex-end;
-
-      ol.secondary-tools {
-        margin:  0;
-        text-transform: uppercase;
-      }
-    }
-
     .title-bar {
-      display: flex;
-      
+      flex-grow: 2;
+      padding-top: 20px;
+
       .organisation-logo {
-        flex-shrink: 0;
         position: relative;
-        width: 95px;
+        width: 95px; /* FIXME: width should be dynamic */
         height: 52px;
         margin-right: 30px;
-        background-image: url(/images/organisations/logo-abilities.png); 
-        background-position: center center;
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
         
         &::after {
           position: absolute;
@@ -91,7 +162,7 @@ export default styled(AdminHeader) `
           top: 8px;
           width: 8px;
           height: 32px;
-          background-image: url(/images/chevron-big-right@2x.png); 
+          background-image: url(/images/chevron-big-right-bright@2x.png); 
           background-position: center center;
           background-repeat: no-repeat;
           background-size: 100% 100%;
@@ -101,12 +172,12 @@ export default styled(AdminHeader) `
       h1 {
         margin: 0;
         padding-top: 11px;
-        line-height: 30px;
         font-size: 30px;
+        line-height: 30px;
         font-weight: 800;
       }
     }
-    
+
     ol.tabs-header {
       margin: 0;
 
@@ -134,14 +205,11 @@ export default styled(AdminHeader) `
       }
     }
   }
-
-  .on-dark {
-    color: #DEE1E7;
-    background-color: #37404D;
-
-    a {
-      color: #DEE1E7;
-    }
+ 
+  .right-side ol.secondary-tools li.public-view::before {
+    background-image: url(/images/icon-public-view@2x.png); 
   }
+}
+
 `;
 ;
