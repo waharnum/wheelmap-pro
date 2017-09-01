@@ -17,20 +17,8 @@ interface IEditOrganizationFormProps {
 }
 
 class EditOrganizationForm extends React.Component<
-  IModelProps<IOrganization> & IEditOrganizationFormProps & IStyledComponent> {
+    IModelProps<IOrganization> & IEditOrganizationFormProps & IStyledComponent> {
   public render(): JSX.Element {
-    if (!this.props.ready) {
-      return (
-        <div className={this.props.className || ''}>Loading…</div>
-      );
-    }
-
-    if (this.props.model == null) {
-      return (
-        <div className={this.props.className || ''}>Object with id:{this.props.params._id} was not found!</div>
-      );
-    }
-
     return (
       <ScrollableLayout className={this.props.className}>
         <AdminHeader
