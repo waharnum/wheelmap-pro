@@ -26,20 +26,26 @@ type ComponentConstructor<P> = React.ComponentClass<P> | React.StatelessComponen
  *
  * @param reactComponent The component to wrap, needs properties implementing IModelProps
  * @param collection The mongo collection to fetch data from, make sure it is covered by the subcriptions
- * @param byIdSubscription The name of the subscription for the object specified via id
+ * @param byIdSubscriptions The names of the subscription for the object id
  */
 export const reactiveModelSubscriptionById = <T, InP extends IModelProps<T>>(
   reactComponent: ComponentConstructor<InP>,
   collection: Mongo.Collection<T>,
-  byIdSubscription: string) : ComponentConstructor<InP> => {
+  ...byIdSubscriptions: string[]) : ComponentConstructor<InP> => {
+    if (byIdSubscriptions.length === 0) {
+      throw new Meteor.Error(400, 'No subscriptions specified!');
+    }
+
     const result = createContainer((props: InP) => {
       const id = props.params._id;
-      const handle = Meteor.subscribe(byIdSubscription, id);
-      const ready = handle.ready();
+      const allReady = byIdSubscriptions.reduce((prev, subscription) => {
+        const handle = Meteor.subscribe(subscription, id);
+        return handle.ready();
+      }, true);
 
       return {
-        ready,
-        model: ready ? collection.findOne({_id: id}) : null,
+        ready: allReady,
+        model: allReady ? collection.findOne({_id: id}) : null,
       };
     }, reactComponent);
 
@@ -73,6 +79,9 @@ export const reactiveSubscription = <T, InP extends IAsyncDataProps<T>>(
   reactComponent: ComponentConstructor<InP>,
   fetchFunction: () => T,
   ...subscriptions: string[]) : ComponentConstructor<InP> => {
+    if (subscriptions.length === 0) {
+      throw new Meteor.Error(400, 'No subscriptions specified!');
+    }
     const result = createContainer((props: InP) => {
       const allReady = subscriptions.reduce((prev, subscription) => {
         const handle = Meteor.subscribe(subscription);
