@@ -1,3 +1,4 @@
+import { TAPi18n } from 'meteor/tap:i18n';
 import * as React from 'react';
 import styled from 'styled-components';
 import Button from '../../components/Button';
@@ -5,45 +6,42 @@ import { Link } from 'react-router';
 
 const HomePage = (props) => (
   <div className={`${props.className}`}>
-    <div className="alert alert-primary hidden" role="alert">
-      This is a primary alert—check it out!
-    </div>
     <header className="header beforeLogin onHomepage">
         <span className="logo">
-          <h1>make accessible maps</h1>
+          <h1>{TAPi18n.__('make accessible maps')}</h1>
         </span>
         <span className="loginState">
-          {!Meteor.user() ? <Link to="/signup" className="onDark">Sign Up</Link> : null}
-          {!Meteor.user() ? <Link to="/signin" className="onDark">Sign In</Link> : null}
-          {Meteor.user() ? <Link to="/profile" className="onDark">Profile</Link> : null}
+          {!Meteor.user() ? <Link to="/signup" className="onDark">{TAPi18n.__('Sign Up')}</Link> : null}
+          {!Meteor.user() ? <Link to="/signin" className="onDark">{TAPi18n.__('Sign In')}</Link> : null}
+          {Meteor.user() ? <Link to="/profile" className="onDark">{TAPi18n.__('Profile')}</Link> : null}
         </span> 
     </header>
     <div className="wrapper sawblade">
       <section className="hero-banner">
         <div className="wrapper">
-          <h2>Let’s build comunities to map and spread accessibity.</h2>
-          <p>We are a NGO that believes in an inclusive world. Our mission is to make accessibility information easier to find—wherever people need it. That’s why we want to encourage everybody to share this kind of data with each other.</p>
-          <Button to="/organizations/create" className="btn-primary">start here</Button>
+          <h2>{TAPi18n.__('Let’s build comunities to map and spread accessibity.')}</h2>
+          <p>{TAPi18n.__('We are a NGO that believes in an inclusive world. Our mission is to make accessibility information easier to find—wherever people need it. That’s why we want to encourage everybody to share this kind of data with each other.')}</p>
+          <Button to="/organizations/create" className="btn-primary">{TAPi18n.__('Start here')}</Button>
         </div>
       </section>
     </div>
     <section className="explainSteps">
       <article className="explainStep onBlue">
-        <h2>Step 1.</h2>
-        <p>Join one a community as a volunteer or start a new comunity. We help you to plan and organize mapping events for accessibility data.</p>
+        <h2>{TAPi18n.__('Step 1.')}</h2>
+        <p>{TAPi18n.__('Join one a community as a volunteer or start a new comunity. We help you to plan and organize mapping events for accessibility data.')}</p>
       </article>
       <article className="explainStep onGreen">
-        <h2>Step 2.</h2>
-        <p>Invite volunteers to mapping-events where groups investigate an area for its accessibility.</p>
+        <h2>{TAPi18n.__('Step 2.')}</h2>
+        <p>{TAPi18n.__('Invite volunteers to mapping-events where groups investigate an area for its accessibility.')}</p>
       </article>
       <article className="explainStep onYellow">
-        <h2>Step 3.</h2>
-        <p>This gathered information can then be shared publictly to help people with with and without disabilities to navigate the world.</p>
+        <h2>{TAPi18n.__('Step 3.')}</h2>
+        <p>{TAPi18n.__('This gathered information can then be shared publictly to help people with with and without disabilities to navigate the world.')}</p>
       </article>
     </section>
     <div className="wrapper onLightGrey">
       <section className="videoIntroduction">
-        <h2>Watch a short video introduction.</h2>
+        <h2>{TAPi18n.__('Watch a short video introduction.')}</h2>
         <div className="Media">
           <div className="media-left">
           </div>
@@ -60,8 +58,8 @@ const HomePage = (props) => (
     <div className="wrapper onDarkGrey">
       <footer>
         <div className="wrapper">
-          <Link to="/" className="onDark">About us</Link>
-          <Link to="/" className="onDark">Imprint</Link>
+          <Link to="/" className="onDark">{TAPi18n.__('About us')}</Link>
+          <Link to="/" className="onDark">{TAPi18n.__('Imprint')}</Link>
         </div>
       </footer>
     </div>
