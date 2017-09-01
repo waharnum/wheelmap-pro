@@ -1,11 +1,15 @@
 import { Meteor } from 'meteor/meteor';
-import { check } from 'meteor/check';
 import { TAPi18n } from 'meteor/tap:i18n';
-import { isAdmin } from '/imports/both/lib/is-admin';
+import { isAdmin } from '../../../lib/is-admin';
 
 Meteor.methods({
-  'users.approve'(_id) {
-    check(_id, String);
+  'users.updateActiveOrganization'(organizationId: Mongo.ObjectID){
+    if (!this.userId) {
+      throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));
+    }
+    Meteor.users.update(this.userId, { $set: { 'profile.activeOrganizationId': organizationId } });
+  },
+  'users.approve'(_id: Mongo.ObjectID) {
     if (!this.userId) {
       throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));
     }
@@ -18,8 +22,7 @@ Meteor.methods({
     }
     Meteor.users.update({ _id }, { $set: { isApproved: true } });
   },
-  'users.remove'(_id) {
-    check(_id, String);
+  'users.remove'(_id: Mongo.ObjectID) {
     if (!this.userId) {
       throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));
     }

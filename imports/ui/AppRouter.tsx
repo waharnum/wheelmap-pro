@@ -1,3 +1,4 @@
+import { setActiveOrganization } from '../both/api/organizations/organizations';
 import * as React from 'react';
 import { render } from 'react-dom';
 import { Meteor } from 'meteor/meteor';
@@ -45,6 +46,14 @@ const RedirectAccordingToUser = () => {
   browserHistory.replace(`/organizations/${organizationId}/organize`);
 };
 
+const SaveActiveOrganization = (nextState) => {
+  const activeOrganizationId = nextState.params._id;
+  if (activeOrganizationId === Meteor.user().profile.activeOrganizationId) {
+    return;
+  }
+  Meteor.call('users.updateActiveOrganization', activeOrganizationId);
+};
+
 // tslint:disable:jsx-no-lambda
 // tslint:disable:max-line-length
 const AppRouter = (
@@ -66,7 +75,7 @@ const AppRouter = (
         <Route path="/organizations/none" component={NoOrganizationsPage} />
         <Route path="/organizations/create" component={CreateOrganizationPage} />
         <Route path="/organizations/:_id/edit" component={EditOrganizationPage} />
-        <Route path="/organizations/:_id/organize" component={OrganizeOrganizationPage} />
+        <Route path="/organizations/:_id/organize" component={OrganizeOrganizationPage} onEnter={SaveActiveOrganization} />
 
         <Route path="/events/create" component={CreateEventPage} />
         <Route path="/events/:_id" component={OrganizeEventPage} />
