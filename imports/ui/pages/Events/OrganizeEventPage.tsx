@@ -46,11 +46,14 @@ const OrganizeEventPage = (props: IModelProps<IEvent> & IStyledComponent) => {
       <div className="content-area scrollable">
         <ol className="event-timeline before-event">
           <li className="event-timeline-step event-creation completed">
-            <h3>Event created successfully</h3>
+            <div className="event-creation-head">
+              <h3>Event created successfully</h3>
+            </div>
             <div className={props.className || ''}>
+              <div>{model.name}</div>
               <div>{model.description}</div>
-              <div>{model.webSiteUrl}</div>
-              <div>{model.photoUrl}</div>
+              <div>9. September 2017</div>
+              <div>{model.regionName}</div>
               <Button to={`/events/edit/${model._id}`}>Edit</Button>
             </div>
           </li>
@@ -59,7 +62,7 @@ const OrganizeEventPage = (props: IModelProps<IEvent> & IStyledComponent) => {
             <Button to={`/events/edit/${model._id}`}>Invite participants</Button>
           </li>
           <li className="event-timeline-step organizer-tips enabled">
-            <h3>Read tips for event organizers</h3>
+            <h3>Tips for event organizers</h3>
             <Button to={`/events/edit/${model._id}`}>Learn more</Button>
           </li>
         </ol>
@@ -76,7 +79,7 @@ const OrganizeEventPage = (props: IModelProps<IEvent> & IStyledComponent) => {
             <h3>Set event picture</h3>
             <Button to={`/events/edit/${model._id}`}>Edit</Button>
           </li>
-          <li className="event-timeline-step share results disabled">
+          <li className="event-timeline-step share-results disabled">
             <h3>Share results</h3>
             <Button to={`/events/edit/${model._id}`}>Share</Button>
           </li>
@@ -90,8 +93,9 @@ export default styled(OrganizeEventPage) `
 
 ol.event-timeline {
   margin-left: 20px;
+  margin-bottom: 0px;
+  padding-bottom: 30px;
   border-left: 2px solid rgba(0, 0, 0, 0.1);
-  border-top: 1px solid rgba(0, 0, 0, 0.2);
 
   &:first-child {
     margin-top: 20px;
@@ -103,7 +107,7 @@ ol.event-timeline {
   }
 
   h2 {
-    margin-top: 14px;
+    margin-left: 23px;
     font-size: 14px;
     font-weight: 300;
     text-transform: uppercase;
@@ -118,13 +122,13 @@ ol.event-timeline {
     position: relative;
     width: 44em;
     max-width: 90vv;
-    margin: 14px 0 14px 20px;
-    padding: 20px;
+    margin: 14px 0 14px 23px;
+    padding: 20px 20px 20px 48px;
     border-radius: 4px;   
     display: flex;
     justify-content: space-between;
     
-    &:before{
+    &:before{ /* checklist circle */
       content: " ";
       position: absolute;
       top: 14px;
@@ -136,6 +140,20 @@ ol.event-timeline {
       line-height: 32px;
       text-align: center;
       border-radius: 16px;
+    }
+
+    &:after { /* step icon */
+      content: "C";
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      width: 20px;
+      height: 20px;
+      color: #37404D;
+      opacity: 0.5;
+      font-family: "iconfield-v03";
+      font-size: 21px;
+      text-align: center;
     }
   }
   
@@ -151,6 +169,15 @@ ol.event-timeline {
     }
   }
 
+  li.enabled {
+
+    a {
+      padding: 0;
+      color: #1FABD9;
+      background-color: transparent;
+    }
+  }
+
   li.disabled {
     border: 1px solid #DEE1E7;
     background: #F2F3F5;
@@ -159,27 +186,41 @@ ol.event-timeline {
       border: 1px solid #DEE1E7;
       background: #F2F3F5;
     }
+
+    a.btn { 
+      display: none;
+    }
   }
 
   li.completed {
+    color: white;
+    background-color: #96C545;
 
-    &:before {
+    &:before,
+    &:after { 
       color: white;
-      content: "";
+      opacity: 1;
       background-color: #96C545;
+    }
+    
+    &:before {
+      content: "";
     }
 
     h3 {
-      color: white;
       font-weight: 400;
-      background-color: #96C545;
     }
   }
 
   li.active {
 
-    &:before {
+    &:before,
+    &:after {
       color: #F5A623;
+      opacity: 1;
+    }
+
+    &:before {
       content: "D";
     }
 
@@ -189,8 +230,32 @@ ol.event-timeline {
     }
   }
 
-}
+  li.event-creation:after { content: "¶"; }
+  li.invite-participants:after { content: "∏"; } 
+  li.organizer-tips:after { content: ""; } 
+  li.start-event:after { content: "O"; } 
+  li.set-event-picture:after { content: "π"; }
+  li.share-results:after  { content: ""; }
 
+  li.event-creation {
+    padding: 0;
+    color: initial;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+
+    div {
+      padding: 20px;
+    }
+
+    .event-creation-head {
+      padding: 20px 20px 20px 48px;
+      color: white;
+      background-color: #96C545;
+      border-radius: 4px 4px 0 0;
+    }
+  }
+}
 
 `;
 ;;
