@@ -23,23 +23,24 @@ const determineCssClassesFromEventStatus = (event: IEvent) => {
   const wasPublished = true;
 
   switch (event.status) {
-    case 'draft':
     case 'planned':
-      if (invited === 0) {
+      if (invited > 0) {
         return {
           createEvent: 'completed finished',
-          inviteParticipants: 'enabled todo',
-          organizerTips: 'enabled',
-          startEvent: 'disabled',
+          inviteParticipants: 'completed finished',
+          organizerTips: 'completed finished-last',
+          startEvent: 'enabled todo',
           setEventPicture: 'disabled',
           shareResults: 'disabled',
         };
       }
+      // fallthrough!
+    case 'draft':
       return {
         createEvent: 'completed finished',
-        inviteParticipants: 'completed finished',
-        organizerTips: 'completed finished-last',
-        startEvent: 'enabled todo',
+        inviteParticipants: 'enabled todo',
+        organizerTips: 'enabled',
+        startEvent: 'disabled',
         setEventPicture: 'disabled',
         shareResults: 'disabled',
       };
@@ -125,6 +126,7 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IEvent > & IStyledCompon
           <HeaderTitle
             title={model.name}
             logo={model.photoUrl} // TODO: Use organization logo here. Needs another subscription for this, sadly :>
+            link={`/organizations/${props.model.organizationId}/organize`}
           />
         )}
         tabs={(<EventTabs />)}

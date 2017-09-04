@@ -1,11 +1,12 @@
-import * as React from 'react';
+import { Link } from 'react-router';
 import styled from 'styled-components';
-
-import { IStyledComponent } from '../components/IStyledComponent';
-import PreviewToggle from './PreviewToggle';
-import UserMenu from './UserMenu';
-import AdminTab from './AdminTab';
+import * as React from 'react';
 import {LocationDescriptor} from 'history';
+
+import AdminTab from './AdminTab';
+import UserMenu from './UserMenu';
+import PreviewToggle from './PreviewToggle';
+import { IStyledComponent } from '../components/IStyledComponent';
 
 interface IAdminHeaderProps {
   titleComponent: JSX.Element | string;
@@ -17,13 +18,18 @@ interface IAdminHeaderProps {
 interface IHeaderTitleProps {
   title: string;
   logo?: string;
+  link?: LocationDescriptor;
 }
 
 export const HeaderTitle = (props: IHeaderTitleProps) => {
   return (
     <div className="title-bar">
-      {props.logo ? <div className="organisation-logo" style={{backgroundImage: `url(${props.logo})`}} /> : null}
-      <h1>{props.title}</h1>
+      {props.logo ?
+        (<Link to={props.link || ''}> 
+          <div className="organisation-logo" style={{backgroundImage: `url(${props.logo})`}} />
+        </Link>)
+        : null}
+      <h1><Link to={props.link || ''}>{props.title}</Link></h1>
     </div>
   );
 };
