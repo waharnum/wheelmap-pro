@@ -38,7 +38,8 @@ export const OrganizationMixin = {
   },
   getEvents() {
     const events = Events.find({ organizationId: this._id }).fetch();
-    return events;
+    // TODO: sort by date
+    return sortBy(events, 'name');
   },
   getSources() {
     const sources = Sources.find({ organizationId: this._id }).fetch();

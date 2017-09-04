@@ -10,12 +10,90 @@ import AdminTab from '../../components/AdminTab';
 import { default as AdminHeader, HeaderTitle } from '../../components/AdminHeader';
 
 import { reactiveModelSubscriptionById, IModelProps } from '../../components/reactiveModelSubscription';
-import { IEvent, Events } from '../../../both/api/events/events';
+import { Events, EventStatusEnum, IEvent } from '../../../both/api/events/events';
 import { IStyledComponent } from '../../components/IStyledComponent';
 import Button from '../../components/Button';
 import { withTime } from '../../components/Timed';
 import EventTabs from './EventTabs';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
+
+const determineCssClassesFromEventStatus = (event: IEvent) => {
+  const invited: number = 10; // event.invitationCount();
+  const hasPicture = true;
+  const wasPublished = true;
+
+  switch (event.status) {
+    case 'draft':
+    case 'planned':
+      if (invited === 0) {
+        return {
+          createEvent: 'completed finished',
+          inviteParticipants: 'enabled todo',
+          organizerTips: 'enabled',
+          startEvent: 'disabled',
+          setEventPicture: 'disabled',
+          shareResults: 'disabled',
+        };
+      }
+      return {
+        createEvent: 'completed finished',
+        inviteParticipants: 'completed finished',
+        organizerTips: 'completed finished-last',
+        startEvent: 'enabled todo',
+        setEventPicture: 'disabled',
+        shareResults: 'disabled',
+      };
+    case 'ongoing':
+      return {
+        createEvent: 'completed finished',
+        inviteParticipants: 'completed finished',
+        organizerTips: 'completed finished',
+        startEvent: 'active finished-last',
+        setEventPicture: 'disabled',
+        shareResults: 'disabled',
+      };
+    case 'completed':
+      if (wasPublished) {
+        return {
+          createEvent: 'completed finished',
+          inviteParticipants: 'completed finished',
+          organizerTips: 'completed finished',
+          startEvent: 'completed finished',
+          setEventPicture: 'completed finished',
+          shareResults: 'completed finished-last',
+        };
+      }
+      if (hasPicture) {
+        return {
+          createEvent: 'completed finished',
+          inviteParticipants: 'completed finished',
+          organizerTips: 'completed finished',
+          startEvent: 'completed finished',
+          setEventPicture: 'completed finished-last',
+          shareResults: 'enabled todo',
+        };
+      }
+      return {
+        createEvent: 'completed finished',
+        inviteParticipants: 'completed finished',
+        organizerTips: 'completed finished',
+        startEvent: 'completed finished-last',
+        setEventPicture: 'enabled todo',
+        shareResults: 'disabled',
+      };
+    case 'canceled':
+      return {
+        createEvent: 'disabled',
+        inviteParticipants: 'disabled',
+        organizerTips: 'disabled',
+        startEvent: 'disabled',
+        setEventPicture: 'disabled',
+        shareResults: 'disabled',
+      };
+    default:
+      throw new Meteor.Error(503, `Invalid status '${event.status}' found`);
+  }
+};
 
 const OrganizeEventPage = (props: IModelProps < IEvent > & IStyledComponent & { now: moment.Moment}) => {
   const model = props.model || {
@@ -38,6 +116,8 @@ const OrganizeEventPage = (props: IModelProps < IEvent > & IStyledComponent & { 
     visibility: 'public',
   };
 
+  const stepStates = determineCssClassesFromEventStatus(model);
+
   return (
     <ScrollableLayout className={props.className}>
       <AdminHeader
@@ -56,7 +136,6 @@ const OrganizeEventPage = (props: IModelProps < IEvent > & IStyledComponent & { 
             <span className="participants-registered key-figure">0<small>registered</small></span>
           </section>
           <section className="event-countdown">
-            {/* <Timed> */}
             <span className="days-countdown">
               {moment(model.startTime).diff(props.now, 'days')}<small>days</small>
               </span>
@@ -69,7 +148,6 @@ const OrganizeEventPage = (props: IModelProps < IEvent > & IStyledComponent & { 
             <span className="seconds-countdown">
               {moment(model.startTime).diff(props.now, 'seconds') % 60}<small>seconds</small>
             </span>
-            {/* </Timed> */}
           </section>
           <section className="location-stats">
             <span className="locations-planned">0<small>planned</small></span>
@@ -77,7 +155,7 @@ const OrganizeEventPage = (props: IModelProps < IEvent > & IStyledComponent & { 
           </section>
         </div>
         <ol className="event-timeline before-event">
-          <li className="event-timeline-step event-details completed finished-last">
+          <li className={'event-timeline-step event-details ' + stepStates.createEvent}>
             <div className="notification-completed">Event created successfully.</div>
             <div className={props.className + ' step-details'}>
               <div className="event-name">
@@ -89,15 +167,15 @@ const OrganizeEventPage = (props: IModelProps < IEvent > & IStyledComponent & { 
               <div className="event-location">{model.regionName}</div>
             </div>
           </li>
-          <li className="event-timeline-step invite-participants active">
+          <li className={'event-timeline-step invite-participants ' + stepStates.inviteParticipants}>
             <div className="notification-completed">3 invitations sent.</div>
             <div className="step-status">
               <h3>No participants invited.</h3>
               <Button className="btn-primary" to={`/events/edit/${model._id}`}>Invite participants</Button>
             </div>
           </li>
-          <li className="event-timeline-step organizer-tips enabled">
-          <div className="notification-completed">2 documents created.</div>
+          <li className={'event-timeline-step organizer-tips ' + stepStates.organizerTips}>
+            <div className="notification-completed">2 documents created.</div>
             <div className="step-status">
               <h3>Tips for event organizers</h3>
               <Button to={`/events/edit/${model._id}`}>Learn more</Button>
@@ -106,28 +184,50 @@ const OrganizeEventPage = (props: IModelProps < IEvent > & IStyledComponent & { 
         </ol>
         <ol className="event-timeline during-event">
           <h2>During the event</h2>
-          <li className="event-timeline-step start-event disabled">
-            <div className="notification-completed">Your event has been started!</div>
-            <div className="step-status">
+          <li className={'event-timeline-step start-event ' + stepStates.startEvent}>
+            <div className="step-status step-todo">
               <h3>Mapping event not started</h3>
               <Button to={`/events/edit/${model._id}`}>Start mapping event</Button>
+            </div>
+            <div className="notification-completed step-active">Your event has been started</div>
+            <div className="step-status step-active">
+              <h3>Mapping event started</h3>
+            </div>
+            <div className="notification-completed step-completed">Your event has been completed</div>
+            <div className="step-status step-completed">
+              <h3>Mapping event finished</h3>
             </div>
           </li>
         </ol>
         <ol className="event-timeline after-event">
           <h2>After the event</h2>
-          <li className="event-timeline-step set-event-picture disabled">
+          <li className={'event-timeline-step set-event-picture ' + stepStates.setEventPicture}>
             <div className="notification-completed">Event picture has been set.</div>
-            <div className="step-status">
+            <div className="step-status step-todo">
               <h3>Set event picture</h3>
+            </div>
+            <div className="step-status step-active">
+              <h3>Set event picture</h3>
+              <Button to={`/events/edit/${model._id}`}>Set</Button>
+            </div>
+            <div className="step-status step-completed">
+              <h3>Event picture was set</h3>
+              <img src={model.photoUrl} />
               <Button to={`/events/edit/${model._id}`}>Edit</Button>
             </div>
           </li>
-          <li className="event-timeline-step share-results disabled">
+          <li className={'event-timeline-step share-results ' + stepStates.shareResults}>
             <div className="notification-completed">Results have been shared</div>
-            <div className="step-status">
+            <div className="step-status step-todo">
               <h3>Share results</h3>
-              <Button to={`/events/edit/${model._id}`}>Share</Button>
+            </div>
+            <div className="step-status step-active">
+              <h3>Share results</h3>
+              <Button to={`/events/${model._id}`}>Share</Button>
+            </div>
+            <div className="step-status">
+              <h3>Shared results</h3>
+              <Button to={`/events/${model._id}`}>View</Button>
             </div>
           </li>
         </ol>
@@ -312,7 +412,8 @@ ol.event-timeline {
   
   li.completed,
   li.enabled,
-  li.active {
+  li.todo,
+  li.active  {
     background-color: white;
     box-shadow: 0 0 2px 0 ${colors.boxShadow};
 
@@ -349,7 +450,6 @@ ol.event-timeline {
   }
   
   li.finished-last {
-
     .notification-completed {
       display: block;
     }
@@ -368,8 +468,7 @@ ol.event-timeline {
     }
   }
 
-  li.active {
-    
+  li.todo {
     &:before,
     .step-status:before {
       color: ${colors.activeOrange};
@@ -388,6 +487,41 @@ ol.event-timeline {
     a.btn-primary {
       display: block;
     }
+  }
+
+  li.active {
+    &:before,
+    .step-status:before {
+      color: white;
+      opacity: 1;
+    }
+
+    &:before {
+      content: "";
+    }
+
+    h3 {
+      font-weight: 400;
+    }
+
+    a.btn-primary {
+      display: block;
+    }
+  }
+
+  li.todo, li.disabled {
+    .step-completed, .step-active { display: none; }
+    .step-todo { display: flex; }
+  }
+  
+  li.active {
+    .step-todo, .step-completed { display: none; }
+    .step-active { display: flex; }
+  }
+  
+  li.completed {
+    .step-todo, .step-active { display: none; }
+    .step-completed { display: flex; }
   }
 
   li.event-details .step-status:before { content: " "; }
@@ -466,6 +600,12 @@ ol.event-timeline {
       .event-location:before { content: "y"; }
     }
   }
+
+  /* hide the invite button after the event is over */
+  li.invite-participants.completed.finished a {
+    display: none;
+  }
+
 }
 
 ol.event-timeline.before-event {

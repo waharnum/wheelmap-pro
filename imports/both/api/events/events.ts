@@ -4,6 +4,9 @@ import { Mongo } from 'meteor/mongo';
 import { EventSchema } from './schema';
 import { EventMixin, IEventMixin } from './mixins';
 
+export type EventStatusEnum = 'draft' | 'planned' | 'ongoing' | 'completed' | 'canceled';
+export type EventVisibilityEnum = 'inviteOnly' | 'public';
+
 export interface IEvent extends IEventMixin {
   // mongo id
   _id?: Mongo.ObjectID;
@@ -25,8 +28,8 @@ export interface IEvent extends IEventMixin {
   targets?: {
     mappedPlacesCount?: number;
   };
-  status: 'draft' | 'planned' | 'ongoing' | 'completed' | 'canceled';
-  visibility: 'inviteOnly' | 'public';
+  status: EventStatusEnum;
+  visibility: EventVisibilityEnum;
 };
 
 export const Events = new Mongo.Collection<IEvent & IEventMixin>('Events');
