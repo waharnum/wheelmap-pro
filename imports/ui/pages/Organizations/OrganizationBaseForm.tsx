@@ -7,8 +7,9 @@ import SubmitField from 'uniforms-bootstrap3/SubmitField';
 import BoolField from 'uniforms-bootstrap3/BoolField';
 import LongTextField from 'uniforms-bootstrap3/LongTextField';
 
-import { Organizations, IOrganization } from '../../../both/api/organizations/organizations';
+import ImageLinkUrlField from '../../components/ImageLinkUrlField';
 import { IStyledComponent } from '../../components/IStyledComponent';
+import { Organizations, IOrganization } from '../../../both/api/organizations/organizations';
 
 export interface IOrganizationBaseFormProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
@@ -22,15 +23,20 @@ interface IBaseFormState {
 
 const schema = Organizations.schema;
 schema.extend({
-  // override field for tocForOrganizationsAccepted
   tocForOrganizationsAccepted: {
     uniforms: BoolField,
   },
-  // this overrides, thus we have to re-add the placeholder
+  // if not an object this will override the placeholder
   description: {
     uniforms: {
       component: LongTextField,
-      placeholder: 'e.g. Our organization is…',
+    },
+  },
+  // if not an object this will override the placeholder
+  logo: {
+    uniforms: {
+      component: ImageLinkUrlField,
+      help: 'Optimal a 640 x 400 PNG-file with transparency.',
     },
   },
 });
@@ -77,12 +83,12 @@ class OrganizationBaseForm extends React.Component<IOrganizationBaseFormProps & 
       Organizations.update({_id: id}, {$set: strippedDoc}, (count) => {
         // TODO: handle errors
         console.log('Updated ', _id, count);
+        this.setState({isSaving: false});
         if (count !== false && _id) {
           if (this.props.afterSubmit) {
             this.props.afterSubmit(_id);
           }
         }
-        this.setState({isSaving: false});
 
       });
     } else {

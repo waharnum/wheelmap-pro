@@ -7,5 +7,9 @@ BrowserPolicy.content.allowOriginForAll('secure.gravatar.com');
 // TODO: check if this is actually okay
 BrowserPolicy.content.allowOriginForAll('blob:');
 BrowserPolicy.content.allowImageOrigin('blob:');
+
+// allow referencing external logos & photos
+BrowserPolicy.content.allowImageOrigin('*');
+
 let constructedCsp = BrowserPolicy.content._constructCsp();
 BrowserPolicy.content.setPolicy(constructedCsp + ' media-src blob:;');
