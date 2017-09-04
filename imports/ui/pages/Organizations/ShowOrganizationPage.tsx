@@ -1,3 +1,4 @@
+import { wrapDataComponent } from '../../components/AsyncDataComponent';
 import * as React from 'react';
 import styled from 'styled-components';
 
@@ -11,20 +12,6 @@ import { IStyledComponent } from '../../components/IStyledComponent';
 import Button from '../../components/Button';
 
 const ShowOrganizationPage = (props: IModelProps<IOrganization> & IStyledComponent) => {
-  const _id = props.params._id;
-
-  if (!props.ready) {
-    return (
-      <div className={props.className || ''}>Loading…</div>
-    );
-  }
-
-  if (props.model == null) {
-    return (
-      <div className={props.className || ''}>Object with id:{props.params._id} was not found!</div>
-    );
-  }
-
   return (
     <ScrollableLayout className={props.className}>
       <PublicHeader
@@ -47,7 +34,9 @@ const ShowOrganizationPage = (props: IModelProps<IOrganization> & IStyledCompone
   );
 };
 
-const ShowContainer = reactiveModelSubscriptionById(ShowOrganizationPage, Organizations, 'organizations.by_id');
+const ShowContainer = reactiveModelSubscriptionById(
+      wrapDataComponent<IOrganization, IModelProps<IOrganization | null>, IModelProps<IOrganization>>(ShowOrganizationPage),
+      Organizations, 'organizations.by_id');
 
 export default styled(ShowContainer) `
   .organisation-logo::after {
