@@ -14,13 +14,13 @@ interface IPublicHeaderProps {
 
 interface IHeaderTitleProps {
   title: string;
-  logo?: JSX.Element;
+  logo?: string;
 }
 
 export const HeaderTitle = (props: IHeaderTitleProps) => {
   return (
-    <div>
-      {props.logo}
+    <div className="title-bar">
+      {props.logo ? <div className="organisation-logo" style={{backgroundImage: `url(${props.logo})`}} /> : null}
       <h1>{props.title}</h1>
     </div>
   );
@@ -36,9 +36,7 @@ const PublicHeader = (props: IPublicHeaderProps & IStyledComponent) => {
             <UserMenu />
           </ol>
         </div>
-        <div className="title-bar">
-          {props.titleComponent || <HeaderTitle title="Please specificy title component" />}
-        </div>
+        {props.titleComponent || <HeaderTitle title="Please specificy title component" />}
       </header>
     </div>
   );
@@ -74,10 +72,9 @@ export default styled(PublicHeader) `
         width: 95px;
         height: 52px;
         margin-right: 30px;
-        background-image: url(/images/organisations/logo-abilities.png); 
         background-position: center center;
         background-repeat: no-repeat;
-        background-size: 100% 100%;
+        background-size: contain;
         
         &::after {
           position: absolute;

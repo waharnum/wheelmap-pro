@@ -19,7 +19,7 @@ const ShowOrganizationPage = (props: IAsyncDataByIdProps<IOrganization> & IStyle
         titleComponent={(
           <HeaderTitle
             title={props.model.name}
-            logo={<div className="organisation-logo" />}
+            logo={props.model.logo}
           />
         )}
         organizeLink={`/organizations/${props.model._id}/organize`}
@@ -38,7 +38,4 @@ const ShowContainer = reactiveModelSubscriptionById(
     Organizations, 'organizations.by_id');
 
 export default styled(ShowContainer) `
-  .organisation-logo::after {
-    display: none;
-  }
 `;

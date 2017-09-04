@@ -16,26 +16,24 @@ interface IAdminHeaderProps {
 
 interface IHeaderTitleProps {
   title: string;
-  logo?: JSX.Element;
+  logo?: string;
 }
 
 export const HeaderTitle = (props: IHeaderTitleProps) => {
   return (
-    <div>
-      {props.logo}
+    <div className="title-bar">
+      {props.logo ? <div className="organisation-logo" style={{backgroundImage: `url(${props.logo})`}} /> : null}
       <h1>{props.title}</h1>
     </div>
   );
 };
 
 const AdminHeader = (props: IAdminHeaderProps & IStyledComponent) => {
-  return (  
+  return (
     <div className={props.className} >
       <header className="main-header on-dark">
         <div className="left-side">
-          <div className="title-bar">
-            {props.titleComponent || <HeaderTitle title="Please specificy title component" />}
-          </div>
+          {props.titleComponent || <HeaderTitle title="Please specificy title component" />}
           <ol className="tabs-header">
             {props.tabs}
           </ol>
@@ -65,10 +63,9 @@ header.main-header {
     
     .organisation-logo {
       flex-shrink: 0;
-      background-image: url(/images/organisations/logo-abilities.png); 
       background-position: center center;
       background-repeat: no-repeat;
-      background-size: 100% 100%;
+      background-size: contain;
     }
   }
 

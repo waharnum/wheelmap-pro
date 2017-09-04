@@ -124,7 +124,7 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IEvent > & IStyledCompon
         titleComponent={(
           <HeaderTitle
             title={model.name}
-            logo={<div className="organisation-logo" />}
+            logo={model.photoUrl} // TODO: Use organization logo here. Needs another subscription for this, sadly :>
           />
         )}
         tabs={(<EventTabs />)}
