@@ -4,7 +4,7 @@ import { IAsyncDataProps } from './reactiveModelSubscription';
 import { ComponentConstructor } from 'meteor/react-meteor-data';
 
 const Loading = (props: any) => {
-  return (<p>Loading</p>);
+  return (<div className="loading-box">Loading</div>);
 };
 
 const DataNotFound = (props: any) => {
@@ -13,6 +13,20 @@ const DataNotFound = (props: any) => {
 
 type InputPropsComponent<T> = React.ComponentClass<T> | React.StatelessComponent<T>;
 
+/**
+ * This function creates a react component that can get a IAsyncDataProps that can contain a null model,
+ * and ensures that the ReactComponent passed to this method will only be created if the data is ready
+ * and not null.
+ *
+ * Use this in conjunction with the reactiveSubscription helper.
+ *
+ * If the data is loading the `notReadyComponent` is rendered instead.
+ * If no data is available the `dataNotFoundComponent` is rendered instead.
+ *
+ * @param WrappedComponent The component to be wrapped. wrapDataComponent will ensure the data is always there.
+ * @param notReadyComponent If the data is loading this rendered instead.
+ * @param dataNotFoundComponent If no data is available this rendered instead.
+ */
 export const wrapDataComponent =
   <T, TBeforeProps extends IAsyncDataProps<T | null>, TAfterProps extends IAsyncDataProps<T>>
   (WrappedComponent: InputPropsComponent<TBeforeProps>,

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 const App = ({ children }) => (
-  <div>
+  <div className="app-root">
     {children}
   </div>
 );

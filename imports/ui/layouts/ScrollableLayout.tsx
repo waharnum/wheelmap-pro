@@ -9,13 +9,15 @@ interface IScrollLayoutProps {
 
 const ScrollableLayout = (props: IStyledComponent & IScrollLayoutProps) => {
   return (
-  <div className={props.className}>
+  <div className={props.className + ' scroll-layout'}>
     {props.children}
   </div>
   );
 };
 
 export default styled(ScrollableLayout) `
+  overflow: auto;
+
   .content-area {
     padding: 24px;
   }
