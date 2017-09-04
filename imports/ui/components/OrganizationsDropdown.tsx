@@ -5,7 +5,7 @@ import { wrapDataComponent } from './AsyncDataComponent';
 
 import { IStyledComponent } from './IStyledComponent';
 import { IOrganization, Organizations } from '../../both/api/organizations/organizations';
-import { IAsyncDataProps, reactiveModelSubscription } from './reactiveModelSubscription';
+import { IAsyncDataProps, reactiveSubscription } from './reactiveModelSubscription';
 
 interface IListEntryModelProps {
   model: IOrganization;
@@ -44,10 +44,12 @@ const OrganizationDropdown = (props: OrganizationDropdownInternalType & IOrganiz
   );
 };
 
-const ReactiveOrganizationDropdown = reactiveModelSubscription(
+const ReactiveOrganizationDropdown = reactiveSubscription(
     wrapDataComponent<IOrganization[], IOrganizationDropdownProps & IAsyncDataProps<IOrganization[] | null>,
                       IOrganizationDropdownProps & IAsyncDataProps<IOrganization[]>>(OrganizationDropdown),
-    Organizations, 'organizations.my.private');
+                      // TODO: align this filter to only display my organizations
+                      () => Organizations.find({}, {sort: {name: 1}}).fetch(),
+                      'organizations.my.private');
 
 // hide all unneeded internal props
 type OrganizationDropdownExternalType = IStyledComponent & IOrganizationDropdownProps;
