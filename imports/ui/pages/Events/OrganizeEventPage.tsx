@@ -128,6 +128,7 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IEvent > & IStyledCompon
           />
         )}
         tabs={(<EventTabs />)}
+        publicLink={`/events/${props.model._id}`}
       />
       <div className="content-area scrollable">
         <div className="event-stats">
@@ -227,7 +228,7 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IEvent > & IStyledCompon
               <h3>Share results</h3>
               <Button to={`/events/${model._id}`}>Share</Button>
             </div>
-            <div className="step-status">
+            <div className="step-status step-completed">
               <h3>Shared results</h3>
               <Button to={`/events/${model._id}`}>View</Button>
             </div>
