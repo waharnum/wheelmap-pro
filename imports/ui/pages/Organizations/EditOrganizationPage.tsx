@@ -12,8 +12,6 @@ import AdminHeader from '../../components/AdminHeader';
 
 import { reactiveModelSubscriptionById, IModelProps } from '../../components/reactiveModelSubscription';
 
-const GoToDashboard = () => browserHistory.push('/');
-
 interface IEditOrganizationFormProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
 }
@@ -37,11 +35,12 @@ class EditOrganizationForm extends React.Component<
         <div className="content-area scrollable">
           <OrganizationBaseForm
             initialModel={this.props.model}
-            afterSubmit={GoToDashboard} />
+            afterSubmit={this.goToDashboard} />
         </div>
       </ScrollableLayout>
     );
   }
+  private goToDashboard = () => browserHistory.push(`/organizations/${this.props.model._id}/organize`);
 }
 
 const EditFormContainer = reactiveModelSubscriptionById(

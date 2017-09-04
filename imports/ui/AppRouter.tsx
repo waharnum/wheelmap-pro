@@ -80,6 +80,7 @@ const AppRouter = (
 
         <Route path="/events/create" component={CreateEventPage} />
         <Route path="/events/:_id/edit" component={EditEventPage} />
+        <Route path="/events/:_id/organize" component={OrganizeEventPage} />
         <Route path="/events/:_id" component={OrganizeEventPage} />
       </Route>
       

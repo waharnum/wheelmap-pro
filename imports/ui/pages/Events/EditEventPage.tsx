@@ -35,11 +35,12 @@ class EditEventForm extends React.Component<
         <div className="content-area scrollable">
           <EventBaseForm
             initialModel={this.props.model}
-            afterSubmit={() => { browserHistory.push('/'); }} />
+            afterSubmit={this.goToEvent} />
         </div>
       </ScrollableLayout>
     );
   }
+  private goToEvent = () => { browserHistory.push(`/events/${this.props.model._id}/organize`); };
 }
 
 const EditFormContainer = reactiveModelSubscriptionById(
