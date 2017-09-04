@@ -17,6 +17,7 @@ const ScrollableLayout = (props: IStyledComponent & IScrollLayoutProps) => {
 
 export default styled(ScrollableLayout) `
   overflow: auto;
+  width: 100%;
 
   .content-area {
     padding: 24px;
