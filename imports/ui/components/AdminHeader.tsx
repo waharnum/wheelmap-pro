@@ -17,19 +17,23 @@ interface IAdminHeaderProps {
 
 interface IHeaderTitleProps {
   title: string;
+  prefixTitle?: string;
   logo?: string;
-  link?: LocationDescriptor;
+  prefixLink?: LocationDescriptor;
+  titleLink?: LocationDescriptor;
 }
 
 export const HeaderTitle = (props: IHeaderTitleProps) => {
   return (
     <div className="title-bar">
-      {props.logo ?
-        (<Link to={props.link || ''}> 
+      {props.logo ? (
+        <Link to={props.prefixLink || ''}> 
           <div className="organisation-logo" style={{backgroundImage: `url(${props.logo})`}} />
         </Link>)
         : null}
-      <h1><Link to={props.link || ''}>{props.title}</Link></h1>
+      {props.prefixTitle && !props.logo ?
+        <h1 className="organisation-logo"><Link to={props.prefixLink || ''}>{props.prefixTitle}</Link></h1> : null}
+      <h1><Link to={props.titleLink || ''}>{props.title}</Link></h1>
     </div>
   );
 };
@@ -72,6 +76,13 @@ header.main-header {
       background-position: center center;
       background-repeat: no-repeat;
       background-size: contain;
+
+      a {
+        text-overflow: ellipsis;
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+      }      
     }
   }
 

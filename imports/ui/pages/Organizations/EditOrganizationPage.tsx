@@ -22,7 +22,7 @@ class EditOrganizationForm extends React.Component<
     return (
       <ScrollableLayout className={this.props.className}>
         <AdminHeader
-          titleComponent={<h1>Edit Organization</h1>}
+          titleComponent={<div className="title-bar"><h1>Edit Organization</h1></div>}
           tabs={(
             <div>
               <AdminTab to={`/organizations/${this.props.model._id}/organize`} title="Dashboard" />

@@ -125,8 +125,9 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IEvent > & IStyledCompon
         titleComponent={(
           <HeaderTitle
             title={model.name}
+            prefixTitle={model.organizationId as string} // TODO: Use organization name here.
             logo={model.photoUrl} // TODO: Use organization logo here. Needs another subscription for this, sadly :>
-            link={`/organizations/${props.model.organizationId}/organize`}
+            prefixLink={`/organizations/${props.model.organizationId}/organize`}
           />
         )}
         tabs={(<EventTabs />)}
