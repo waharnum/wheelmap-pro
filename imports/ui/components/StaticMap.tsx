@@ -1,6 +1,5 @@
-import {Meteor} from 'meteor/meteor';
-import {Component} from 'react';
 import * as React from 'react';
+import * as Dimensions from 'react-dimensions';
 import { StaticMap as StaticMapGL } from 'react-map-gl';
 
 interface IMapProps {
@@ -32,7 +31,7 @@ interface IMapState {
   };
 }
 
-class StaticMap extends Component<IMapProps, IMapState> {
+class StaticMap extends React.Component<IMapProps, IMapState> {
   public state = {
     viewport: {
       zoom: 11,
@@ -56,15 +55,15 @@ class StaticMap extends Component<IMapProps, IMapState> {
 
   public render(): JSX.Element {
     return (
-      <div className={this.props.className || ''} data-component="Map">                
-        <StaticMapGL
-          {...this.state.viewport}
-          {...this.state.settings}
-          width={this.props.containerWidth || 100}
-          height={this.props.containerHeight || 100}
-          mapStyle="mapbox://styles/mapbox/dark-v9"
-          mapboxApiAccessToken={Meteor.settings.public.mapbox} />
-      </div>
+      <StaticMapGL
+        className="static-map"
+        data-component="StaticMap"
+        {...this.state.viewport}
+        {...this.state.settings}
+        width={this.props.containerWidth || 100}
+        height={this.props.containerHeight || 100}
+        mapStyle="mapbox://styles/mapbox/basic-v9"
+        mapboxApiAccessToken={Meteor.settings.public.mapbox} />
     );
   }
 
@@ -74,3 +73,5 @@ class StaticMap extends Component<IMapProps, IMapState> {
 };
 
 export default StaticMap;
+
+export const AutoSizedStaticMap = Dimensions({className: 'auto-sized-map'})(StaticMap);

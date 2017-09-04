@@ -1,19 +1,20 @@
-import { wrapDataComponent } from '../../components/AsyncDataComponent';
 import * as React from 'react';
 import styled from 'styled-components';
 
-import ScrollableLayout from '../../layouts/ScrollableLayout';
+import MapLayout from '../../layouts/MapLayout';
 
 import { default as PublicHeader, HeaderTitle } from '../../components/PublicHeader';
 
-import { reactiveModelSubscriptionById, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
-import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
-import { IStyledComponent } from '../../components/IStyledComponent';
 import Button from '../../components/Button';
+import { wrapDataComponent } from '../../components/AsyncDataComponent';
+import { IStyledComponent } from '../../components/IStyledComponent';
+import { AutoSizedStaticMap } from '../../components/StaticMap';
+import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
+import { reactiveModelSubscriptionById, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
 
 const ShowOrganizationPage = (props: IAsyncDataByIdProps<IOrganization> & IStyledComponent) => {
   return (
-    <ScrollableLayout className={props.className}>
+    <MapLayout className={props.className}>
       <PublicHeader
         titleComponent={(
           <HeaderTitle
@@ -23,20 +24,18 @@ const ShowOrganizationPage = (props: IAsyncDataByIdProps<IOrganization> & IStyle
         )}
         organizeLink={`/organizations/${props.model._id}/organize`}
       />
-      <div className="content-area scrollable">
-        <div className={props.className || ''}>
-          <div>{props.model.description}</div>
-          <div>{props.model.webSite}</div>
-          <div>{props.model.logo}</div>
-        </div>
+      <div className="content-area">
+        <AutoSizedStaticMap />
       </div>
-    </ScrollableLayout>
+    </MapLayout>
   );
 };
 
 const ShowContainer = reactiveModelSubscriptionById(
-      wrapDataComponent<IOrganization, IAsyncDataByIdProps<IOrganization | null>, IAsyncDataByIdProps<IOrganization>>(ShowOrganizationPage),
-      Organizations, 'organizations.by_id');
+    wrapDataComponent<IOrganization,
+        IAsyncDataByIdProps<IOrganization | null>,
+        IAsyncDataByIdProps<IOrganization>>(ShowOrganizationPage),
+    Organizations, 'organizations.by_id');
 
 export default styled(ShowContainer) `
   .organisation-logo::after {
