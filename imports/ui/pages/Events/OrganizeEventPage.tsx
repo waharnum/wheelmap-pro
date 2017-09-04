@@ -9,7 +9,7 @@ import ScrollableLayout from '../../layouts/ScrollableLayout';
 import AdminTab from '../../components/AdminTab';
 import { default as AdminHeader, HeaderTitle } from '../../components/AdminHeader';
 
-import { reactiveModelSubscriptionById, IModelProps } from '../../components/reactiveModelSubscription';
+import { reactiveModelSubscriptionById, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
 import { Events, EventStatusEnum, IEvent } from '../../../both/api/events/events';
 import { IStyledComponent } from '../../components/IStyledComponent';
 import Button from '../../components/Button';
@@ -95,7 +95,7 @@ const determineCssClassesFromEventStatus = (event: IEvent) => {
   }
 };
 
-const OrganizeEventPage = (props: IModelProps < IEvent > & IStyledComponent & { now: moment.Moment}) => {
+const OrganizeEventPage = (props: IAsyncDataByIdProps < IEvent > & IStyledComponent & { now: moment.Moment}) => {
   const model = props.model || {
     _id: '123',
     name: 'Mapathon Montreal',
@@ -239,8 +239,8 @@ const OrganizeEventPage = (props: IModelProps < IEvent > & IStyledComponent & { 
 };
 
 const ReactiveOrganizeOrganisationsPage = reactiveModelSubscriptionById(
-  wrapDataComponent<IEvent, IModelProps<IEvent | null>,
-                            IModelProps<IEvent>>(
+  wrapDataComponent<IEvent, IAsyncDataByIdProps<IEvent | null>,
+                            IAsyncDataByIdProps<IEvent>>(
                             withTime(OrganizeEventPage, 1000)),
   Events, 'events.by_id');
 

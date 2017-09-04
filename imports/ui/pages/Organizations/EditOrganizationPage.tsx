@@ -10,14 +10,14 @@ import OrganizationBaseForm, { IOrganizationBaseFormProps } from './Organization
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 import AdminHeader from '../../components/AdminHeader';
 
-import { reactiveModelSubscriptionById, IModelProps } from '../../components/reactiveModelSubscription';
+import { reactiveModelSubscriptionById, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
 
 interface IEditOrganizationFormProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
 }
 
 class EditOrganizationForm extends React.Component<
-    IModelProps<IOrganization> & IEditOrganizationFormProps & IStyledComponent> {
+    IAsyncDataByIdProps<IOrganization> & IEditOrganizationFormProps & IStyledComponent> {
   public render(): JSX.Element {
     return (
       <ScrollableLayout className={this.props.className}>
@@ -44,7 +44,7 @@ class EditOrganizationForm extends React.Component<
 }
 
 const EditFormContainer = reactiveModelSubscriptionById(
-  wrapDataComponent<IOrganization, IModelProps<IOrganization | null>, IModelProps<IOrganization>>(EditOrganizationForm),
+  wrapDataComponent<IOrganization, IAsyncDataByIdProps<IOrganization | null>, IAsyncDataByIdProps<IOrganization>>(EditOrganizationForm),
   Organizations, 'organizations.by_id');
 
 export default styled(EditFormContainer) `

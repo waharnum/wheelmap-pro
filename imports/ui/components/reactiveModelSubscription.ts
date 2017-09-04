@@ -11,7 +11,7 @@ export interface IAsyncDataProps<T> {
 }
 
 // async data props with page params._id
-export interface IModelProps<TModel> extends IAsyncDataProps<TModel> {
+export interface IAsyncDataByIdProps<TModel> extends IAsyncDataProps<TModel> {
   params: {
     _id: Mongo.ObjectID;
   };
@@ -28,9 +28,16 @@ type ComponentConstructor<P> = React.ComponentClass<P> | React.StatelessComponen
  * @param collection The mongo collection to fetch data from, make sure it is covered by the subcriptions
  * @param byIdSubscriptions The names of the subscription for the object id
  */
-export const reactiveModelSubscriptionById = <T, InP extends IModelProps<T>>(
+export const reactiveModelSubscriptionById = <T, InP extends IAsyncDataByIdProps<T>>(
   reactComponent: ComponentConstructor<InP>,
   collection: Mongo.Collection<T>,
+  ...byIdSubscriptions: string[]) : ComponentConstructor<InP> => {
+    return reactiveSubscriptionById(reactComponent, (id) => collection.findOne({_id: id}), ...byIdSubscriptions);
+};
+
+export const reactiveSubscriptionById = <T, InP extends IAsyncDataByIdProps<T>>(
+  reactComponent: ComponentConstructor<InP>,
+  fetchFunction: (id: Mongo.ObjectID) => T,
   ...byIdSubscriptions: string[]) : ComponentConstructor<InP> => {
     if (byIdSubscriptions.length === 0) {
       throw new Meteor.Error(400, 'No subscriptions specified!');
@@ -45,7 +52,7 @@ export const reactiveModelSubscriptionById = <T, InP extends IModelProps<T>>(
 
       return {
         ready: allReady,
-        model: allReady ? collection.findOne({_id: id}) : null,
+        model: allReady ? fetchFunction(id) : null,
       };
     }, reactComponent);
 

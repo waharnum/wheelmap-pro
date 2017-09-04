@@ -6,12 +6,12 @@ import ScrollableLayout from '../../layouts/ScrollableLayout';
 
 import { default as PublicHeader, HeaderTitle } from '../../components/PublicHeader';
 
-import { reactiveModelSubscriptionById, IModelProps } from '../../components/reactiveModelSubscription';
+import { reactiveModelSubscriptionById, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
 import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
 import { IStyledComponent } from '../../components/IStyledComponent';
 import Button from '../../components/Button';
 
-const ShowOrganizationPage = (props: IModelProps<IOrganization> & IStyledComponent) => {
+const ShowOrganizationPage = (props: IAsyncDataByIdProps<IOrganization> & IStyledComponent) => {
   return (
     <ScrollableLayout className={props.className}>
       <PublicHeader
@@ -35,7 +35,7 @@ const ShowOrganizationPage = (props: IModelProps<IOrganization> & IStyledCompone
 };
 
 const ShowContainer = reactiveModelSubscriptionById(
-      wrapDataComponent<IOrganization, IModelProps<IOrganization | null>, IModelProps<IOrganization>>(ShowOrganizationPage),
+      wrapDataComponent<IOrganization, IAsyncDataByIdProps<IOrganization | null>, IAsyncDataByIdProps<IOrganization>>(ShowOrganizationPage),
       Organizations, 'organizations.by_id');
 
 export default styled(ShowContainer) `

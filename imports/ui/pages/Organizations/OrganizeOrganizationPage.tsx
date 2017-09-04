@@ -10,10 +10,12 @@ import ScrollableLayout from '../../layouts/ScrollableLayout';
 import { IStyledComponent } from '../../components/IStyledComponent';
 import { wrapDataComponent } from '../../components/AsyncDataComponent';
 import OrganizationsDropdown from '../../components/OrganizationsDropdown';
-import { IModelProps, reactiveModelSubscriptionById } from '../../components/reactiveModelSubscription';
+import {reactiveSubscriptionById, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
 
 import { IEvent } from '../../../both/api/events/events';
 import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
+
+interface IPageModel { organization: IOrganization; events: IEvent[]; };
 
 const EventListEntry = (props: {model: IEvent}) => (
   <div className="event-list-entry">
@@ -36,26 +38,26 @@ const EventList = (props: {model: IEvent[]}) => (
   </div>
 );
 
-const OrganizeOrganisationsPage = (props: IStyledComponent & IModelProps<IOrganization> ) => (
+const OrganizeOrganisationsPage = (props: IStyledComponent & IAsyncDataByIdProps<IPageModel> ) => (
   <ScrollableLayout className={props.className}>
     <AdminHeader
         titleComponent={(
-          <OrganizationsDropdown current={props.model} >
+          <OrganizationsDropdown current={props.model.organization} >
             <Button to="/organizations/create" className="btn-primary" >Create Organization</Button>
           </OrganizationsDropdown>
         )}
         tabs={(
           <div>
             <AdminTab to="" title="Dashboard" active={true} />
-            <AdminTab to={`/organizations/statistics/${props.model._id}`} title="Statistics" />
-            <AdminTab to={`/organizations/${props.model._id}/edit`} title="Customize" />
-            <AdminTab to={`/organizations/${props.model._id}/members`} title="Members" />
+            <AdminTab to={`/organizations/statistics/${props.model.organization._id}`} title="Statistics" />
+            <AdminTab to={`/organizations/${props.model.organization._id}/edit`} title="Customize" />
+            <AdminTab to={`/organizations/${props.model.organization._id}/members`} title="Members" />
           </div>
         )}
-        publicLink={`/organizations/${props.model._id}`}
+        publicLink={`/organizations/${props.model.organization._id}`}
     />
     <div className="content-area scrollable">
-      <EventList model={props.model.getEvents()} />
+      <EventList model={props.model.events} />
       <section>
         <Button to="/events/create" className="btn-primary" >Create event</Button>
       </section>
@@ -63,10 +65,16 @@ const OrganizeOrganisationsPage = (props: IStyledComponent & IModelProps<IOrgani
   </ScrollableLayout>
 );
 
-const ReactiveOrganizeOrganisationsPage = reactiveModelSubscriptionById(
-  wrapDataComponent<IOrganization, IModelProps<IOrganization | null>,
-                                   IModelProps<IOrganization>>(OrganizeOrganisationsPage),
-  Organizations, 'organizations.by_id', 'events.by_organizationId');
+const ReactiveOrganizeOrganisationsPage = reactiveSubscriptionById(
+    wrapDataComponent<IPageModel,
+        IAsyncDataByIdProps<IPageModel | null>,
+        IAsyncDataByIdProps<IPageModel>>(OrganizeOrganisationsPage),
+    (id ) => {
+      const organization = Organizations.findOne(id);
+      // fetch model with organization & events in one go
+      return { organization, events: organization ? organization.getEvents() : [] };
+    },
+    'organizations.by_id', 'events.by_organizationId');
 
 const StyledReactiveOrganizeOrganisationsPage = styled(ReactiveOrganizeOrganisationsPage)`
   .event-list-entry {
