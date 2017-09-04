@@ -211,9 +211,11 @@ const OrganizeEventPage = (props: IModelProps < IEvent > & IStyledComponent & { 
               <Button to={`/events/${model._id}/edit`}>Set</Button>
             </div>
             <div className="step-status step-completed">
-              <h3>Event picture was set</h3>
+              <section>
+                <h3>Event picture was set</h3>
+                <Button to={`/events/${model._id}/edit`}>Edit</Button>
+              </section>
               <img src={model.photoUrl} />
-              <Button to={`/events/edit/${model._id}`}>Edit</Button>
             </div>
           </li>
           <li className={'event-timeline-step share-results ' + stepStates.shareResults}>
@@ -606,6 +608,23 @@ ol.event-timeline {
     display: none;
   }
 
+  /* wrap differently with event image */
+  li.set-event-picture {
+    .step-completed {
+      flex-direction: column;
+    }
+
+    section {
+      display: flex;
+      flex-direction: row;    
+      justify-content: space-between;
+    }
+
+    img {
+      max-width: 100%;
+      margin-top: 20px;
+    }
+  }
 }
 
 ol.event-timeline.before-event {
