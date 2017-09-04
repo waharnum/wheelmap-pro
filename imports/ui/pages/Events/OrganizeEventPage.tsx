@@ -171,14 +171,14 @@ const OrganizeEventPage = (props: IModelProps < IEvent > & IStyledComponent & { 
             <div className="notification-completed">3 invitations sent.</div>
             <div className="step-status">
               <h3>No participants invited.</h3>
-              <Button className="btn-primary" to={`/events/edit/${model._id}`}>Invite participants</Button>
+              <Button className="btn-primary" to={`/events/${model._id}/participants`}>Invite participants</Button>
             </div>
           </li>
           <li className={'event-timeline-step organizer-tips ' + stepStates.organizerTips}>
             <div className="notification-completed">2 documents created.</div>
             <div className="step-status">
               <h3>Tips for event organizers</h3>
-              <Button to={`/events/edit/${model._id}`}>Learn more</Button>
+              <Button to="#">Learn more</Button>
             </div>
           </li>
         </ol>
@@ -187,7 +187,7 @@ const OrganizeEventPage = (props: IModelProps < IEvent > & IStyledComponent & { 
           <li className={'event-timeline-step start-event ' + stepStates.startEvent}>
             <div className="step-status step-todo">
               <h3>Mapping event not started</h3>
-              <Button to={`/events/edit/${model._id}`}>Start mapping event</Button>
+              <Button to="#">Start mapping event</Button>
             </div>
             <div className="notification-completed step-active">Your event has been started</div>
             <div className="step-status step-active">
@@ -208,7 +208,7 @@ const OrganizeEventPage = (props: IModelProps < IEvent > & IStyledComponent & { 
             </div>
             <div className="step-status step-active">
               <h3>Set event picture</h3>
-              <Button to={`/events/edit/${model._id}`}>Set</Button>
+              <Button to={`/events/${model._id}/edit`}>Set</Button>
             </div>
             <div className="step-status step-completed">
               <h3>Event picture was set</h3>

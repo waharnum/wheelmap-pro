@@ -22,7 +22,7 @@ const EventListEntry = (props: {model: IEvent}) => (
       <div>{moment(props.model.startTime).format('LLLL')}</div>
       <div>{props.model.region}</div>
       <div>{moment(props.model.startTime).diff(moment(), 'days')} Days Left</div>
-      <Button to={`/events/${props.model._id}`}>Show details</Button>
+      <Button to={`/events/${props.model._id}/organize`}>Show details</Button>
     </div>      
     <StaticMap className="event-mini-map" containerWidth={140}  containerHeight={140} />
   </div>
