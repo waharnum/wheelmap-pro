@@ -13,11 +13,12 @@ import { IEvent, Events } from '../../../both/api/events/events';
 import { IStyledComponent } from '../../components/IStyledComponent';
 import Button from '../../components/Button';
 import EventTabs from './EventTabs';
+import {wrapDataComponent} from '../../components/AsyncDataComponent';
 
-const OrganizeEventPage = (props: IModelProps<IEvent> & IStyledComponent) => {
+const OrganizeEventPage = (props : IModelProps < IEvent > & IStyledComponent) => {
   const model = props.model || {
-    _id: "123",
-    name: "Mapathon Montreal",
+    _id: '123',
+    name: 'Mapathon Montreal',
     description: 'We are an international organization for medical emergency relief. We provide medical emergency assistance in crisis and war zones. We collect medical facilities such as doctors, pharmacies and hospitals.',
     regionName: 'Montreal',
     startTime: new Date('2017-10-10 12:10:12'),
@@ -64,10 +65,10 @@ const OrganizeEventPage = (props: IModelProps<IEvent> & IStyledComponent) => {
         <ol className="event-timeline before-event">
           <li className="event-timeline-step event-details completed finished-last">
             <div className="notification-completed">Event created successfully.</div>
-            <div className={props.className+ " step-details"}>
+            <div className={props.className + ' step-details'}>
               <div className="event-name">
                 {model.name}
-                <Button to={`/events/edit/${model._id}`}>Edit</Button>
+                <Button to={`/events/${model._id}/edit`}>Edit</Button>
               </div>
               <div className="event-description">{model.description}</div>
               <div className="event-date">9. September 2017</div>
@@ -121,7 +122,12 @@ const OrganizeEventPage = (props: IModelProps<IEvent> & IStyledComponent) => {
   );
 };
 
-export default styled(OrganizeEventPage) `
+const ReactiveOrganizeOrganisationsPage = reactiveModelSubscriptionById(
+  wrapDataComponent<IEvent, IModelProps<IEvent | null>,
+                            IModelProps<IEvent>>(OrganizeEventPage),
+  Events, 'events.by_id');
+
+export default styled(ReactiveOrganizeOrganisationsPage) `
 
 /* -------------------------- event stats styling --------------------------------*/
 

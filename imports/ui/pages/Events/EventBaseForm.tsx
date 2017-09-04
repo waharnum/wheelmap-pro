@@ -83,12 +83,12 @@ class EventBaseForm extends React.Component<IEventBaseFormProps & IStyledCompone
       Events.update({_id: id}, {$set: strippedDoc}, (count) => {
         // TODO: handle errors
         console.log('Updated ', _id, count);
+        this.setState({isSaving: false});
         if (count !== false && _id) {
           if (this.props.afterSubmit) {
             this.props.afterSubmit(_id);
           }
         }
-        this.setState({isSaving: false});
 
       });
     } else {
