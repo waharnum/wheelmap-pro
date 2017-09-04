@@ -85,7 +85,7 @@ const OrganizeEventPage = (props: IModelProps < IEvent > & IStyledComponent & { 
                 <Button to={`/events/${model._id}/edit`}>Edit</Button>
               </div>
               <div className="event-description">{model.description}</div>
-              <div className="event-date">{moment(model.startTime).format()}</div>
+              <div className="event-date">{moment(model.startTime).format('LLLL')}</div>
               <div className="event-location">{model.regionName}</div>
             </div>
           </li>
