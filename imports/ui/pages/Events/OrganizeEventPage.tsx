@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import * as React from 'react';
 import styled from 'styled-components';
 
@@ -12,14 +13,17 @@ import { reactiveModelSubscriptionById, IModelProps } from '../../components/rea
 import { IEvent, Events } from '../../../both/api/events/events';
 import { IStyledComponent } from '../../components/IStyledComponent';
 import Button from '../../components/Button';
+import { withTime } from '../../components/Timed';
 import EventTabs from './EventTabs';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
 
-const OrganizeEventPage = (props : IModelProps < IEvent > & IStyledComponent) => {
+const OrganizeEventPage = (props: IModelProps < IEvent > & IStyledComponent & { now: moment.Moment}) => {
   const model = props.model || {
     _id: '123',
     name: 'Mapathon Montreal',
-    description: 'We are an international organization for medical emergency relief. We provide medical emergency assistance in crisis and war zones. We collect medical facilities such as doctors, pharmacies and hospitals.',
+    description: `We are an international organization for medical emergency relief. 
+    We provide medical emergency assistance in crisis and war zones. 
+    We collect medical facilities such as doctors, pharmacies and hospitals.`,
     regionName: 'Montreal',
     startTime: new Date('2017-10-10 12:10:12'),
     endTime: new Date('2017-10-10 15:10:12'),
@@ -37,12 +41,12 @@ const OrganizeEventPage = (props : IModelProps < IEvent > & IStyledComponent) =>
   return (
     <ScrollableLayout className={props.className}>
       <AdminHeader
-        titleComponent={
+        titleComponent={(
           <HeaderTitle
             title={model.name}
             logo={<div className="organisation-logo" />}
           />
-        }
+        )}
         tabs={(<EventTabs />)}
       />
       <div className="content-area scrollable">
@@ -52,10 +56,20 @@ const OrganizeEventPage = (props : IModelProps < IEvent > & IStyledComponent) =>
             <span className="participants-registered key-figure">0<small>registered</small></span>
           </section>
           <section className="event-countdown">
-            <span className="days-countdown">27<small>days</small></span>
-            <span className="hours-countdown">11<small>hours</small></span>
-            <span className="minutes-countdown">13<small>minutes</small></span>
-            <span className="seconds-countdown">10<small>seconds</small></span>
+            {/* <Timed> */}
+            <span className="days-countdown">
+              {moment(model.startTime).diff(props.now, 'days')}<small>days</small>
+              </span>
+            <span className="hours-countdown">
+              {moment(model.startTime).diff(props.now, 'hours') % 24}<small>hours</small>
+              </span>
+            <span className="minutes-countdown">
+              {moment(model.startTime).diff(props.now, 'minutes') % 60}<small>minutes</small>
+            </span>
+            <span className="seconds-countdown">
+              {moment(model.startTime).diff(props.now, 'seconds') % 60}<small>seconds</small>
+            </span>
+            {/* </Timed> */}
           </section>
           <section className="location-stats">
             <span className="locations-planned">0<small>planned</small></span>
@@ -71,7 +85,7 @@ const OrganizeEventPage = (props : IModelProps < IEvent > & IStyledComponent) =>
                 <Button to={`/events/${model._id}/edit`}>Edit</Button>
               </div>
               <div className="event-description">{model.description}</div>
-              <div className="event-date">9. September 2017</div>
+              <div className="event-date">{moment(model.startTime).format()}</div>
               <div className="event-location">{model.regionName}</div>
             </div>
           </li>
@@ -124,7 +138,8 @@ const OrganizeEventPage = (props : IModelProps < IEvent > & IStyledComponent) =>
 
 const ReactiveOrganizeOrganisationsPage = reactiveModelSubscriptionById(
   wrapDataComponent<IEvent, IModelProps<IEvent | null>,
-                            IModelProps<IEvent>>(OrganizeEventPage),
+                            IModelProps<IEvent>>(
+                            withTime(OrganizeEventPage, 1000)),
   Events, 'events.by_id');
 
 export default styled(ReactiveOrganizeOrganisationsPage) `
@@ -458,4 +473,3 @@ ol.event-timeline.before-event {
 }
 
 `;
-; ;
