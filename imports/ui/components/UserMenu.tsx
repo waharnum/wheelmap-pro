@@ -25,7 +25,7 @@ const UserMenu = (props: IStyledComponent) => {
 
 export default styled(UserMenu) `
   position: relative;
-  padding: 8px 10px;
+  padding: 10px 8px 10px 8px;
   text-decoration: none;
   display: inline-block;
 
@@ -38,12 +38,10 @@ export default styled(UserMenu) `
     padding-right: 4px;
   }
   
-  padding-right: 26px;
-
-  ::after {
+  &:after {
     position: absolute;
-    right: 10px;
-    top: 10px;
+    right: -8px;
+    top: 8px;
     content: "Í";
     font-family: "iconfield-v03";
     font-size: 14px;

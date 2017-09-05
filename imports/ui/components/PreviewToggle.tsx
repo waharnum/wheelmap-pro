@@ -20,7 +20,7 @@ const PreviewToggle = (props: IStyledComponent & {to?: LocationDescriptor, toOrg
 
 export default styled(PreviewToggle) `
   position: relative;
-  padding: 8px 10px;
+  padding: 10px 28px 10px 8px;
   text-decoration: none;
   display: inline-block;
 
@@ -28,15 +28,13 @@ export default styled(PreviewToggle) `
     font-size: 14px;
   }
 
-  padding-left: 28px;
-
   ::before {
     position: absolute;
     content: " ";
     width: 24px;
     height: 24px;
-    top: 8px;
-    left: 0;
+    top: 6px;
+    left: -18px;
     background-image: url(/images/icon-public-view@2x.png); /* FIXME: to be moved to admin-area */
     background-position: center center;
     background-repeat: no-repeat;

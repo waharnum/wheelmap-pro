@@ -7,6 +7,7 @@ import AdminTab from './AdminTab';
 import UserMenu from './UserMenu';
 import PreviewToggle from './PreviewToggle';
 import { IStyledComponent } from '../components/IStyledComponent';
+import { colors } from '../stylesheets/colors';
 
 interface IAdminHeaderProps {
   titleComponent: JSX.Element | string;
@@ -42,18 +43,17 @@ const AdminHeader = (props: IAdminHeaderProps & IStyledComponent) => {
   return (
     <div className={props.className} >
       <header className="main-header on-dark">
-        <div className="left-side">
+        <ol className="secondary-tools">
+          <PreviewToggle to={props.publicLink} />
+          <UserMenu />
+        </ol>      
+        <div className="main-area">
           {props.titleComponent || <HeaderTitle title="Please specificy title component" />}
-          <ol className="tabs-header">
-            {props.tabs}
-          </ol>
+          <div className="right-side"></div>
         </div>
-        <div className="right-side">
-          <ol className="secondary-tools">
-            <PreviewToggle to={props.publicLink} />
-            <UserMenu />
-          </ol>
-        </div>
+        <ol className="tabs-header">
+          {props.tabs}
+        </ol>
       </header>
     </div>
   );
@@ -66,102 +66,82 @@ export default styled(AdminHeader) `
 header.main-header {
   padding: 0 24px 8px 24px;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
 
-  .title-bar {
-    display: flex;
+  ol.secondary-tools {
+    margin: 0;
+    text-transform: uppercase;
+    text-align: right;
     
-    .organisation-logo {
-      flex-shrink: 0;
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-size: contain;
+    li {
+      padding: 8px 10px;
+      text-decoration: none;
+      display: inline-block;
 
       a {
-        text-overflow: ellipsis;
-        display: block;
-        overflow: hidden;
-        white-space: nowrap;
-      }      
+        font-size: 14px;
+      }
     }
   }
 
-  .right-side {
+  .main-area {
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
-    align-items: flex-end;
-
-    ol.secondary-tools {
-      margin: 0;
-      text-transform: uppercase;
+    
+    .title-bar {
+      display: flex;
       
-      li {
-        padding: 8px 10px;
-        text-decoration: none;
-        display: inline-block;
+      .organisation-logo {
+        flex-shrink: 0;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
 
         a {
-          font-size: 14px;
-        }
-        
-        &.user-menu {
-          position: relative;
-          padding-right: 16px;
-
-          &::after {
-            position: absolute;
-            right: 0px;
-            top: 10px;
-            content: "Í";
-            font-family: "iconfield-v03";
-            font-size: 14px;
-          }
-        }
-
-        &.public-view {
-          position: relative;
-          padding-left: 28px;
-          
-          &::before {
-            position: absolute;
-            content: " ";
-            width: 24px;
-            height: 24px;
-            top: 8px;
-            left: 0;
-            background-image: url(/images/icon-public-view@2x.png); 
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-size: 100% 100%;
-          }
-        }
+          text-overflow: ellipsis;
+          display: block;
+          overflow: hidden;
+          white-space: nowrap;
+        }      
       }
+    }
+
+    .right-side {
+      display: flex;
     }
   }
 }
 
 /* ----------------------------- dark admin version -----------------------*/
 
-.main-header.on-dark {
+header.main-header.on-dark {
   min-height: 128px;
   padding-bottom: 0;
-  color: #DEE1E7;
+  color: ${colors.bgAnthracite};
   background-color: #37404D;
   display: flex;
 
-  a {
-    color: #DEE1E7;
+  a,
+  h1 {
+    color: ${colors.shadowGrey};
   }
 
-  .left-side {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  ol.secondary-tools {
+
+    li::after {
+      color: ${colors.shadowGrey};
+    }
+   
+    li.public-view::before {
+      background-image: url(/images/icon-public-view@2x.png); 
+    }
+  }
+
+  .main-area {
 
     .title-bar {
       flex-grow: 2;
-      padding-top: 20px;
 
       .organisation-logo {
         position: relative;
@@ -191,37 +171,15 @@ header.main-header {
         font-weight: 800;
       }
     }
-
-    ol.tabs-header {
-      margin: 0;
-
-      li {
-        display: inline-block;
-        margin: 0 24px 0 0 ; 
-        border-bottom: 2px solid transparent;   
-
-        a {
-          font-size: 14px;
-          line-height: 36px;
-          text-transform: uppercase;
-          letter-spacing: 0.285px;
-        }
-
-        &.active,
-        &:hover {
-          border-bottom: 2px solid #1FABD9;           
-
-          a {
-            font-weight: 600;
-            letter-spacing: 0;
-          }
-        }
-      }
-    }
   }
- 
-  .right-side ol.secondary-tools li.public-view::before {
-    background-image: url(/images/icon-public-view@2x.png); 
+
+  ol.tabs-header {
+    margin: 0;
+    list-style: none;
+
+
+
+
   }
 }
 
