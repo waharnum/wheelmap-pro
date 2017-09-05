@@ -17,13 +17,13 @@ label,
   padding: 0 20px;
   text-transform: uppercase;
   color: white;
-  background-color: $cta-blue;
+  background-color: $cta-green;
   border-radius: 0;
   border: none;
   outline: 0;
 
   &:hover {
-    background-color: $cta-blue-lighter;
+    background-color: $cta-green-lighter;
   }
 }
 
@@ -59,7 +59,7 @@ form {
     
       &:focus,
       &:hover {
-        border: 1px solid $cta-blue;
+        border: 1px solid $cta-green;
         box-shadow: none;
         transition: 0.5s; 
       }
@@ -79,7 +79,7 @@ form {
     input,
     textarea {
       &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-        // color:blue !important;
+        // color:green !important;
         font-style: italic;
       }
       &::-moz-placeholder { /* Firefox 19+ */

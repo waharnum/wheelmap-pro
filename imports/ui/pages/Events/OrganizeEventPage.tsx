@@ -428,7 +428,7 @@ ol.event-timeline {
   li.enabled a,
   li.completed a {
     padding: 0;
-    color: ${colors.ctaBlue};
+    color: ${colors.ctaGreen};
     background-color: transparent;
   }
 

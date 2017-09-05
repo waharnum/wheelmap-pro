@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="55px" height="453px" viewBox="0 0 55 453" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>arrow-left</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="56" height="453"></rect>
+        <polygon id="path-3" points="-364 0.01171875 1 0.01171875 54.5 232.690707 1 454.15625 -364 454.15625"></polygon>
+    </defs>
+    <g id="3-layout2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="a01-landing-page" transform="translate(-284.000000, -658.000000)">
+            <g id="Steps" transform="translate(-80.000000, 637.000000)">
+                <g id="arrow-left" transform="translate(364.000000, 21.000000)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <g id="Mask"></g>
+                    <g id="Rectangle-Copy" mask="url(#mask-2)">
+                        <use fill="#9BBD40" fill-rule="evenodd" xlink:href="#path-3"></use>
+                        <path stroke="#FFFFFF" stroke-width="1" d="M-363.5,0.51171875 L-363.5,453.65625 L0.606403813,453.65625 L53.9863019,232.687874 L0.601918467,0.51171875 L-363.5,0.51171875 Z"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

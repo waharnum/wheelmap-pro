@@ -5,9 +5,11 @@
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="3-layout2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="a01-landing-page" transform="translate(-639.000000, -1326.000000)" stroke="#29A3CB">
-            <g id="hintLine" transform="translate(639.000000, 1326.000000)">
-                <path d="M159.905538,0 C169.262602,44.57041 157.399182,72.8877005 124.315277,84.9518717 C91.2313727,97.0160428 49.792947,97.0160428 0,84.9518717" id="Path-6"></path>
+        <g id="a01-landing-page" transform="translate(-639.000000, -1326.000000)" stroke="#F4F5F6">
+            <g id="Video" transform="translate(0.000000, 1102.000000)">
+                <g id="hintLine" transform="translate(639.000000, 224.000000)">
+                    <path d="M159.905538,0 C169.262602,44.57041 157.399182,72.8877005 124.315277,84.9518717 C91.2313727,97.0160428 49.792947,97.0160428 0,84.9518717" id="Path-6"></path>
+                </g>
             </g>
         </g>
     </g>

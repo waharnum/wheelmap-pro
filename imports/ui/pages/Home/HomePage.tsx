@@ -3,46 +3,53 @@ import * as React from 'react';
 import styled from 'styled-components';
 import Button from '../../components/Button';
 import { Link } from 'react-router';
+import { colors } from '../../stylesheets/colors';
 
 const HomePage = (props) => (
   <div className={`${props.className}`}>
     <header className="header beforeLogin onHomepage">
         <span className="logo">
-          <h1>{TAPi18n.__('make accessible maps')}</h1>
+          <h1>{TAPi18n.__('wheelmap.pro')}</h1>
         </span>
         <span className="loginState">
-          {!Meteor.user() ? <Link to="/signup" className="onDark">{TAPi18n.__('Sign Up')}</Link> : null}
-          {!Meteor.user() ? <Link to="/signin" className="onDark">{TAPi18n.__('Sign In')}</Link> : null}
+          {!Meteor.user() ? <Link to="/signup" className="onDark">{TAPi18n.__('Sign-Up')}</Link> : null}
+          {!Meteor.user() ? <Link to="/signin" className="onDark">{TAPi18n.__('Login')}</Link> : null}
           {Meteor.user() ? <Link to="/profile" className="onDark">{TAPi18n.__('Profile')}</Link> : null}
         </span> 
     </header>
     <div className="wrapper sawblade">
       <section className="hero-banner">
         <div className="wrapper">
-          <h2>{TAPi18n.__('Let’s build comunities to map and spread accessibity.')}</h2>
-          <p>{TAPi18n.__('We are a NGO that believes in an inclusive world. Our mission is to make accessibility information easier to find—wherever people need it. That’s why we want to encourage everybody to share this kind of data with each other.')}</p>
-          <Button to="/organizations/create" className="btn-primary">{TAPi18n.__('Start here')}</Button>
+          <div className="hero-image"></div>
+          <h2>{TAPi18n.__('Like Wheelmap but customized to fit your own community.')}</h2>
+          <p>{TAPi18n.__('Which public places are accessible for people with disabilities? Create your own mapping community and empower your volunteers to go out and mark the accessibility of places! Wheelmap Pro is a powerful tool with your own brand, your specific accessibility criteria and step-by-step action plans.')}</p>
+          <Button to="/organizations/create" className="btn-primary">{TAPi18n.__('Create your community')}</Button>
         </div>
       </section>
     </div>
-    <section className="explainSteps">
-      <article className="explainStep onBlue">
-        <h2>{TAPi18n.__('Step 1.')}</h2>
-        <p>{TAPi18n.__('Join one a community as a volunteer or start a new comunity. We help you to plan and organize mapping events for accessibility data.')}</p>
-      </article>
-      <article className="explainStep onGreen">
-        <h2>{TAPi18n.__('Step 2.')}</h2>
-        <p>{TAPi18n.__('Invite volunteers to mapping-events where groups investigate an area for its accessibility.')}</p>
-      </article>
-      <article className="explainStep onYellow">
-        <h2>{TAPi18n.__('Step 3.')}</h2>
-        <p>{TAPi18n.__('This gathered information can then be shared publictly to help people with with and without disabilities to navigate the world.')}</p>
-      </article>
-    </section>
-    <div className="wrapper onLightGrey">
+    <div className="wrapper onGreen">
+      <section className="explainSteps">
+        <article className="explainStep step1">
+          <h2>{TAPi18n.__('Step 1.')}</h2>
+          <p>{TAPi18n.__('Start a new mapping community or join a community as a volunteer. We help you plan and organize successful mapping events for collecting accessibility data.')}</p>
+          <img src="/images/comic-step1@2x.png" width="246px" height="202px"></img>
+        </article>
+        <article className="explainStep step2">
+          <h2>{TAPi18n.__('Step 2.')}</h2>
+          <p>{TAPi18n.__('Invite volunteers to mapping events during which groups evaluate the accessibility of local public places.')}</p>
+          <img src="/images/comic-step2@2x.png" width="246px" height="202px"></img>
+        </article>
+        <article className="explainStep step3">
+          <h2>{TAPi18n.__('Step 3.')}</h2>
+          <p>{TAPi18n.__('The accessibility information which your community gathers can then be shared publicly to help people with and without disabilities to navigate the world.')}</p>
+          <img src="/images/comic-step3@2x.png" width="246px" height="202px"></img>
+        </article>
+      </section>
+    </div>
+    <div className="wrapper onDarkGrey">
       <section className="videoIntroduction">
         <h2>{TAPi18n.__('Watch a short video introduction.')}</h2>
-        <div className="Media">
+        <div className="media">
           <div className="media-left">
           </div>
         </div>
@@ -68,6 +75,9 @@ const HomePage = (props) => (
 
 export default styled(HomePage) `
 
+  overflow: auto;
+  width: 100%;
+
   .alert {
     position: absolute;
     top: 10px;
@@ -79,8 +89,9 @@ export default styled(HomePage) `
 
   h1, 
   h2 {
+    color: ${colors.bgAnthracite};
     font-weight: 800;
-    font-size: 36px;
+    font-size: 28px;
   }
 
   header,
@@ -90,30 +101,21 @@ export default styled(HomePage) `
     margin-right: auto;
   }
 
-  header {
+  header.onHomepage {
     display: flex;
     justify-content: space-between;
 
     span.logo {
-      max-width: 200px;
-      position: relative;
-      padding-left: 72px;
-      
-      &:before {
-        content: " ";
-        width: 57px;
-        height: 86px;
-        position: absolute;
-        left: 10px;
-        top: 20px;
-        background-image: url(/images/logo-balloon@2x.png); 
-        background-position: top center;
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
-      }
+      content: " ";
+      width: 309px;
+      height: 82px;
+      background-image: url(/images/logo-wheelmappro@2x.png); 
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;     
 
       h1 {
-        word-spacing: 10000px; 
+        visibility: hidden;
         font-size: 24px;
         line-height: 24px !important;
         font-weight: 800 !important;
@@ -122,8 +124,14 @@ export default styled(HomePage) `
     }
 
     span.loginState {
-      padding: 20px 0;
-      color: red;
+      padding-top: 10px;   
+
+      a {
+        display: inline-block;
+        color: ${colors.bgAnthracite};
+        padding: 20px 10px;
+        text-transform: uppercase;
+      }
     }
   }
   
@@ -135,11 +143,25 @@ export default styled(HomePage) `
     image-rendering: -moz-crisp-edges; /* Prevents Firefox from pixeling edges */
 
     section.hero-banner {
-      min-height: 640px;
       padding: 0 20px 20px 20px;
       text-align: center;
-      display: flex;
-      align-items: flex-end;
+
+      .wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-items: flex-end;
+        align-items: center;
+      }
+
+      .hero-image {
+        content: " ";
+        width: 491px;
+        height: 244px;
+        background-image: url(/images/comic-hero@2x.png); 
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
 
       p {
         font-weight: 400;
@@ -152,84 +174,108 @@ export default styled(HomePage) `
     }
   }
 
-  section.explainSteps {
-    display: flex;
+  .wrapper.onGreen {
+    background-color: ${colors.ctaGreen};
 
-    article {
-      flex-basis: 33.33%;
-      padding: 0 20px 20px 20px;
-      position: relative;
-
-      &:after {
+    section.explainSteps {
+      display: flex;
+      flex-wrap: wrap; 
+      
+      &:last-child: {
+        border: none;
+      }
+      
+      .explainStep {
         position: relative;
-        content: " ";
-        width: 256px;
-        height: 160px;
-        bottom: 0;
-        background-image: url(/images/image-placeholder.png); 
-        background-position: center center;
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
+        padding: 0 20px;
+
+        h2,
+        p {
+          color: white;
+        }
+        
+        p { 
+          font-weight: 400;
+        }
+      }
+      
+      .step1 {
+        background-color: ${colors.ctaGreen};
+      }
+    
+      .step2 {
+        // background-color: #A8CC45;
+      }
+    
+      .step3 {
+        // background-color: #B1D649;
       }
 
+      article {
+        flex-basis: 33.33%;
+        padding: 0 20px 20px 20px;
+        position: relative;
+
+        &:after {
+          position: relative;
+          content: " ";
+          width: 256px;
+          height: 160px;
+          bottom: 0;
+          background-image: url(/images/image-placeholder.png); 
+          background-position: center center;
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+        }
+      }
     }
   }
-  
-  .onBlue {
-    background-color: #C6E7E0;
-  }
 
-  .onGreen {
-    background-color: #E6EFC6;
-  }
-
-  .onYellow {
-    background-color: #F7E9AD;
-  }
-
-  .onLightGrey {
-    background-color: #E1E2E4;
-  }
-
-  .onDarkGrey {
-    background-color: #37404D;
+  .onDarkGrey  {
+    color: white;
+    background-color: ${colors.bgAnthracite};
   }
 
   section.videoIntroduction {
     padding: 42px 20px;
     display: flex;
     flex-direction: row-reverse;
+    // flex-wrap: wrap-reverse;
 
     h2 {
+      color: white;
       position: relative;
-      color: #29A3CB;
       font-weight: 200;
       font-size: 28px;
       text-align: center;
 
-      &:after {
+      &:after { /* curved line */
         position: absolute;
         content: " ";
         width: 164px;
         height: 95px;
         top: 60px;
-        left: 0;
+        left: 20px;
         background-image: url(/images/hintLine.svg); 
         background-position: center center;
         background-repeat: no-repeat;
         background-size: 100% 100%;
+        opacity: 0.5;
       }
     }
 
-    .media-left {
-      flex-basis: 557px;
-      content: " ";
-      width: 557px;
-      height: 348px;
-      background-image: url(/images/videoPreview@2x.png); 
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-size: 100% 100%;
+    .media {
+      margin: auto;
+
+      .media-left {
+        content: " ";
+        width: 557px;
+        height: 348px;
+        background-image: url(/images/videoPreview@2x.png); 
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
     }
   }
 

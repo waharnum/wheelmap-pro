@@ -1,10 +1,10 @@
 // colors need to be tweaked in this file and also in colors.scss !!!!
 
 export const colors = {
-  bgGrey: '#F2F3F5',                // light grey in background
+  bgGrey: '#F4F5F6',                // light grey in background
   bgAnthracite: '#37404D',          // anthracite used in admin headers
-  ctaBlue: '#1FABD9',               // primary button color
-  ctaBlueLighter: '#29A3CB',        // primary button hover color
+  ctaGreen: '#9BBD40',               // primary button color
+  ctaGreenLighter: '#A5C353',        // primary button hover color
   ctaDisabledGrey: '#CBCED3',       // primary button disabled
   errorRed: '#C30400',              // main error color 
   activeOrange: '#F5A623',          // in event timeline
