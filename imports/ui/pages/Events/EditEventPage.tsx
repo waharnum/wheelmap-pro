@@ -8,7 +8,7 @@ import { IEvent, Events } from '../../../both/api/events/events';
 import AdminTab from '../../components/AdminTab';
 import EventBaseForm, { IEventBaseFormProps } from './EventBaseForm';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
-import AdminHeader from '../../components/AdminHeader';
+import AdminHeader, { HeaderTitle } from '../../components/AdminHeader';
 
 import { reactiveModelSubscriptionById, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
 
@@ -22,7 +22,7 @@ class EditEventForm extends React.Component<
     return (
       <ScrollableLayout className={this.props.className}>
         <AdminHeader
-          titleComponent={<h1>Edit Event</h1>}
+          titleComponent={<HeaderTitle title="Edit Event" />}
           tabs={(
             <div>
               <AdminTab to={`/events/${this.props.model._id}/organize`} title="Dashboard" />

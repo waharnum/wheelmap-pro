@@ -4,8 +4,8 @@ import * as React from 'react';
 import { browserHistory } from 'react-router';
 
 import AdminTab from '../../components/AdminTab';
-import AdminHeader from '../../components/AdminHeader';
 import { IStyledComponent } from '../../components/IStyledComponent';
+import AdminHeader, { HeaderTitle } from '../../components/AdminHeader';
 
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 
@@ -20,7 +20,7 @@ const CreateOrganizationPage = (props: ICreateOrganizationFormProps & IStyledCom
   return (
     <ScrollableLayout className={props.className}>
       <AdminHeader
-        titleComponent={<h1>{TAPi18n.__('Create Organization')}</h1>}
+        titleComponent={<HeaderTitle title="Create Organization" />}
         tabs={(
           <section>
             <AdminTab to="/" title={TAPi18n.__('Dashboard')}/>

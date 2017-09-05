@@ -8,7 +8,7 @@ import { IOrganization, Organizations } from '../../../both/api/organizations/or
 import AdminTab from '../../components/AdminTab';
 import OrganizationBaseForm, { IOrganizationBaseFormProps } from './OrganizationBaseForm';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
-import AdminHeader from '../../components/AdminHeader';
+import AdminHeader, { HeaderTitle } from '../../components/AdminHeader';
 
 import { reactiveModelSubscriptionById, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
 
@@ -22,7 +22,7 @@ class EditOrganizationForm extends React.Component<
     return (
       <ScrollableLayout className={this.props.className}>
         <AdminHeader
-          titleComponent={<div className="title-bar"><h1>Edit Organization</h1></div>}
+          titleComponent={<HeaderTitle title="Edit Organization" />}
           tabs={(
             <div>
               <AdminTab to={`/organizations/${this.props.model._id}/organize`} title="Dashboard" />

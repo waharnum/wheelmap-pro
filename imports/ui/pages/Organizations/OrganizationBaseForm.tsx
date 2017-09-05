@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { browserHistory } from 'react-router';
 
 import AutoForm from 'uniforms-bootstrap3/AutoForm';
 import AutoFields from 'uniforms-bootstrap3/AutoFields';
@@ -65,6 +66,7 @@ class OrganizationBaseForm extends React.Component<IOrganizationBaseFormProps & 
         onChangeModel={this.onChangeModel}>
         <AutoFields fields={['name', 'description', 'webSite', 'logo', 'tocForOrganizationsAccepted']} />
         <SubmitField />
+        <button className="btn btn-default" onClick={browserHistory.goBack}>Cancel</button>
       </AutoForm>
     </div>);
   }

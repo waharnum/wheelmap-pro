@@ -1,11 +1,11 @@
-import { TAPi18n } from 'meteor/tap:i18n';
 import styled from 'styled-components';
 import * as React from 'react';
+import { TAPi18n } from 'meteor/tap:i18n';
 import { browserHistory } from 'react-router';
 
 import AdminTab from '../../components/AdminTab';
-import AdminHeader from '../../components/AdminHeader';
 import { IStyledComponent } from '../../components/IStyledComponent';
+import AdminHeader, { HeaderTitle } from '../../components/AdminHeader';
 
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 
@@ -20,7 +20,7 @@ const CreateEventPage = (props: ICreateEventFormProps & IStyledComponent) => {
   return (
     <ScrollableLayout className={props.className}>
       <AdminHeader
-        titleComponent={<h1>{TAPi18n.__('Create Event')}</h1>}
+        titleComponent={<HeaderTitle title="Create Event" />}
         tabs={(
           <section>
             <AdminTab to="/" title={TAPi18n.__('Dashboard')}/>

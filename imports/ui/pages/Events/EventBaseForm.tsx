@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { browserHistory } from 'react-router';
 
 import AutoForm from 'uniforms-bootstrap3/AutoForm';
 import AutoFields from 'uniforms-bootstrap3/AutoFields';
@@ -59,6 +60,7 @@ class EventBaseForm extends React.Component<IEventBaseFormProps & IStyledCompone
         <AutoFields fields={['name', 'description', 'regionName', 'startTime',
             'verifyGpsPositionsOfEdits', 'visibility']} />
         <SubmitField />
+        <button className="btn btn-default" onClick={browserHistory.goBack}>Cancel</button>
       </AutoForm>
     </div>);
   }
