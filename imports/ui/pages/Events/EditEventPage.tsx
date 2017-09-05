@@ -1,3 +1,4 @@
+import EventTabs from './EventTabs';
 import { wrapDataComponent } from '../../components/AsyncDataComponent';
 import styled from 'styled-components';
 import * as React from 'react';
@@ -23,14 +24,7 @@ class EditEventForm extends React.Component<
       <ScrollableLayout className={this.props.className}>
         <AdminHeader
           titleComponent={<HeaderTitle title="Edit Event" />}
-          tabs={(
-            <div>
-              <AdminTab to={`/events/${this.props.model._id}/organize`} title="Dashboard" />
-              <AdminTab to={`/events/statistics/${this.props.model._id}`} title="Statistics" />
-              <AdminTab to="" title="Customize" active={true} />
-              <AdminTab to={`/events/${this.props.model._id}/members`} title="Members" />
-            </div>
-          )}
+          tabs={<EventTabs id={this.props.model._id || ''}/>}
         />
         <div className="content-area scrollable">
           <EventBaseForm

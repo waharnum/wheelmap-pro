@@ -20,7 +20,7 @@ import {wrapDataComponent} from '../../components/AsyncDataComponent';
 
 const determineCssClassesFromEventStatus = (event: IEvent) => {
   const invited: number = 10; // event.invitationCount();
-  const hasPicture = true;
+  const hasPicture = !!event.photoUrl;
   const wasPublished = true;
 
   switch (event.status) {
@@ -119,7 +119,7 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IPageModel > & IStyledCo
             prefixLink={`/organizations/${event.organizationId}/organize`}
           />
         )}
-        tabs={(<EventTabs />)}
+        tabs={(<EventTabs id={event._id || ''} />)}
         publicLink={`/events/${event._id}`}
       />
       <div className="content-area scrollable">
