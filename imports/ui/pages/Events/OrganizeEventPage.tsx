@@ -1,3 +1,4 @@
+import { IOrganization } from '../../../both/api/organizations/organizations';
 import * as moment from 'moment';
 import * as React from 'react';
 import styled from 'styled-components';
@@ -9,7 +10,7 @@ import ScrollableLayout from '../../layouts/ScrollableLayout';
 import AdminTab from '../../components/AdminTab';
 import { default as AdminHeader, HeaderTitle } from '../../components/AdminHeader';
 
-import { reactiveModelSubscriptionById, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
+import { reactiveSubscriptionById, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
 import { Events, EventStatusEnum, IEvent } from '../../../both/api/events/events';
 import { IStyledComponent } from '../../components/IStyledComponent';
 import Button from '../../components/Button';
@@ -96,42 +97,32 @@ const determineCssClassesFromEventStatus = (event: IEvent) => {
   }
 };
 
-const OrganizeEventPage = (props: IAsyncDataByIdProps < IEvent > & IStyledComponent & { now: moment.Moment}) => {
-  const model = props.model || {
-    _id: '123',
-    name: 'Mapathon Montreal',
-    description: `We are an international organization for medical emergency relief. 
-    We provide medical emergency assistance in crisis and war zones. 
-    We collect medical facilities such as doctors, pharmacies and hospitals.`,
-    regionName: 'Montreal',
-    startTime: new Date('2017-10-10 12:10:12'),
-    endTime: new Date('2017-10-10 15:10:12'),
-    webSiteUrl: 'https://eventbrite.com',
-    photoUrl: 'http://payload487.cargocollective.com/1/14/476606/12056934/prt_400x400_1483600669.jpg',
-    invitationToken: '2a2fa3sdf4d34',
-    verifyGpsPositionsOfEdits: true,
-    targets: {
-      mappedPlacesCount: 100,
-    },
-    status: 'planned',
-    visibility: 'public',
-  };
+interface IPageModel {
+  event: IEvent;
+  organization: IOrganization;
+}
 
-  const stepStates = determineCssClassesFromEventStatus(model);
+const OrganizeEventPage = (props: IAsyncDataByIdProps < IPageModel > & IStyledComponent & { now: moment.Moment}) => {
+  console.log(props);
+
+  const event = props.model.event;
+  const organization = props.model.organization;
+
+  const stepStates = determineCssClassesFromEventStatus(event);
 
   return (
     <ScrollableLayout className={props.className}>
       <AdminHeader
         titleComponent={(
           <HeaderTitle
-            title={model.name}
-            prefixTitle={model.organizationId as string} // TODO: Use organization name here.
-            logo={model.photoUrl} // TODO: Use organization logo here. Needs another subscription for this, sadly :>
-            prefixLink={`/organizations/${props.model.organizationId}/organize`}
+            title={event.name}
+            prefixTitle={organization.name as string}
+            logo={organization.logo}
+            prefixLink={`/organizations/${event.organizationId}/organize`}
           />
         )}
         tabs={(<EventTabs />)}
-        publicLink={`/events/${props.model._id}`}
+        publicLink={`/events/${event._id}`}
       />
       <div className="content-area scrollable">
         <div className="event-stats">
@@ -141,16 +132,16 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IEvent > & IStyledCompon
           </section>
           <section className="event-countdown">
             <span className="days-countdown">
-              {moment(model.startTime).diff(props.now, 'days')}<small>days</small>
+              {moment(event.startTime).diff(props.now, 'days')}<small>days</small>
               </span>
             <span className="hours-countdown">
-              {moment(model.startTime).diff(props.now, 'hours') % 24}<small>hours</small>
+              {moment(event.startTime).diff(props.now, 'hours') % 24}<small>hours</small>
               </span>
             <span className="minutes-countdown">
-              {moment(model.startTime).diff(props.now, 'minutes') % 60}<small>minutes</small>
+              {moment(event.startTime).diff(props.now, 'minutes') % 60}<small>minutes</small>
             </span>
             <span className="seconds-countdown">
-              {moment(model.startTime).diff(props.now, 'seconds') % 60}<small>seconds</small>
+              {moment(event.startTime).diff(props.now, 'seconds') % 60}<small>seconds</small>
             </span>
           </section>
           <section className="location-stats">
@@ -163,19 +154,19 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IEvent > & IStyledCompon
             <div className="notification-completed">Event created successfully.</div>
             <div className={props.className + ' step-details'}>
               <div className="event-name">
-                {model.name}
-                <Button to={`/events/${model._id}/edit`}>Edit</Button>
+                {event.name}
+                <Button to={`/events/${event._id}/edit`}>Edit</Button>
               </div>
-              <div className="event-description">{model.description}</div>
-              <div className="event-date">{moment(model.startTime).format('LLLL')}</div>
-              <div className="event-location">{model.regionName}</div>
+              <div className="event-description">{event.description}</div>
+              <div className="event-date">{moment(event.startTime).format('LLLL')}</div>
+              <div className="event-location">{event.regionName}</div>
             </div>
           </li>
           <li className={'event-timeline-step invite-participants ' + stepStates.inviteParticipants}>
             <div className="notification-completed">3 invitations sent.</div>
             <div className="step-status">
               <h3>No participants invited.</h3>
-              <Button className="btn-primary" to={`/events/${model._id}/participants`}>Invite participants</Button>
+              <Button className="btn-primary" to={`/events/${event._id}/participants`}>Invite participants</Button>
             </div>
           </li>
           <li className={'event-timeline-step organizer-tips ' + stepStates.organizerTips}>
@@ -212,14 +203,14 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IEvent > & IStyledCompon
             </div>
             <div className="step-status step-active">
               <h3>Set event picture</h3>
-              <Button to={`/events/${model._id}/edit`}>Set</Button>
+              <Button to={`/events/${event._id}/edit`}>Set</Button>
             </div>
             <div className="step-status step-completed">
               <section>
                 <h3>Event picture was set</h3>
-                <Button to={`/events/${model._id}/edit`}>Edit</Button>
+                <Button to={`/events/${event._id}/edit`}>Edit</Button>
               </section>
-              <img src={model.photoUrl} />
+              <img src={event.photoUrl} />
             </div>
           </li>
           <li className={'event-timeline-step share-results ' + stepStates.shareResults}>
@@ -229,11 +220,11 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IEvent > & IStyledCompon
             </div>
             <div className="step-status step-active">
               <h3>Share results</h3>
-              <Button to={`/events/${model._id}`}>Share</Button>
+              <Button to={`/events/${event._id}`}>Share</Button>
             </div>
             <div className="step-status step-completed">
               <h3>Shared results</h3>
-              <Button to={`/events/${model._id}`}>View</Button>
+              <Button to={`/events/${event._id}`}>View</Button>
             </div>
           </li>
         </ol>
@@ -242,11 +233,17 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IEvent > & IStyledCompon
   );
 };
 
-const ReactiveOrganizeOrganisationsPage = reactiveModelSubscriptionById(
-  wrapDataComponent<IEvent, IAsyncDataByIdProps<IEvent | null>,
-                            IAsyncDataByIdProps<IEvent>>(
-                            withTime(OrganizeEventPage, 1000)),
-  Events, 'events.by_id');
+const ReactiveOrganizeOrganisationsPage = reactiveSubscriptionById(
+  wrapDataComponent<IPageModel,
+      IAsyncDataByIdProps<IPageModel | null>,
+      IAsyncDataByIdProps<IPageModel>>(
+          withTime(OrganizeEventPage, 1000)),
+  (id) : IPageModel => {
+    // TODO: this can be optimized by being smarter about what to query
+    const event = Events.findOne(id);
+    const organization = event.getOrganization();
+    return { event, organization };
+  }, 'events.by_id', 'organizations.my.private');
 
 export default styled(ReactiveOrganizeOrganisationsPage) `
 
