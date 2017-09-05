@@ -112,11 +112,12 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IPageModel > & IStyledCo
     <ScrollableLayout className={props.className}>
       <AdminHeader
         titleComponent={(
+          // TODO: Move to shared component
           <HeaderTitle
             title={event.name}
             prefixTitle={organization.name as string}
             logo={organization.logo}
-            prefixLink={`/organizations/${event.organizationId}/organize`}
+            prefixLink={`/organizations/${organization._id}/organize`}
           />
         )}
         tabs={(<EventTabs id={event._id || ''} />)}

@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import * as React from 'react';
 import { browserHistory } from 'react-router';
 
-import { IStyledComponent } from '../../components/IStyledComponent';
-import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
 import AdminTab from '../../components/AdminTab';
-import OrganizationBaseForm, { IOrganizationBaseFormProps } from './OrganizationBaseForm';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
+import OrganizationsTabs from './OrganizationsTabs';
+import { IStyledComponent } from '../../components/IStyledComponent';
 import AdminHeader, { HeaderTitle } from '../../components/AdminHeader';
+import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
+import OrganizationBaseForm, { IOrganizationBaseFormProps } from './OrganizationBaseForm';
 
 import { reactiveModelSubscriptionById, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
 
@@ -23,14 +24,7 @@ class EditOrganizationForm extends React.Component<
       <ScrollableLayout className={this.props.className}>
         <AdminHeader
           titleComponent={<HeaderTitle title="Edit Organization" />}
-          tabs={(
-            <div>
-              <AdminTab to={`/organizations/${this.props.model._id}/organize`} title="Dashboard" />
-              <AdminTab to={`/organizations/statistics/${this.props.model._id}`} title="Statistics" />
-              <AdminTab to="" title="Customize" active={true} />
-              <AdminTab to={`/organizations/${this.props.model._id}/members`} title="Members" />
-            </div>
-          )}
+          tabs={<OrganizationsTabs id={this.props.model._id || ''}/>}
         />
         <div className="content-area scrollable">
           <OrganizationBaseForm
