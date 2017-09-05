@@ -1,12 +1,14 @@
 import {Organizations, IOrganization} from '../organizations/organizations';
 import {getDisplayedNameForUser} from '../../lib/user-name';
 import {getIconHTMLForUser, getGravatarImageUrl} from '../../lib/user-icon';
+import {userHasFullAccessToReferencedOrganization} from '../organizations/privileges';
 
 export interface IOrganizationMemberMixin {
   getOrganization: () => IOrganization;
   getUser: () => Meteor.User;
   getUserName: () => string;
   getIconHTML: () => string;
+  editableBy: (userId: Mongo.ObjectID) => boolean;
 }
 
 export const OrganizationMemberMixin = {
@@ -25,5 +27,8 @@ export const OrganizationMemberMixin = {
       return getIconHTMLForUser(this.getUser());
     }
     return `<img src="${getGravatarImageUrl(this.gravatarHash)}" class='user-icon'>`;
+  },
+  editableBy(userId: Mongo.ObjectID) {
+    return userHasFullAccessToReferencedOrganization(userId, this);
   },
 } as IOrganizationMemberMixin;
