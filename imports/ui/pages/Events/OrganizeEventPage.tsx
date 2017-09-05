@@ -103,8 +103,6 @@ interface IPageModel {
 }
 
 const OrganizeEventPage = (props: IAsyncDataByIdProps < IPageModel > & IStyledComponent & { now: moment.Moment}) => {
-  console.log(props);
-
   const event = props.model.event;
   const organization = props.model.organization;
 
