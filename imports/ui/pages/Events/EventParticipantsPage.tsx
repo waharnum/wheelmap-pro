@@ -30,6 +30,7 @@ const CustomSubmitField = (props) => <SubmitField value="Send invites" />;
 class EventParticipantsPage extends React.Component<
     IAsyncDataByIdProps<IPageModel> & IStyledComponent> {
 
+  public state = { isSaving: false };
   private formRef: AutoForm;
 
   public render(): JSX.Element {
@@ -58,6 +59,7 @@ class EventParticipantsPage extends React.Component<
             <AutoForm
               placeholder={true}
               showInlineError={true}
+              disabled={this.state.isSaving}
               schema={invitationsListSchema}
               submitField={CustomSubmitField}
               onSubmit={this.onSubmit}
@@ -71,17 +73,25 @@ class EventParticipantsPage extends React.Component<
       </ScrollableLayout>
     );
   }
+
   private onSubmit = (doc: {invitationEmailAddresses: string[]}) => {
-
-    Meteor.call('eventParticipants.invite', {
-      invitationEmailAddresses: uniq(doc.invitationEmailAddresses), // remove all dupes
-      eventId: this.props.model.event._id,
-    }, (error, result) => {
-
-      console.log(this.formRef, error, result);
-      // wtf
-      // this.formRef.reset();
-      // this.formRef.change('invitationEmailAddresses', ['']);
+    this.setState({isSaving: true});
+    return new Promise((resolve, reject) => {
+      Meteor.call('eventParticipants.invite', {
+        // remove all dupes and null values
+        invitationEmailAddresses: uniq(doc.invitationEmailAddresses).filter(Boolean),
+        eventId: this.props.model.event._id,
+      }, (error) => {
+        this.setState({isSaving: false});
+        if (!error) {
+          resolve(true);
+        } else {
+          reject(error);
+        }
+      });
+    }).then(() => {
+      this.formRef.setState({ validate: false });
+      this.formRef.change('invitationEmailAddresses', ['']);
     });
   }
 }
