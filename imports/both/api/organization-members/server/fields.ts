@@ -13,7 +13,7 @@ export const OrganizationMembersPublicFields = {
 };
 
 // all members that the given userId can see
-export const OrganizationMemberVisibleForUserIdSelector = (userId: Mongo.ObjectID) => {
+export const OrganizationMemberVisibleForUserIdSelector = (userId: Mongo.ObjectID): Mongo.Selector | null => {
   if (!userId) {
     return null;
   }
@@ -23,7 +23,7 @@ export const OrganizationMemberVisibleForUserIdSelector = (userId: Mongo.ObjectI
 };
 
 // all organizations that the given userId can see
-export const OrganizationVisibleForUserIdSelector = (userId: Mongo.ObjectID) => {
+export const OrganizationVisibleForUserIdSelector = (userId: Mongo.ObjectID): Mongo.Selector | null => {
   if (!userId) {
     return null;
   }
@@ -33,7 +33,7 @@ export const OrganizationVisibleForUserIdSelector = (userId: Mongo.ObjectID) => 
 };
 
 // TODO: clarify what APP selectors are actually used for
-export const OrganizationMembersVisibleForAppIdSelector = (appId: Mongo.ObjectID) => {
+export const OrganizationMembersVisibleForAppIdSelector = (appId: Mongo.ObjectID): Mongo.Selector => {
   const app = Apps.findOne(appId);
   return { organizationId: app.organizationId };
 };

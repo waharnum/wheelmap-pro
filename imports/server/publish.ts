@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
 export interface IPublicationFields { [id: string]: number; };
-export type SelectorFunction = (userId: Mongo.ObjectID) => object | null;
+export type SelectorFunction = (userId: Mongo.ObjectID) => Mongo.Selector | null;
 
 export const publishAndLog = (name: string, publishFunction: Function) => {
   console.log('Publishing', name, '…');
@@ -19,13 +19,20 @@ const publishFields = (
   options: object = {},
 ) => {
   publishAndLog(
-    `${publicationName}`,
+    publicationName,
     function publish() {
       const visibleSelector = documentVisibleSelectorForUserId(this.userId);
 
-      const selector = visibleSelector ? { $and: [visibleSelector].filter(Boolean) } : {};
+      // Leave in for debugging rights issues
+      // if (!visibleSelector) {
+      //   console.log('Received null selector for', publicationName);
+      // } else {
+      //   console.log('Using selector', visibleSelector, 'for', publicationName);
+      // }
+
       return collection.find(
-        selector,
+        // if there is no selector, search with a selector that will yield nothing
+        visibleSelector || {_id: -1},
         Object.assign({}, options, { fields: publicFields }),
       );
     },

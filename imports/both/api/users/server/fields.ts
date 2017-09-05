@@ -8,19 +8,19 @@ import { OrganizationMembers } from '../../organization-members/organization-mem
 import { Organizations, getActiveOrganizationId } from '../../organizations/organizations';
 import { OrganizationMemberVisibleForUserIdSelector } from '../../organization-members/server/fields';
 
-// FIXME: this publishes ALL email addresses to all users!
 export const UserPublicFields = {
   'emails.address': 1,
-  'emails.verified': 1,
   'services.facebook.id': 1,
   'services.google.picture': 1,
   'services.twitter.profile_image_url_https': 1,
-  'isApproved': 1,
-  'isAdmin': 1,
-  'profile': 1,
+  'profile.gravatarHash': 1,
 };
 
-function getUserSelectorForMemberSelector(selector) {
+function getUserSelectorForMemberSelector(selector: Mongo.Selector | null): Mongo.Selector | null {
+  if (!selector) {
+    return null;
+  }
+
   const members = OrganizationMembers.find(
     selector,
     { fields: { userId: 1 } },
@@ -28,16 +28,16 @@ function getUserSelectorForMemberSelector(selector) {
   return { _id: { $in: compact(uniq(map(members, ((m) => m.userId)))) } };
 }
 
-export const UserVisibleSelectorForUserIdSelector = (userId: Mongo.ObjectID) => {
-  getUserSelectorForMemberSelector(OrganizationMemberVisibleForUserIdSelector(userId));
+export const UserVisibleSelectorForUserIdSelector = (userId: Mongo.ObjectID): Mongo.Selector | null => {
+  return getUserSelectorForMemberSelector(OrganizationMemberVisibleForUserIdSelector(userId));
 };
 
-export const UserVisibleSelectorForAppIdSelector = (appId: Mongo.ObjectID) => {
+export const UserVisibleSelectorForAppIdSelector = (appId: Mongo.ObjectID): Mongo.Selector | null => {
   const app = Apps.findOne(appId);
   return getUserSelectorForMemberSelector({ organizationId: app.organizationId });
 };
 
-export const ActiveOrganizationForUserIdSelector = (userId: Mongo.ObjectID) => {
+export const ActiveOrganizationForUserIdSelector = (userId: Mongo.ObjectID): Mongo.Selector | null => {
   if (!userId) {
     return null;
   }
