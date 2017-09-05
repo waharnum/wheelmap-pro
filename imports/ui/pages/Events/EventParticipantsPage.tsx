@@ -26,6 +26,9 @@ interface IPageModel {
 
 class EventParticipantsPage extends React.Component<
     IAsyncDataByIdProps<IPageModel> & IStyledComponent> {
+
+  private formRef: AutoForm;
+
   public render(): JSX.Element {
     const event = this.props.model.event;
     const organization = this.props.model.organization;
@@ -55,6 +58,7 @@ class EventParticipantsPage extends React.Component<
               schema={invitationsListSchema}
               submitField={() => (<button className="btn btn-primary">Send invites</button>)}
               onSubmit={this.onSubmit}
+              ref={(ref) => this.formRef = ref}
             />
            </div>
            <div className="content-right">
@@ -65,9 +69,16 @@ class EventParticipantsPage extends React.Component<
     );
   }
   private onSubmit = (doc: {invitationEmailAddresses: string[]}) => {
+
     Meteor.call('eventParticipants.invite', {
       invitationEmailAddresses: uniq(doc.invitationEmailAddresses), // remove all dupes
       eventId: this.props.model.event._id,
+    }, (error, result) => {
+
+      console.log(this.formRef, error, result);
+      // wtf
+      // this.formRef.reset();
+      // this.formRef.change('invitationEmailAddresses', ['']);
     });
   }
 }
@@ -79,7 +90,7 @@ const ReactiveEventParticipantsPage = reactiveSubscriptionById(
   (id) : IPageModel => {
     // TODO: this can be optimized by being smarter about what to query
     const event = Events.findOne(id);
-    const participants = event.getParticipants();
+    const participants = event.getParticipants() || [];
     const organization = event.getOrganization();
     return { event, participants, organization };
   }, 'events.by_id', 'eventParticipants.by_eventId', 'organizations.my.private');
@@ -93,7 +104,10 @@ export default styled(ReactiveEventParticipantsPage) `
 
   .panel-body {    
     > div:nth-of-type(2) .badge {
-      display: none;
+      background: none;
+      i {
+        display: none;
+      }
     }
   }
 `;

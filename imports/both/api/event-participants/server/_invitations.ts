@@ -3,14 +3,14 @@ import { EventParticipants, IEventParticipant } from '../event-participants';
 import { Random } from 'meteor/random';
 import { getGravatarHashForEmailAddress } from '../../../lib/user-icon';
 
-export function insertDraftParticipant(emailAddress: string, eventId: Mongo.ObjectID): IEventParticipant {
+export function insertDraftParticipant(invitationEmailAddress: string, eventId: Mongo.ObjectID): IEventParticipant {
   const participant = {
     eventId,
     userId: null, // empty as not existing when invited
     invitationToken: Random.secret(),
-    invitationEmailAddress: emailAddress,
+    invitationEmailAddress,
     invitationState: 'draft',
-    gravatarHash: getGravatarHashForEmailAddress(emailAddress),
+    gravatarHash: getGravatarHashForEmailAddress(invitationEmailAddress),
   } as IEventParticipant;
 
   const id = EventParticipants.insert(participant);

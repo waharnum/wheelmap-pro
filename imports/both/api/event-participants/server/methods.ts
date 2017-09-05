@@ -3,7 +3,7 @@ import { EventParticipantInviteSchema } from '../schema';
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Events } from '../../events/events';
-import { userHasFullAccessToOrganization } from '../../organizations/privileges';
+import { userHasFullAccessToOrganizationId } from '../../organizations/privileges';
 import { EventParticipants } from '../event-participants';
 import { TAPi18n } from 'meteor/tap:i18n';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
@@ -26,20 +26,22 @@ export const insert = new ValidatedMethod({
       throw new Meteor.Error(404, TAPi18n.__('Event not found'));
     }
 
-    const organization = event.getOrganization();
-    if (!organization) {
-      throw new Meteor.Error(404, TAPi18n.__('Event does not belong to an existing organization'));
-    }
-
-    if (!userHasFullAccessToOrganization(this.userId, organization)) {
+    if (!userHasFullAccessToOrganizationId(this.userId, event.organizationId)) {
       throw new Meteor.Error(403,
         TAPi18n.__('You are not authorized to invite users to this organization.'));
     }
 
-    // TODO: add actually sending emails when the state of the event is already past draft!
-
-    return invitationEmailAddresses.map((address) => {
-      return insertDraftParticipant(address, eventId);
+    const result = invitationEmailAddresses.map((invitationEmailAddress) => {
+      // make sure we do not insert an existing user again
+      const existing = EventParticipants.findOne({ eventId, invitationEmailAddress });
+      if (existing) {
+        return existing._id;
+      }
+      // TODO: add actually sending emails when the state of the event is already past draft!
+      const inserted = insertDraftParticipant(invitationEmailAddress, eventId);
+      return inserted._id;
     });
+
+    return false;
   },
 });
