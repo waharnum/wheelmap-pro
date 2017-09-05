@@ -15,21 +15,34 @@ label,
 
 .btn {
   padding: 0 20px;
+  font-size: 18px;
+  line-height: 48px;
   text-transform: uppercase;
-  color: white;
-  background-color: $cta-green;
+  color: $link-blue;
+  background-color: transparent;
   border-radius: 0;
   border: none;
   outline: 0;
 
   &:hover {
-    background-color: $cta-green-lighter;
+    background-color: transparent;
+  }
+}
+
+.btn-default {
+  
+  &:hover {
+    color: $link-blue-lighter;
   }
 }
 
 .btn-primary {
-  font-size: 18px;
-  line-height: 48px;
+  color: white;
+  background-color: $cta-green;
+
+  &:hover {
+    background-color: $cta-green-lighter;
+  }
 }
 
 .glyphicon {

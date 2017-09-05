@@ -3,8 +3,10 @@
 export const colors = {
   bgGrey: '#F4F5F6',                // light grey in background
   bgAnthracite: '#37404D',          // anthracite used in admin headers
-  ctaGreen: '#9BBD40',               // primary button color
-  ctaGreenLighter: '#A5C353',        // primary button hover color
+  ctaGreen: '#9BBD40',              // primary button color
+  ctaGreenLighter: '#A5C353',       // primary button hover color
+  linkBlue: '#29A3CB',              // link color
+  linkBlueLighter: '#31B5D5',       // link hover color
   ctaDisabledGrey: '#CBCED3',       // primary button disabled
   errorRed: '#C30400',              // main error color 
   activeOrange: '#F5A623',          // in event timeline
