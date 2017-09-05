@@ -22,6 +22,12 @@ import '../imports/both/api/events/server/indexing';
 import '../imports/both/api/events/server/privileges';
 import '../imports/both/api/events/server/methods';
 
+// register event participants
+import '../imports/both/api/event-participants/server/publications';
+import '../imports/both/api/event-participants/server/indexing';
+import '../imports/both/api/event-participants/server/privileges';
+import '../imports/both/api/event-participants/server/methods';
+
 // configure account system
 import '../imports/both/api/users/accounts';
 
