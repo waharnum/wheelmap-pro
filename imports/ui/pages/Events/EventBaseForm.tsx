@@ -50,12 +50,12 @@ class EventBaseForm extends React.Component<IEventBaseFormProps & IStyledCompone
     return (
     <div className={this.props.className || ''} >
       <AutoForm
+        placeholder={true}
+        showInlineError={true}
         model={this.state.model}
         disabled={this.state.isSaving}
         schema={schema}
-        placeholder={true}
         onSubmit={this.onSubmit}
-        showInlineError={true}
         onChangeModel={this.onChangeModel}>
         <AutoFields fields={['name', 'description', 'regionName', 'startTime',
             'verifyGpsPositionsOfEdits', 'openFor']} />
