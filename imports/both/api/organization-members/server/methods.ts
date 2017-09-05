@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
-import { Organizations } from '../../organizations/organizations.js';
+import { Organizations } from '../../organizations/organizations';
 import { userHasFullAccessToOrganization } from '../../organizations/privileges';
-import { OrganizationMembers } from '../organization-members.js';
+import { OrganizationMembers } from '../organization-members';
 import { TAPi18n } from 'meteor/tap:i18n';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { acceptInvitation, inviteUserToOrganization } from './invitations';
