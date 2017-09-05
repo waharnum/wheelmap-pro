@@ -83,7 +83,7 @@ export default styled(PublicHeader) `
           top: 8px;
           width: 8px;
           height: 32px;
-          background-image: url(/images/chevron-big-right@2x.png); 
+          background-image: url(/images/chevron-big-right-dark@2x.png); 
           background-position: center center;
           background-repeat: no-repeat;
           background-size: 100% 100%;
