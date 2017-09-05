@@ -4,7 +4,7 @@ import SimpleSchema from 'simpl-schema';
 
 import { RoleType } from './roles';
 import { Organizations } from '../organizations/organizations';
-import { Helpers, IHelpers } from './helpers';
+import { OrganizationMemberMixin, IOrganizationMemberMixin } from './mixins';
 import { OrganizationMemberSchema } from './schema';
 
 export interface IOrganizationMember {
@@ -24,4 +24,4 @@ export interface IOrganizationMember {
 export const OrganizationMembers = new Mongo.Collection<IOrganizationMember>('OrganizationMembers');
 OrganizationMembers.schema = OrganizationMemberSchema;
 OrganizationMembers.attachSchema(OrganizationMembers.schema);
-OrganizationMembers.helpers(Helpers);
+OrganizationMembers.helpers(OrganizationMemberMixin);

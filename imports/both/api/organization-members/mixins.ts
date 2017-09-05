@@ -2,14 +2,14 @@ import {Organizations, IOrganization} from '../organizations/organizations';
 import {getDisplayedNameForUser} from '../../lib/user-name';
 import {getIconHTMLForUser, getGravatarImageUrl} from '../../lib/user-icon';
 
-export interface IHelpers {
+export interface IOrganizationMemberMixin {
   getOrganization: () => IOrganization;
   getUser: () => Meteor.User;
   getUserName: () => string;
   getIconHTML: () => string;
 }
 
-export const Helpers = {
+export const OrganizationMemberMixin = {
   getOrganization() {
     return Organizations.findOne(this.organizationId);
   },
@@ -26,4 +26,4 @@ export const Helpers = {
     }
     return `<img src="${getGravatarImageUrl(this.gravatarHash)}" class='user-icon'>`;
   },
-};
+} as IOrganizationMemberMixin;
