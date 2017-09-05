@@ -38,7 +38,10 @@ class EditOrganizationForm extends React.Component<
 }
 
 const EditFormContainer = reactiveModelSubscriptionById(
-  wrapDataComponent<IOrganization, IAsyncDataByIdProps<IOrganization | null>, IAsyncDataByIdProps<IOrganization>>(EditOrganizationForm),
+  wrapDataComponent<
+      IOrganization,
+      IAsyncDataByIdProps<IOrganization | null>,
+      IAsyncDataByIdProps<IOrganization>>(EditOrganizationForm),
   Organizations, 'organizations.by_id');
 
 export default styled(EditFormContainer) `
