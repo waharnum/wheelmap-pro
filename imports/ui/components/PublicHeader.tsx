@@ -10,13 +10,12 @@ import { colors } from '../stylesheets/colors';
 
 interface IPublicHeaderProps {
   titleComponent: JSX.Element | string;
-  descriptionComponent: JSX.Element | string;
   organizeLink?: LocationDescriptor;
 }
 
 interface IHeaderTitleProps {
   title: string;
-  description: string;
+  description?: string;
   logo?: string;
 }
 
@@ -42,7 +41,8 @@ const PublicHeader = (props: IPublicHeaderProps & IStyledComponent) => {
         </ol>
         <div className="main-area">
           <div className="left-side">
-            {props.titleComponent || <HeaderTitle title="Please specificy title component" />}
+            {props.titleComponent ||
+              <HeaderTitle title="Please specificy title component" description="Pretty please?!" />}
           </div>
         </div>
       </header>

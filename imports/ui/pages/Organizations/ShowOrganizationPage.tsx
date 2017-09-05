@@ -26,6 +26,7 @@ const ShowOrganizationPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledCo
           <HeaderTitle
             title={props.model.organization.name}
             logo={props.model.organization.logo}
+            description={props.model.organization.description}
           />
         )}
         organizeLink={`/organizations/${props.model.organization._id}/organize`}
