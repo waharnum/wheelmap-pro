@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import { check } from 'meteor/check';
 import { Organizations } from '../../organizations/organizations.js';
 import { userHasFullAccessToOrganization } from '../../organizations/privileges';
 import { OrganizationMembers } from '../organization-members.js';
@@ -36,8 +35,6 @@ export const accept = new ValidatedMethod({
   name: 'organizationMembers.acceptInvitation',
   validate: OrganizationMembers.schema.pick(['organizationId', 'invitationToken']).validator(),
   run({ organizationId, invitationToken }) {
-    // this.unblock();
-
     if (!this.userId) {
       throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));
     }
@@ -53,9 +50,7 @@ export const accept = new ValidatedMethod({
 });
 
 Meteor.methods({
-  'organizationMembers.remove'(_id) {
-    check(_id, String);
-
+  'organizationMembers.remove'(_id: Mongo.ObjectID) {
     if (!this.userId) {
       throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));
     }

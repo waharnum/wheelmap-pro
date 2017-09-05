@@ -35,7 +35,6 @@ function insertPlaceholderMembership(options) {
     invitationEmailAddress: options.emailAddress,
     role: options.role,
     invitationState: 'queuedForSending',
-    // eslint-disable-next-line new-cap
     gravatarHash: getGravatarHashForEmailAddress(options.emailAddress),
   };
 
