@@ -10,19 +10,25 @@ import { wrapDataComponent } from '../../components/AsyncDataComponent';
 import { IStyledComponent } from '../../components/IStyledComponent';
 import { AutoSizedStaticMap } from '../../components/StaticMap';
 import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
-import { reactiveModelSubscriptionById, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
+import { reactiveSubscriptionById, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
+import {IEvent} from '../../../both/api/events/events';
 
-const ShowOrganizationPage = (props: IAsyncDataByIdProps<IOrganization> & IStyledComponent) => {
+interface IPageModel {
+  organization: IOrganization;
+  events: IEvent[];
+};
+
+const ShowOrganizationPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent) => {
   return (
     <MapLayout className={props.className}>
       <PublicHeader
         titleComponent={(
           <HeaderTitle
-            title={props.model.name}
-            logo={props.model.logo}
+            title={props.model.organization.name}
+            logo={props.model.organization.logo}
           />
         )}
-        organizeLink={`/organizations/${props.model._id}/organize`}
+        organizeLink={`/organizations/${props.model.organization._id}/organize`}
       />
       <div className="content-area">
         <AutoSizedStaticMap />
@@ -31,11 +37,17 @@ const ShowOrganizationPage = (props: IAsyncDataByIdProps<IOrganization> & IStyle
   );
 };
 
-const ShowContainer = reactiveModelSubscriptionById(
-    wrapDataComponent<IOrganization,
-        IAsyncDataByIdProps<IOrganization | null>,
-        IAsyncDataByIdProps<IOrganization>>(ShowOrganizationPage),
-    Organizations, 'organizations.by_id');
+const ReactiveShowOrganisationPage = reactiveSubscriptionById(
+  wrapDataComponent<IPageModel,
+      IAsyncDataByIdProps<IPageModel | null>,
+      IAsyncDataByIdProps<IPageModel>>(ShowOrganizationPage),
+  (id ) => {
+    const organization = Organizations.findOne(id);
+    // fetch model with organization & events in one go
+    // TODO: limit this to the actual ongoing events
+    return { organization, events: organization ? organization.getEvents() : [] };
+  },
+  'organizations.by_id', 'events.by_organizationId');
 
-export default styled(ShowContainer) `
+export default styled(ReactiveShowOrganisationPage) `
 `;
