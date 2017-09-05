@@ -12,8 +12,8 @@ interface ITabProps {
 const OrganizationTabs = (props: IStyledComponent & ITabProps) => {
   return (
     <section className={props.className}>
-      <AdminTab to={`/organizations/${props.id}/organize`} title="Event Overview" />
-      <AdminTab to={`/organizations/${props.id}/members`} title="Participants" />
+      <AdminTab to={`/organizations/${props.id}/organize`} title="Dashboard" />
+      <AdminTab to={`/organizations/${props.id}/members`} title="Members" />
       <AdminTab to={`/organizations/${props.id}/statistics`} title="Statistics" />
       <AdminTab to={`/organizations/${props.id}/edit`} title="Customize" />
     </section>
