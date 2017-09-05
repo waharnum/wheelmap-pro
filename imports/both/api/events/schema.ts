@@ -105,8 +105,9 @@ export const EventSchema = new SimpleSchema({
     type: String,
     allowedValues: ['draft', 'planned', 'ongoing', 'completed', 'canceled'],
   },
-  'visibility': {
+  'openFor': {
+    label: 'Open for…',
     type: String,
-    allowedValues: ['inviteOnly', 'public'],
+    allowedValues: ['inviteOnly', 'everybody'],
   },
 });

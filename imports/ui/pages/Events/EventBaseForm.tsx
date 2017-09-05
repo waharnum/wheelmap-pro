@@ -37,7 +37,7 @@ class EventBaseForm extends React.Component<IEventBaseFormProps & IStyledCompone
     this.state.model = this.props.initialModel || {
       organizationId: Meteor.user().profile.activeOrganizationId,
       status: 'draft',
-      visibility: 'inviteOnly',
+      openFor: 'inviteOnly',
     } as IEvent;
 
     // convert the input time from utc to local
@@ -58,7 +58,7 @@ class EventBaseForm extends React.Component<IEventBaseFormProps & IStyledCompone
         showInlineError={true}
         onChangeModel={this.onChangeModel}>
         <AutoFields fields={['name', 'description', 'regionName', 'startTime',
-            'verifyGpsPositionsOfEdits', 'visibility']} />
+            'verifyGpsPositionsOfEdits', 'openFor']} />
         <SubmitField />
         <button className="btn btn-default" onClick={browserHistory.goBack}>Cancel</button>
       </AutoForm>

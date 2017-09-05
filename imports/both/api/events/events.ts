@@ -5,7 +5,7 @@ import { EventSchema } from './schema';
 import { EventMixin, IEventMixin } from './mixins';
 
 export type EventStatusEnum = 'draft' | 'planned' | 'ongoing' | 'completed' | 'canceled';
-export type EventVisibilityEnum = 'inviteOnly' | 'public';
+export type EventOpenForEnum = 'inviteOnly' | 'everyone';
 
 export interface IEvent extends IEventMixin {
   // mongo id
@@ -29,7 +29,7 @@ export interface IEvent extends IEventMixin {
     mappedPlacesCount?: number;
   };
   status: EventStatusEnum;
-  visibility: EventVisibilityEnum;
+  openFor: EventOpenForEnum;
 };
 
 export const Events = new Mongo.Collection<IEvent & IEventMixin>('Events');
