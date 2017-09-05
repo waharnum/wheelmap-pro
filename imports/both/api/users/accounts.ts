@@ -4,6 +4,11 @@ import { Accounts, STATES } from 'meteor/std:accounts-ui';
 import { LocationDescriptor } from 'history';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 
+let loginRedirect: LocationDescriptor | null;
+export function setLoginRedirect(redirect: LocationDescriptor | null) {
+  loginRedirect = redirect;
+};
+
 Accounts.config({
   sendVerificationEmail: true,
   forbidClientAccountCreation: false,
@@ -15,8 +20,15 @@ Accounts.ui.config({
   signUpPath: '/signup',
   resetPasswordPath: '/reset-password',
   profilePath: '/profile',
-  onSignedInHook: () => { loginRedirect ? browserHistory.replace(loginRedirect) : browserHistory.push('/'); },
-  onSignedOutHook: () => browserHistory.push('/'),
+  onSignedInHook: () => {
+    const redirect = loginRedirect;
+    setLoginRedirect(null);
+    redirect ? browserHistory.replace(redirect) : browserHistory.push('/');
+  },
+  onSignedOutHook: () => {
+    setLoginRedirect(null);
+    browserHistory.push('/');
+  },
   minimumPasswordLength: 6,
 });
 
@@ -54,9 +66,3 @@ export function acceptInvitationOnLogin() {
     c.stop();
   });
 }
-
-let loginRedirect: LocationDescriptor;
-
-export function setLoginRedirect(redirect: LocationDescriptor) {
-  loginRedirect = redirect;
-};

@@ -92,7 +92,7 @@ const AppRouter = (
       <Route path="/welcome" component={HomePage} />
 
       {/* user management */}
-      <Route path="/signin" component={() => <Accounts.ui.LoginForm />} />
+      <Route path="/signin" component={() => <Accounts.ui.LoginForm formState={STATES.SIGN_IN}  />} />
       <Route path="/signup" component={() => <Accounts.ui.LoginForm formState={STATES.SIGN_UP} />} />
       <Route path="/reset-password" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET} />} />
       <Route path="/#/reset-password/:id" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET} />} />
