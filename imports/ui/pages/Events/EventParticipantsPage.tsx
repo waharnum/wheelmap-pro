@@ -1,9 +1,9 @@
-import { EventParticipants, IEventParticipant } from '../../../both/api/event-participants/event-participants';
 import styled from 'styled-components';
+import { uniq } from 'lodash';
 import AutoForm from 'uniforms-bootstrap3/AutoForm';
 import * as React from 'react';
+import SubmitField from 'uniforms-bootstrap3/SubmitField';
 import SimpleSchema from 'simpl-schema';
-import { uniq } from 'lodash';
 
 import EventTabs from './EventTabs';
 import {IOrganization} from '../../../both/api/organizations/organizations';
@@ -13,6 +13,7 @@ import { IStyledComponent } from '../../components/IStyledComponent';
 import { wrapDataComponent } from '../../components/AsyncDataComponent';
 import AdminHeader, { HeaderTitle } from '../../components/AdminHeader';
 import {EventParticipantInviteSchema} from '../../../both/api/event-participants/schema';
+import { EventParticipants, IEventParticipant } from '../../../both/api/event-participants/event-participants';
 import { reactiveSubscriptionById, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
 
 const invitationsListSchema = EventParticipantInviteSchema.pick(
@@ -23,6 +24,8 @@ interface IPageModel {
   participants: IEventParticipant[];
   organization: IOrganization;
 }
+
+const CustomSubmitField = (props) => <SubmitField value="Send invites" />;
 
 class EventParticipantsPage extends React.Component<
     IAsyncDataByIdProps<IPageModel> & IStyledComponent> {
@@ -56,7 +59,7 @@ class EventParticipantsPage extends React.Component<
               placeholder={true}
               showInlineError={true}
               schema={invitationsListSchema}
-              submitField={() => (<button className="btn btn-primary">Send invites</button>)}
+              submitField={CustomSubmitField}
               onSubmit={this.onSubmit}
               ref={(ref) => this.formRef = ref}
             />
@@ -90,7 +93,7 @@ const ReactiveEventParticipantsPage = reactiveSubscriptionById(
   (id) : IPageModel => {
     // TODO: this can be optimized by being smarter about what to query
     const event = Events.findOne(id);
-    const participants = event.getParticipants() || [];
+    const participants = event.getParticipants();
     const organization = event.getOrganization();
     return { event, participants, organization };
   }, 'events.by_id', 'eventParticipants.by_eventId', 'organizations.my.private');
