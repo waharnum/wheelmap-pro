@@ -14,6 +14,7 @@ import NotFoundPage from './pages/NotFound/NotFoundPage';
 import CreateEventPage from './pages/Events/CreateEventPage';
 import EditEventPage from './pages/Events/EditEventPage';
 import OrganizeEventPage from './pages/Events/OrganizeEventPage';
+import EventParticipantsPage from './pages/Events/EventParticipantsPage';
 import AccessForbiddenPage from './pages/NotFound/AccessForbiddenPage';
 import NoOrganizationsPage from './pages/Organizations/NoOrganizationsPage';
 import ShowOrganizationPage from './pages/Organizations/ShowOrganizationPage';
@@ -81,6 +82,7 @@ const AppRouter = (
         <Route path="/events/create" component={CreateEventPage} />
         <Route path="/events/:_id/edit" component={EditEventPage} />
         <Route path="/events/:_id/organize" component={OrganizeEventPage} />
+        <Route path="/events/:_id/participants" component={EventParticipantsPage} />
         <Route path="/events/:_id" component={OrganizeEventPage} />
       </Route>
       
