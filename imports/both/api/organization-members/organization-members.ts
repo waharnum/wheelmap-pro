@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 
 import { RoleType } from './roles';
-import { Organizations } from '../organizations/organizations';
 import { OrganizationMemberMixin, IOrganizationMemberMixin } from './mixins';
 import { OrganizationMemberSchema } from './schema';
 
