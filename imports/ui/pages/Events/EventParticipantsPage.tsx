@@ -1,4 +1,4 @@
-import { EventParticipants } from '../../../both/api/event-participants/event-participants';
+import { EventParticipants, IEventParticipant } from '../../../both/api/event-participants/event-participants';
 import styled from 'styled-components';
 import AutoForm from 'uniforms-bootstrap3/AutoForm';
 import * as React from 'react';
@@ -20,6 +20,7 @@ const invitationsListSchema = EventParticipantInviteSchema.pick(
 
 interface IPageModel {
   event: IEvent;
+  participants: IEventParticipant[];
   organization: IOrganization;
 }
 
@@ -28,6 +29,7 @@ class EventParticipantsPage extends React.Component<
   public render(): JSX.Element {
     const event = this.props.model.event;
     const organization = this.props.model.organization;
+    const participants = this.props.model.participants;
 
     return (
       <ScrollableLayout className={this.props.className}>
@@ -45,14 +47,19 @@ class EventParticipantsPage extends React.Component<
           publicLink={`/events/${event._id}`}
         />
         <div className="content-area scrollable">
-          <h2>Invite Participants to event</h2>
-          <AutoForm
-            placeholder={true}
-            showInlineError={true}
-            schema={invitationsListSchema}
-            submitField={() => (<button className="btn btn-primary">Send invites</button>)}
-            onSubmit={this.onSubmit}
-           />
+          <div className="content-left">
+            <h2>Invite Participants to event</h2>
+            <AutoForm
+              placeholder={true}
+              showInlineError={true}
+              schema={invitationsListSchema}
+              submitField={() => (<button className="btn btn-primary">Send invites</button>)}
+              onSubmit={this.onSubmit}
+            />
+           </div>
+           <div className="content-right">
+             {participants.map((p) => (<li key={p._id as React.Key} >{p.getUserName()}</li>))}
+           </div>
         </div>
       </ScrollableLayout>
     );
@@ -72,10 +79,21 @@ const ReactiveEventParticipantsPage = reactiveSubscriptionById(
   (id) : IPageModel => {
     // TODO: this can be optimized by being smarter about what to query
     const event = Events.findOne(id);
-    // const participants = event
+    const participants = event.getParticipants();
     const organization = event.getOrganization();
-    return { event, organization };
-  }, 'events.by_id', 'organizations.my.private');
+    return { event, participants, organization };
+  }, 'events.by_id', 'eventParticipants.by_eventId', 'organizations.my.private');
 
 export default styled(ReactiveEventParticipantsPage) `
+  .content-area {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .panel-body {    
+    > div:nth-of-type(2) .badge {
+      display: none;
+    }
+  }
 `;

@@ -18,13 +18,14 @@ const customUserIdFunction = () => {
 };
 
 export const EventParticipantSchema = new SimpleSchema({
-  organizationId: {
+  eventId: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
   },
   userId: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
+    optional: true,
   },
   gravatarHash: {
     type: String,
@@ -33,7 +34,7 @@ export const EventParticipantSchema = new SimpleSchema({
   invitationState: {
     type: String,
     optional: true,
-    allowedValues: ['queuedForSending', 'sent', 'accepted', 'error'],
+    allowedValues: ['draft', 'queuedForSending', 'sent', 'accepted', 'error'],
   },
   invitationError: {
     type: String,

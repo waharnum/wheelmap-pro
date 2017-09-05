@@ -1,3 +1,4 @@
+import { insertDraftParticipant } from './_invitations';
 import { EventParticipantInviteSchema } from '../schema';
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
@@ -35,7 +36,10 @@ export const insert = new ValidatedMethod({
         TAPi18n.__('You are not authorized to invite users to this organization.'));
     }
 
-    console.log('inviting is fine, someone needs to implement it');
-    // return inviteUserToEvent(invitationEmailAddress, organizationId, 'member');
+    // TODO: add actually sending emails when the state of the event is already past draft!
+
+    return invitationEmailAddresses.map((address) => {
+      return insertDraftParticipant(address, eventId);
+    });
   },
 });
