@@ -23,7 +23,7 @@ const EventListEntry = (props: {model: IEvent}) => (
     <div className="event-body">
       <h3>{props.model.name} ({props.model.status})</h3>
       <div>{moment(props.model.startTime).format('LLLL')}</div>
-      <div>{props.model.region}</div>
+      <div>{props.model.regionName}</div>
       <div>{moment(props.model.startTime).diff(moment(), 'days')} Days Left</div>
       <Button to={`/events/${props.model._id}/organize`}>Show details</Button>
     </div>      
