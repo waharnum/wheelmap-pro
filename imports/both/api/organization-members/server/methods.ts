@@ -8,7 +8,7 @@ import { acceptInvitation, inviteUserToOrganization } from './invitations';
 
 export const insert = new ValidatedMethod({
   name: 'organizationMembers.invite',
-  validate: OrganizationMembers.schema.pick(['invitationEmailAddress', 'organizationId']).validator(),
+  validate: OrganizationMembers.schema.pick('invitationEmailAddress', 'organizationId').validator(),
   run({ invitationEmailAddress, organizationId }) {
     console.log('Inviting', invitationEmailAddress, 'to', organizationId, '...');
 
@@ -33,7 +33,7 @@ export const insert = new ValidatedMethod({
 
 export const accept = new ValidatedMethod({
   name: 'organizationMembers.acceptInvitation',
-  validate: OrganizationMembers.schema.pick(['organizationId', 'invitationToken']).validator(),
+  validate: OrganizationMembers.schema.pick('organizationId', 'invitationToken').validator(),
   run({ organizationId, invitationToken }) {
     if (!this.userId) {
       throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));

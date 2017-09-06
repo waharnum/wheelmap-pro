@@ -8,12 +8,12 @@ import { requestAccessToSource } from '../invitations';
 export const askForAccess = new ValidatedMethod({
   name: 'sourceAccessRequests.askForAccess',
   validate: SourceAccessRequests.simpleSchema()
-    .pick([
+    .pick(
       'requesterId',
       'organizationId',
       'sourceId',
       'message',
-    ])
+    )
     .validator(),
   run({
     requesterId,
