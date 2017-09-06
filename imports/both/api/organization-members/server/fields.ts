@@ -1,7 +1,6 @@
 import { Apps } from '../../apps/apps';
 import { getAccessibleOrganizationIdsForUserId } from '../../organizations/privileges';
 
-// FIXME: this is way too much public data, does not make any sense to publish
 export const OrganizationMembersPublicFields = {
   organizationId: 1,
   userId: 1,
