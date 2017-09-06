@@ -47,7 +47,7 @@ export function insertDraftEventParticipant(
 export function sendEventInvitationEmailTo(
   eventParticipant: IEventParticipant, event: IEvent, organization: IOrganization) {
 
-  if (!event._id) {
+  if (!event._id || !eventParticipant.invitationToken) {
     throw new Meteor.Error(400, 'Invalid data');
   }
 
@@ -131,7 +131,8 @@ export function acceptEventInvitation(userId: Mongo.ObjectID, eventId: Mongo.Obj
 
   if (EventParticipants.findOne({ eventId, userId })) {
     EventParticipants.remove(participant._id);
-    console.log(`${userId} accepted invitation to ${eventId} using another email already. Deleted existing invitation.`);
+    console.log(`${userId} accepted invitation to ${eventId} using another email already.
+    Deleted existing invitation.`);
     return participant;
   }
 
