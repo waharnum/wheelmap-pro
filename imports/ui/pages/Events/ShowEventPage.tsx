@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import * as moment from 'moment';
 
 import MapLayout from '../../layouts/MapLayout';
 
@@ -24,8 +25,8 @@ const ShowEventPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent
       <PublicHeader
         titleComponent={(
           <HeaderTitle
-            title={props.model.event.name}
-            description={props.model.event.description}
+            title={props.model.organization.name}
+            description={props.model.organization.description}
             prefixTitle={props.model.organization.name}
             logo={props.model.organization.logo}
           />
@@ -34,6 +35,15 @@ const ShowEventPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent
       />
       <div className="content-area">
         <AutoSizedStaticMap />
+        <div className="event-box">
+          <div className="event-body">
+            <h3>{props.model.event.name} ({props.model.event.status})</h3>
+            <div>{moment(props.model.event.startTime).format('LLLL')}</div>
+            <div>{props.model.event.regionName}</div>
+            <div>{moment(props.model.event.startTime).diff(moment(), 'days')} Days Left</div>
+            <Button to="">Join Us</Button>
+          </div>      
+        </div>
       </div>
     </MapLayout>
   );
@@ -55,4 +65,17 @@ const ReactiveShowEventPage = reactiveSubscriptionById(
   'events.by_id.private', 'organizations.public');
 
 export default styled(ReactiveShowEventPage) `
+  .content-area {
+    justify-content: center;
+    align-content: center;
+    display: flex;
+  }
+
+  .event-box {
+    margin: auto;    
+    position: relative;
+    background: white;
+    padding: 20px 30px;
+    box-shadow: 0 0 7px 1px rgba(0,0,0,0.4);
+  }
 `;
