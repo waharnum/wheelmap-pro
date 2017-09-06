@@ -49,7 +49,7 @@ const AdminHeader = (props: IAdminHeaderProps & IStyledComponent) => {
         </ol>      
         <div className="main-area">
           {props.titleComponent || <HeaderTitle title="Please specificy title component" />}
-          <div className="right-side"></div>
+          <div className="right-side" />
         </div>
         <ol className="tabs-header">
           {props.tabs}
@@ -176,12 +176,6 @@ header.main-header.on-dark {
   ol.tabs-header {
     margin: 0;
     list-style: none;
-
-
-
-
   }
 }
-
 `;
-;
