@@ -99,12 +99,16 @@ class EventParticipantsPage extends React.Component<
     this.formRef = ref;
   }
 
+  private cleanUpEmailAddresses = (invitationEmailAddresses: string[]): string[] => {
+    // remove all dupes and null values, trim emails and convert to lower case
+    return uniq(invitationEmailAddresses.map((s) => s.toLowerCase().trim())).filter(Boolean);
+  }
+
   private onSubmit = (doc: {invitationEmailAddresses: string[]}) => {
     this.setState({isSaving: true});
     return new Promise((resolve, reject) => {
       Meteor.call('eventParticipants.invite', {
-        // remove all dupes and null values
-        invitationEmailAddresses: uniq(doc.invitationEmailAddresses).filter(Boolean),
+        invitationEmailAddresses: this.cleanUpEmailAddresses(doc.invitationEmailAddresses),
         eventId: this.props.model.event._id,
       }, (error, result) => {
         console.log('eventParticipants.invite', error, result);
