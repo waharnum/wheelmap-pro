@@ -1,5 +1,6 @@
 
 import * as React from 'react';
+import { Meteor } from 'meteor/meteor';
 import { browserHistory } from 'react-router';
 import { createContainer } from 'meteor/react-meteor-data';
 import { LocationDescriptor } from 'history';
