@@ -33,7 +33,6 @@ export const EventParticipantSchema = new SimpleSchema({
   },
   invitationState: {
     type: String,
-    optional: true,
     allowedValues: ['draft', 'queuedForSending', 'sent', 'accepted', 'error'],
   },
   invitationError: {
@@ -42,11 +41,9 @@ export const EventParticipantSchema = new SimpleSchema({
   },
   invitationToken: {
     type: String,
-    optional: true,
   },
   invitationEmailAddress: {
     type: String,
-    optional: true,
     regEx: SimpleSchema.RegEx.Email,
   },
 });

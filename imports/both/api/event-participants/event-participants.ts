@@ -12,10 +12,10 @@ export interface IEventParticipant extends IEventParticipantMixin {
   eventId: Mongo.ObjectID;
   userId: Mongo.ObjectID | null;
   gravatarHash?: string;
-  invitationState?: 'draft' | 'queuedForSending' | 'sent' | 'accepted' | 'error';
+  invitationState: 'draft' | 'queuedForSending' | 'sent' | 'accepted' | 'error';
   invitationError?: string;
-  invitationToken?: string;
-  invitationEmailAddress?: string;
+  invitationToken: string;
+  invitationEmailAddress: string;
 };
 
 export const EventParticipants = new Mongo.Collection<IEventParticipant>('EventParticipants');

@@ -1,12 +1,14 @@
-import { insertDraftParticipant } from './_invitations';
-import { EventParticipantInviteSchema } from '../schema';
-import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
-import { Events } from '../../events/events';
-import { userHasFullAccessToOrganizationId } from '../../organizations/privileges';
-import { EventParticipants } from '../event-participants';
+import { Meteor } from 'meteor/meteor';
 import { TAPi18n } from 'meteor/tap:i18n';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
+
+import { Events } from '../../events/events';
+import { Organizations } from '../../organizations/organizations';
+import { EventParticipants } from '../event-participants';
+import { EventParticipantInviteSchema } from '../schema';
+import { userHasFullAccessToOrganizationId } from '../../organizations/privileges';
+import { insertDraftParticipant, sendInvitationEmailTo } from './_invitations';
 
 export const insert = new ValidatedMethod({
   name: 'eventParticipants.invite',
@@ -31,14 +33,22 @@ export const insert = new ValidatedMethod({
         TAPi18n.__('You are not authorized to invite users to this organization.'));
     }
 
+    const organization = Organizations.findOne({ _id: event.organizationId });
+    if (!organization) {
+      throw new Meteor.Error(404, TAPi18n.__('Organization not found'));
+    }
+
     const result = invitationEmailAddresses.map((invitationEmailAddress) => {
       // make sure we do not insert an existing user again
       const existing = EventParticipants.findOne({ eventId, invitationEmailAddress });
       if (existing) {
         return existing._id;
       }
-      // TODO: add actually sending emails when the state of the event is already past draft!
       const inserted = insertDraftParticipant(invitationEmailAddress, eventId);
+
+      // TODO: add only sending emails if the state of the event is already past draft!
+      sendInvitationEmailTo(inserted, event, organization);
+
       return inserted._id;
     });
 
