@@ -1,3 +1,4 @@
+import { Countdown } from '../../components/Countdown';
 import { IOrganization } from '../../../both/api/organizations/organizations';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -102,7 +103,7 @@ interface IPageModel {
   organization: IOrganization;
 }
 
-const OrganizeEventPage = (props: IAsyncDataByIdProps < IPageModel > & IStyledComponent & { now: moment.Moment}) => {
+const OrganizeEventPage = (props: IAsyncDataByIdProps < IPageModel > & IStyledComponent) => {
   const event = props.model.event;
   const organization = props.model.organization;
 
@@ -129,20 +130,7 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IPageModel > & IStyledCo
             <span className="participants-invited">0<small>invited</small></span>
             <span className="participants-registered key-figure">0<small>registered</small></span>
           </section>
-          <section className="event-countdown">
-            <span className="days-countdown">
-              {moment(event.startTime).diff(props.now, 'days')}<small>days</small>
-              </span>
-            <span className="hours-countdown">
-              {moment(event.startTime).diff(props.now, 'hours') % 24}<small>hours</small>
-              </span>
-            <span className="minutes-countdown">
-              {moment(event.startTime).diff(props.now, 'minutes') % 60}<small>minutes</small>
-            </span>
-            <span className="seconds-countdown">
-              {moment(event.startTime).diff(props.now, 'seconds') % 60}<small>seconds</small>
-            </span>
-          </section>
+          <Countdown start={moment(event.startTime)} />
           <section className="location-stats">
             <span className="locations-planned">0<small>planned</small></span>
             <span className="locations-mapped key-figure">0<small>mapped</small></span>
@@ -235,8 +223,7 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IPageModel > & IStyledCo
 const ReactiveOrganizeOrganisationsPage = reactiveSubscriptionById(
   wrapDataComponent<IPageModel,
       IAsyncDataByIdProps<IPageModel | null>,
-      IAsyncDataByIdProps<IPageModel>>(
-          withTime(OrganizeEventPage, 1000)),
+      IAsyncDataByIdProps<IPageModel>>(OrganizeEventPage),
   (id) : IPageModel => {
     // TODO: this can be optimized by being smarter about what to query
     const event = Events.findOne(id);

@@ -7,12 +7,13 @@ import MapLayout from '../../layouts/MapLayout';
 import { default as PublicHeader, HeaderTitle } from '../../components/PublicHeader';
 
 import Button from '../../components/Button';
-import { wrapDataComponent } from '../../components/AsyncDataComponent';
+import { Countdown } from '../../components/Countdown';
+import { IEvent, Events } from '../../../both/api/events/events';
 import { IStyledComponent } from '../../components/IStyledComponent';
+import { wrapDataComponent } from '../../components/AsyncDataComponent';
 import { AutoSizedStaticMap } from '../../components/StaticMap';
 import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
 import { reactiveSubscriptionById, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
-import { IEvent, Events } from '../../../both/api/events/events';
 
 interface IPageModel {
   organization: IOrganization;
@@ -20,30 +21,31 @@ interface IPageModel {
 };
 
 const ShowEventPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent) => {
+  const event = props.model.event;
+  const organization = props.model.organization;
+
   return (
     <MapLayout className={props.className}>
       <PublicHeader
         titleComponent={(
           <HeaderTitle
-            title={props.model.organization.name}
-            description={props.model.organization.description}
-            prefixTitle={props.model.organization.name}
-            logo={props.model.organization.logo}
+            title={event.name}
+            description={event.description}
+            prefixTitle={organization.name}
+            logo={organization.logo}
           />
         )}
-        organizeLink={`/events/${props.model.event._id}/organize`}
+        organizeLink={`/events/${event._id}/organize`}
       />
+      <div>
+      <div className="event-date">{moment(event.startTime).format('LLLL')}</div>
+      </div>
+      <div>
+        <Countdown start={moment(event.startTime)} />
+      </div>
       <div className="content-area">
         <AutoSizedStaticMap />
-        <div className="event-box">
-          <div className="event-body">
-            <h3>{props.model.event.name} ({props.model.event.status})</h3>
-            <div>{moment(props.model.event.startTime).format('LLLL')}</div>
-            <div>{props.model.event.regionName}</div>
-            <div>{moment(props.model.event.startTime).diff(moment(), 'days')} Days Left</div>
-            <Button to="">Join Us</Button>
-          </div>      
-        </div>
+        <Button className="join-button btn-primary" to="">Join Us</Button>
       </div>
     </MapLayout>
   );
@@ -71,11 +73,9 @@ export default styled(ReactiveShowEventPage) `
     display: flex;
   }
 
-  .event-box {
+  .join-button {
     margin: auto;    
     position: relative;
-    background: white;
-    padding: 20px 30px;
     box-shadow: 0 0 7px 1px rgba(0,0,0,0.4);
   }
 `;
