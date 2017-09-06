@@ -122,8 +122,8 @@ class EventParticipantsPage extends React.Component<
     }).then(() => {
       this.formRef.setState({ validate: false });
       this.formRef.change('invitationEmailAddresses', ['']);
-    }, () => {
-      this.formRef.setState({ error: 'Custom Error Message of my choice' });
+    }, (error) => {
+      this.formRef.setState({ error });
     });
   }
 }
