@@ -15,7 +15,7 @@ interface ICreateOrganizationFormProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
 }
 
-const GoToOrganizationPage = (_id) => { browserHistory.push(`/organizations/${_id}`); };
+const GoToOrganizationPage = (_id) => { browserHistory.push(`/organizations/${_id}/organize`); };
 const CreateOrganizationPage = (props: ICreateOrganizationFormProps & IStyledComponent) => {
   return (
     <ScrollableLayout className={props.className}>
