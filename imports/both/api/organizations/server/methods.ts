@@ -8,7 +8,8 @@ export const insert = new ValidatedMethod({
   name: 'organizations.insert',
   validate: Organizations.schema.validator(),
   run(doc: IOrganization) {
-    console.log('Inserting organization and first membership:', doc, 'for user id', this.userId, ', setting as active.');
+    console.log('Inserting organization and first membership:',
+        doc, 'for user id', this.userId, ', setting as active.');
     const organizationId = Organizations.insert(doc);
     setActiveOrganization(this.userId, organizationId);
     OrganizationMembers.insert({

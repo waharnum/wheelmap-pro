@@ -7,7 +7,6 @@ import { Accounts, STATES } from 'meteor/std:accounts-ui';
 import { Router, Route, IndexRoute, Redirect, browserHistory } from 'react-router';
 
 import { acceptInvite } from './pages/Events/acceptInvite';
-import { setActiveOrganization } from '../both/api/organizations/organizations';
 
 import App from './App';
 

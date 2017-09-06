@@ -27,24 +27,25 @@ Organizations.schema = OrganizationSchema;
 Organizations.helpers(OrganizationMixin);
 Organizations.attachSchema(Organizations.schema);
 
-export const getOrganizationsWhereCurrentUserIsMember = () => {
+export function getOrganizationsWhereCurrentUserIsMember() {
   const userId = Meteor.userId();
   const options = { fields: { organizationId: 1 } };
   const orgIds = OrganizationMembers.find({ userId }, options).fetch().map((m) => m.organizationId);
   return Organizations.find({ _id: { $in: orgIds } });
 };
 
-export const setActiveOrganization = (userId: Mongo.ObjectID,
-  activeOrganizationId: Mongo.ObjectID, callback?: Function) : number => {
-  return Meteor.users.update(userId, { $set: { 'profile.activeOrganization': activeOrganizationId } }, {}, callback);
+export function setActiveOrganization(userId: Mongo.ObjectID,
+                                      activeOrganizationId: Mongo.ObjectID,
+                                      callback?: (error?, result?) => void): number {
+  return Meteor.users.update(userId, { $set: { 'profile.activeOrganizationId': activeOrganizationId } }, {}, callback);
 };
 
-export const getActiveOrganizationId = (userId: Mongo.ObjectID) : Mongo.ObjectID | null => {
+export function getActiveOrganizationId(userId: Mongo.ObjectID) : Mongo.ObjectID | null {
   const user = Meteor.users.findOne(userId);
   return user ? user.profile.activeOrganizationId : null;
 };
 
-export const getActiveOrganization = (userId: Mongo.ObjectID) : IOrganization | null => {
+export function getActiveOrganization(userId: Mongo.ObjectID) : IOrganization | null {
   const activeOrganizationId = getActiveOrganizationId(userId);
   return activeOrganizationId ? Organizations.findOne(activeOrganizationId) : null;
 };
