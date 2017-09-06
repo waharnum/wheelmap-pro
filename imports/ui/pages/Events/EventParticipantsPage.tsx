@@ -25,7 +25,26 @@ interface IPageModel {
   organization: IOrganization;
 }
 
+const removeParticipant = (id: Mongo.ObjectID) => {
+  Meteor.call('eventParticipants.remove', id, (error, result) => {
+    console.log('eventParticipants.remove', error, result);
+  });
+};
+
 const CustomSubmitField = (props) => <SubmitField value="Send invites" />;
+
+const EventParticpantEntry = (props: { model: IEventParticipant }) => (
+  <div className="particpant-entry">
+    <section className="particpant-icon" dangerouslySetInnerHTML={{ __html: props.model.getIconHTML()}} />
+    <section className="particpant-name">{props.model.getUserName()}</section>
+    <section className="particpant-state">{props.model.invitationState}</section>
+    {props.model.invitationState === 'error' ?
+        <section className="particpant-error">{props.model.invitationError}</section> : null}
+    <section className="participant-remove glyphicon">
+      <button onClick={() => removeParticipant(props.model._id || '')}>x</button>
+    </section>
+  </div>
+);
 
 class EventParticipantsPage extends React.Component<
     IAsyncDataByIdProps<IPageModel> & IStyledComponent> {
@@ -63,15 +82,21 @@ class EventParticipantsPage extends React.Component<
               schema={invitationsListSchema}
               submitField={CustomSubmitField}
               onSubmit={this.onSubmit}
-              ref={(ref) => this.formRef = ref}
+              ref={this.storeFormReference}
             />
            </div>
            <div className="content-right">
-             {participants.map((p) => (<li key={p._id as React.Key} >{p.getUserName()}</li>))}
+             <h2>Invited Participants</h2>
+             {participants.length === 0 ? <section>No one invited yet.</section> : null}
+             {participants.map((p) => (<EventParticpantEntry key={p._id as React.Key} model={p} />))}
            </div>
         </div>
       </ScrollableLayout>
     );
+  }
+
+  private storeFormReference = (ref: AutoForm) => {
+    this.formRef = ref;
   }
 
   private onSubmit = (doc: {invitationEmailAddresses: string[]}) => {
@@ -81,7 +106,8 @@ class EventParticipantsPage extends React.Component<
         // remove all dupes and null values
         invitationEmailAddresses: uniq(doc.invitationEmailAddresses).filter(Boolean),
         eventId: this.props.model.event._id,
-      }, (error) => {
+      }, (error, result) => {
+        console.log('eventParticipants.invite', error, result);
         this.setState({isSaving: false});
         if (!error) {
           resolve(true);
@@ -92,6 +118,8 @@ class EventParticipantsPage extends React.Component<
     }).then(() => {
       this.formRef.setState({ validate: false });
       this.formRef.change('invitationEmailAddresses', ['']);
+    }, () => {
+      this.formRef.setState({ error: 'Custom Error Message of my choice' });
     });
   }
 }
@@ -113,6 +141,34 @@ export default styled(ReactiveEventParticipantsPage) `
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+  }
+
+  .particpant-entry {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+
+    section {
+      margin-left: 5px;      
+    }
+
+    .particpant-icon img {
+      width: 24px;
+    }
+    .particpant-name {
+      flex-grow: 1;
+    }
+    .particpant-state {
+
+    }
+    .particpant-error {
+
+    }
+    .participant-remove {
+      color: red;
+    }
   }
 
   .panel-body {    

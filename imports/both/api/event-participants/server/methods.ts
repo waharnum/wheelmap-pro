@@ -42,6 +42,33 @@ export const insert = new ValidatedMethod({
       return inserted._id;
     });
 
-    return false;
+    return result;
+  },
+});
+
+Meteor.methods({
+  'eventParticipants.remove'(_id: Mongo.ObjectID) {
+    if (!this.userId) {
+      throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));
+    }
+
+    const eventParticipant = EventParticipants.findOne(_id);
+    if (!eventParticipant) {
+      throw new Meteor.Error(404, TAPi18n.__('Event participants not found'));
+    }
+
+    const event = Events.findOne({ _id: eventParticipant.eventId });
+    if (!event) {
+      throw new Meteor.Error(404, TAPi18n.__('Event not found'));
+    }
+
+    const isOwnParticipation = eventParticipant.userId === this.userId;
+
+    const isAuthorized = isOwnParticipation || userHasFullAccessToOrganizationId(this.userId, event.organizationId);
+    if (!isAuthorized) {
+      throw new Meteor.Error(403, TAPi18n.__('Not authorized.'));
+    }
+
+    return EventParticipants.remove(_id);
   },
 });
