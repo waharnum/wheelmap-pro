@@ -33,6 +33,7 @@ const ShowEventPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent
             description={event.description}
             prefixTitle={organization.name}
             logo={organization.logo}
+            prefixLink={`/organizations/${organization._id}`}
           />
         )}
         organizeLink={`/events/${event._id}/organize`}
