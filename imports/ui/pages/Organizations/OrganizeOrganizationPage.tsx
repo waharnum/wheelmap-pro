@@ -27,7 +27,7 @@ const EventListEntry = (props: {model: IEvent}) => (
       <div>{moment(props.model.startTime).diff(moment(), 'days')} Days Left</div>
       <Button to={`/events/${props.model._id}/organize`}>Show details</Button>
     </div>      
-    <StaticMap className="event-mini-map" containerWidth={140}  containerHeight={140} />
+    <StaticMap className="event-mini-map" containerWidth={180}  containerHeight={180} />
   </div>
 );
 
@@ -73,7 +73,7 @@ const ReactiveOrganizeOrganisationsPage = reactiveSubscriptionById(
 const StyledReactiveOrganizeOrganisationsPage = styled(ReactiveOrganizeOrganisationsPage)`
   .event-list-entry {
     width: 100%;
-    height: 140px;
+    height: 180px;
     background: #FFF;
     border: 1px solid #DEDEDE;
     border-radius: 4px;
