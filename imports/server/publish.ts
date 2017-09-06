@@ -21,7 +21,7 @@ export function combineSelectorAnd(
   };
 }
 
-export function publishAndLog(name: string, publishFunction: Function) {
+export function publishAndLog(name: string, publishFunction: (...args: any[]) => any) {
   console.log('Publishing', name, '…');
   Meteor.publish(name, publishFunction);
 };
