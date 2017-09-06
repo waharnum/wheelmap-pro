@@ -242,7 +242,7 @@ const ReactiveOrganizeOrganisationsPage = reactiveSubscriptionById(
     const event = Events.findOne(id);
     const organization = event.getOrganization();
     return { event, organization };
-  }, 'events.by_id', 'organizations.my.private');
+  }, 'events.by_id.private', 'organizations.my.private');
 
 export default styled(ReactiveOrganizeOrganisationsPage) `
 

@@ -39,7 +39,7 @@ class EditEventForm extends React.Component<
 
 const EditFormContainer = reactiveModelSubscriptionById(
   wrapDataComponent<IEvent, IAsyncDataByIdProps<IEvent | null>, IAsyncDataByIdProps<IEvent>>(EditEventForm),
-  Events, 'events.by_id');
+  Events, 'events.by_id.private');
 
 export default styled(EditFormContainer) `
 `;

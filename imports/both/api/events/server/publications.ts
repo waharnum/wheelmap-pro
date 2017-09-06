@@ -2,14 +2,22 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
 import { Events } from '../events.js';
-import { publishAndLog } from '../../../../server/publish';
+import { publishAndLog, publishFields} from '../../../../server/publish';
+import {
+  EventsPrivateFields,
+  buildVisibleForUserByEventIdSelector,
+  buildVisibleForUserByOrganizationIdSelector } from './_fields';
 
-// FIXME: add checking for access rights and visibility
-publishAndLog('events.by_id', (_id: Mongo.ObjectID) => {
-  return Events.find({_id});
-});
+// TODO: add public publish stuff
 
-// FIXME: add checking for access rights and visibility
-publishAndLog('events.by_organizationId', (organizationId: Mongo.ObjectID) => {
-  return Events.find({organizationId: { $in: [organizationId]}});
-});
+publishFields('events.by_id.private',
+  Events,
+  EventsPrivateFields,
+  buildVisibleForUserByEventIdSelector,
+);
+
+publishFields('events.by_organizationId.private',
+  Events,
+  EventsPrivateFields,
+  buildVisibleForUserByOrganizationIdSelector,
+);

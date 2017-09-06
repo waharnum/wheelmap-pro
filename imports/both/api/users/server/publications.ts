@@ -9,7 +9,7 @@ import {publishAndLog, publishFields} from '../../../../server/publish';
 
 import './publish-user-is-admin-flag.ts';
 
-publishAndLog('users.needApproval', () => {
+publishAndLog('users.needApproval.admin', () => {
   if (!isAdmin(this.userId)) {
     return [];
   }
@@ -23,7 +23,7 @@ publishAndLog('users.needApproval', () => {
 // It is unclear why the SimplSchema addition is not applied here
 publishFields('users.public', Meteor.users, UserPublicFields, UserVisibleSelectorForUserIdSelector);
 
-publishAndLog('users.my', () => {
+publishAndLog('users.my.private', () => {
   if (!this.userId) {
     return [];
   }

@@ -138,7 +138,7 @@ const ReactiveEventParticipantsPage = reactiveSubscriptionById(
     const participants = event.getParticipants();
     const organization = event.getOrganization();
     return { event, participants, organization };
-  }, 'events.by_id', 'eventParticipants.by_eventId', 'organizations.my.private');
+  }, 'events.by_id.private', 'eventParticipants.by_eventId.private', 'organizations.my.private');
 
 export default styled(ReactiveEventParticipantsPage) `
   .content-area {

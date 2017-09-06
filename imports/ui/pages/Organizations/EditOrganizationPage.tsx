@@ -42,7 +42,7 @@ const EditFormContainer = reactiveModelSubscriptionById(
       IOrganization,
       IAsyncDataByIdProps<IOrganization | null>,
       IAsyncDataByIdProps<IOrganization>>(EditOrganizationForm),
-  Organizations, 'organizations.by_id');
+  Organizations, 'organizations.by_id.public');
 
 export default styled(EditFormContainer) `
 `;

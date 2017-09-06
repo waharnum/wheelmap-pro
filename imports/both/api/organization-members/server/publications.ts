@@ -14,7 +14,7 @@ import {
 import { publishPrivateFieldsForMembers } from './publishForMembers';
 
 publishFields(
-  'organizationMembers.public',
+  'organizationMembers.private',
   OrganizationMembers,
   OrganizationMembersPublicFields,
   OrganizationMemberVisibleForUserIdSelector);

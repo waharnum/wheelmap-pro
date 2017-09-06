@@ -48,7 +48,7 @@ const ReactiveShowOrganisationPage = reactiveSubscriptionById(
     // TODO: limit this to the actual ongoing events
     return { organization, events: organization ? organization.getEvents() : [] };
   },
-  'organizations.by_id', 'events.by_organizationId');
+  'organizations.by_id.public', 'events.by_organizationId.private');
 
 export default styled(ReactiveShowOrganisationPage) `
 `;

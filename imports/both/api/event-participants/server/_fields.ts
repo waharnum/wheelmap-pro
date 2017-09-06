@@ -6,7 +6,7 @@ import { getAccessibleOrganizationIdsForUserId } from '../../organizations/privi
 import { EventParticipants } from '../event-participants';
 
 // make sure the invitationToken is omitted
-export const EventParticipationPublicFields = {
+export const EventParticipationPrivateFields = {
   eventId: 1,
   userId: 1,
   role: 1,

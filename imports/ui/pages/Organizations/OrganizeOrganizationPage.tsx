@@ -68,7 +68,7 @@ const ReactiveOrganizeOrganisationsPage = reactiveSubscriptionById(
       // fetch model with organization & events in one go
       return { organization, events: organization ? organization.getEvents() : [] };
     },
-    'organizations.by_id', 'events.by_organizationId');
+    'organizations.by_id.public', 'events.by_organizationId.private');
 
 const StyledReactiveOrganizeOrganisationsPage = styled(ReactiveOrganizeOrganisationsPage)`
   .event-list-entry {
