@@ -14,7 +14,7 @@ export interface IEventParticipant extends IEventParticipantMixin {
   gravatarHash?: string;
   invitationState: 'draft' | 'queuedForSending' | 'sent' | 'accepted' | 'error';
   invitationError?: string;
-  invitationToken: string;
+  invitationToken?: string;
   invitationEmailAddress: string;
 };
 

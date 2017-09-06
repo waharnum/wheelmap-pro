@@ -1,4 +1,3 @@
-import { setActiveOrganization } from '../both/api/organizations/organizations';
 import * as React from 'react';
 import { render } from 'react-dom';
 import { Meteor } from 'meteor/meteor';
@@ -6,6 +5,9 @@ import { Session } from 'meteor/session';
 import { Tracker } from 'meteor/tracker';
 import { Accounts, STATES } from 'meteor/std:accounts-ui';
 import { Router, Route, IndexRoute, Redirect, browserHistory } from 'react-router';
+
+import { acceptInvite } from './pages/Events/acceptInvite';
+import { setActiveOrganization } from '../both/api/organizations/organizations';
 
 import App from './App';
 
@@ -80,6 +82,9 @@ const AppRouter = (
         <Route path="/organizations/:_id/organize" component={OrganizeOrganizationPage} onEnter={SaveActiveOrganization} />
 
         <Route path="/events/create" component={CreateEventPage} />
+
+        <Route path="/events/:_id/accept-invitation/:token" onEnter={acceptInvite} />
+
         <Route path="/events/:_id/edit" component={EditEventPage} />
         <Route path="/events/:_id/organize" component={OrganizeEventPage} />
         <Route path="/events/:_id/participants" component={EventParticipantsPage} />

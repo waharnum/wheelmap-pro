@@ -41,6 +41,7 @@ export const EventParticipantSchema = new SimpleSchema({
   },
   invitationToken: {
     type: String,
+    optional: true,
   },
   invitationEmailAddress: {
     type: String,

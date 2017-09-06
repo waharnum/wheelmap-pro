@@ -6,9 +6,9 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { Events } from '../../events/events';
 import { Organizations } from '../../organizations/organizations';
 import { EventParticipants } from '../event-participants';
-import { EventParticipantInviteSchema } from '../schema';
 import { userHasFullAccessToOrganizationId } from '../../organizations/privileges';
-import { insertDraftParticipant, sendInvitationEmailTo } from './_invitations';
+import { EventParticipantInviteSchema, EventParticipantSchema } from '../schema';
+import {insertDraftEventParticipant, sendEventInvitationEmailTo, acceptEventInvitation} from './_invitations';
 
 export const insert = new ValidatedMethod({
   name: 'eventParticipants.invite',
@@ -44,15 +44,36 @@ export const insert = new ValidatedMethod({
       if (existing) {
         return existing._id;
       }
-      const inserted = insertDraftParticipant(invitationEmailAddress, eventId);
+      const inserted = insertDraftEventParticipant(invitationEmailAddress, eventId);
 
       // TODO: add only sending emails if the state of the event is already past draft!
-      sendInvitationEmailTo(inserted, event, organization);
+      sendEventInvitationEmailTo(inserted, event, organization);
 
       return inserted._id;
     });
 
     return result;
+  },
+});
+
+export const accept = new ValidatedMethod({
+  name: 'eventParticipants.acceptInvitation',
+  validate: EventParticipantSchema.pick('eventId', 'invitationToken').validator(),
+  run({ eventId, invitationToken }) {
+    check(eventId, String);
+    check(invitationToken, String);
+
+    if (!this.userId) {
+      throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));
+    }
+
+    const event = Events.findOne({ _id: eventId });
+
+    if (!event) {
+      throw new Meteor.Error(404, TAPi18n.__('Event not found'));
+    }
+
+    return acceptEventInvitation(this.userId, eventId, invitationToken);
   },
 });
 
