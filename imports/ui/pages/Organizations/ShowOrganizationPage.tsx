@@ -16,7 +16,7 @@ import {IEvent} from '../../../both/api/events/events';
 
 interface IPageModel {
   organization: IOrganization;
-  events: IEvent[];
+  event: IEvent;
 };
 
 const ShowOrganizationPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent) => {
@@ -37,8 +37,8 @@ const ShowOrganizationPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledCo
       />
       <div className="content-area">
         <AutoSizedStaticMap />
-        {event ?
-        (<div className="event-box">
+        {event ? (
+        <div className="event-box">
           <div className="event-body">
             <h3>{event.name} ({event.status})</h3>
             <div>{moment(event.startTime).format('LLLL')}</div>
@@ -46,8 +46,8 @@ const ShowOrganizationPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledCo
             <div>{moment(event.startTime).diff(moment(), 'days')} Days Left</div>
             <Button to={`/events/${event._id}`}>Join Us</Button>
           </div>
-        </div>) : null
-        }
+        </div>
+        ) : null}
       </div>
     </MapLayout>
   );
