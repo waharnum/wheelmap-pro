@@ -31,11 +31,15 @@ Your ${appName} team.
 export function insertDraftEventParticipant(
   invitationEmailAddress: string, eventId: Mongo.ObjectID): IEventParticipant {
 
+  const address = invitationEmailAddress.toLowerCase().trim();
+  // find existing user via email
+  const user = Meteor.users.findOne({ emails: { $elemMatch: { address }}});
+
   const participant = {
     eventId,
-    userId: null, // empty as not existing when invited
+    userId: user ? user._id : null, // empty if not existing when invited
     invitationToken: Random.secret(),
-    invitationEmailAddress: invitationEmailAddress.toLowerCase().trim(),
+    invitationEmailAddress: address,
     invitationState: 'draft',
     gravatarHash: getGravatarHashForEmailAddress(invitationEmailAddress),
   } as IEventParticipant;

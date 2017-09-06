@@ -37,6 +37,7 @@ const EventParticpantEntry = (props: { model: IEventParticipant }) => (
   <div className="particpant-entry">
     <section className="particpant-icon" dangerouslySetInnerHTML={{ __html: props.model.getIconHTML()}} />
     <section className="particpant-name">{props.model.getUserName()}</section>
+    <section className="particpant-user glyphicon">{props.model.userId ? 'p' : ''}</section>
     <section className="particpant-state">{props.model.invitationState}</section>
     {props.model.invitationState === 'error' ?
         <section className="particpant-error">{props.model.invitationError}</section> : null}
