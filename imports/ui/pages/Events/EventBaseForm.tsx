@@ -8,6 +8,7 @@ import SubmitField from 'uniforms-bootstrap3/SubmitField';
 import BoolField from 'uniforms-bootstrap3/BoolField';
 import LongTextField from 'uniforms-bootstrap3/LongTextField';
 
+import ImageLinkUrlField from '../../components/ImageLinkUrlField';
 import { Events, IEvent } from '../../../both/api/events/events';
 import { IStyledComponent } from '../../components/IStyledComponent';
 
@@ -24,7 +25,21 @@ interface IBaseFormState {
 }
 
 const schema = Events.schema;
-
+schema.extend({
+  // if not an object this will override the placeholder
+  description: {
+    uniforms: {
+      component: LongTextField,
+    },
+  },
+  // if not an object this will override the placeholder
+  photoUrl: {
+    uniforms: {
+      component: ImageLinkUrlField,
+      help: 'Optimal a 640 x 400 PNG-file.',
+    },
+  },
+});
 class EventBaseForm extends React.Component<IEventBaseFormProps & IStyledComponent, IBaseFormState> {
   public state = {
     model: {} as IEvent,
@@ -58,7 +73,7 @@ class EventBaseForm extends React.Component<IEventBaseFormProps & IStyledCompone
         onSubmit={this.onSubmit}
         onChangeModel={this.onChangeModel}>
         <AutoFields fields={['name', 'description', 'regionName', 'startTime',
-            'verifyGpsPositionsOfEdits', 'openFor']} />
+            'verifyGpsPositionsOfEdits', 'openFor', 'photoUrl']} />
         <SubmitField />
         <button className="btn btn-default" onClick={browserHistory.goBack}>Cancel</button>
       </AutoForm>

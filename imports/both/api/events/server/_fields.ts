@@ -16,7 +16,7 @@ export const EventsPrivateFields = {
   verifyGpsPositionsOfEdits: 1,
   targets: 1,
   status: 1,
-  visibility: 1,
+  openFor: 1,
 };
 
 export function buildVisibleForUserByEventIdSelector(
