@@ -7,6 +7,7 @@ import UserMenu from './UserMenu';
 import {LocationDescriptor} from 'history';
 import { TAPi18n } from 'meteor/tap:i18n';
 import { colors } from '../stylesheets/colors';
+import {Link} from 'react-router';
 
 interface IPublicHeaderProps {
   titleComponent: JSX.Element | string;
@@ -15,16 +16,25 @@ interface IPublicHeaderProps {
 
 interface IHeaderTitleProps {
   title: string;
+  prefixTitle?: string;
   description?: string;
   logo?: string;
+  prefixLink?: LocationDescriptor;
+  titleLink?: LocationDescriptor;
 }
 
 export const HeaderTitle = (props: IHeaderTitleProps) => {
   return (
     <div className="title-bar">
-      {props.logo ? <div className="organisation-logo" style={{backgroundImage: `url(${props.logo})`}} /> : null}
-      <div className="event-information">
-        <h1>{props.title}</h1>
+      {props.logo ? (
+        <Link to={props.prefixLink || ''}> 
+          <div className="organisation-logo" style={{backgroundImage: `url(${props.logo})`}} />
+        </Link>)
+        : null}
+      {props.prefixTitle && !props.logo ?
+        <h1 className="organisation-logo"><Link to={props.prefixLink || ''}>{props.prefixTitle}</Link></h1> : null}
+      <div className="header-information">
+        <h1><Link to={props.titleLink || ''}>{props.title}</Link></h1>
         <p>{props.description}</p>
       </div>
     </div>

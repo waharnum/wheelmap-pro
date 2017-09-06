@@ -13,14 +13,15 @@ import App from './App';
 
 import HomePage from './pages/Home/HomePage';
 import NotFoundPage from './pages/NotFound/NotFoundPage';
-import CreateEventPage from './pages/Events/CreateEventPage';
 import EditEventPage from './pages/Events/EditEventPage';
+import ShowEventPage from './pages/Events/ShowEventPage';
+import CreateEventPage from './pages/Events/CreateEventPage';
 import OrganizeEventPage from './pages/Events/OrganizeEventPage';
-import EventParticipantsPage from './pages/Events/EventParticipantsPage';
 import AccessForbiddenPage from './pages/NotFound/AccessForbiddenPage';
 import NoOrganizationsPage from './pages/Organizations/NoOrganizationsPage';
 import ShowOrganizationPage from './pages/Organizations/ShowOrganizationPage';
 import EditOrganizationPage from './pages/Organizations/EditOrganizationPage';
+import EventParticipantsPage from './pages/Events/EventParticipantsPage';
 import ListOrganizationsPage from './pages/Organizations/ListOrganizationsPage';
 import CreateOrganizationPage from './pages/Organizations/CreateOrganizationPage';
 import OrganizeOrganizationPage from './pages/Organizations/OrganizeOrganizationPage';
@@ -88,7 +89,7 @@ const AppRouter = (
         <Route path="/events/:_id/edit" component={EditEventPage} />
         <Route path="/events/:_id/organize" component={OrganizeEventPage} />
         <Route path="/events/:_id/participants" component={EventParticipantsPage} />
-        <Route path="/events/:_id" component={OrganizeEventPage} />
+        <Route path="/events/:_id" component={ShowEventPage} />
       </Route>
       
       {/* public pages  */}
