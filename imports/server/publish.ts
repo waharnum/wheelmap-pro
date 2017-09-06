@@ -2,26 +2,43 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
 export interface IPublicationFields { [id: string]: number; };
-export type SelectorFunction = (userId: Mongo.ObjectID) => Mongo.Selector | null;
+export type SelectorFunctionByUser = (userId: Mongo.ObjectID, ...publicationArgs: any[]) => Mongo.Selector | null;
 
-export const publishAndLog = (name: string, publishFunction: Function) => {
+export function combineSelectorAnd(
+  first: SelectorFunctionByUser | Mongo.Selector,
+  second: SelectorFunctionByUser): SelectorFunctionByUser {
+
+  return (userId: Mongo.ObjectID) => {
+    const firstSelector = first instanceof Function ? first(userId) : first;
+    const secondSelector = second instanceof Function ? second(userId) : second;
+
+    // if either returned null, nothing should be found
+    if (!first || !second) {
+      return null;
+    }
+
+    return {$and: [firstSelector, secondSelector]};
+  };
+}
+
+export function publishAndLog(name: string, publishFunction: Function) {
   console.log('Publishing', name, '…');
   Meteor.publish(name, publishFunction);
 };
 
 // Publishes the given fields for a collection.
 // You can optionally supply a function to specify which documents' fields should be published.
-const publishFields = (
+export function publishFields(
   publicationName: string,
   collection: Mongo.Collection<any>,
-  publicFields: IPublicationFields,
-  documentVisibleSelectorForUserId: SelectorFunction = () => ({}),
+  fields: IPublicationFields,
+  documentVisibleSelectorForUserId: SelectorFunctionByUser = () => ({}),
   options: object = {},
-) => {
+) {
   publishAndLog(
     publicationName,
-    function publish() {
-      const visibleSelector = documentVisibleSelectorForUserId(this.userId);
+    function publish(...publicationArgs: any[]) {
+      const visibleSelector = documentVisibleSelectorForUserId(this.userId, ...publicationArgs);
 
       // Leave in for debugging rights issues
       // if (!visibleSelector) {
@@ -33,30 +50,8 @@ const publishFields = (
       return collection.find(
         // if there is no selector, search with a selector that will yield nothing
         visibleSelector || {_id: -1},
-        Object.assign({}, options, { fields: publicFields }),
+        Object.assign({}, options, { fields }),
       );
     },
   );
-};
-
-export const publishPublicFields = (
-  publicationName: string,
-  collection: Mongo.Collection<any>,
-  publicFields: IPublicationFields,
-  documentVisibleSelectorForUserId: SelectorFunction = () => ({}),
-  options: object = {},
-) => {
-  publishFields(`${publicationName}.public`, collection,
-      publicFields, documentVisibleSelectorForUserId, options);
-};
-
-export const publishPrivateFields = (
-  publicationName: string,
-  collection: Mongo.Collection<any>,
-  privateFields: IPublicationFields,
-  documentVisibleSelectorForUserId: SelectorFunction = () => ({}),
-  options: object = {},
-) => {
-  publishFields(`${publicationName}.private`, collection,
-    privateFields, documentVisibleSelectorForUserId, options);
 };

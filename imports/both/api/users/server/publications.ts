@@ -5,7 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import { isAdmin } from '../../../lib/is-admin';
 import {Organizations} from '../../organizations/organizations';
 import {OrganizationVisibleForUserIdSelector} from '../../organization-members/server/fields';
-import {publishAndLog, publishPublicFields, publishPrivateFields} from '../../../../server/publish';
+import {publishAndLog, publishFields} from '../../../../server/publish';
 
 import './publish-user-is-admin-flag.ts';
 
@@ -21,7 +21,7 @@ publishAndLog('users.needApproval', () => {
 
 // even though typescript complains about Meteor.users, this is fine. Kind of.
 // It is unclear why the SimplSchema addition is not applied here
-publishPublicFields('users', Meteor.users, UserPublicFields, UserVisibleSelectorForUserIdSelector);
+publishFields('users.public', Meteor.users, UserPublicFields, UserVisibleSelectorForUserIdSelector);
 
 publishAndLog('users.my', () => {
   if (!this.userId) {
@@ -32,8 +32,8 @@ publishAndLog('users.my', () => {
 });
 
 // publish my active organization
-publishPrivateFields(
-  'organizations.my.active',
+publishFields(
+  'organizations.my.active.private',
   Organizations,
   OrganizationsPublicFields,
   ActiveOrganizationForUserIdSelector);

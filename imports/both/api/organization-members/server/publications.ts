@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import { publishPublicFields, publishPrivateFields} from '../../../../server/publish';
+import { publishFields } from '../../../../server/publish';
 
 import { OrganizationMembers } from '../organization-members.js';
 import { Organizations } from '../../organizations/organizations';
@@ -13,14 +13,14 @@ import {
 } from './fields';
 import { publishPrivateFieldsForMembers } from './publishForMembers';
 
-publishPublicFields(
-  'organizationMembers',
+publishFields(
+  'organizationMembers.public',
   OrganizationMembers,
   OrganizationMembersPublicFields,
   OrganizationMemberVisibleForUserIdSelector);
 
-publishPrivateFields(
-  'organizations.my',
+publishFields(
+  'organizations.my.private',
   Organizations,
   OrganizationsPublicFields,
   OrganizationVisibleForUserIdSelector);

@@ -1,15 +1,15 @@
-import {getAccessibleOrganizationIdsForUserId} from '../../organizations/privileges';
-import {SelectorFunction, IPublicationFields} from '../../../../server/publish';
+import { getAccessibleOrganizationIdsForUserId } from '../../organizations/privileges';
+import { SelectorFunctionByUser, IPublicationFields } from '../../../../server/publish';
 
 // Publishes private fields for all documents that reference an organization you
 // are member of.
 // You can optionally supply a function to limit the retrieved documents to a more specific set.
 // The function is called with a userId argument and should return a selector.
-export const publishPrivateFieldsForMembers = <T>(publicationName: string,
+export function publishPrivateFieldsForMembers<T>(publicationName: string,
                                                   collection: Mongo.Collection<T>,
                                                   privateFields: IPublicationFields,
-                                                  selectorFn: SelectorFunction = () => ({}),
-                                                  options: any = {} ) => {
+                                                  selectorFn: SelectorFunctionByUser = () => ({}),
+                                                  options: any = {} ) {
   const name = `${publicationName}.private`;
 
   console.log('Publishing', name, 'for referred organization members…');
