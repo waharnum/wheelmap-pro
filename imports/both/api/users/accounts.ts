@@ -4,9 +4,8 @@ import { Accounts, STATES } from 'meteor/std:accounts-ui';
 import { LocationDescriptor } from 'history';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 
-let loginRedirect: LocationDescriptor | null;
 export function setLoginRedirect(redirect: LocationDescriptor | null) {
-  loginRedirect = redirect;
+  Session.set('loginRedirect', redirect);
 };
 
 Accounts.config({
@@ -21,7 +20,7 @@ Accounts.ui.config({
   resetPasswordPath: '/reset-password',
   profilePath: '/profile',
   onSignedInHook: () => {
-    const redirect = loginRedirect;
+    const redirect = Session.get('loginRedirect');
     setLoginRedirect(null);
     redirect ? browserHistory.replace(redirect) : browserHistory.push('/');
   },
