@@ -37,7 +37,7 @@ export const reactiveModelSubscriptionById = <T, InP extends IAsyncDataByIdProps
 
 export const reactiveSubscriptionById = <T, InP extends IAsyncDataByIdProps<T>>(
   reactComponent: ComponentConstructor<InP>,
-  fetchFunction: (id: Mongo.ObjectID) => T,
+  fetchFunction: (id: Mongo.ObjectID) => T | null,
   ...byIdSubscriptions: string[]) : ComponentConstructor<InP> => {
     if (byIdSubscriptions.length === 0) {
       throw new Meteor.Error(400, 'No subscriptions specified!');
