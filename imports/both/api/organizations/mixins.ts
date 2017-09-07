@@ -38,8 +38,23 @@ export const OrganizationMixin = {
   },
   getEvents() {
     const events = Events.find({ organizationId: this._id }).fetch();
-    // TODO: sort by date, not by name
-    return sortBy(events, (event) => event.name.toLowerCase(), 'desc');
+    // sort by date - closest upcoming event first, older events sorted by time
+    const current = Date.now();
+    return events.sort((first: IEvent, second: IEvent) => {
+      const diffFirst = current - (first.startTime ? first.startTime.getTime() : 0);
+      const diffSecond = current - (second.startTime ? second.startTime.getTime() : 0);
+
+      if (diffFirst > 0 && diffSecond < 0) {
+        return 1;
+      }
+      if (diffFirst < 0 && diffSecond > 0) {
+        return -1;
+      }
+      if (diffFirst > 0) {
+        return diffFirst - diffSecond;
+      }
+      return diffSecond - diffFirst;
+    });
   },
   getSources() {
     const sources = Sources.find({ organizationId: this._id }).fetch();
