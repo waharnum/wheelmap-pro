@@ -37,15 +37,18 @@ export default styled(AdminTab) `
       line-height: 36px;
       text-transform: uppercase;
       border-bottom: 2px solid transparent;   
-      letter-spacing: 0.385px;
       
       &.active,
       &:hover {
-        border-bottom: 2px solid ${colors.ctaGreen};           
-        
+        border-bottom: 2px solid ${colors.ctaGreen};
+      }
+      
+      &.active {
         font-weight: 600;
-        letter-spacing: 0;
+      }
 
+      &:hover {
+        color: ${colors.ctaGreenLighter} !important;
       }
     }
 `;
