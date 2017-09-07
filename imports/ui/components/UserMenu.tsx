@@ -35,7 +35,7 @@ export default styled(UserMenu) `
 
   img {
     width: 24px;
-    padding-right: 4px;
+    margin-right: 4px;
   }
   
   &:after {
