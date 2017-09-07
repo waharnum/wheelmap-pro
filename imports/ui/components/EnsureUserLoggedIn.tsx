@@ -29,8 +29,10 @@ class EnsureUserLoggedIn extends React.Component<IUserProps & IEnsureUserLoggedI
   }
 
   public componentWillReceiveProps(nextProps) {
-    // save page to go back to
-    setLoginRedirect(nextProps.location || '/');
+    if (!nextProps.user) {
+      // save page to go back to
+      setLoginRedirect(nextProps.location || '/');
+    }
   }
 
   public render(): JSX.Element | null {
