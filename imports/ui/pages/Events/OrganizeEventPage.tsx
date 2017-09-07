@@ -226,12 +226,13 @@ const ReactiveOrganizeOrganisationsPage = reactiveSubscriptionByParams(
   wrapDataComponent<IPageModel,
       IAsyncDataByIdProps<IPageModel | null>,
       IAsyncDataByIdProps<IPageModel>>(OrganizeEventPage),
-  (id) : IPageModel => {
-    // TODO: this can be optimized by being smarter about what to query
+  (id) : IPageModel | null => {
     const event = Events.findOne(id);
-    const organization = event.getOrganization();
-    return { event, organization };
-  }, 'events.by_id.private', 'organizations.my.private');
+    const organization = event ? event.getOrganization() : null;
+    return event && organization ? { event, organization } : null;
+  },
+  // TODO: this should be changed to a private query. maybe.
+  'events.by_id.private', 'organizations.by_eventId.public');
 
 export default styled(ReactiveOrganizeOrganisationsPage) `
 

@@ -56,15 +56,12 @@ const ReactiveShowEventPage = reactiveSubscriptionByParams(
   wrapDataComponent<IPageModel,
       IAsyncDataByIdProps<IPageModel | null>,
       IAsyncDataByIdProps<IPageModel>>(ShowEventPage),
-  (id) => {
+  (id): IPageModel | null => {
     const event = Events.findOne(id);
     const organization = event ? event.getOrganization() : null;
     // fetch model with organization & events in one go
-    // TODO: limit this to the actual ongoing events
-    return { organization, event };
-  },
-  // TODO: this should only fetch the organization by id, not all
-  'events.by_id.public', 'organizations.public');
+    return event && organization ? { organization, event } : null;
+  }, 'events.by_id.public', 'organizations.by_eventId.public');
 
 export default styled(ReactiveShowEventPage) `
   .content-area {

@@ -133,13 +133,14 @@ const ReactiveEventParticipantsPage = reactiveSubscriptionByParams(
   wrapDataComponent<IPageModel,
       IAsyncDataByIdProps<IPageModel | null>,
       IAsyncDataByIdProps<IPageModel>>(EventParticipantsPage),
-  (id) : IPageModel => {
-    // TODO: this can be optimized by being smarter about what to query
+  (id) : IPageModel | null => {
     const event = Events.findOne(id);
-    const participants = event.getParticipants();
-    const organization = event.getOrganization();
-    return { event, participants, organization };
-  }, 'events.by_id.private', 'eventParticipants.by_eventId.private', 'organizations.my.private');
+    const participants = event ? event.getParticipants() : [];
+    const organization = event ? event.getOrganization() : null;
+    return event && organization ? { event, participants, organization } : null;
+  },
+  // TODO: this should be changed to a private query. maybe.
+  'events.by_id.private', 'eventParticipants.by_eventId.private', 'organizations.by_eventId.public');
 
 export default styled(ReactiveEventParticipantsPage) `
   .content-area {

@@ -45,14 +45,13 @@ export function reactiveSubscriptionByParams<T, InP extends IAsyncDataByIdProps<
 
     const result = createContainer((props: InP) => {
       const {_id, ...restParams} = props.params;
-      const allReady = byIdSubscriptions.reduce((prev, subscription) => {
+      const ready = byIdSubscriptions.reduce((prev, subscription) => {
         const handle = Meteor.subscribe(subscription, _id, restParams);
         return handle.ready();
       }, true);
-      return {
-        ready: allReady,
-        model: allReady ? fetchFunction(_id, restParams) : null,
-      };
+
+      const model = fetchFunction(_id, restParams);
+      return { ready: ready || model, model };
     }, reactComponent);
 
     return result;
@@ -89,15 +88,13 @@ export function reactiveSubscription<T, InP extends IAsyncDataProps<T>>(
       throw new Meteor.Error(400, 'No subscriptions specified!');
     }
     const result = createContainer((props: InP) => {
-      const allReady = subscriptions.reduce((prev, subscription) => {
+      const ready = subscriptions.reduce((prev, subscription) => {
         const handle = Meteor.subscribe(subscription);
         return handle.ready();
       }, true);
 
-      return {
-        ready: allReady,
-        model: allReady ? fetchFunction() : null,
-      };
+      const model = fetchFunction();
+      return { ready: ready || model, model };
     }, reactComponent);
 
     return result;

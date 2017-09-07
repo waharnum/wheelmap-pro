@@ -63,10 +63,11 @@ const ReactiveOrganizeOrganisationsPage = reactiveSubscriptionByParams(
     wrapDataComponent<IPageModel,
         IAsyncDataByIdProps<IPageModel | null>,
         IAsyncDataByIdProps<IPageModel>>(OrganizeOrganisationsPage),
-    (id ) => {
+    (id): IPageModel | null => {
       const organization = Organizations.findOne(id);
-      // fetch model with organization & events in one go
-      return { organization, events: organization ? organization.getEvents() : [] };
+      const events = organization ? organization.getEvents() : [];
+      // pass model with organization & events in one go
+      return organization ? { organization, events } : null;
     },
     'organizations.by_id.public', 'events.by_organizationId.private');
 
