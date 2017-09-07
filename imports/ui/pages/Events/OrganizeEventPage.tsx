@@ -51,7 +51,7 @@ const determineCssClassesFromEventStatus = (event: IEvent) => {
         createEvent: 'completed finished',
         inviteParticipants: 'completed finished',
         organizerTips: 'completed finished',
-        startEvent: 'active finished-last',
+        startEvent: 'active enabled finished-last',
         setEventPicture: 'disabled',
         shareResults: 'disabled',
       };
@@ -174,6 +174,7 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IPageModel > & IStyledCo
             <div className="notification-completed step-active">Your event has been started</div>
             <div className="step-status step-active">
               <h3>Mapping event started</h3>
+              <Button to={`/events/${event._id}`}>View event</Button>
             </div>
             <div className="notification-completed step-completed">Your event has been completed</div>
             <div className="step-status step-completed">
