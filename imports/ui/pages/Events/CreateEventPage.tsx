@@ -15,7 +15,8 @@ interface ICreateEventFormProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
 }
 
-const GoToEventPage = (_id) => { browserHistory.push(`/events/${_id}`); };
+const GoToEventPage = (_id) => { browserHistory.push(`/events/${_id}/organize`); };
+
 const CreateEventPage = (props: ICreateEventFormProps & IStyledComponent) => {
   return (
     <ScrollableLayout className={props.className}>
