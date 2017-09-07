@@ -1,3 +1,4 @@
+import { AutoSizedStaticMap } from '../../components/StaticMap';
 import * as React from 'react';
 import styled from 'styled-components';
 import { browserHistory } from 'react-router';
@@ -64,20 +65,25 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
 
   public render(): JSX.Element {
     return (
-    <div className={this.props.className + ' content-left'} >
-      <AutoForm
-        placeholder={true}
-        showInlineError={true}
-        model={this.state.model}
-        disabled={this.state.isSaving}
-        schema={schema}
-        onSubmit={this.onSubmit}
-        onChangeModel={this.onChangeModel}>
-        <AutoFields fields={['name', 'description', 'regionName', 'startTime',
-            'verifyGpsPositionsOfEdits', 'openFor', 'photoUrl']} />
-        <SubmitField />
-        <button className="btn btn-default" onClick={browserHistory.goBack}>Cancel</button>
-      </AutoForm>
+    <div className={this.props.className + ' content-area hsplit'}>
+      <div className="content-left">
+        <AutoForm
+          placeholder={true}
+          showInlineError={true}
+          model={this.state.model}
+          disabled={this.state.isSaving}
+          schema={schema}
+          onSubmit={this.onSubmit}
+          onChangeModel={this.onChangeModel}>
+          <AutoFields fields={['name', 'description', 'regionName', 'startTime',
+              'verifyGpsPositionsOfEdits', 'openFor', 'photoUrl']} />
+          <SubmitField />
+          <button className="btn btn-default" onClick={browserHistory.goBack}>Cancel</button>
+        </AutoForm>
+      </div>
+      <div className="content-right">
+        <AutoSizedStaticMap />
+      </div>
     </div>);
   }
 
@@ -128,4 +134,14 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
 };
 
 export const EventBaseForm = styled(InternalEventBaseForm) `
+  flex-direction: row;
+  display: flex;
+
+  .content-left {
+    flex-grow: 0;
+    padding: 24px;
+  }
+  .content-right {
+    flex-grow: 1;
+  }
 `;

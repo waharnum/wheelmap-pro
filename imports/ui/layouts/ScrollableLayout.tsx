@@ -23,7 +23,7 @@ export default styled(ScrollableLayout) `
     padding: 24px;
   }  
   
-  .content-area.hsplit {
+  .hsplit {
     display: flex;
     flex-direction: row;
     justify-content: space-between;

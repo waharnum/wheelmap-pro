@@ -4,7 +4,7 @@ import * as React from 'react';
 import { browserHistory } from 'react-router';
 
 import AdminTab from '../../components/AdminTab';
-import ScrollableLayout from '../../layouts/ScrollableLayout';
+import MapLayout from '../../layouts/MapLayout';
 import { Hint, HintBox } from '../../components/HintBox';
 import { IEvent, Events } from '../../../both/api/events/events';
 import { IStyledComponent } from '../../components/IStyledComponent';
@@ -21,17 +21,15 @@ class EditEventForm extends React.Component<
     IAsyncDataByIdProps<IEvent> & IEditEventFormProps & IStyledComponent> {
   public render(): JSX.Element {
     return (
-      <ScrollableLayout className={this.props.className}>
+      <MapLayout className={this.props.className}>
         <AdminHeader
           titleComponent={<HeaderTitle title="Edit Event" />}
           tabs={<EventTabs id={this.props.model._id || ''}/>}
         />
-        <div className="content-area scrollable hsplit">
-          <EventBaseForm
-              initialModel={this.props.model}
-              afterSubmit={this.goToEvent} />
-        </div>
-      </ScrollableLayout>
+        <EventBaseForm
+            initialModel={this.props.model}
+            afterSubmit={this.goToEvent} />
+      </MapLayout>
     );
   }
   private goToEvent = () => { browserHistory.push(`/events/${this.props.model._id}/organize`); };

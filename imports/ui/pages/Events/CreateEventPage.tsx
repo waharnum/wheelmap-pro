@@ -7,7 +7,7 @@ import AdminTab from '../../components/AdminTab';
 import { IStyledComponent } from '../../components/IStyledComponent';
 import AdminHeader, { HeaderTitle } from '../../components/AdminHeader';
 
-import ScrollableLayout from '../../layouts/ScrollableLayout';
+import MapLayout from '../../layouts/MapLayout';
 
 import { EventBaseForm, IEventBaseFormProps } from './EventBaseForm';
 
@@ -19,7 +19,7 @@ const GoToEventPage = (_id) => { browserHistory.push(`/events/${_id}/organize`);
 
 const CreateEventPage = (props: ICreateEventFormProps & IStyledComponent) => {
   return (
-    <ScrollableLayout className={props.className}>
+    <MapLayout className={props.className}>
       <AdminHeader
         titleComponent={<HeaderTitle title="Create Event" />}
         tabs={(
@@ -29,10 +29,8 @@ const CreateEventPage = (props: ICreateEventFormProps & IStyledComponent) => {
           </section>
         )}
         />
-      <div className="content-area scrollable hsplit">
-        <EventBaseForm afterSubmit={GoToEventPage} />
-      </div>
-    </ScrollableLayout>
+      <EventBaseForm afterSubmit={GoToEventPage} />
+    </MapLayout>
   );
 };
 
