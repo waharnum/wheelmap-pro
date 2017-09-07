@@ -9,11 +9,16 @@ import { EventParticipants } from '../event-participants';
 export const EventParticipationPrivateFields = {
   eventId: 1,
   userId: 1,
-  role: 1,
   invitationState: 1,
   invitationError: 1,
   invitationEmailAddress: 1,
   gravatarHash: 1,
+};
+
+export const EventParticipationPublicFields = {
+  eventId: 1,
+  invitationState: 1,
+  invitationToken: 1, // need to publish the token here, so that the client can find it again
 };
 
 export function buildVisibleForUserByEventIdSelector(
@@ -40,4 +45,9 @@ export function buildVisibleForUserByEventIdSelector(
   // now build the final selector
   const selector = { eventId: { $in: userEventIds } };
   return selector;
+};
+
+export function buildByEventIdAndTokenSelector(
+  userId: Mongo.ObjectID, eventId: Mongo.ObjectID, params: {token: string}): Mongo.Selector | null {
+  return { eventId, invitationToken: params.token };
 };

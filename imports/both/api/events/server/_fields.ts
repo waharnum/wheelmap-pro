@@ -54,3 +54,8 @@ export function buildVisibleForUserByOrganizationIdSelector(
   // select all the events the user is allowed to access with the organizations
   return {organizationId: { $in: userOrganizationIds }};
 };
+
+export function buildVisibleForPublicByEventIdSelector(
+  userId: Mongo.ObjectID, eventId: Mongo.ObjectID): Mongo.Selector | null {
+  return { _id: eventId };
+};

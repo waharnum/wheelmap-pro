@@ -63,9 +63,8 @@ const ReactiveShowEventPage = reactiveSubscriptionByParams(
     // TODO: limit this to the actual ongoing events
     return { organization, event };
   },
-  // TODO: this should be public links
   // TODO: this should only fetch the organization by id, not all
-  'events.by_id.private', 'organizations.public');
+  'events.by_id.public', 'organizations.public');
 
 export default styled(ReactiveShowEventPage) `
   .content-area {

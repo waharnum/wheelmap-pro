@@ -5,10 +5,9 @@ import { Events } from '../events.js';
 import { publishAndLog, publishFields} from '../../../../server/publish';
 import {
   EventsPrivateFields,
+  buildVisibleForPublicByEventIdSelector,
   buildVisibleForUserByEventIdSelector,
   buildVisibleForUserByOrganizationIdSelector } from './_fields';
-
-// TODO: add public publish stuff
 
 publishFields('events.by_id.private',
   Events,
@@ -20,4 +19,10 @@ publishFields('events.by_organizationId.private',
   Events,
   EventsPrivateFields,
   buildVisibleForUserByOrganizationIdSelector,
+);
+
+publishFields('events.by_id.public',
+  Events,
+  EventsPrivateFields,
+  buildVisibleForPublicByEventIdSelector,
 );
