@@ -68,7 +68,7 @@ export function reactiveSubscriptionByParams<T, InP extends IAsyncDataByIdProps<
 export function reactiveModelSubscription<T, InP extends IAsyncDataProps<T[]>>(
   reactComponent: ComponentConstructor<InP>,
   collection: Mongo.Collection<T>,
-  ...subscriptions: string[]) : ComponentConstructor<InP> {
+  ...subscriptions: string[]): ComponentConstructor<InP> {
     return reactiveSubscription(reactComponent, () => collection.find().fetch(), ...subscriptions);
 };
 

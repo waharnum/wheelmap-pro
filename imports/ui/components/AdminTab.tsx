@@ -18,7 +18,7 @@ const AdminTab = (props: IAdminTabProps & LinkProps & IStyledComponent) => {
   return (
     <li className={props.className}>
       <Link to={props.to} onlyActiveOnIndex={props.onlyActiveOnIndex}
-            activeClassName={props.activeClassName} 
+            activeClassName={props.activeClassName}
             activeStyle={props.activeStyle}
             className={active === true ? 'active' : ''} >
         {props.title}
