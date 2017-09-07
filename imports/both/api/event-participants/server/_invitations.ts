@@ -128,16 +128,10 @@ export function acceptEventInvitation(userId: Mongo.ObjectID, eventId: Mongo.Obj
 
   console.log(userId, 'tries to accept event invitation to', eventId, 'with token', token, '…');
 
-  const participant = EventParticipants.findOne({ eventId, invitationToken: token });
+  const participant = EventParticipants.findOne(
+    { eventId, invitationToken: token, invitationState: { $ne: 'accepted' }});
   if (!participant || !participant._id) {
-    throw new Meteor.Error(404, `No invitation found to ${eventId} with token ${token}.`);
-  }
-
-  if (EventParticipants.findOne({ eventId, userId })) {
-    EventParticipants.remove(participant._id);
-    console.log(`${userId} accepted invitation to ${eventId} using another email already.
-    Deleted existing invitation.`);
-    return participant;
+    throw new Meteor.Error(404, `No unaccepted invitation found to ${eventId} with token ${token}.`);
   }
 
   // check if the email address used matches the current user or is unused
@@ -145,6 +139,13 @@ export function acceptEventInvitation(userId: Mongo.ObjectID, eventId: Mongo.Obj
   if (addressState === 'in-use') {
     console.log('Email is already used by another user. Acceptance aborted.');
     throw new Meteor.Error(403, 'Email is already used by another user. Please sign with that email address');
+  }
+
+  if (EventParticipants.findOne({ eventId, userId, invitationState: 'accepted' })) {
+    EventParticipants.remove(participant._id);
+    console.log(`${userId} accepted invitation to ${eventId} using another email already.
+    Deleted existing invitation.`);
+    return participant;
   }
 
   if (addressState === 'free' ) {
@@ -160,7 +161,6 @@ export function acceptEventInvitation(userId: Mongo.ObjectID, eventId: Mongo.Obj
     { _id: participant._id },
     {
       $set: { userId, invitationState: 'accepted' },
-      $unset: { invitationToken: 1 },
     },
   );
 
