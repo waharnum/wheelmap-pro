@@ -1,3 +1,4 @@
+import { IEventParticipant } from '../../../both/api/event-participants/event-participants';
 import { Countdown } from '../../components/Countdown';
 import { IOrganization } from '../../../both/api/organizations/organizations';
 import * as moment from 'moment';
@@ -100,12 +101,23 @@ const determineCssClassesFromEventStatus = (event: IEvent) => {
 
 interface IPageModel {
   event: IEvent;
+  participants: IEventParticipant[];
   organization: IOrganization;
 }
 
 const OrganizeEventPage = (props: IAsyncDataByIdProps < IPageModel > & IStyledComponent) => {
   const event = props.model.event;
   const organization = props.model.organization;
+
+  const stats = props.model.participants.reduce(
+    (sum, value) => {
+      sum.invited += 1;
+      if (value.invitationState === 'accepted') {
+        sum.registered += 1;
+      }
+      return sum;
+    },
+    {invited: 0, registered: 0});
 
   const stepStates = determineCssClassesFromEventStatus(event);
 
@@ -127,8 +139,8 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IPageModel > & IStyledCo
       <div className="content-area scrollable">
         <div className="event-stats">
           <section className="participant-stats">
-            <span className="participants-invited">0<small>invited</small></span>
-            <span className="participants-registered key-figure">0<small>registered</small></span>
+            <span className="participants-invited">{stats.invited}<small>invited</small></span>
+            <span className="participants-registered key-figure">{stats.registered}<small>registered</small></span>
           </section>
           <Countdown start={moment(event.startTime)} />
           <section className="location-stats">
@@ -228,11 +240,12 @@ const ReactiveOrganizeOrganisationsPage = reactiveSubscriptionByParams(
       IAsyncDataByIdProps<IPageModel>>(OrganizeEventPage),
   (id) : IPageModel | null => {
     const event = Events.findOne(id);
+    const participants = event ? event.getParticipants() : [];
     const organization = event ? event.getOrganization() : null;
-    return event && organization ? { event, organization } : null;
+    return event && organization ? { event, participants, organization } : null;
   },
   // TODO: this should be changed to a private query. maybe.
-  'events.by_id.private', 'organizations.by_eventId.public');
+  'events.by_id.private', 'eventParticipants.by_eventId.private', 'organizations.by_eventId.public');
 
 export default styled(ReactiveOrganizeOrganisationsPage) `
 
