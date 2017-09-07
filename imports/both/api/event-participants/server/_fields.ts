@@ -1,9 +1,10 @@
-import { Events } from '../../events/events';
+import { check } from 'meteor/check';
 import { uniq } from 'lodash';
 
+import { Events } from '../../events/events';
 import { isAdmin } from '../../../lib/is-admin';
-import { getAccessibleOrganizationIdsForUserId } from '../../organizations/privileges';
 import { EventParticipants } from '../event-participants';
+import { getAccessibleOrganizationIdsForUserId } from '../../organizations/privileges';
 
 // make sure the invitationToken is omitted
 export const EventParticipationPrivateFields = {
@@ -49,5 +50,8 @@ export function buildVisibleForUserByEventIdSelector(
 
 export function buildByEventIdAndTokenSelector(
   userId: Mongo.ObjectID, eventId: Mongo.ObjectID, params: {token: string}): Mongo.Selector | null {
+
+  // always sanitize to ensure no injection is possible from params (e.g. sending {$ne: -1} as an object)
+  check(params.token, String);
   return { eventId, invitationToken: params.token };
 };
