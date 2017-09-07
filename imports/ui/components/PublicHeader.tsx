@@ -129,7 +129,7 @@ export default styled(PublicHeader) `
       color: white;
     }
 
-    ol.secondary-tools li.public-view::before {
+    ol.secondary-tools li::before {
       background-image: url(/images/icon-admin-view@2x.png); 
     }
 

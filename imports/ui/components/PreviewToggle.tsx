@@ -48,12 +48,5 @@ export default styled(PreviewToggle) `
     background-repeat: no-repeat;
     background-size: 100% 100%;
   }
-
-  &.admin-area::before {
-    background-image: url(/images/icon-admin-view@2x.png); /* white version */     
-  }
-
-  &.public-area::before{
-    background-image: url(/images/icon-public-view@2x.png); /* anthracite version */      
-  }
+  
 `;
