@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import * as React from 'react';
-import { browserHistory } from 'react-router';
 
 import AdminTab from '../../components/AdminTab';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
@@ -9,42 +8,30 @@ import { IStyledComponent } from '../../components/IStyledComponent';
 import { wrapDataComponent } from '../../components/AsyncDataComponent';
 import AdminHeader, { HeaderTitle } from '../../components/AdminHeader';
 import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
-import { IOrganizationBaseFormProps, OrganizationBaseForm, OrganizationFormHintBox } from './OrganizationBaseForm';
 
 import { reactiveModelSubscriptionByParams, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
 
-interface IEditOrganizationFormProps {
-  afterSubmit?: (id: Mongo.ObjectID) => void;
-}
-
-class EditOrganizationForm extends React.Component<
-    IAsyncDataByIdProps<IOrganization> & IEditOrganizationFormProps & IStyledComponent> {
+class OrganizationStatisticsPage extends React.Component<
+    IAsyncDataByIdProps<IOrganization> &  IStyledComponent> {
   public render(): JSX.Element {
     return (
       <ScrollableLayout className={this.props.className}>
         <AdminHeader
-          titleComponent={<HeaderTitle title="Edit Organization" />}
+          titleComponent={<HeaderTitle title="Statistics" />}
           tabs={<OrganizationTabs id={this.props.model._id || ''}/>}
         />
-        <div className="content-area scrollable hsplit">
-          <OrganizationBaseForm
-            initialModel={this.props.model}
-            afterSubmit={this.goToDashboard} />
-          <OrganizationFormHintBox />
-        </div>
-        
+        <div className="content-area scrollable hsplit" />
       </ScrollableLayout>
     );
   }
-  private goToDashboard = () => browserHistory.push(`/organizations/${this.props.model._id}/organize`);
 }
 
-const EditFormContainer = reactiveModelSubscriptionByParams(
+const ReactiveOrganizationStatisticsPage = reactiveModelSubscriptionByParams(
   wrapDataComponent<
       IOrganization,
       IAsyncDataByIdProps<IOrganization | null>,
-      IAsyncDataByIdProps<IOrganization>>(EditOrganizationForm),
+      IAsyncDataByIdProps<IOrganization>>(OrganizationStatisticsPage),
   Organizations, 'organizations.by_id.public');
 
-export default styled(EditFormContainer) `
+export default styled(ReactiveOrganizationStatisticsPage) `
 `;

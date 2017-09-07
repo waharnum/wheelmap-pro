@@ -7,7 +7,7 @@ import AdminTab from '../../components/AdminTab';
 import StaticMap from '../../components/StaticMap';
 import AdminHeader from '../../components/AdminHeader';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
-import OrganizationsTabs from './OrganizationsTabs';
+import OrganizationTabs from './OrganizationTabs';
 import { IStyledComponent } from '../../components/IStyledComponent';
 import { wrapDataComponent } from '../../components/AsyncDataComponent';
 import OrganizationsDropdown from '../../components/OrganizationsDropdown';
@@ -47,7 +47,7 @@ const OrganizeOrganisationsPage = (props: IStyledComponent & IAsyncDataByIdProps
             <Button to="/organizations/create" className="btn-primary" >Create Organization</Button>
           </OrganizationsDropdown>
         )}
-        tabs={<OrganizationsTabs id={props.model.organization._id || ''}/>}
+        tabs={<OrganizationTabs id={props.model.organization._id || ''}/>}
         publicLink={`/organizations/${props.model.organization._id}`}
     />
     <div className="content-area scrollable">

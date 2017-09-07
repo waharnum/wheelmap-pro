@@ -93,7 +93,7 @@ class InternalOrganizationBaseForm
     this.setState({model});
   }
 
-  private onSubmit = (doc : IOrganization) => {
+  private onSubmit = (doc: IOrganization) => {
     this.setState({isSaving: true});
 
     const id = this.state.model._id;

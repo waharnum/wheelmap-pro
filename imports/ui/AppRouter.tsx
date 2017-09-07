@@ -13,6 +13,7 @@ import ShowEventPage from './pages/Events/ShowEventPage';
 import CreateEventPage from './pages/Events/CreateEventPage';
 import OrganizeEventPage from './pages/Events/OrganizeEventPage';
 import SignUpForEventPage from './pages/Events/SignUpForEventPage';
+import EventStatisticsPage from './pages/Events/EventStatisticsPage';
 import AccessForbiddenPage from './pages/NotFound/AccessForbiddenPage';
 import NoOrganizationsPage from './pages/Organizations/NoOrganizationsPage';
 import ShowOrganizationPage from './pages/Organizations/ShowOrganizationPage';
@@ -20,7 +21,9 @@ import EditOrganizationPage from './pages/Organizations/EditOrganizationPage';
 import EventParticipantsPage from './pages/Events/EventParticipantsPage';
 import ListOrganizationsPage from './pages/Organizations/ListOrganizationsPage';
 import CreateOrganizationPage from './pages/Organizations/CreateOrganizationPage';
+import OrganizationMembersPage from './pages/Organizations/OrganizationMembersPage';
 import OrganizeOrganizationPage from './pages/Organizations/OrganizeOrganizationPage';
+import OrganizationStatisticsPage from './pages/Organizations/OrganizationStatisticsPage';
 
 import EnsureUserLoggedIn from './components/EnsureUserLoggedIn';
 
@@ -79,11 +82,14 @@ const AppRouter = (
         <Route path="/organizations/none" component={NoOrganizationsPage} />
         <Route path="/organizations/create" component={CreateOrganizationPage} />
         <Route path="/organizations/:_id/edit" component={EditOrganizationPage} />
+        <Route path="/organizations/:_id/members" component={OrganizationMembersPage} />
+        <Route path="/organizations/:_id/statistics" component={OrganizationStatisticsPage} />
         <Route path="/organizations/:_id/organize" component={OrganizeOrganizationPage} onEnter={SaveActiveOrganization} />
 
         <Route path="/events/create" component={CreateEventPage} />
         <Route path="/events/:_id/edit" component={EditEventPage} />
         <Route path="/events/:_id/organize" component={OrganizeEventPage} />
+        <Route path="/events/:_id/statistics" component={EventStatisticsPage} />
         <Route path="/events/:_id/participants" component={EventParticipantsPage} />
         <Route path="/events/:_id" component={ShowEventPage} />
       </Route>
