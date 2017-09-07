@@ -160,7 +160,8 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IPageModel > & IStyledCo
             <div className="notification-completed">2 documents created.</div>
             <div className="step-status">
               <h3>Tips for event organizers</h3>
-              <Button to="#">Learn more</Button>
+              <a className="btn" target="_blank"
+                  href="https://developmentseed.org/blog/2015/06/07/organizing-mapathons/">Learn more</a>
             </div>
           </li>
         </ol>
