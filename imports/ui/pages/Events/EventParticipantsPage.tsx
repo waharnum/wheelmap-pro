@@ -14,7 +14,7 @@ import { wrapDataComponent } from '../../components/AsyncDataComponent';
 import AdminHeader, { HeaderTitle } from '../../components/AdminHeader';
 import {EventParticipantInviteSchema} from '../../../both/api/event-participants/schema';
 import { EventParticipants, IEventParticipant } from '../../../both/api/event-participants/event-participants';
-import { reactiveSubscriptionById, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
+import { reactiveSubscriptionByParams, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
 
 const invitationsListSchema = EventParticipantInviteSchema.pick(
   'invitationEmailAddresses', 'invitationEmailAddresses.$');
@@ -129,7 +129,7 @@ class EventParticipantsPage extends React.Component<
   }
 }
 
-const ReactiveEventParticipantsPage = reactiveSubscriptionById(
+const ReactiveEventParticipantsPage = reactiveSubscriptionByParams(
   wrapDataComponent<IPageModel,
       IAsyncDataByIdProps<IPageModel | null>,
       IAsyncDataByIdProps<IPageModel>>(EventParticipantsPage),

@@ -11,7 +11,7 @@ import ScrollableLayout from '../../layouts/ScrollableLayout';
 import AdminTab from '../../components/AdminTab';
 import { default as AdminHeader, HeaderTitle } from '../../components/AdminHeader';
 
-import { reactiveSubscriptionById, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
+import { reactiveSubscriptionByParams, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
 import { Events, EventStatusEnum, IEvent } from '../../../both/api/events/events';
 import { IStyledComponent } from '../../components/IStyledComponent';
 import Button from '../../components/Button';
@@ -220,7 +220,7 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IPageModel > & IStyledCo
   );
 };
 
-const ReactiveOrganizeOrganisationsPage = reactiveSubscriptionById(
+const ReactiveOrganizeOrganisationsPage = reactiveSubscriptionByParams(
   wrapDataComponent<IPageModel,
       IAsyncDataByIdProps<IPageModel | null>,
       IAsyncDataByIdProps<IPageModel>>(OrganizeEventPage),

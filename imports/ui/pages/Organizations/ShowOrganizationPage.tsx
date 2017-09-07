@@ -11,7 +11,7 @@ import { wrapDataComponent } from '../../components/AsyncDataComponent';
 import { IStyledComponent } from '../../components/IStyledComponent';
 import { AutoSizedStaticMap } from '../../components/StaticMap';
 import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
-import { reactiveSubscriptionById, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
+import { reactiveSubscriptionByParams, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
 import {IEvent} from '../../../both/api/events/events';
 
 interface IPageModel {
@@ -53,7 +53,7 @@ const ShowOrganizationPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledCo
   );
 };
 
-const ReactiveShowOrganisationPage = reactiveSubscriptionById(
+const ReactiveShowOrganisationPage = reactiveSubscriptionByParams(
   wrapDataComponent<IPageModel,
       IAsyncDataByIdProps<IPageModel | null>,
       IAsyncDataByIdProps<IPageModel>>(ShowOrganizationPage),

@@ -11,7 +11,7 @@ import EventBaseForm, { IEventBaseFormProps } from './EventBaseForm';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 import AdminHeader, { HeaderTitle } from '../../components/AdminHeader';
 
-import { reactiveModelSubscriptionById, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
+import { reactiveModelSubscriptionByParams, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
 
 interface IEditEventFormProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
@@ -37,7 +37,7 @@ class EditEventForm extends React.Component<
   private goToEvent = () => { browserHistory.push(`/events/${this.props.model._id}/organize`); };
 }
 
-const EditFormContainer = reactiveModelSubscriptionById(
+const EditFormContainer = reactiveModelSubscriptionByParams(
   wrapDataComponent<IEvent, IAsyncDataByIdProps<IEvent | null>, IAsyncDataByIdProps<IEvent>>(EditEventForm),
   Events, 'events.by_id.private');
 

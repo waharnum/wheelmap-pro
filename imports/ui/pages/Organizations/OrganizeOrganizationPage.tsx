@@ -11,7 +11,7 @@ import OrganizationsTabs from './OrganizationsTabs';
 import { IStyledComponent } from '../../components/IStyledComponent';
 import { wrapDataComponent } from '../../components/AsyncDataComponent';
 import OrganizationsDropdown from '../../components/OrganizationsDropdown';
-import {reactiveSubscriptionById, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
+import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
 
 import { IEvent } from '../../../both/api/events/events';
 import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
@@ -59,7 +59,7 @@ const OrganizeOrganisationsPage = (props: IStyledComponent & IAsyncDataByIdProps
   </ScrollableLayout>
 );
 
-const ReactiveOrganizeOrganisationsPage = reactiveSubscriptionById(
+const ReactiveOrganizeOrganisationsPage = reactiveSubscriptionByParams(
     wrapDataComponent<IPageModel,
         IAsyncDataByIdProps<IPageModel | null>,
         IAsyncDataByIdProps<IPageModel>>(OrganizeOrganisationsPage),

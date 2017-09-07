@@ -28,31 +28,30 @@ type ComponentConstructor<P> = React.ComponentClass<P> | React.StatelessComponen
  * @param collection The mongo collection to fetch data from, make sure it is covered by the subcriptions
  * @param byIdSubscriptions The names of the subscription for the object id
  */
-export const reactiveModelSubscriptionById = <T, InP extends IAsyncDataByIdProps<T>>(
+export function reactiveModelSubscriptionByParams<T, InP extends IAsyncDataByIdProps<T>>(
   reactComponent: ComponentConstructor<InP>,
   collection: Mongo.Collection<T>,
-  ...byIdSubscriptions: string[]) : ComponentConstructor<InP> => {
-    return reactiveSubscriptionById(reactComponent, (id) => collection.findOne({_id: id}), ...byIdSubscriptions);
+  ...byIdSubscriptions: string[]): ComponentConstructor<InP> {
+    return reactiveSubscriptionByParams(reactComponent, (id) => collection.findOne({_id: id}), ...byIdSubscriptions);
 };
 
-export const reactiveSubscriptionById = <T, InP extends IAsyncDataByIdProps<T>>(
+export function reactiveSubscriptionByParams<T, InP extends IAsyncDataByIdProps<T>>(
   reactComponent: ComponentConstructor<InP>,
-  fetchFunction: (id: Mongo.ObjectID) => T | null,
-  ...byIdSubscriptions: string[]) : ComponentConstructor<InP> => {
+  fetchFunction: (id: Mongo.ObjectID, ...params: any[]) => T | null,
+  ...byIdSubscriptions: string[]): ComponentConstructor<InP> {
     if (byIdSubscriptions.length === 0) {
       throw new Meteor.Error(400, 'No subscriptions specified!');
     }
 
     const result = createContainer((props: InP) => {
-      const id = props.params._id;
+      const {_id, ...restParams} = props.params;
       const allReady = byIdSubscriptions.reduce((prev, subscription) => {
-        const handle = Meteor.subscribe(subscription, id);
+        const handle = Meteor.subscribe(subscription, _id, restParams);
         return handle.ready();
       }, true);
-
       return {
         ready: allReady,
-        model: allReady ? fetchFunction(id) : null,
+        model: allReady ? fetchFunction(_id, restParams) : null,
       };
     }, reactComponent);
 
@@ -67,10 +66,10 @@ export const reactiveSubscriptionById = <T, InP extends IAsyncDataByIdProps<T>>(
  * @param collection The mongo collection to fetch data from, make sure it is covered by the subcriptions
  * @param subscriptions The subscriptions that will indicate when the component needs to be updated
  */
-export const reactiveModelSubscription = <T, InP extends IAsyncDataProps<T[]>>(
+export function reactiveModelSubscription<T, InP extends IAsyncDataProps<T[]>>(
   reactComponent: ComponentConstructor<InP>,
   collection: Mongo.Collection<T>,
-  ...subscriptions: string[]) : ComponentConstructor<InP> => {
+  ...subscriptions: string[]) : ComponentConstructor<InP> {
     return reactiveSubscription(reactComponent, () => collection.find().fetch(), ...subscriptions);
 };
 
@@ -82,10 +81,10 @@ export const reactiveModelSubscription = <T, InP extends IAsyncDataProps<T[]>>(
  * @param fetchFunction The function used to fetch data, make sure it is covered by the subcriptions
  * @param subscriptions he subscriptions that will indicate when the component needs to be updated
  */
-export const reactiveSubscription = <T, InP extends IAsyncDataProps<T>>(
+export function reactiveSubscription<T, InP extends IAsyncDataProps<T>>(
   reactComponent: ComponentConstructor<InP>,
   fetchFunction: () => T,
-  ...subscriptions: string[]) : ComponentConstructor<InP> => {
+  ...subscriptions: string[]): ComponentConstructor<InP> {
     if (subscriptions.length === 0) {
       throw new Meteor.Error(400, 'No subscriptions specified!');
     }

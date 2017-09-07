@@ -27,11 +27,11 @@ type InputPropsComponent<T> = React.ComponentClass<T> | React.StatelessComponent
  * @param notReadyComponent If the data is loading this rendered instead.
  * @param dataNotFoundComponent If no data is available this rendered instead.
  */
-export const wrapDataComponent =
-  <T, TBeforeProps extends IAsyncDataProps<T | null>, TAfterProps extends IAsyncDataProps<T>>
-  (WrappedComponent: InputPropsComponent<TBeforeProps>,
-   notReadyComponent?: JSX.Element,
-   dataNotFoundComponent?: JSX.Element) : React.ComponentClass<TAfterProps> => {
+export function wrapDataComponent
+  <T, TBeforeProps extends IAsyncDataProps<T | null>, TAfterProps extends IAsyncDataProps<T>>(
+    WrappedComponent: InputPropsComponent<TBeforeProps>,
+    notReadyComponent?: JSX.Element,
+    dataNotFoundComponent?: JSX.Element): React.ComponentClass<TAfterProps> {
 
   return class extends React.Component<TAfterProps> {
     public render() {
