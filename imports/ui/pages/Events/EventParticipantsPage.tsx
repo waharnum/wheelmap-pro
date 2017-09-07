@@ -1,3 +1,4 @@
+import { Hint, HintBox } from '../../components/HintBox';
 import styled from 'styled-components';
 import { uniq } from 'lodash';
 import AutoForm from 'uniforms-bootstrap3/AutoForm';
@@ -27,6 +28,7 @@ interface IPageModel {
 
 const removeParticipant = (id: Mongo.ObjectID) => {
   Meteor.call('eventParticipants.remove', id, (error, result) => {
+    // TODO: handle error!
     console.log('eventParticipants.remove', error, result);
   });
 };
@@ -34,7 +36,7 @@ const removeParticipant = (id: Mongo.ObjectID) => {
 const CustomSubmitField = (props) => <SubmitField value="Send invites" />;
 
 const EventParticpantEntry = (props: { model: IEventParticipant }) => (
-  <div className="particpant-entry">
+  <li className="particpant-entry">
     <section className="particpant-icon" dangerouslySetInnerHTML={{ __html: props.model.getIconHTML()}} />
     <section className="particpant-name">{props.model.getUserName()}</section>
     <section className="particpant-user glyphicon">{props.model.userId ? 'p' : ''}</section>
@@ -42,9 +44,9 @@ const EventParticpantEntry = (props: { model: IEventParticipant }) => (
     {props.model.invitationState === 'error' ?
         <section className="particpant-error">{props.model.invitationError}</section> : null}
     <section className="participant-remove glyphicon">
-      <button onClick={() => removeParticipant(props.model._id || '')}>x</button>
+      <a onClick={() => removeParticipant(props.model._id || '')}>x</a>
     </section>
-  </div>
+  </li>
 );
 
 class EventParticipantsPage extends React.Component<
@@ -73,7 +75,7 @@ class EventParticipantsPage extends React.Component<
           tabs={<EventTabs id={event._id || ''}/>}
           publicLink={`/events/${event._id}`}
         />
-        <div className="content-area scrollable">
+        <div className="content-area scrollable hsplit">
           <div className="content-left">
             <h2>Invite Participants to event</h2>
             <AutoForm
@@ -85,12 +87,25 @@ class EventParticipantsPage extends React.Component<
               onSubmit={this.onSubmit}
               ref={this.storeFormReference}
             />
-           </div>
-           <div className="content-right">
-             <h2>Invited Participants</h2>
-             {participants.length === 0 ? <section>No one invited yet.</section> : null}
-             {participants.map((p) => (<EventParticpantEntry key={p._id as React.Key} model={p} />))}
-           </div>
+          </div>
+          <div className="content-right">
+            <HintBox title={event.status === 'draft' ?
+                  'The event is not published yet.' : 'You made this event public.'}>               
+              <Hint className="user">
+                Invited people will receive a personal invitation which is only valid for them.
+              </Hint>
+              <Hint className="group">
+                Everybody with the share-link below can join.
+              </Hint>
+            </HintBox>
+            <div className="participants-box">    
+              <h3>Invited Participants</h3>        
+              <ol>
+              {participants.length === 0 ? <section>No one invited yet.</section> : null}
+              {participants.map((p) => (<EventParticpantEntry key={p._id as React.Key} model={p} />))}
+              </ol>
+            </div>
+          </div>          
         </div>
       </ScrollableLayout>
     );
@@ -112,7 +127,6 @@ class EventParticipantsPage extends React.Component<
         invitationEmailAddresses: this.cleanUpEmailAddresses(doc.invitationEmailAddresses),
         eventId: this.props.model.event._id,
       }, (error, result) => {
-        console.log('eventParticipants.invite', error, result);
         this.setState({isSaving: false});
         if (!error) {
           resolve(true);
@@ -143,37 +157,44 @@ const ReactiveEventParticipantsPage = reactiveSubscriptionByParams(
   'events.by_id.private', 'eventParticipants.by_eventId.private', 'organizations.by_eventId.public');
 
 export default styled(ReactiveEventParticipantsPage) `
-  .content-area {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
 
-  .particpant-entry {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 5px;
+  .participants-box {
+    margin-left: 2em;
 
-    section {
-      margin-left: 5px;      
+    h3 {
+      padding-bottom: 1em;
+      font-size: 20px;
+      line-height: 24px;
+      font-weight: 300;
     }
 
-    .particpant-icon img {
-      width: 24px;
-    }
-    .particpant-name {
-      flex-grow: 1;
-    }
-    .particpant-state {
+    .particpant-entry {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+      padding-left: 1em;
 
-    }
-    .particpant-error {
+      section {
+        margin-left: 5px;      
+      }
 
-    }
-    .participant-remove {
-      color: red;
+      .particpant-icon img {
+        width: 24px;
+      }
+      .particpant-name {
+        flex-grow: 1;
+      }
+      .particpant-state {
+
+      }
+      .particpant-error {
+
+      }
+      .participant-remove a {
+        color: red;
+      }
     }
   }
 

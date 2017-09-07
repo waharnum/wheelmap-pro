@@ -21,6 +21,21 @@ export default styled(ScrollableLayout) `
 
   .content-area {
     padding: 24px;
+  }  
+  
+  .content-area.hsplit {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .content-left {
+      flex-grow: 1;
+      margin-right: 20px;
+    }
+
+    .content-right {
+      max-width: 400px;
+    }
   }
 
   .scrollable {
