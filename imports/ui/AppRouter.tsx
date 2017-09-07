@@ -1,12 +1,8 @@
 import * as React from 'react';
 import { render } from 'react-dom';
 import { Meteor } from 'meteor/meteor';
-import { Session } from 'meteor/session';
-import { Tracker } from 'meteor/tracker';
 import { Accounts, STATES } from 'meteor/std:accounts-ui';
 import { Router, Route, IndexRoute, Redirect, browserHistory } from 'react-router';
-
-import { acceptInvite } from './pages/Events/acceptInvite';
 
 import App from './App';
 
@@ -16,6 +12,7 @@ import EditEventPage from './pages/Events/EditEventPage';
 import ShowEventPage from './pages/Events/ShowEventPage';
 import CreateEventPage from './pages/Events/CreateEventPage';
 import OrganizeEventPage from './pages/Events/OrganizeEventPage';
+import SignUpForEventPage from './pages/Events/SignUpForEventPage';
 import AccessForbiddenPage from './pages/NotFound/AccessForbiddenPage';
 import NoOrganizationsPage from './pages/Organizations/NoOrganizationsPage';
 import ShowOrganizationPage from './pages/Organizations/ShowOrganizationPage';
@@ -71,6 +68,9 @@ const AppRouter = (
         <Route path="/organizations/list" component={ListOrganizationsPage} />
       </Route>
 
+      {/* Invitations */}
+      <Route path="/events/:_id/accept-invitation/:token" component={SignUpForEventPage} />
+
       {/* organize pages */}
       <Route component={EnsureUserLoggedIn}>
         
@@ -82,9 +82,6 @@ const AppRouter = (
         <Route path="/organizations/:_id/organize" component={OrganizeOrganizationPage} onEnter={SaveActiveOrganization} />
 
         <Route path="/events/create" component={CreateEventPage} />
-
-        <Route path="/events/:_id/accept-invitation/:token" onEnter={acceptInvite} />
-
         <Route path="/events/:_id/edit" component={EditEventPage} />
         <Route path="/events/:_id/organize" component={OrganizeEventPage} />
         <Route path="/events/:_id/participants" component={EventParticipantsPage} />
