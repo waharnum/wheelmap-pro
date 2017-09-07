@@ -20,14 +20,15 @@ import { withTime } from '../../components/Timed';
 import EventTabs from './EventTabs';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
 
-const determineCssClassesFromEventStatus = (event: IEvent) => {
-  const invited: number = 10; // event.invitationCount();
+const determineCssClassesFromEventStatus = (event: IEvent, stats: {invited: number, registered: number}) => {
+  const hasInvitees = stats.invited > 0 || stats.registered > 0;
   const hasPicture = !!event.photoUrl;
   const wasPublished = true;
 
   switch (event.status) {
     case 'planned':
-      if (invited > 0) {
+    case 'draft':
+      if (hasInvitees) {
         return {
           createEvent: 'completed finished',
           inviteParticipants: 'completed finished',
@@ -37,8 +38,6 @@ const determineCssClassesFromEventStatus = (event: IEvent) => {
           shareResults: 'disabled',
         };
       }
-      // fallthrough!
-    case 'draft':
       return {
         createEvent: 'completed finished',
         inviteParticipants: 'enabled todo',
@@ -119,7 +118,7 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IPageModel > & IStyledCo
     },
     {invited: 0, registered: 0});
 
-  const stepStates = determineCssClassesFromEventStatus(event);
+  const stepStates = determineCssClassesFromEventStatus(event, stats);
 
   return (
     <ScrollableLayout className={props.className}>
@@ -162,14 +161,14 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IPageModel > & IStyledCo
             </div>
           </li>
           <li className={'event-timeline-step invite-participants ' + stepStates.inviteParticipants}>
-            <div className="notification-completed">3 invitations sent.</div>
+            <div className="notification-completed">{stats.invited} invitations sent.</div>
             <div className="step-status">
-              <h3>No participants invited.</h3>
+              <h3>{stats.invited} participants invited.</h3>
               <Button className="btn-primary" to={`/events/${event._id}/participants`}>Invite participants</Button>
             </div>
           </li>
           <li className={'event-timeline-step organizer-tips ' + stepStates.organizerTips}>
-            <div className="notification-completed">2 documents created.</div>
+            <div className="notification-completed">1 document to read.</div>
             <div className="step-status">
               <h3>Tips for event organizers</h3>
               <a className="btn" target="_blank"
