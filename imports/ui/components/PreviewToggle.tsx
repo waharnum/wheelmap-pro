@@ -6,8 +6,16 @@ import styled from 'styled-components';
 import { IStyledComponent } from '../components/IStyledComponent';
 import { LocationDescriptor } from 'history';
 
+// TODO: Needs binding for current user
+
 const PreviewToggle = (props: IStyledComponent & {to?: LocationDescriptor, toOrganize?: boolean}) => {
   if (!props.to) {
+    return null;
+  }
+
+  // TODO: Only display if you have rights to organize
+  const user = Meteor.user();
+  if (!user) {
     return null;
   }
 
