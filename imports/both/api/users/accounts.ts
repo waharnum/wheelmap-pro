@@ -1,6 +1,7 @@
 import { getActiveOrganizationId } from '../organizations/organizations';
 import * as React from 'react';
 import { Meteor } from 'meteor/meteor';
+import { Tracker } from 'meteor/tracker';
 import { Session } from 'meteor/session';
 import { Accounts, STATES } from 'meteor/std:accounts-ui';
 import { LocationDescriptor } from 'history';
