@@ -40,7 +40,8 @@ schema.extend({
     },
   },
 });
-class EventBaseForm extends React.Component<IEventBaseFormProps & IStyledComponent, IBaseFormState> {
+
+class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyledComponent, IBaseFormState> {
   public state = {
     model: {} as IEvent,
     isSaving: false,
@@ -63,7 +64,7 @@ class EventBaseForm extends React.Component<IEventBaseFormProps & IStyledCompone
 
   public render(): JSX.Element {
     return (
-    <div className={this.props.className || ''} >
+    <div className={this.props.className + ' content-left'} >
       <AutoForm
         placeholder={true}
         showInlineError={true}
@@ -126,5 +127,5 @@ class EventBaseForm extends React.Component<IEventBaseFormProps & IStyledCompone
   }
 };
 
-export default styled(EventBaseForm) `
+export const EventBaseForm = styled(InternalEventBaseForm) `
 `;

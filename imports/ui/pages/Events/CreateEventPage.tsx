@@ -9,7 +9,7 @@ import AdminHeader, { HeaderTitle } from '../../components/AdminHeader';
 
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 
-import EventBaseForm, { IEventBaseFormProps } from './EventBaseForm';
+import { EventBaseForm, IEventBaseFormProps } from './EventBaseForm';
 
 interface ICreateEventFormProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
@@ -29,7 +29,7 @@ const CreateEventPage = (props: ICreateEventFormProps & IStyledComponent) => {
           </section>
         )}
         />
-      <div className="content-area scrollable">
+      <div className="content-area scrollable hsplit">
         <EventBaseForm afterSubmit={GoToEventPage} />
       </div>
     </ScrollableLayout>
