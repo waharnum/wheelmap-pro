@@ -30,7 +30,7 @@ export default styled(ScrollableLayout) `
 
     .content-left {
       flex-grow: 1;
-      margin-right: 20px;
+      margin-right: 24px;
     }
 
     .content-right {

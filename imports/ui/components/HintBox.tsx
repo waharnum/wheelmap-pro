@@ -3,35 +3,35 @@ import * as React from 'react';
 
 import { IStyledComponent } from '../components/IStyledComponent';
 interface IHintHeader {
-  children: JSX.Element | string | Array<JSX.Element | string | null> | null;
+  children: JSX.Element | string | Array<JSX.Element | string | null> | null | undefined;
 }
 
 const HintHeader = (props: IStyledComponent & IHintHeader) => {
   return (
-    <h3 className={props.className + ' hint-header'}>{props.children}</h3>
+    <h3 className={props.className || 'empty'}>{props.children}</h3>
   );
 };
 
 interface IHintProps {
-  children: JSX.Element | string | Array<JSX.Element | string | null> | null;
+  children: JSX.Element | string | Array<JSX.Element | string | null> | null | undefined;
 }
 
 export const Hint = (props: IStyledComponent & IHintProps) => {
   return (
-    <li className={props.className + ' hint'}>{props.children}</li>
+    <li className={props.className || 'empty'}>{props.children}</li>
   );
 };
 
 interface IHintBoxProps {
   title?: string;
   headerClassName?: string;
-  children: JSX.Element | string | Array<JSX.Element | string | null> | null;
+  children: JSX.Element | string | Array<JSX.Element | string | null> | null | undefined;
 }
 
 const InternalHintBox = (props: IStyledComponent & IHintBoxProps) => {
   return (
     <div className={props.className + ' hint-box'} >
-      {props.title ? <HintHeader className={props.headerClassName || ''}>{props.title}</HintHeader> : null}
+      <HintHeader className={props.headerClassName}>{props.title}</HintHeader>
       <ol className="hints">
         {props.children}
       </ol>
@@ -46,6 +46,7 @@ export const HintBox = styled(InternalHintBox) `
 
   h3 {
     position: relative;
+    padding-left: 2em;
     padding-bottom: 1em;
     font-size: 20px;
     line-height: 24px;
@@ -62,6 +63,10 @@ export const HintBox = styled(InternalHintBox) `
     }
   }
 
+  h3.empty {
+    padding-left: 0em;
+  }
+
   ol {
     font-size: 18px;
     line-height: 26px;
@@ -72,6 +77,7 @@ export const HintBox = styled(InternalHintBox) `
       position: relative;
       padding-bottom: 18px;
       line-height: 21px;
+      padding-left: 2em;
 
       ::before {
         position: absolute;
@@ -80,13 +86,10 @@ export const HintBox = styled(InternalHintBox) `
         color: #767e8a;
         font-family: "iconfield-v03";
       }
-    }
 
-    h3.idea, h3.user, h3.group {
-      padding-left: 2em;
-    }
-    li.idea, li.user, li.group {
-      padding-left: 2em;
+      li.empty {
+        padding-left: 0em;
+      }
     }
 
     .idea::before {
@@ -97,6 +100,15 @@ export const HintBox = styled(InternalHintBox) `
     }
     .group::before {
       content: '∏';
+    }
+    .map::before {
+      content: '';
+    }
+    .info::before {
+      content: '';
+    }
+    .rocket::before {
+      content: '';
     }
   }
 `;

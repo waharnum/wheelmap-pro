@@ -4,18 +4,17 @@ import * as React from 'react';
 import { browserHistory } from 'react-router';
 
 import AdminTab from '../../components/AdminTab';
+import ScrollableLayout from '../../layouts/ScrollableLayout';
 import { IStyledComponent } from '../../components/IStyledComponent';
 import AdminHeader, { HeaderTitle } from '../../components/AdminHeader';
-
-import ScrollableLayout from '../../layouts/ScrollableLayout';
-
-import OrganizationBaseForm, { IOrganizationBaseFormProps } from './OrganizationBaseForm';
+import { IOrganizationBaseFormProps, OrganizationBaseForm, OrganizationFormHintBox } from './OrganizationBaseForm';
 
 interface ICreateOrganizationFormProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
 }
 
 const GoToOrganizationPage = (_id) => { browserHistory.push(`/organizations/${_id}/organize`); };
+
 const CreateOrganizationPage = (props: ICreateOrganizationFormProps & IStyledComponent) => {
   return (
     <ScrollableLayout className={props.className}>
@@ -28,8 +27,9 @@ const CreateOrganizationPage = (props: ICreateOrganizationFormProps & IStyledCom
           </section>
         )}
         />
-      <div className="content-area scrollable">
+      <div className="content-area scrollable hsplit">
         <OrganizationBaseForm afterSubmit={GoToOrganizationPage} />
+        <OrganizationFormHintBox />
       </div>
     </ScrollableLayout>
   );

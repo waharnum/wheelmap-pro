@@ -9,7 +9,7 @@ import { IStyledComponent } from '../../components/IStyledComponent';
 import { wrapDataComponent } from '../../components/AsyncDataComponent';
 import AdminHeader, { HeaderTitle } from '../../components/AdminHeader';
 import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
-import OrganizationBaseForm, { IOrganizationBaseFormProps } from './OrganizationBaseForm';
+import { IOrganizationBaseFormProps, OrganizationBaseForm, OrganizationFormHintBox } from './OrganizationBaseForm';
 
 import { reactiveModelSubscriptionByParams, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
 
@@ -26,11 +26,13 @@ class EditOrganizationForm extends React.Component<
           titleComponent={<HeaderTitle title="Edit Organization" />}
           tabs={<OrganizationsTabs id={this.props.model._id || ''}/>}
         />
-        <div className="content-area scrollable">
+        <div className="content-area scrollable hsplit">
           <OrganizationBaseForm
             initialModel={this.props.model}
             afterSubmit={this.goToDashboard} />
+          <OrganizationFormHintBox />
         </div>
+        
       </ScrollableLayout>
     );
   }

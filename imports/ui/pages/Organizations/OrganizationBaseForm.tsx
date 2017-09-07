@@ -9,6 +9,7 @@ import BoolField from 'uniforms-bootstrap3/BoolField';
 import LongTextField from 'uniforms-bootstrap3/LongTextField';
 
 import ImageLinkUrlField from '../../components/ImageLinkUrlField';
+import { HintBox, Hint } from '../../components/HintBox';
 import { IStyledComponent } from '../../components/IStyledComponent';
 import { Organizations, IOrganization } from '../../../both/api/organizations/organizations';
 
@@ -42,7 +43,24 @@ schema.extend({
   },
 });
 
-class OrganizationBaseForm extends React.Component<IOrganizationBaseFormProps & IStyledComponent, IBaseFormState> {
+export const OrganizationFormHintBox = () => (
+  <div className="content-right">
+    <HintBox>               
+      <Hint className="rocket"> 
+      Wheelmap Pro helps you to plan and organize mapping events for accessibility data.
+      </Hint>
+      <Hint className="info">
+      This gathered information can then be shared publictly to help people with with and 
+      without disabilities to navigate the world.
+      </Hint>
+      <Hint className="map">
+      The app for your Organization will be setup and you’ll be ready to create your first mapping event.
+      </Hint>
+    </HintBox>
+  </div>);
+
+class InternalOrganizationBaseForm
+      extends React.Component<IOrganizationBaseFormProps & IStyledComponent, IBaseFormState> {
   public state = {
     model: {} as IOrganization,
     isSaving: false,
@@ -55,7 +73,7 @@ class OrganizationBaseForm extends React.Component<IOrganizationBaseFormProps & 
 
   public render(): JSX.Element {
     return (
-    <div className={this.props.className || ''} >
+    <div className={this.props.className + ' content-left'} >
       <AutoForm
         placeholder={true}
         showInlineError={true}
@@ -111,5 +129,5 @@ class OrganizationBaseForm extends React.Component<IOrganizationBaseFormProps & 
   }
 };
 
-export default styled(OrganizationBaseForm) `
+export const OrganizationBaseForm = styled(InternalOrganizationBaseForm) `
 `;

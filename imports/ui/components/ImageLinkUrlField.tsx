@@ -53,7 +53,7 @@ export default styled(ImageLinkUrlField) `
     position: relative;
 
     img {
-      max-width: 100%;
+      max-width: 400px;
       max-height: 400px;
     }
 
