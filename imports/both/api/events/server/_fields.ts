@@ -1,7 +1,9 @@
 import { uniq } from 'lodash';
+import { check } from 'meteor/check';
 
 import { isAdmin } from '../../../lib/is-admin';
 import { getAccessibleOrganizationIdsForUserId } from '../../organizations/privileges';
+
 export const EventsPrivateFields = {
   organizationId: 1,
   name: 1,
@@ -22,6 +24,9 @@ export const EventsPrivateFields = {
 export function buildVisibleForUserByEventIdSelector(
   userId: Mongo.ObjectID, eventId: Mongo.ObjectID): Mongo.Selector | null {
 
+  // always sanitize to ensure no injection is possible from params (e.g. sending {$ne: -1} as an object)
+  check(eventId, String);
+
   if (!userId) {
     return null;
   }
@@ -40,6 +45,9 @@ export function buildVisibleForUserByEventIdSelector(
 export function buildVisibleForUserByOrganizationIdSelector(
   userId: Mongo.ObjectID, organizationId: Mongo.ObjectID): Mongo.Selector | null {
 
+  // always sanitize to ensure no injection is possible from params (e.g. sending {$ne: -1} as an object)
+  check(organizationId, String);
+
   if (!userId) {
     return null;
   }
@@ -57,5 +65,9 @@ export function buildVisibleForUserByOrganizationIdSelector(
 
 export function buildVisibleForPublicByEventIdSelector(
   userId: Mongo.ObjectID, eventId: Mongo.ObjectID): Mongo.Selector | null {
+
+  // always sanitize to ensure no injection is possible from params (e.g. sending {$ne: -1} as an object)
+  check(eventId, String);
+
   return { _id: eventId };
 };

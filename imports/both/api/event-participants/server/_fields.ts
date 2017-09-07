@@ -1,5 +1,5 @@
-import { check } from 'meteor/check';
 import { uniq } from 'lodash';
+import { check } from 'meteor/check';
 
 import { Events } from '../../events/events';
 import { isAdmin } from '../../../lib/is-admin';
@@ -24,6 +24,9 @@ export const EventParticipationPublicFields = {
 
 export function buildVisibleForUserByEventIdSelector(
   userId: Mongo.ObjectID, eventId: Mongo.ObjectID): Mongo.Selector | null {
+
+  // always sanitize to ensure no injection is possible from params (e.g. sending {$ne: -1} as an object)
+  check(eventId, String);
 
   if (!userId) {
     return null;
@@ -53,5 +56,6 @@ export function buildByEventIdAndTokenSelector(
 
   // always sanitize to ensure no injection is possible from params (e.g. sending {$ne: -1} as an object)
   check(params.token, String);
+  check(eventId, String);
   return { eventId, invitationToken: params.token };
 };
