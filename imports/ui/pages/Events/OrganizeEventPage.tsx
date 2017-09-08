@@ -510,21 +510,15 @@ ol.event-timeline {
     }
   }
   
-  li.finished {
+  li.finished, li.finished-last {
     .step-todo, 
     .step-active { 
       display: none; 
     }
     .step-completed { 
-      display: flex; 
+      display: flex;
     }
   }
-
-  /* FIXME: hide the invite button after the event is over
-  li.finished.invite-participants .step-status.step-completed a {
-    display: none;
-  }
-  */
 
   /* -------------------------- step stylings -----------------------------------*/
 
