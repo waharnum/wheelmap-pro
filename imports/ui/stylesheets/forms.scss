@@ -22,11 +22,13 @@ label,
   background-color: transparent;
   border-radius: 0;
   border: none;
+  box-shadow: none;
   outline: 0;
 
   &:hover {
     color: $cta-green;
     background-color: transparent;
+    box-shadow: none;
   }
 }
 
