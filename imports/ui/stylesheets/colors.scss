@@ -4,18 +4,19 @@
 
 $bg-grey: #F4F5F6;                // light grey in background
 $bg-anthracite: #37404D;          // anthracite used in admin headers
+$bg-grey-darker: #ECEDEF;          // light darker grey for "lower" background areas
 
 $cta-green: #9BBD40;               // primary button color
 $cta-green-lighter: #A5C353;       // primary button hover color
 $link-blue: #29A3CB;               // link color
 $link-blue-lighter: #31B5D5;       // link hover color
 $cta-disabled-grey: #CBCED3;        // primary button disabled
-
+$bg-light-green: #E0F1C1;         // status notifications in organize events
+$dark-green: #719511;              // status notifications in organize events
 $error-red: #C30400;              // main error color 
 $active-orange: #F5A623;          // in event timeline
 $done-green: #96C545;             // in event timeline
 
 $shadow-grey: #DEE1E7;            // used for embossed boxes
 $box-shadow: rgba(55,64,77,0.40); // event timeline icons
-
 $text-muted: rgba(0,0,0,.4);      // eg. form help text

@@ -30,17 +30,17 @@ const determineCssClassesFromEventStatus = (event: IEvent, stats: {invited: numb
     case 'draft':
       if (hasInvitees) {
         return {
-          createEvent: 'completed finished',
-          inviteParticipants: 'completed finished',
-          organizerTips: 'completed finished-last',
-          startEvent: 'enabled todo',
+          createEvent: 'finished',
+          inviteParticipants: 'finished',
+          organizerTips: 'finished-last',
+          startEvent: 'todo',
           setEventPicture: 'disabled',
           shareResults: 'disabled',
         };
       }
       return {
-        createEvent: 'completed finished',
-        inviteParticipants: 'enabled todo',
+        createEvent: 'finished',
+        inviteParticipants: 'todo',
         organizerTips: 'enabled',
         startEvent: 'disabled',
         setEventPicture: 'disabled',
@@ -48,40 +48,40 @@ const determineCssClassesFromEventStatus = (event: IEvent, stats: {invited: numb
       };
     case 'ongoing':
       return {
-        createEvent: 'completed finished',
-        inviteParticipants: 'completed finished',
-        organizerTips: 'completed finished',
-        startEvent: 'active enabled finished-last',
+        createEvent: 'finished',
+        inviteParticipants: 'finished',
+        organizerTips: 'finished',
+        startEvent: 'finished-last',
         setEventPicture: 'disabled',
         shareResults: 'disabled',
       };
     case 'completed':
       if (wasPublished) {
         return {
-          createEvent: 'completed finished',
-          inviteParticipants: 'completed finished',
-          organizerTips: 'completed finished',
-          startEvent: 'completed finished',
-          setEventPicture: 'completed finished',
-          shareResults: 'completed finished-last',
+          createEvent: 'finished',
+          inviteParticipants: 'finished',
+          organizerTips: 'finished',
+          startEvent: 'finished',
+          setEventPicture: 'finished',
+          shareResults: 'finished-last',
         };
       }
       if (hasPicture) {
         return {
-          createEvent: 'completed finished',
-          inviteParticipants: 'completed finished',
-          organizerTips: 'completed finished',
-          startEvent: 'completed finished',
-          setEventPicture: 'completed finished-last',
-          shareResults: 'enabled todo',
+          createEvent: 'finished',
+          inviteParticipants: 'finished',
+          organizerTips: 'finished',
+          startEvent: 'finished',
+          setEventPicture: 'finished-last',
+          shareResults: 'todo',
         };
       }
       return {
-        createEvent: 'completed finished',
-        inviteParticipants: 'completed finished',
-        organizerTips: 'completed finished',
-        startEvent: 'completed finished-last',
-        setEventPicture: 'enabled todo',
+        createEvent: 'finished',
+        inviteParticipants: 'finished',
+        organizerTips: 'finished',
+        startEvent: 'finished-last',
+        setEventPicture: 'todo',
         shareResults: 'disabled',
       };
     case 'canceled':
@@ -162,9 +162,19 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IPageModel > & IStyledCo
           </li>
           <li className={'event-timeline-step invite-participants ' + stepStates.inviteParticipants}>
             <div className="notification-completed">{stats.invited} invitations sent.</div>
-            <div className="step-status">
-              <h3>{stats.invited} participants invited.</h3>
+            <div className="step-status step-todo">
+              <div className="step-information">
+                <h3>No participants invited.</h3>
+                <p>Emails will be send when you publish.</p>
+              </div>
               <Button className="btn-primary" to={`/events/${event._id}/participants`}>Invite participants</Button>
+            </div>
+            <div className="step-status step-completed">
+              <div className="step-information">
+                <h3>{stats.invited} participants invited.</h3>
+                <p>Emails will be send when you publish.</p>
+              </div>
+              <Button to={`/events/${event._id}/participants`}>Invite more</Button>
             </div>
           </li>
           <li className={'event-timeline-step organizer-tips ' + stepStates.organizerTips}>
@@ -177,20 +187,37 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IPageModel > & IStyledCo
           </li>
         </ol>
         <ol className="event-timeline during-event">
-          <h2>During the event</h2>
-          <li className={'event-timeline-step start-event ' + stepStates.startEvent}>
+          <h2>Publish event</h2>
+          <li className={'event-timeline-step publish-event ' + stepStates.startEvent}>
             <div className="step-status step-todo">
-              <h3>Mapping event not started</h3>
-              <Button to="#">Start mapping event</Button>
+              <div className="step-information">
+                <h3>Mapping event still a draft</h3>
+                <p>Please make sure all details are correct. When you publish, invitation emails will be sent.</p>
+              </div>
+              <div className="publishing-actions">
+                <Button to="#">Publish event</Button>
+              </div>
             </div>
-            <div className="notification-completed step-active">Your event has been started</div>
+            <div className="notification-completed step-active">Congratulations! Your event has been published</div>
             <div className="step-status step-active">
-              <h3>Mapping event started</h3>
-              <Button to={`/events/${event._id}`}>View event</Button>
+              <div className="step-information">
+                <h3>Mapping event published</h3>
+                <p>Your event is now online. It will be closed the day after. Be careful when canceling your event: you can not undo this.</p>
+              </div>
+              <div className="publishing-actions">
+                <Button to={`/events/${event._id}`}>View event</Button>
+                <Button className="btn-primary" to='.'>Cancel event</Button>
+              </div>
             </div>
             <div className="notification-completed step-completed">Your event has been completed</div>
             <div className="step-status step-completed">
-              <h3>Mapping event finished</h3>
+              <div className="step-information">
+                <h3>Mapping event finished</h3>
+                <p>Your event is over now.</p>
+              </div>
+              <div className="publishing-actions">
+                <Button to={`/events/${event._id}`}>View event</Button>
+              </div>
             </div>
           </li>
         </ol>
@@ -214,7 +241,7 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IPageModel > & IStyledCo
             </div>
           </li>
           <li className={'event-timeline-step share-results ' + stepStates.shareResults}>
-            <div className="notification-completed">Results have been shared</div>
+            <div className="notification-completed">Great. You may share the link now.</div>
             <div className="step-status step-todo">
               <h3>Share results</h3>
             </div>
@@ -223,7 +250,7 @@ const OrganizeEventPage = (props: IAsyncDataByIdProps < IPageModel > & IStyledCo
               <Button to={`/events/${event._id}`}>Share</Button>
             </div>
             <div className="step-status step-completed">
-              <h3>Shared results</h3>
+              <h3>Results have been shared</h3>
               <Button to={`/events/${event._id}`}>View</Button>
             </div>
           </li>
@@ -328,8 +355,11 @@ export default styled(ReactiveOrganizeOrganisationsPage) `
     }
   }
 }
-
 /* -------------------------- event timeline styling -----------------------------------*/
+
+ol.event-timeline.before-event {
+  padding-top: 20px;
+}
 
 ol.event-timeline {
   margin-left: 40px;
@@ -355,8 +385,8 @@ ol.event-timeline {
   }
 
   h3 {
-    font-size: 18px;
-    font-weight: 300;
+    font-size: 21px;
+    font-weight: 300 !important;
   }
 
   li.event-timeline-step {
@@ -402,22 +432,95 @@ ol.event-timeline {
         font-size: 21px;
         text-align: center;
       }
-    }
 
-    .notification-completed {
-      display: none;
-      margin: 0;
-      padding: 17px 20px 17px 20px;
-      border-radius: 4px 4px 0 0;
-      font-size: 18px;
-      font-weight: 400;
+      .step-information {
+        width: 20em;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .publishing-actions {
+        margin-left: 20px;
+        display: flex;
+        align-items: flex-start;
+      }
+    }
+  }
+
+  /* ---------- display logic for steps with multiple sub-states  --------------*/
+ 
+  li.todo, 
+  li.disabled {
+    .step-completed, 
+    .step-active { 
+      display: none; 
+    }
+    .step-todo { 
+      display: flex; 
     }
   }
   
-  li.completed,
+  li.todo {
+    .step-todo, 
+    .step-completed { 
+      display: none; 
+    }
+    .step-active { 
+      display: flex; 
+    }
+  }
+  
+  li.finished {
+    .step-todo, 
+    .step-active { 
+      display: none; 
+    }
+    .step-completed { 
+      display: flex; 
+    }
+  }
+
+  /* FIXME: hide the invite button after the event is over
+  li.finished.invite-participants .step-status.step-completed a {
+    display: none;
+  }
+  */
+
+  /* -------------------------- step stylings -----------------------------------*/
+
+  /* step-icons */
+  li.event-details .step-status:before { content: " "; }
+  li.invite-participants .step-status:before { content: "∏"; } 
+  li.organizer-tips .step-status:before { content: ""; } 
+  li.publish-event .step-todo:before { content: ""; }
+  li.publish-event .step-active:before { content: ""; }
+  li.publish-event .step-completed:before { content: ""; }  
+  li.set-event-picture .step-status:before{ content: "π"; }
+  li.share-results .step-todo:before  { content: ""; }
+  li.share-results .step-active:before  { content: ""; }
+  li.share-results .step-completed:before  { content: ""; }
+
   li.enabled,
+  li.finished-last,
+  li.finished {
+    a.btn {
+      line-height: 24px;
+      padding: 0;
+      background-color: transparent;
+    }
+  }
+
+  li.disabled,
   li.todo,
-  li.active  {
+  li.finished {
+    .notification-completed {
+      display: none;
+    }
+  }
+
+  li.todo,
+  li.finished-last,
+  li.finished {
     background-color: white;
     box-shadow: 0 0 2px 0 ${colors.boxShadow};
 
@@ -425,13 +528,6 @@ ol.event-timeline {
       background-color: white;
       box-shadow: 0 0 2px 0 ${colors.boxShadow};  
     }
-  }
-
-  li.enabled a,
-  li.completed a {
-    padding: 0;
-    color: ${colors.ctaGreen};
-    background-color: transparent;
   }
 
   li.disabled {
@@ -448,92 +544,60 @@ ol.event-timeline {
     }
   }
 
-  li.completed:before {
-    content: "";
-    color: ${colors.doneGreen};
-  }
-  
-  li.finished-last {
-    .notification-completed {
-      display: block;
-    }
-
-    &:before,
-    &:after,
-    .notification-completed,
-    .notification-completed a {
-      opacity: 1;
-      color: white;
-      background-color: ${colors.doneGreen};
-    }
-
-    h3 {
-      font-weight: 400;
-    }
-  }
-
   li.todo {
+
     &:before,
-    .step-status:before {
+    .step-status:before,
+    h3 {
       color: ${colors.activeOrange};
       opacity: 1;
     }
 
-    &:before {
+    &:before { /* arrow indicating active step */
       content: "D";
     }
 
     h3 {
-      color: ${colors.activeOrange};
-      font-weight: 400;
-    }
-
-    a.btn-primary {
-      display: block;
+      font-weight: 400 !important;
     }
   }
 
-  li.active {
-    &:before,
-    .step-status:before {
+
+  li.finished,
+  li.finished-last {
+
+    &:before { /* checkmark */
+      content: ""; 
+    }
+  }
+
+  li.finished {
+    
+    &:before { /* checkmark */
+      color: ${colors.doneGreen};
+    }
+  }
+
+  li.finished-last {
+  
+    &:before { /* checkmark */
       color: white;
-      opacity: 1;
+      background-color: ${colors.doneGreen};
     }
 
-    &:before {
-      content: "";
-    }
-
-    h3 {
-      font-weight: 400;
-    }
-
-    a.btn-primary {
+    .notification-completed {
       display: block;
+      margin: 0;
+      padding: 13px 20px 13px 20px;
+      border-radius: 4px 4px 0 0;
+      font-size: 21px;
+      font-weight: 400;
+      color: ${colors.darkGreen};
+      background-color: ${colors.bgLightGreen};
     }
   }
 
-  li.todo, li.disabled {
-    .step-completed, .step-active { display: none; }
-    .step-todo { display: flex; }
-  }
-  
-  li.active {
-    .step-todo, .step-completed { display: none; }
-    .step-active { display: flex; }
-  }
-  
-  li.completed {
-    .step-todo, .step-active { display: none; }
-    .step-completed { display: flex; }
-  }
-
-  li.event-details .step-status:before { content: " "; }
-  li.invite-participants .step-status:before { content: "∏"; } 
-  li.organizer-tips .step-status:before { content: ""; } 
-  li.start-event .step-status:before { content: "O"; } 
-  li.set-event-picture .step-status:before{ content: "π"; }
-  li.share-results .step-status:before  { content: ""; }
+  /* ---------------------- specific step stylings ---------------------- */
 
   li.event-details {
     padding: 0;
@@ -605,9 +669,19 @@ ol.event-timeline {
     }
   }
 
-  /* hide the invite button after the event is over */
-  li.invite-participants.completed.finished a {
-    display: none;
+  li.publish-event.todo .step-status.step-todo{
+    a.btn { /*white button with outline */
+      padding: 0 16px;
+      font-size: 16px;
+      line-height: 40px;
+      color: ${colors.bgAnthracite} !important;
+      background: transparent;
+      border: 1px solid ${colors.shadowGrey};
+    
+      &:hover {
+        background: rgba(0, 0, 0, 0.05);
+      }
+    }
   }
 
   /* wrap differently with event image */
@@ -627,10 +701,6 @@ ol.event-timeline {
       margin-top: 20px;
     }
   }
-}
-
-ol.event-timeline.before-event {
-  padding-top: 20px;
 }
 
 `;
