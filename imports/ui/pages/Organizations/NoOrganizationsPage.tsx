@@ -10,7 +10,7 @@ import ScrollableLayout from '../../layouts/ScrollableLayout';
 
 const NoOrganizationsPage = (props: IStyledComponent) => {
   return (
-    <ScrollableLayout className={props.className}>
+    <ScrollableLayout className={props.className} id="NoOrganizationsPage">
       <AdminHeader titleComponent={<h1>Welcome to $pageName</h1>} />
       <div className="content-area scrollable">
         <div>{TAPi18n.__('It seems you are not part of any organization yet. Please wait for your invite, or create your own organization.')}</div>

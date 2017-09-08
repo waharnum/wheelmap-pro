@@ -16,7 +16,7 @@ const UserMenu = (props: IStyledComponent) => {
   }
 
   return (
-    <li className={props.className}>
+    <li className={props.className + ' user-menu'}>
       <img src={getGravatarImageUrl(user.profile.gravatarHash)} className="user-icon" />
       <Link to="/profile">{getDisplayedNameForUser(user)}</Link>
     </li>

@@ -35,3 +35,7 @@ fourseven:scss
 meteortypescript:typescript-libs
 underscorestring:underscore.string
 std:accounts-bootstrap
+xolvio:cleaner
+xolvio:backdoor
+tmeasday:acceptance-test-driver
+xolvio:email-stub

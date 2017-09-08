@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 import { colors } from '../../stylesheets/colors';
 
 const HomePage = (props) => (
-  <div className={`${props.className}`}>
+  <div className={`${props.className}`} id="HomePage">
     <header className="header beforeLogin onHomepage">
         <span className="logo">
           <h1>{TAPi18n.__('wheelmap.pro')}</h1>

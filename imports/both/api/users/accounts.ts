@@ -22,12 +22,17 @@ Accounts.ui.config({
   signUpPath: '/signup',
   resetPasswordPath: '/reset-password',
   profilePath: '/profile',
+  requireEmailVerification: true,
   onSignedInHook: () => {
     const redirect = Session.get('loginRedirect');
     setLoginRedirect(null);
     redirect ? browserHistory.replace(redirect) : browserHistory.push('/');
   },
   onSignedOutHook: () => {
+    setLoginRedirect(null);
+    browserHistory.push('/');
+  },
+  onPostSignUpHook: () => {
     setLoginRedirect(null);
     browserHistory.push('/');
   },

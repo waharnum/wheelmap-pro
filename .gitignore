@@ -4,3 +4,6 @@ settings/*
 .DS_Store
 .vscode/typings/meteor.d.ts
 .idea
+dump/
+packages/
+tests/chimp.js

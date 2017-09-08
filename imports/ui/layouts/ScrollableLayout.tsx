@@ -5,11 +5,12 @@ import { IStyledComponent } from '../components/IStyledComponent';
 
 interface IScrollLayoutProps {
   children: JSX.Element | Array<JSX.Element | null> | null;
+  id?: string;
 }
 
 const ScrollableLayout = (props: IStyledComponent & IScrollLayoutProps) => {
   return (
-  <div className={props.className + ' scroll-layout'}>
+  <div className={props.className + ' scroll-layout'} id={props.id}>
     {props.children}
   </div>
   );
