@@ -140,6 +140,9 @@ export const EventBaseForm = styled(InternalEventBaseForm) `
   .content-left {
     flex-grow: 0;
     padding: 24px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-width: 424px;
   }
   .content-right {
     flex-grow: 1;
