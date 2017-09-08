@@ -166,9 +166,8 @@ header.main-header.on-dark {
       
       h1 {
         margin: 0;
-        padding-top: 11px;
+        padding-top: 9px;
         font-size: 30px;
-        line-height: 30px;
         font-weight: 800;
       }
     }

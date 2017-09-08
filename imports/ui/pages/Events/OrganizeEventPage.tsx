@@ -174,7 +174,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps < IPageModel
           publicLink={`/events/${event._id}`}
         />
         <div className="content-area scrollable">
-          <div className="event-stats">
+          <div className="stats event-stats">
             <section className="participant-stats">
               <span className="participants-invited">{stats.invited}<small>invited</small></span>
               <span className="participants-registered key-figure">{stats.registered}<small>registered</small></span>
@@ -240,12 +240,11 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps < IPageModel
               <div className="step-status step-active">
                 <div className="step-information">
                   <h3>Mapping event published</h3>
-                  <p>Your event is now online. It will be closed the day after.
-                     Be careful when canceling your event: you can not undo this.</p>
+                  <p>Your event is now online. It will be closed the day after. Be careful when canceling your event: you can not undo this.</p>
                 </div>
                 <div className="publishing-actions">
                   <Button to={`/events/${event._id}`}>View event</Button>
-                  <Button className="btn-primary" to=".">Cancel event</Button>
+                  <Button className="btn-primary" to='.'>Cancel event</Button>
                 </div>
               </div>
               <div className="notification-completed step-completed">Your event has been completed</div>
@@ -289,7 +288,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps < IPageModel
                 <Button to={`/events/${event._id}`}>Share</Button>
               </div>
               <div className="step-status step-completed">
-                <h3>Share results</h3>
+                <h3>Results have been shared</h3>
                 <Button to={`/events/${event._id}`}>View</Button>
               </div>
             </li>
@@ -323,7 +322,7 @@ export default styled(ReactiveOrganizeOrganisationsPage) `
   padding-right: 0; /* to have a marginless stats bar */
 }
 
-.event-stats {
+.stats {
   padding-top: 20px;
   background-color: white;
   border-bottom: 1px solid ${colors.shadowGrey};
@@ -375,24 +374,18 @@ export default styled(ReactiveOrganizeOrganisationsPage) `
   section.participant-stats {
     border-right: 1px solid ${colors.shadowGrey};
     
-    &:before {
-      background-image: url(/images/icon-person@2x.png); 
-    }
+    &:before { background-image: url(/images/icon-person@2x.png); }
   }
 
   section.event-countdown {
 
-    &:before {
-      background-image: url(/images/icon-date@2x.png); 
-    }
+    &:before { background-image: url(/images/icon-date@2x.png); }
   }
   
   section.location-stats {
     border-left: 1px solid ${colors.shadowGrey};
 
-    &:before {
-      background-image: url(/images/icon-location@2x.png); 
-    }
+    &:before { background-image: url(/images/icon-location@2x.png); }
   }
 }
 /* -------------------------- event timeline styling -----------------------------------*/
@@ -432,7 +425,7 @@ ol.event-timeline {
   li.event-timeline-step {
     position: relative;
     width: 44em;
-    max-width: 90vv;
+    max-width: 90vw;
     margin: 14px 0 14px 23px;
 
     border-radius: 4px;   
