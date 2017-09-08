@@ -37,9 +37,11 @@ label,
   }
 }
 
-.btn-primary {
+.btn-primary,
+.btn-primary.active {
   color: white;
   background-color: $cta-green;
+  box-shadow: none;
 
   &:hover {
     color: white;
