@@ -1,14 +1,15 @@
-import { Hint, HintBox } from '../../components/HintBox';
 import styled from 'styled-components';
 import { uniq } from 'lodash';
 import AutoForm from 'uniforms-bootstrap3/AutoForm';
 import * as React from 'react';
 import SubmitField from 'uniforms-bootstrap3/SubmitField';
 import SimpleSchema from 'simpl-schema';
+import * as ClipboardButton from 'react-clipboard.js';
 
 import EventTabs from './EventTabs';
 import {IOrganization} from '../../../both/api/organizations/organizations';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
+import { Hint, HintBox } from '../../components/HintBox';
 import { IEvent, Events } from '../../../both/api/events/events';
 import { IStyledComponent } from '../../components/IStyledComponent';
 import { wrapDataComponent } from '../../components/AsyncDataComponent';
@@ -60,6 +61,8 @@ class EventParticipantsPage extends React.Component<
     const organization = this.props.model.organization;
     const participants = this.props.model.participants;
 
+    const link = 'http://bit.ly/1RmnUT';
+
     return (
       <ScrollableLayout className={this.props.className}>
         <AdminHeader
@@ -87,6 +90,19 @@ class EventParticipantsPage extends React.Component<
               onSubmit={this.onSubmit}
               ref={this.storeFormReference}
             />
+            <h2>Share a link</h2>
+            <div>
+              You can also share the following link to invite people, 
+              e.g. via Social Media or handouts.
+              <form>
+                <div className="field form-group copy-to-clipboard">
+                  <input className="form-group" type="text" id="public-link" value={link} disabled={true} />
+                  <ClipboardButton className="btn btn-dark" data-clipboard-text={link}>
+                  Copy to clipboard
+                  </ClipboardButton>
+                </div>
+              </form>
+            </div>
           </div>
           <div className="content-right">
             <HintBox title={event.status === 'draft' ?
@@ -206,4 +222,25 @@ export default styled(ReactiveEventParticipantsPage) `
       }
     }
   }
+
+  .copy-to-clipboard {
+    display: flex;
+
+    button {    
+      padding-left: 30px;
+      padding-right: 10px;
+      position: relative;
+
+      &::before {
+        position: absolute;
+        left: 12px;
+        top: 14px;
+        color: #767e8a;
+        font-family: "iconfield-v03";
+        content: '';
+      }
+    }
+  }
+
+
 `;
