@@ -8,7 +8,10 @@ import {Organizations} from '../../organizations/organizations';
 import {EventParticipants} from '../event-participants';
 import {userHasFullAccessToOrganizationId} from '../../organizations/privileges';
 import {EventParticipantInviteSchema, EventParticipantSchema} from '../schema';
-import {insertDraftEventParticipant, sendEventInvitationEmailTo, acceptEventInvitation} from './_invitations';
+import {
+  insertDraftEventParticipant, sendEventInvitationEmailTo, acceptEventInvitation,
+  acceptPublicEventInvitation,
+} from './_invitations';
 
 export const insert = new ValidatedMethod({
   name: 'eventParticipants.invite',
@@ -75,13 +78,36 @@ export const accept = new ValidatedMethod({
   },
 });
 
-Meteor.methods({
-  'eventParticipants.remove'(_id: Mongo.ObjectID) {
+export const acceptPublic = new ValidatedMethod({
+  name: 'eventParticipants.acceptPublicInvitation',
+  validate: EventParticipantSchema.pick('eventId', 'invitationToken').validator(),
+  run({eventId, invitationToken}) {
+    check(eventId, String);
+    check(invitationToken, String);
+
     if (!this.userId) {
       throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));
     }
 
-    const eventParticipant = EventParticipants.findOne(_id);
+    const event = Events.findOne({_id: eventId});
+
+    if (!event) {
+      throw new Meteor.Error(404, TAPi18n.__('Event not found'));
+    }
+
+    return acceptPublicEventInvitation(this.userId, eventId, invitationToken);
+  },
+});
+
+Meteor.methods({
+  'eventParticipants.remove'(participantUserId: Mongo.ObjectID) {
+    check(participantUserId, String);
+
+    if (!this.userId) {
+      throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));
+    }
+
+    const eventParticipant = EventParticipants.findOne(participantUserId);
     if (!eventParticipant) {
       throw new Meteor.Error(404, TAPi18n.__('Event participants not found'));
     }
@@ -98,6 +124,6 @@ Meteor.methods({
       throw new Meteor.Error(403, TAPi18n.__('Not authorized.'));
     }
 
-    return EventParticipants.remove(_id);
+    return EventParticipants.remove(participantUserId);
   },
 });

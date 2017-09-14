@@ -8,11 +8,23 @@ const customUserIdFunction = () => {
     return null;
   }
   if (!this.operator) { // inserts
-    if (!this.isSet || this.value === null || this.value === '') { return 'required'; };
+    if (!this.isSet || this.value === null || this.value === '') {
+      return 'required';
+    }
+    ;
   } else if (this.isSet) { // updates
-    if (this.operator === '$set' && this.value === null || this.value === '') { return 'required'; };
-    if (this.operator === '$unset') { return 'required'; };
-    if (this.operator === '$rename') { return 'required'; };
+    if (this.operator === '$set' && this.value === null || this.value === '') {
+      return 'required';
+    }
+    ;
+    if (this.operator === '$unset') {
+      return 'required';
+    }
+    ;
+    if (this.operator === '$rename') {
+      return 'required';
+    }
+    ;
   }
   return null;
 };
@@ -46,6 +58,7 @@ export const EventParticipantSchema = new SimpleSchema({
   invitationEmailAddress: {
     type: String,
     regEx: SimpleSchema.RegEx.Email,
+    optional: true, // optional for users joining via public link
   },
 });
 

@@ -1,9 +1,9 @@
-import { Mongo } from 'meteor/mongo';
-import { Meteor } from 'meteor/meteor';
+import {Mongo} from 'meteor/mongo';
+import {Meteor} from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 
-import { EventParticipantMixin, IEventParticipantMixin } from './mixins';
-import { EventParticipantSchema } from './schema';
+import {EventParticipantMixin, IEventParticipantMixin} from './mixins';
+import {EventParticipantSchema} from './schema';
 
 export interface IEventParticipant extends IEventParticipantMixin {
   // mongo id
@@ -15,7 +15,7 @@ export interface IEventParticipant extends IEventParticipantMixin {
   invitationState: 'draft' | 'queuedForSending' | 'sent' | 'accepted' | 'error';
   invitationError?: string;
   invitationToken?: string;
-  invitationEmailAddress: string;
+  invitationEmailAddress?: string;
 };
 
 export const EventParticipants = new Mongo.Collection<IEventParticipant>('EventParticipants');

@@ -23,6 +23,7 @@ import CreateOrganizationPage from './pages/Organizations/CreateOrganizationPage
 import OrganizationMembersPage from './pages/Organizations/OrganizationMembersPage';
 import OrganizeOrganizationPage from './pages/Organizations/OrganizeOrganizationPage';
 import OrganizationStatisticsPage from './pages/Organizations/OrganizationStatisticsPage';
+import PublicSignUpForEventPage from './pages/Events/PublicSignUpForEventPage';
 
 import EnsureUserLoggedIn from './components/EnsureUserLoggedIn';
 
@@ -73,6 +74,7 @@ const AppRouter = (
 
       {/* Invitations */}
       <Route path="/events/:_id/accept-invitation/:token" component={SignUpForEventPage}/>
+      <Route path="/events/:_id/public-invitation/:token" component={PublicSignUpForEventPage}/>
 
       {/* organize pages */}
       <Route component={EnsureUserLoggedIn}>

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { uniq } from 'lodash';
+import {uniq} from 'lodash';
 import AutoForm from 'uniforms-bootstrap3/AutoForm';
 import * as React from 'react';
 import SubmitField from 'uniforms-bootstrap3/SubmitField';
@@ -8,14 +8,14 @@ import * as ClipboardButton from 'react-clipboard.js';
 import EventTabs from './EventTabs';
 import {IOrganization} from '../../../both/api/organizations/organizations';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
-import { Hint, HintBox } from '../../components/HintBox';
-import { IEvent, Events } from '../../../both/api/events/events';
-import { IStyledComponent } from '../../components/IStyledComponent';
-import { wrapDataComponent } from '../../components/AsyncDataComponent';
-import AdminHeader, { HeaderTitle } from '../../components/AdminHeader';
+import {Hint, HintBox} from '../../components/HintBox';
+import {IEvent, Events} from '../../../both/api/events/events';
+import {IStyledComponent} from '../../components/IStyledComponent';
+import {wrapDataComponent} from '../../components/AsyncDataComponent';
+import AdminHeader, {HeaderTitle} from '../../components/AdminHeader';
 import {EventParticipantInviteSchema} from '../../../both/api/event-participants/schema';
-import { IEventParticipant } from '../../../both/api/event-participants/event-participants';
-import { reactiveSubscriptionByParams, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
+import {IEventParticipant} from '../../../both/api/event-participants/event-participants';
+import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
 
 const invitationsListSchema = EventParticipantInviteSchema.pick(
   'invitationEmailAddresses', 'invitationEmailAddresses.$');
@@ -33,26 +33,24 @@ const removeParticipant = (id: Mongo.ObjectID) => {
   });
 };
 
-const CustomSubmitField = (props) => <SubmitField value="Send invites" />;
+const CustomSubmitField = (props) => <SubmitField value="Send invites"/>;
 
 const EventParticipantEntry = (props: { model: IEventParticipant }) => (
   <li className="participant-entry">
-    <section className="participant-icon" dangerouslySetInnerHTML={{ __html: props.model.getIconHTML()}} />
+    <section className="participant-icon" dangerouslySetInnerHTML={{__html: props.model.getIconHTML()}}/>
     <section className="participant-name">{props.model.getUserName()}</section>
     <section className="participant-user glyphicon">{props.model.userId ? 'p' : ''}</section>
     <section className="participant-state">{props.model.invitationState}</section>
     {props.model.invitationState === 'error' ?
-        <section className="participant-error">{props.model.invitationError}</section> : null}
+      <section className="participant-error">{props.model.invitationError}</section> : null}
     <section className="participant-remove glyphicon">
       <a onClick={() => removeParticipant(props.model._id || '')}>x</a>
     </section>
   </li>
 );
 
-class EventParticipantsPage extends React.Component<
-    IAsyncDataByIdProps<IPageModel> & IStyledComponent> {
-
-  public state = { isSaving: false };
+class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageModel> & IStyledComponent> {
+  public state = {isSaving: false};
   private formRef: AutoForm;
 
   public render(): JSX.Element {
@@ -60,7 +58,8 @@ class EventParticipantsPage extends React.Component<
     const organization = this.props.model.organization;
     const participants = this.props.model.participants;
 
-    const link = 'http://bit.ly/1RmnUT';
+    const hasPublicInvitation = event.invitationToken && event.status !== 'draft';
+    const link = Meteor.absoluteUrl(`events/${event._id}/public-invitation/${event.invitationToken}`);
 
     return (
       <ScrollableLayout className={this.props.className}>
@@ -89,23 +88,11 @@ class EventParticipantsPage extends React.Component<
               onSubmit={this.onSubmit}
               ref={this.storeFormReference}
             />
-            <h2>Share a link</h2>
-            <div>
-              You can also share the following link to invite people, 
-              e.g. via Social Media or handouts.
-              <form>
-                <div className="field form-group copy-to-clipboard">
-                  <input className="form-group" type="text" id="public-link" value={link} disabled={true} />
-                  <ClipboardButton className="btn btn-dark" data-clipboard-text={link}>
-                  Copy to clipboard
-                  </ClipboardButton>
-                </div>
-              </form>
-            </div>
+            {hasPublicInvitation ? this.renderPublicInvitation(link) : null}
           </div>
           <div className="content-right">
             <HintBox title={event.status === 'draft' ?
-                  'The event is not published yet.' : 'You made this event public.'}>               
+              'The event is not published yet.' : 'You made this event public.'}>
               <Hint className="user">
                 Invited people will receive a personal invitation which is only valid for them.
               </Hint>
@@ -113,29 +100,47 @@ class EventParticipantsPage extends React.Component<
                 Everybody with the share-link below can join.
               </Hint>
             </HintBox>
-            <div className="participants-box">    
-              <h3>Invited Participants</h3>        
+            <div className="participants-box">
+              <h3>Invited Participants</h3>
               <ol>
-              {participants.length === 0 ? <section>No one invited yet.</section> : null}
-              {participants.map((p) => (<EventParticipantEntry key={p._id as React.Key} model={p} />))}
+                {participants.length === 0 ? <section>No one invited yet.</section> : null}
+                {participants.map((p) => (<EventParticipantEntry key={p._id as React.Key} model={p}/>))}
               </ol>
             </div>
-          </div>          
+          </div>
         </div>
       </ScrollableLayout>
     );
   }
 
+  private renderPublicInvitation = (link): JSX.Element => {
+    return (
+      <section><h2>Share a link</h2>
+        <div>
+          You can also share the following link to invite people,
+          e.g. via Social Media or handouts.
+          <form>
+            <div className="field form-group copy-to-clipboard">
+              <input className="form-group" type="text" id="public-link" value={link} disabled={true}/>
+              <ClipboardButton className="btn btn-dark" data-clipboard-text={link}>
+                Copy to clipboard
+              </ClipboardButton>
+            </div>
+          </form>
+        </div>
+      </section>
+    );
+  }
   private storeFormReference = (ref: AutoForm) => {
     this.formRef = ref;
-  };
+  }
 
   private cleanUpEmailAddresses = (invitationEmailAddresses: string[]): string[] => {
     // remove all dupes and null values, trim emails and convert to lower case
     return uniq(invitationEmailAddresses.map((s) => s.toLowerCase().trim())).filter(Boolean);
-  };
+  }
 
-  private onSubmit = (doc: {invitationEmailAddresses: string[]}) => {
+  private onSubmit = (doc: { invitationEmailAddresses: string[] }) => {
     this.setState({isSaving: true});
     return new Promise((resolve, reject) => {
       Meteor.call('eventParticipants.invite', {
@@ -150,25 +155,25 @@ class EventParticipantsPage extends React.Component<
         }
       });
     }).then(() => {
-      this.formRef.setState({ validate: false });
+      this.formRef.setState({validate: false});
       this.formRef.change('invitationEmailAddresses', ['']);
     }, (error) => {
-      this.formRef.setState({ error });
+      this.formRef.setState({error});
     });
   }
 }
 
 const ReactiveEventParticipantsPage = reactiveSubscriptionByParams(
   wrapDataComponent<IPageModel,
-      IAsyncDataByIdProps<IPageModel | null>,
-      IAsyncDataByIdProps<IPageModel>>(EventParticipantsPage),
-  (id) : IPageModel | null => {
+    IAsyncDataByIdProps<IPageModel | null>,
+    IAsyncDataByIdProps<IPageModel>>(EventParticipantsPage),
+  (id): IPageModel | null => {
     const event = Events.findOne(id);
     const participants = event ? event.getParticipants() : [];
     const organization = event ? event.getOrganization() : null;
-    return event && organization ? { event, participants, organization } : null;
+    return event && organization ? {event, participants, organization} : null;
   },
-  // TODO: this should be changed to a private query. maybe.
+  // TODO: organizations should be changed to a private query. maybe.
   'events.by_id.private', 'eventParticipants.by_eventId.private', 'organizations.by_eventId.public');
 
 export default styled(ReactiveEventParticipantsPage) `

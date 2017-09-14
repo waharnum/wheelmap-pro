@@ -1,14 +1,15 @@
-import { Meteor } from 'meteor/meteor';
+import {Meteor} from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
-import { ValidatedMethod } from 'meteor/mdg:validated-method';
-import { OrganizationMembers } from '../../organization-members/organization-members';
-import { IEvent, Events } from '../events';
+import {ValidatedMethod} from 'meteor/mdg:validated-method';
+import {IEvent, Events} from '../events';
 
 export const insert = new ValidatedMethod({
   name: 'events.insert',
   validate: Events.schema.validator(),
   run(doc: IEvent) {
-      return Events.insert(doc);
+    // assign invitation token
+    doc.invitationToken = Random.secret();
+    return Events.insert(doc);
   },
 });
 
@@ -20,7 +21,7 @@ export const remove = new ValidatedMethod({
       regEx: SimpleSchema.RegEx.Id,
     },
   }).validator(),
-  run({ eventId }) {
+  run({eventId}) {
     const event = Events.findOne(eventId);
 
     if (!event.editableBy(this.userId)) {

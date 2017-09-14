@@ -24,7 +24,6 @@ interface IPageModel {
   organization: IOrganization;
   event: IEvent;
   user?: Meteor.User;
-  participant?: IEventParticipant;
 }
 
 type InternalPageProperties = IAsyncDataByIdProps<IPageModel> &
@@ -115,28 +114,21 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
   }
 
   private modelChanged = (props: InternalPageProperties) => {
-    if (!props.model.participant) {
-      this.setState({
-        error: 'No invitation found. Maybe you already used this token or joined this organization in another way?',
-      });
-      return;
-    }
-
     if (!props.model.user) {
       this.setState({busy: false, error: null});
       setLoginRedirect(this.props.location.pathname);
     } else {
       setLoginRedirect(null);
 
-      if (props.model.participant.invitationState !== 'accepted') {
-        this.acceptInvite();
-      }
+      //if (props.model.participant.invitationState !== 'accepted') {
+      this.acceptInvite();
+      //}
     }
   }
 
   private acceptInvite = () => {
     this.setState({busy: true});
-    Meteor.call('eventParticipants.acceptInvitation',
+    Meteor.call('eventParticipants.acceptPublicInvitation',
       {eventId: this.props.params._id, invitationToken: this.props.params.token},
       (error, result) => {
         if (error) {
@@ -157,11 +149,9 @@ const ReactiveSignUpForEventPage = reactiveSubscriptionByParams(
     const event = Events.findOne(id);
     const organization = event ? event.getOrganization() : null;
     const user = Meteor.user();
-    const participant = EventParticipants.findOne({eventId: event ? event._id : -1, invitationToken: params.token});
 
-    return event && organization ? {user, event, organization, participant} : null;
-  }, 'events.by_id.public', 'organizations.by_eventId.public',
-  'eventParticipants.by_eventIdAndToken.public', 'users.my.private');
+    return event && organization ? {user, event, organization} : null;
+  }, 'events.by_id.public', 'organizations.by_eventId.public', 'users.my.private');
 
 export default styled(ReactiveSignUpForEventPage) `
   overflow: hidden;
