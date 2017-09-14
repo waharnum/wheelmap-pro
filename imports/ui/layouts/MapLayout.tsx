@@ -1,17 +1,18 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { IStyledComponent } from '../components/IStyledComponent';
+import {IStyledComponent} from '../components/IStyledComponent';
 
 interface IScrollLayoutProps {
   children: JSX.Element | JSX.Element[];
+  id?: string;
 }
 
 const MapLayout = (props: IStyledComponent & IScrollLayoutProps) => {
   return (
-  <div className={props.className + ' map-layout'}>
-    {props.children}
-  </div>
+    <div id={props.id || ''} className={props.className + ' map-layout'}>
+      {props.children}
+    </div>
   );
 };
 

@@ -1,6 +1,8 @@
 import {Meteor} from 'meteor/meteor';
+import {Random} from 'meteor/random';
 import SimpleSchema from 'simpl-schema';
 import {ValidatedMethod} from 'meteor/mdg:validated-method';
+
 import {IEvent, Events} from '../events';
 
 export const insert = new ValidatedMethod({

@@ -1,22 +1,22 @@
-import { IEventParticipant } from '../../../both/api/event-participants/event-participants';
-import { Countdown } from '../../components/Countdown';
-import { IOrganization } from '../../../both/api/organizations/organizations';
+import {IEventParticipant} from '../../../both/api/event-participants/event-participants';
+import {Countdown} from '../../components/Countdown';
+import {IOrganization} from '../../../both/api/organizations/organizations';
 import * as moment from 'moment';
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { colors } from '../../stylesheets/colors';
+import {colors} from '../../stylesheets/colors';
 
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 
 import AdminTab from '../../components/AdminTab';
-import { default as AdminHeader, HeaderTitle } from '../../components/AdminHeader';
+import {default as AdminHeader, HeaderTitle} from '../../components/AdminHeader';
 
-import { reactiveSubscriptionByParams, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
-import { Events, EventStatusEnum, IEvent } from '../../../both/api/events/events';
-import { IStyledComponent } from '../../components/IStyledComponent';
+import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
+import {Events, EventStatusEnum, IEvent} from '../../../both/api/events/events';
+import {IStyledComponent} from '../../components/IStyledComponent';
 import Button from '../../components/Button';
-import { withTime } from '../../components/Timed';
+import {withTime} from '../../components/Timed';
 import EventTabs from './EventTabs';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
 
@@ -25,12 +25,13 @@ interface IPageModel {
   participants: IEventParticipant[];
   organization: IOrganization;
 }
+
 interface IOrganizeEventPageState extends IPageModel {
   status: string;
   hasInvitees: boolean;
   hasPicture: boolean;
   resultsShared: boolean;
-  stats: {invited: number, registered: number};
+  stats: { invited: number, registered: number };
 }
 
 const determineCssClassesFromState = (state: IOrganizeEventPageState) => {
@@ -107,7 +108,7 @@ const determineCssClassesFromState = (state: IOrganizeEventPageState) => {
   }
 };
 
-class OrganizeEventPage extends React.Component<IAsyncDataByIdProps < IPageModel > & IStyledComponent,
+class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> & IStyledComponent,
   IOrganizeEventPageState> {
 
   public state: IOrganizeEventPageState = {
@@ -125,11 +126,11 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps < IPageModel
     this.updateState(this.props);
   }
 
-  public componentWillReceiveProps(nextProps: IAsyncDataByIdProps < IPageModel >) {
+  public componentWillReceiveProps(nextProps: IAsyncDataByIdProps<IPageModel>) {
     this.updateState(nextProps);
   }
 
-  public updateState(props: IAsyncDataByIdProps < IPageModel >) {
+  public updateState(props: IAsyncDataByIdProps<IPageModel>) {
     const stats = props.model.participants.reduce(
       (sum, value) => {
         sum.invited += 1;
@@ -159,7 +160,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps < IPageModel
     const stepStates = determineCssClassesFromState(this.state);
 
     return (
-      <ScrollableLayout className={this.props.className}>
+      <ScrollableLayout id="OrganizeEventPage" className={this.props.className}>
         <AdminHeader
           titleComponent={(
             // TODO: Move to shared component
@@ -170,16 +171,18 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps < IPageModel
               prefixLink={`/organizations/${organization._id}/organize`}
             />
           )}
-          tabs={(<EventTabs id={event._id || ''} />)}
+          tabs={(<EventTabs id={event._id || ''}/>)}
           publicLink={`/events/${event._id}`}
         />
         <div className="content-area scrollable">
           <div className="stats event-stats">
             <section className="participant-stats">
-              <span className="participants-invited">{stats.invited}<small>invited</small></span>
-              <span className="participants-registered key-figure">{stats.registered}<small>registered</small></span>
+              <span className="participants-invited">{stats.invited}
+                <small>invited</small></span>
+              <span className="participants-registered key-figure">{stats.registered}
+                <small>registered</small></span>
             </section>
-            <Countdown start={moment(event.startTime)} />
+            <Countdown start={moment(event.startTime)}/>
             <section className="location-stats">
               <span className="locations-planned">0<small>planned</small></span>
               <span className="locations-mapped key-figure">0<small>mapped</small></span>
@@ -220,7 +223,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps < IPageModel
               <div className="step-status">
                 <h3>Tips for event organizers</h3>
                 <a className="btn" target="_blank"
-                    href="https://developmentseed.org/blog/2015/06/07/organizing-mapathons/">Learn more</a>
+                   href="https://developmentseed.org/blog/2015/06/07/organizing-mapathons/">Learn more</a>
               </div>
             </li>
           </ol>
@@ -240,7 +243,8 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps < IPageModel
               <div className="step-status step-active">
                 <div className="step-information">
                   <h3>Mapping event published</h3>
-                  <p>Your event is now online. It will be closed the day after. Be careful when canceling your event: you can not undo this.</p>
+                  <p>Your event is now online. It will be closed the day after. Be careful when canceling your event:
+                    you can not undo this.</p>
                 </div>
                 <div className="publishing-actions">
                   <Button to={`/events/${event._id}`}>View event</Button>
@@ -275,7 +279,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps < IPageModel
                   <h3>Event picture was set</h3>
                   <Button to={`/events/${event._id}/edit`}>Edit</Button>
                 </section>
-                <img src={event.photoUrl} />
+                <img src={event.photoUrl}/>
               </div>
             </li>
             <li className={'event-timeline-step share-results ' + stepStates.shareResults}>
@@ -301,13 +305,13 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps < IPageModel
 
 const ReactiveOrganizeOrganisationsPage = reactiveSubscriptionByParams(
   wrapDataComponent<IPageModel,
-      IAsyncDataByIdProps<IPageModel | null>,
-      IAsyncDataByIdProps<IPageModel>>(OrganizeEventPage),
-  (id) : IPageModel | null => {
+    IAsyncDataByIdProps<IPageModel | null>,
+    IAsyncDataByIdProps<IPageModel>>(OrganizeEventPage),
+  (id): IPageModel | null => {
     const event = Events.findOne(id);
     const participants = event ? event.getParticipants() : [];
     const organization = event ? event.getOrganization() : null;
-    return event && organization ? { event, participants, organization } : null;
+    return event && organization ? {event, participants, organization} : null;
   },
   // TODO: this should be changed to a private query. maybe.
   'events.by_id.private', 'eventParticipants.by_eventId.private', 'organizations.by_eventId.public');

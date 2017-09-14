@@ -8,18 +8,21 @@ import StaticMap from '../../components/StaticMap';
 import AdminHeader from '../../components/AdminHeader';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 import OrganizationTabs from './OrganizationTabs';
-import { IStyledComponent } from '../../components/IStyledComponent';
-import { wrapDataComponent } from '../../components/AsyncDataComponent';
+import {IStyledComponent} from '../../components/IStyledComponent';
+import {wrapDataComponent} from '../../components/AsyncDataComponent';
 import OrganizationsDropdown from '../../components/OrganizationsDropdown';
 import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
 
-import { IEvent } from '../../../both/api/events/events';
-import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
-import { colors } from '../../stylesheets/colors';
+import {IEvent} from '../../../both/api/events/events';
+import {IOrganization, Organizations} from '../../../both/api/organizations/organizations';
+import {colors} from '../../stylesheets/colors';
 
-interface IPageModel { organization: IOrganization; events: IEvent[]; };
+interface IPageModel {
+  organization: IOrganization;
+  events: IEvent[];
+};
 
-const EventListEntry = (props: {model: IEvent}) => (
+const EventListEntry = (props: { model: IEvent }) => (
   <div className="event-list-entry">
     <div className="event-body">
       <div className="event-information">
@@ -46,32 +49,32 @@ const EventListEntry = (props: {model: IEvent}) => (
         </div>
         <Button to={`/events/${props.model._id}/organize`}>Show details</Button>
       </div>
-    </div> 
+    </div>
     <div className="event-status corner-ribbon">
-        {props.model.status}
-      </div>
-    <StaticMap className="event-mini-map" containerWidth={180}  containerHeight={180} />
+      {props.model.status}
+    </div>
+    <StaticMap className="event-mini-map" containerWidth={180} containerHeight={180}/>
   </div>
 );
 
-const EventList = (props: {model: IEvent[]}) => (
+const EventList = (props: { model: IEvent[] }) => (
   <div>
     {props.model.map((event) => (
-      <EventListEntry key={event._id as React.Key} model={event} />
+      <EventListEntry key={event._id as React.Key} model={event}/>
     ))}
   </div>
 );
 
-const OrganizeOrganisationsPage = (props: IStyledComponent & IAsyncDataByIdProps<IPageModel> ) => (
-  <ScrollableLayout className={props.className}>
+const OrganizeOrganisationsPage = (props: IStyledComponent & IAsyncDataByIdProps<IPageModel>) => (
+  <ScrollableLayout id="OrganizeOrganizationPage" className={props.className}>
     <AdminHeader
-        titleComponent={(
-          <OrganizationsDropdown current={props.model.organization} >
-            <Button to="/organizations/create" className="btn-primary" >Create Organization</Button>
-          </OrganizationsDropdown>
-        )}
-        tabs={<OrganizationTabs id={props.model.organization._id || ''}/>}
-        publicLink={`/organizations/${props.model.organization._id}`}
+      titleComponent={(
+        <OrganizationsDropdown current={props.model.organization}>
+          <Button to="/organizations/create" className="btn-primary">Create Organization</Button>
+        </OrganizationsDropdown>
+      )}
+      tabs={<OrganizationTabs id={props.model.organization._id || ''}/>}
+      publicLink={`/organizations/${props.model.organization._id}`}
     />
     <div className="content-area scrollable">
       <div className="stats organization-stats">
@@ -91,22 +94,22 @@ const OrganizeOrganisationsPage = (props: IStyledComponent & IAsyncDataByIdProps
           <Button to="/events/create" className="btn-primary">Create event</Button>
         </section>
       </div>
-      <EventList model={props.model.events} />
+      <EventList model={props.model.events}/>
     </div>
   </ScrollableLayout>
 );
 
 const ReactiveOrganizeOrganisationsPage = reactiveSubscriptionByParams(
-    wrapDataComponent<IPageModel,
-        IAsyncDataByIdProps<IPageModel | null>,
-        IAsyncDataByIdProps<IPageModel>>(OrganizeOrganisationsPage),
-    (id): IPageModel | null => {
-      const organization = Organizations.findOne(id);
-      const events = organization ? organization.getEvents() : [];
-      // pass model with organization & events in one go
-      return organization ? { organization, events } : null;
-    },
-    'organizations.by_id.public', 'events.by_organizationId.private');
+  wrapDataComponent<IPageModel,
+    IAsyncDataByIdProps<IPageModel | null>,
+    IAsyncDataByIdProps<IPageModel>>(OrganizeOrganisationsPage),
+  (id): IPageModel | null => {
+    const organization = Organizations.findOne(id);
+    const events = organization ? organization.getEvents() : [];
+    // pass model with organization & events in one go
+    return organization ? {organization, events} : null;
+  },
+  'organizations.by_id.public', 'events.by_organizationId.private');
 
 const StyledReactiveOrganizeOrganisationsPage = styled(ReactiveOrganizeOrganisationsPage)`
 
