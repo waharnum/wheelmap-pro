@@ -3,7 +3,6 @@ import { uniq } from 'lodash';
 import AutoForm from 'uniforms-bootstrap3/AutoForm';
 import * as React from 'react';
 import SubmitField from 'uniforms-bootstrap3/SubmitField';
-import SimpleSchema from 'simpl-schema';
 import * as ClipboardButton from 'react-clipboard.js';
 
 import EventTabs from './EventTabs';
@@ -15,7 +14,7 @@ import { IStyledComponent } from '../../components/IStyledComponent';
 import { wrapDataComponent } from '../../components/AsyncDataComponent';
 import AdminHeader, { HeaderTitle } from '../../components/AdminHeader';
 import {EventParticipantInviteSchema} from '../../../both/api/event-participants/schema';
-import { EventParticipants, IEventParticipant } from '../../../both/api/event-participants/event-participants';
+import { IEventParticipant } from '../../../both/api/event-participants/event-participants';
 import { reactiveSubscriptionByParams, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
 
 const invitationsListSchema = EventParticipantInviteSchema.pick(
@@ -36,14 +35,14 @@ const removeParticipant = (id: Mongo.ObjectID) => {
 
 const CustomSubmitField = (props) => <SubmitField value="Send invites" />;
 
-const EventParticpantEntry = (props: { model: IEventParticipant }) => (
-  <li className="particpant-entry">
-    <section className="particpant-icon" dangerouslySetInnerHTML={{ __html: props.model.getIconHTML()}} />
-    <section className="particpant-name">{props.model.getUserName()}</section>
-    <section className="particpant-user glyphicon">{props.model.userId ? 'p' : ''}</section>
-    <section className="particpant-state">{props.model.invitationState}</section>
+const EventParticipantEntry = (props: { model: IEventParticipant }) => (
+  <li className="participant-entry">
+    <section className="participant-icon" dangerouslySetInnerHTML={{ __html: props.model.getIconHTML()}} />
+    <section className="participant-name">{props.model.getUserName()}</section>
+    <section className="participant-user glyphicon">{props.model.userId ? 'p' : ''}</section>
+    <section className="participant-state">{props.model.invitationState}</section>
     {props.model.invitationState === 'error' ?
-        <section className="particpant-error">{props.model.invitationError}</section> : null}
+        <section className="participant-error">{props.model.invitationError}</section> : null}
     <section className="participant-remove glyphicon">
       <a onClick={() => removeParticipant(props.model._id || '')}>x</a>
     </section>
@@ -118,7 +117,7 @@ class EventParticipantsPage extends React.Component<
               <h3>Invited Participants</h3>        
               <ol>
               {participants.length === 0 ? <section>No one invited yet.</section> : null}
-              {participants.map((p) => (<EventParticpantEntry key={p._id as React.Key} model={p} />))}
+              {participants.map((p) => (<EventParticipantEntry key={p._id as React.Key} model={p} />))}
               </ol>
             </div>
           </div>          
@@ -129,12 +128,12 @@ class EventParticipantsPage extends React.Component<
 
   private storeFormReference = (ref: AutoForm) => {
     this.formRef = ref;
-  }
+  };
 
   private cleanUpEmailAddresses = (invitationEmailAddresses: string[]): string[] => {
     // remove all dupes and null values, trim emails and convert to lower case
     return uniq(invitationEmailAddresses.map((s) => s.toLowerCase().trim())).filter(Boolean);
-  }
+  };
 
   private onSubmit = (doc: {invitationEmailAddresses: string[]}) => {
     this.setState({isSaving: true});
@@ -184,7 +183,7 @@ export default styled(ReactiveEventParticipantsPage) `
       font-weight: 300;
     }
 
-    .particpant-entry {
+    .participant-entry {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -196,16 +195,16 @@ export default styled(ReactiveEventParticipantsPage) `
         margin-left: 5px;      
       }
 
-      .particpant-icon img {
+      .participant-icon img {
         width: 24px;
       }
-      .particpant-name {
+      .participant-name {
         flex-grow: 1;
       }
-      .particpant-state {
+      .participant-state {
 
       }
-      .particpant-error {
+      .participant-error {
 
       }
       .participant-remove a {
@@ -236,7 +235,7 @@ export default styled(ReactiveEventParticipantsPage) `
         left: 12px;
         top: 14px;
         color: #767e8a;
-        font-family: "iconfield-v03";
+        font-family: "iconfield-v03", serif;
         content: '';
       }
     }
