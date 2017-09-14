@@ -3,10 +3,9 @@ import styled from 'styled-components';
 import * as React from 'react';
 import {LocationDescriptor} from 'history';
 
-import AdminTab from './AdminTab';
 import UserMenu from './UserMenu';
 import PreviewToggle from './PreviewToggle';
-import { IStyledComponent } from '../components/IStyledComponent';
+import { IStyledComponent } from './IStyledComponent';
 import { colors } from '../stylesheets/colors';
 
 interface IAdminHeaderProps {

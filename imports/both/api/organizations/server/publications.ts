@@ -1,10 +1,10 @@
-import { check } from 'meteor/check';
-import { Mongo } from 'meteor/mongo';
-import { Meteor } from 'meteor/meteor';
+import {check} from 'meteor/check';
+import {Mongo} from 'meteor/mongo';
+import {Meteor} from 'meteor/meteor';
 
-import { Events } from '../../events/events';
-import { Organizations } from '../organizations.js';
-import { publishAndLog } from '../../../../server/publish';
+import {Events} from '../../events/events';
+import {Organizations} from '../organizations.js';
+import {publishAndLog} from '../../../../server/publish';
 
 publishAndLog('organizations.public', () => {
   return Organizations.find();

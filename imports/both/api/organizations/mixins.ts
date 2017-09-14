@@ -1,13 +1,12 @@
-import { Mongo } from 'meteor/mongo';
-import { check } from 'meteor/check';
-import { sortBy } from 'lodash';
+import {Mongo} from 'meteor/mongo';
+import {sortBy} from 'lodash';
 
-import { Apps } from '../apps/apps';
+import {Apps} from '../apps/apps';
 import {isAdmin} from '../../lib/is-admin';
-import { Sources } from '../sources/sources';
+import {Sources} from '../sources/sources';
 import {IEvent, Events} from '../events/events';
-import { OrganizationMembers } from '../organization-members/organization-members';
-import { userHasFullAccessToOrganizationId, isUserMemberOfOrganizationWithId } from '../organizations/privileges';
+import {OrganizationMembers} from '../organization-members/organization-members';
+import {userHasFullAccessToOrganizationId, isUserMemberOfOrganizationWithId} from './privileges';
 
 const ACCESS_REQUEST_APPROVING_ROLES = [
   'developer',
@@ -29,15 +28,21 @@ export interface IOrganizationMixin {
 
 export const OrganizationMixin = {
   editableBy(userId: Mongo.ObjectID): boolean {
-    if (!userId) { return false; };
+    if (!userId) {
+      return false;
+    }
+    ;
     return userHasFullAccessToOrganizationId(userId, this._id);
   },
   isFullyVisibleForUserId(userId: Mongo.ObjectID): boolean {
-    if (!userId) { return false; };
+    if (!userId) {
+      return false;
+    }
+    ;
     return isAdmin(userId) || isUserMemberOfOrganizationWithId(userId, this._id);
   },
   getEvents() {
-    const events = Events.find({ organizationId: this._id }).fetch();
+    const events = Events.find({organizationId: this._id}).fetch();
     // sort by date - closest upcoming event first, older events sorted by time
     const current = Date.now();
     return events.sort((first: IEvent, second: IEvent) => {
@@ -57,11 +62,11 @@ export const OrganizationMixin = {
     });
   },
   getSources() {
-    const sources = Sources.find({ organizationId: this._id }).fetch();
+    const sources = Sources.find({organizationId: this._id}).fetch();
     return sortBy(sortBy(sources, (s) => -s.placeInfoCount), 'isDraft');
   },
   getApps() {
-    return Apps.find({ organizationId: this._id }).fetch();
+    return Apps.find({organizationId: this._id}).fetch();
   },
   getMostAuthoritativeUserThatCanApproveAccessRequests(): Meteor.User | null {
     for (const role of ACCESS_REQUEST_APPROVING_ROLES) {

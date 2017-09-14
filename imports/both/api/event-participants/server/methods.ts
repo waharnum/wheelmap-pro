@@ -1,19 +1,19 @@
-import { check } from 'meteor/check';
-import { Meteor } from 'meteor/meteor';
-import { TAPi18n } from 'meteor/tap:i18n';
-import { ValidatedMethod } from 'meteor/mdg:validated-method';
+import {check} from 'meteor/check';
+import {Meteor} from 'meteor/meteor';
+import {TAPi18n} from 'meteor/tap:i18n';
+import {ValidatedMethod} from 'meteor/mdg:validated-method';
 
-import { Events } from '../../events/events';
-import { Organizations } from '../../organizations/organizations';
-import { EventParticipants } from '../event-participants';
-import { userHasFullAccessToOrganizationId } from '../../organizations/privileges';
-import { EventParticipantInviteSchema, EventParticipantSchema } from '../schema';
+import {Events} from '../../events/events';
+import {Organizations} from '../../organizations/organizations';
+import {EventParticipants} from '../event-participants';
+import {userHasFullAccessToOrganizationId} from '../../organizations/privileges';
+import {EventParticipantInviteSchema, EventParticipantSchema} from '../schema';
 import {insertDraftEventParticipant, sendEventInvitationEmailTo, acceptEventInvitation} from './_invitations';
 
 export const insert = new ValidatedMethod({
   name: 'eventParticipants.invite',
   validate: EventParticipantInviteSchema.validator(),
-  run({ invitationEmailAddresses, eventId }) {
+  run({invitationEmailAddresses, eventId}) {
     check(invitationEmailAddresses, [String]);
     check(eventId, String);
 
@@ -23,7 +23,7 @@ export const insert = new ValidatedMethod({
       throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));
     }
 
-    const event = Events.findOne({ _id: eventId });
+    const event = Events.findOne({_id: eventId});
     if (!event) {
       throw new Meteor.Error(404, TAPi18n.__('Event not found'));
     }
@@ -33,14 +33,14 @@ export const insert = new ValidatedMethod({
         TAPi18n.__('You are not authorized to invite users to this organization.'));
     }
 
-    const organization = Organizations.findOne({ _id: event.organizationId });
+    const organization = Organizations.findOne({_id: event.organizationId});
     if (!organization) {
       throw new Meteor.Error(404, TAPi18n.__('Organization not found'));
     }
 
-    const result = invitationEmailAddresses.map((invitationEmailAddress) => {
+    return invitationEmailAddresses.map((invitationEmailAddress) => {
       // make sure we do not insert an existing user again
-      const existing = EventParticipants.findOne({ eventId, invitationEmailAddress });
+      const existing = EventParticipants.findOne({eventId, invitationEmailAddress});
       if (existing) {
         return existing._id;
       }
@@ -51,15 +51,13 @@ export const insert = new ValidatedMethod({
 
       return inserted._id;
     });
-
-    return result;
   },
 });
 
 export const accept = new ValidatedMethod({
   name: 'eventParticipants.acceptInvitation',
   validate: EventParticipantSchema.pick('eventId', 'invitationToken').validator(),
-  run({ eventId, invitationToken }) {
+  run({eventId, invitationToken}) {
     check(eventId, String);
     check(invitationToken, String);
 
@@ -67,7 +65,7 @@ export const accept = new ValidatedMethod({
       throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));
     }
 
-    const event = Events.findOne({ _id: eventId });
+    const event = Events.findOne({_id: eventId});
 
     if (!event) {
       throw new Meteor.Error(404, TAPi18n.__('Event not found'));
@@ -88,7 +86,7 @@ Meteor.methods({
       throw new Meteor.Error(404, TAPi18n.__('Event participants not found'));
     }
 
-    const event = Events.findOne({ _id: eventParticipant.eventId });
+    const event = Events.findOne({_id: eventParticipant.eventId});
     if (!event) {
       throw new Meteor.Error(404, TAPi18n.__('Event not found'));
     }

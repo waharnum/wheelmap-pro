@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { render } from 'react-dom';
-import { Meteor } from 'meteor/meteor';
-import { Accounts, STATES } from 'meteor/std:accounts-ui';
-import { Router, Route, IndexRoute, Redirect, browserHistory } from 'react-router';
+import {Meteor} from 'meteor/meteor';
+import {Accounts, STATES} from 'meteor/std:accounts-ui';
+import {Router, Route, Redirect, browserHistory} from 'react-router';
 
 import App from './App';
 
@@ -27,7 +26,8 @@ import OrganizationStatisticsPage from './pages/Organizations/OrganizationStatis
 
 import EnsureUserLoggedIn from './components/EnsureUserLoggedIn';
 
-{/* Only as styling props – has to be removed later !*/ }
+{/* Only as styling props – has to be removed later !*/
+}
 import AppLayoutScrollableAdmin from './_layouts/AppLayoutScrollableAdmin';
 import AppLayoutPublicOrganization from './_layouts/AppLayoutPublicOrganization';
 import AppLayoutPublicEvent from './_layouts/AppLayoutPublicEvent';
@@ -64,56 +64,57 @@ const AppRouter = (
   <Router>
     <Route component={App}>
       {/* Use meteor.user onEnter, as this gets re-evaluated each time */}
-      <Route path="/" onEnter={RedirectAccordingToUser} />
+      <Route path="/" onEnter={RedirectAccordingToUser}/>
 
       {/* weird admin pages */}
       <Route component={(props) => <EnsureUserLoggedIn roles={['admin']} {...props} />}>
-        <Route path="/organizations/list" component={ListOrganizationsPage} />
+        <Route path="/organizations/list" component={ListOrganizationsPage}/>
       </Route>
 
       {/* Invitations */}
-      <Route path="/events/:_id/accept-invitation/:token" component={SignUpForEventPage} />
+      <Route path="/events/:_id/accept-invitation/:token" component={SignUpForEventPage}/>
 
       {/* organize pages */}
       <Route component={EnsureUserLoggedIn}>
-        
-        <Route path="/profile" component={() => <Accounts.ui.LoginForm />} />
 
-        <Route path="/organizations/none" component={NoOrganizationsPage} />
-        <Route path="/organizations/create" component={CreateOrganizationPage} />
-        <Route path="/organizations/:_id/edit" component={EditOrganizationPage} />
-        <Route path="/organizations/:_id/members" component={OrganizationMembersPage} />
-        <Route path="/organizations/:_id/statistics" component={OrganizationStatisticsPage} />
-        <Route path="/organizations/:_id/organize" component={OrganizeOrganizationPage} onEnter={SaveActiveOrganization} />
+        <Route path="/profile" component={() => <Accounts.ui.LoginForm/>}/>
 
-        <Route path="/events/create" component={CreateEventPage} />
-        <Route path="/events/:_id/edit" component={EditEventPage} />
-        <Route path="/events/:_id/organize" component={OrganizeEventPage} />
-        <Route path="/events/:_id/statistics" component={EventStatisticsPage} />
-        <Route path="/events/:_id/participants" component={EventParticipantsPage} />
-        <Route path="/events/:_id" component={ShowEventPage} />
+        <Route path="/organizations/none" component={NoOrganizationsPage}/>
+        <Route path="/organizations/create" component={CreateOrganizationPage}/>
+        <Route path="/organizations/:_id/edit" component={EditOrganizationPage}/>
+        <Route path="/organizations/:_id/members" component={OrganizationMembersPage}/>
+        <Route path="/organizations/:_id/statistics" component={OrganizationStatisticsPage}/>
+        <Route path="/organizations/:_id/organize" component={OrganizeOrganizationPage}
+               onEnter={SaveActiveOrganization}/>
+
+        <Route path="/events/create" component={CreateEventPage}/>
+        <Route path="/events/:_id/edit" component={EditEventPage}/>
+        <Route path="/events/:_id/organize" component={OrganizeEventPage}/>
+        <Route path="/events/:_id/statistics" component={EventStatisticsPage}/>
+        <Route path="/events/:_id/participants" component={EventParticipantsPage}/>
+        <Route path="/events/:_id" component={ShowEventPage}/>
       </Route>
-      
-      {/* public pages  */}
-      <Route path="/organizations/:_id" component={ShowOrganizationPage} />
 
-      <Route path="/welcome" component={HomePage} />
+      {/* public pages  */}
+      <Route path="/organizations/:_id" component={ShowOrganizationPage}/>
+
+      <Route path="/welcome" component={HomePage}/>
 
       {/* user management */}
-      <Route path="/signin" component={() => <Accounts.ui.LoginForm />} />
-      <Route path="/signup" component={() => <Accounts.ui.LoginForm formState={STATES.SIGN_UP} />} />
-      <Route path="/reset-password" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET} />} />
-      <Route path="/#/reset-password/:id" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET} />} />
+      <Route path="/signin" component={() => <Accounts.ui.LoginForm/>}/>
+      <Route path="/signup" component={() => <Accounts.ui.LoginForm formState={STATES.SIGN_UP}/>}/>
+      <Route path="/reset-password" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET}/>}/>
+      <Route path="/#/reset-password/:id" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET}/>}/>
 
       {/* only as styling props – has to be removed later !*/}
-      <Route path="/testlayoutadmin" component={AppLayoutScrollableAdmin} />
-      <Route path="/testlayoutpublicorg" component={AppLayoutPublicOrganization} />
-      <Route path="/testlayoutpublicevent" component={AppLayoutPublicEvent} />
+      <Route path="/testlayoutadmin" component={AppLayoutScrollableAdmin}/>
+      <Route path="/testlayoutpublicorg" component={AppLayoutPublicOrganization}/>
+      <Route path="/testlayoutpublicevent" component={AppLayoutPublicEvent}/>
 
       {/* Not found pages */}
-      <Route path="404" component={NotFoundPage} />
-      <Route path="403" component={AccessForbiddenPage} />
-      <Redirect from="*" to="404" />
+      <Route path="404" component={NotFoundPage}/>
+      <Route path="403" component={AccessForbiddenPage}/>
+      <Redirect from="*" to="404"/>
     </Route>
   </Router>
 );

@@ -25,7 +25,7 @@ type ComponentConstructor<P> = React.ComponentClass<P> | React.StatelessComponen
  * whenever the by id subscription changes
  *
  * @param reactComponent The component to wrap, needs properties implementing IModelProps
- * @param collection The mongo collection to fetch data from, make sure it is covered by the subcriptions
+ * @param collection The mongo collection to fetch data from, make sure it is covered by the subscriptions
  * @param byIdSubscriptions The names of the subscription for the object id
  */
 export function reactiveModelSubscriptionByParams<T, InP extends IAsyncDataByIdProps<T>>(
@@ -43,18 +43,16 @@ export function reactiveSubscriptionByParams<T, InP extends IAsyncDataByIdProps<
       throw new Meteor.Error(400, 'No subscriptions specified!');
     }
 
-    const result = createContainer((props: InP) => {
-      const {_id, ...restParams} = props.params;
-      const ready = byIdSubscriptions.reduce((prev, subscription) => {
-        const handle = Meteor.subscribe(subscription, _id, restParams);
-        return handle.ready();
-      }, true);
+    return createContainer((props: InP) => {
+        const {_id, ...restParams} = props.params;
+        const ready = byIdSubscriptions.reduce((prev, subscription) => {
+            const handle = Meteor.subscribe(subscription, _id, restParams);
+            return handle.ready();
+        }, true);
 
-      const model = fetchFunction(_id, restParams);
-      return { ready: ready || model, model };
+        const model = fetchFunction(_id, restParams);
+        return {ready: ready || model, model};
     }, reactComponent);
-
-    return result;
 };
 
 /**
@@ -62,7 +60,7 @@ export function reactiveSubscriptionByParams<T, InP extends IAsyncDataByIdProps<
  * whenever any of the subscriptions changes
  *
  * @param reactComponent The component to wrap, needs properties implementing IAsyncDataProps
- * @param collection The mongo collection to fetch data from, make sure it is covered by the subcriptions
+ * @param collection The mongo collection to fetch data from, make sure it is covered by the subscriptions
  * @param subscriptions The subscriptions that will indicate when the component needs to be updated
  */
 export function reactiveModelSubscription<T, InP extends IAsyncDataProps<T[]>>(
@@ -77,7 +75,7 @@ export function reactiveModelSubscription<T, InP extends IAsyncDataProps<T[]>>(
  * whenever any of the subscriptions changes
  *
  * @param reactComponent The component to wrap, needs properties implementing IAsyncDataProps
- * @param fetchFunction The function used to fetch data, make sure it is covered by the subcriptions
+ * @param fetchFunction The function used to fetch data, make sure it is covered by the subscriptions
  * @param subscriptions he subscriptions that will indicate when the component needs to be updated
  */
 export function reactiveSubscription<T, InP extends IAsyncDataProps<T>>(
@@ -87,15 +85,13 @@ export function reactiveSubscription<T, InP extends IAsyncDataProps<T>>(
     if (subscriptions.length === 0) {
       throw new Meteor.Error(400, 'No subscriptions specified!');
     }
-    const result = createContainer((props: InP) => {
-      const ready = subscriptions.reduce((prev, subscription) => {
-        const handle = Meteor.subscribe(subscription);
-        return handle.ready();
-      }, true);
+    return createContainer((props: InP) => {
+        const ready = subscriptions.reduce((prev, subscription) => {
+            const handle = Meteor.subscribe(subscription);
+            return handle.ready();
+        }, true);
 
-      const model = fetchFunction();
-      return { ready: ready || model, model };
+        const model = fetchFunction();
+        return {ready: ready || model, model};
     }, reactComponent);
-
-    return result;
 };

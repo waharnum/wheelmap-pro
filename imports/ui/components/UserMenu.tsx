@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import {Link} from 'react-router';
 import * as React from 'react';
 
-import { IStyledComponent } from '../components/IStyledComponent';
+import { IStyledComponent } from './IStyledComponent';
 import { getGravatarImageUrl } from '../../both/lib/user-icon';
 import { getDisplayedNameForUser } from '../../both/lib/user-name';
 

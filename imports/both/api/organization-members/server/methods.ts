@@ -1,22 +1,22 @@
-import { Meteor } from 'meteor/meteor';
-import { Organizations } from '../../organizations/organizations';
-import { userHasFullAccessToOrganization } from '../../organizations/privileges';
-import { OrganizationMembers } from '../organization-members';
-import { TAPi18n } from 'meteor/tap:i18n';
-import { ValidatedMethod } from 'meteor/mdg:validated-method';
-import { acceptInvitation, inviteUserToOrganization } from './invitations';
+import {Meteor} from 'meteor/meteor';
+import {Organizations} from '../../organizations/organizations';
+import {userHasFullAccessToOrganization} from '../../organizations/privileges';
+import {OrganizationMembers} from '../organization-members';
+import {TAPi18n} from 'meteor/tap:i18n';
+import {ValidatedMethod} from 'meteor/mdg:validated-method';
+import {acceptInvitation, inviteUserToOrganization} from './invitations';
 
 export const insert = new ValidatedMethod({
   name: 'organizationMembers.invite',
   validate: OrganizationMembers.schema.pick('invitationEmailAddress', 'organizationId').validator(),
-  run({ invitationEmailAddress, organizationId }) {
+  run({invitationEmailAddress, organizationId}) {
     console.log('Inviting', invitationEmailAddress, 'to', organizationId, '...');
 
     if (!this.userId) {
       throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));
     }
 
-    const organization = Organizations.findOne({ _id: organizationId });
+    const organization = Organizations.findOne({_id: organizationId});
 
     if (!organization) {
       throw new Meteor.Error(404, TAPi18n.__('Organization not found'));
@@ -34,12 +34,12 @@ export const insert = new ValidatedMethod({
 export const accept = new ValidatedMethod({
   name: 'organizationMembers.acceptInvitation',
   validate: OrganizationMembers.schema.pick('organizationId', 'invitationToken').validator(),
-  run({ organizationId, invitationToken }) {
+  run({organizationId, invitationToken}) {
     if (!this.userId) {
       throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));
     }
 
-    const organization = Organizations.findOne({ _id: organizationId });
+    const organization = Organizations.findOne({_id: organizationId});
 
     if (!organization) {
       throw new Meteor.Error(404, TAPi18n.__('Organization not found'));
@@ -72,7 +72,7 @@ Meteor.methods({
       throw new Meteor.Error(403, TAPi18n.__('Not authorized.'));
     }
 
-    const isLastMembership = OrganizationMembers.find({ organizationId }).count() === 1;
+    const isLastMembership = OrganizationMembers.find({organizationId}).count() === 1;
     if (isLastMembership) {
       throw new Meteor.Error(403, TAPi18n.__('Cannot revoke last organization membership.'));
     }

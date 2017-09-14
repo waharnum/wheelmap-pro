@@ -1,8 +1,7 @@
 import { isAdmin } from '../../../../imports/both/lib/is-admin';
-import { isApproved } from '../../../../imports/both/lib/is-approved';
-import { check } from 'meteor/check';
-import { OrganizationMembers } from '../../../../imports/both/api/organization-members/organization-members';
-import { IOrganization, Organizations } from '../../../../imports/both/api/organizations/organizations';
+import { isApproved } from '../../lib/is-approved';
+import { OrganizationMembers } from '../organization-members/organization-members';
+import { IOrganization, Organizations } from './organizations';
 import { uniq } from 'lodash';
 
 export function isUserMemberOfOrganizationWithId(userId: Mongo.ObjectID, organizationId: Mongo.ObjectID) {

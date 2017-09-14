@@ -8,8 +8,7 @@ export const insert = new ValidatedMethod({
   name: 'events.insert',
   validate: Events.schema.validator(),
   run(doc: IEvent) {
-    const eventId = Events.insert(doc);
-    return eventId;
+      return Events.insert(doc);
   },
 });
 
