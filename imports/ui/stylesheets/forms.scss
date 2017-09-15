@@ -79,15 +79,15 @@ label,
     }
     
     .panel-heading {
-      padding-bottom: 1em !important;
       position: relative;
 
       label {
         width: 100%;
-        line-height: 3.2em;
-        font-weight: 400 !important;
-        padding-left: 3.2em;
-        border-bottom: 1px solid #ddd;
+        line-height: 1.9em;
+        font-size: 21px;
+        font-weight: 300 !important;
+        padding-left: 2.2em;
+        // border-bottom: 1px solid #ddd;
       }
     }
 
@@ -111,8 +111,8 @@ label,
       padding: 0.5em !important;
       font-size: 18px !important;
       width: 2em;
-      color: $cta-green;
-      background: none;
+      color: $link-blue;
+      background: white;
 
       border-radius: 2em;
     }
@@ -121,8 +121,8 @@ label,
       position: absolute;
       right: 0;
       top: 0;
-      color: white;
-      background: $cta-green;
+      color: $link-blue;
+      background: white;
     } 
   }
 }
