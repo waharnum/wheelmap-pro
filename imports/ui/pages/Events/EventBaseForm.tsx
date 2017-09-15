@@ -77,8 +77,10 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
           onChangeModel={this.onChangeModel}>
           <AutoFields fields={['name', 'description', 'regionName', 'startTime',
               'verifyGpsPositionsOfEdits', 'openFor', 'photoUrl']} />
-          <SubmitField />
-          <button className="btn btn-default" onClick={browserHistory.goBack}>Cancel</button>
+          <div className="actions">
+            <SubmitField />
+            <button className="btn btn-default" onClick={browserHistory.goBack}>Cancel</button>
+          </div>
         </AutoForm>
       </div>
       <div className="content-right">

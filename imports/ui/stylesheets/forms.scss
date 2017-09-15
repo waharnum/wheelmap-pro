@@ -55,6 +55,78 @@ label,
   font-family: 'iconfield-v03';
 }
 
+.panel,
+.panel-default {
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+
+  .panel-body {
+    padding: 0 !important;
+    margin-top: 1em !important;
+
+    .panel-heading,
+    .panel-row,
+    .row,
+    .field.form-group {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .panel-body {
+      position: relative !important;
+    }
+    
+    .panel-heading {
+      padding-bottom: 1em !important;
+      position: relative;
+
+      label {
+        width: 100%;
+        line-height: 3.2em;
+        font-weight: 400 !important;
+        padding-left: 3.2em;
+        border-bottom: 1px solid #ddd;
+      }
+    }
+
+    .row {
+      position: relative;
+      margin-bottom: 16px !important;
+    }
+
+    .col-xs-1 {
+      width: 3em;
+    }
+
+    .row > .badge {
+      border: none !important;
+    }
+
+    .badge {
+      cursor: pointer;
+      position: absolute;
+      left:0;
+      padding: 0.5em !important;
+      font-size: 18px !important;
+      width: 2em;
+      color: $cta-green;
+      background: none;
+
+      border-radius: 2em;
+    }
+
+    .badge.pull-right { /* add participants button */
+      position: absolute;
+      right: 0;
+      top: 0;
+      color: white;
+      background: $cta-green;
+    } 
+  }
+}
+
 form {
   display: flex;
   flex-direction: column;
@@ -91,6 +163,7 @@ form {
   
       &[type="checkbox"] {
         width: auto;
+        min-height: auto;
         margin-right: 10px;
       }
     }
@@ -125,7 +198,7 @@ form {
     div.checkbox label {
       font-size: 16px;
     }
-
+    
     span.help-block {
       font-weight: 400;
       line-height: 32px;
@@ -164,6 +237,15 @@ form {
         color: $error-red;
       }
     }
+
+    .preview-image-area {
+      margin-left: 0;
+    }
+  }
+
+  .actions {
+    margin-top: 20px;
+    display: flex;
   }
 
   .has-danger .btn,

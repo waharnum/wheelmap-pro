@@ -83,8 +83,10 @@ class InternalOrganizationBaseForm
         onSubmit={this.onSubmit}
         onChangeModel={this.onChangeModel}>
         <AutoFields fields={['name', 'description', 'webSite', 'logo', 'tocForOrganizationsAccepted']} />
-        <SubmitField />
-        <button className="btn btn-default" onClick={browserHistory.goBack}>Cancel</button>
+        <div className="actions">
+          <SubmitField/>
+          <button className="btn btn-default" onClick={browserHistory.goBack}>Cancel</button>
+        </div>
       </AutoForm>
     </div>);
   }
@@ -130,4 +132,5 @@ class InternalOrganizationBaseForm
 };
 
 export const OrganizationBaseForm = styled(InternalOrganizationBaseForm) `
+
 `;
