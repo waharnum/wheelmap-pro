@@ -37,13 +37,31 @@ interface IOrganizeEventPageState extends IPageModel {
 const determineCssClassesFromState = (state: IOrganizeEventPageState) => {
   switch (state.status) {
     case 'draft':
-    case 'planned':
       if (state.hasInvitees) {
         return {
           createEvent: 'finished',
           inviteParticipants: 'finished',
           organizerTips: 'finished-last',
           startEvent: 'todo',
+          setEventPicture: 'disabled',
+          shareResults: 'disabled',
+        };
+      }
+      return {
+        createEvent: 'finished',
+        inviteParticipants: 'todo',
+        organizerTips: 'enabled',
+        startEvent: 'disabled',
+        setEventPicture: 'disabled',
+        shareResults: 'disabled',
+      };
+    case 'planned':
+      if (state.hasInvitees) {
+        return {
+          createEvent: 'finished',
+          inviteParticipants: 'finished',
+          organizerTips: 'finished',
+          startEvent: 'finished-last',
           setEventPicture: 'disabled',
           shareResults: 'disabled',
         };
@@ -152,6 +170,13 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
     });
   }
 
+  private publishEvent = () => {
+    Meteor.call('events.publish', {eventId: this.state.event._id}, (error, result) => {
+      // TODO: handle error!
+      console.log('events.publish', error, result);
+    });
+  }
+
   public render(): JSX.Element {
     const event = this.state.event;
     const organization = this.state.organization;
@@ -236,7 +261,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
                   <p>Please make sure all details are correct. When you publish, invitation emails will be sent.</p>
                 </div>
                 <div className="publishing-actions">
-                  <Button to="#">Publish event</Button>
+                  <button className="btn btn-primary" onClick={this.publishEvent}>Publish event</button>
                 </div>
               </div>
               <div className="notification-completed step-active">Congratulations! Your event has been published</div>
@@ -498,11 +523,11 @@ ol.event-timeline {
   }
   
   li.todo {
-    .step-todo, 
+    .step-active, 
     .step-completed { 
       display: none; 
     }
-    .step-active { 
+    .step-todo { 
       display: flex; 
     }
   }
@@ -700,7 +725,7 @@ ol.event-timeline {
     }
   }
 
-  li.publish-event.todo .step-status.step-todo{
+  li.publish-event.todo .step-status.step-todo {
     a.btn { /*white button with outline */
       padding: 0 16px;
       font-size: 16px;
