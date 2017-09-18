@@ -3,6 +3,7 @@ import {check} from 'meteor/check';
 import {TAPi18n} from 'meteor/tap:i18n';
 import {isAdmin} from '../../../lib/is-admin';
 import {Accounts} from 'meteor/accounts-base';
+import {EventParticipants} from '../../event-participants/event-participants';
 
 Accounts.onCreateUser((options: any, user: Meteor.User) => {
   user.username = options.username || undefined;
@@ -36,7 +37,13 @@ Accounts.onLogout(function (options) {
 });
 
 function cleanupOldGuestProfiles() {
-  Meteor.users.remove({'profile.guest': true, 'services.resume.loginTokens': {$size: 0}});
+  const users = Meteor.users.find({'profile.guest': true, 'services.resume.loginTokens': {$size: 0}},
+    {fields: {_id: 1}}).fetch().map((u) => u._id);
+
+  if (users.length > 0) {
+    Meteor.users.remove({_id: {$in: users}});
+    EventParticipants.remove({userId: {$in: users}});
+  }
 };
 
 Meteor.methods({
