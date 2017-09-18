@@ -1,5 +1,5 @@
 import md5 from 'md5';
-import { Meteor } from 'meteor/meteor';
+import {Meteor} from 'meteor/meteor';
 
 export function getGravatarHashForEmailAddress(address) {
   return md5(address.trim().toLowerCase()).toString();
@@ -46,12 +46,12 @@ export function getIconHTMLForUser(user) {
 
 if (Meteor.isServer) {
   Meteor.startup(() => {
-    Meteor.users.find({ 'profile.gravatarHash': { $exists: false } }).observe({
+    Meteor.users.find({'profile.gravatarHash': {$exists: false}}).observe({
       added(user) {
         const address = user && user.emails && user.emails[0] && user.emails[0].address;
         if (address) {
           const hash = getGravatarHashForEmailAddress(user.emails[0].address);
-          Meteor.users.update(user._id, { $set: { 'profile.gravatarHash': hash } });
+          Meteor.users.update(user._id, {$set: {'profile.gravatarHash': hash}});
           console.log('Updated gravatar hash for', address);
         }
       },
