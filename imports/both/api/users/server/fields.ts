@@ -23,9 +23,9 @@ function getUserSelectorForMemberSelector(selector: Mongo.Selector | null): Mong
 
   const members = OrganizationMembers.find(
     selector,
-    { fields: { userId: 1 } },
+    {fields: {userId: 1}},
   ).fetch();
-  return { _id: { $in: compact(uniq(map(members, ((m) => m.userId)))) } };
+  return {_id: {$in: compact(uniq(map(members, ((m) => m.userId))))}};
 }
 
 export const UserVisibleSelectorForUserIdSelector = (userId: Mongo.ObjectID): Mongo.Selector | null => {
