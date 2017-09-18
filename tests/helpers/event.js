@@ -24,11 +24,40 @@ export const EventHelper = function (browser, server) {
 
       const id = match[1];
       return {
+        organize: () => {
+          browserHelper.replaceHistory(`/events/${id}/organize`);
+          browser.waitForExist('#OrganizeEventPage');
+        },
         publish: () => {
+          browserHelper.replaceHistory(`/events/${id}/organize`);
+          browser.waitForExist('#OrganizeEventPage');
+          browser.click('button=Publish event');
         },
         getPublicInviteLink: () => {
           browserHelper.replaceHistory(`/events/${id}/participants`);
-        }
+          browser.waitForExist('#EventParticipantsPage');
+        },
+        invite: (email) => {
+          browserHelper.replaceHistory(`/events/${id}/participants`);
+          browser.waitForExist('#EventParticipantsPage');
+
+          browser.addValue('form input[name="invitationEmailAddresses.0"]', email);
+          browser.click('input.btn-primary[type="submit"]');
+        },
+        uninvite: (email) => {
+          browserHelper.replaceHistory(`/events/${id}/participants`);
+          browser.waitForExist('#EventParticipantsPage');
+
+          browser.$(`.participant-name=${email}`).$('..').click('.participant-remove');
+        },
+        getInvitees: () => {
+          browserHelper.replaceHistory(`/events/${id}/participants`);
+          return browser.elements(".participant-entry").value.map(e => {
+            const name = e.$(".participant-name").getText();
+            const state = e.$(".participant-state").getText();
+            return {name, state};
+          })
+        },
       }
     },
   }
