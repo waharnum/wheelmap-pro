@@ -36,6 +36,8 @@ export const EventHelper = function (browser, server) {
         getPublicInviteLink: () => {
           browserHelper.replaceHistory(`/events/${id}/participants`);
           browser.waitForExist('#EventParticipantsPage');
+
+          return browser.$('input#public-link[type="text"]').getValue();
         },
         invite: (email) => {
           browserHelper.replaceHistory(`/events/${id}/participants`);

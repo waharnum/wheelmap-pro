@@ -28,7 +28,9 @@ export const UserHelper = function (browser, server) {
     signOut: () => {
       //  go to sign up page
       browserHelper.replaceHistory('/profile');
+      // browser.waitForExist('#ProfilePage');
       browser.click('button[type="submit"]');
+      browser.waitForExist('#HomePage');
     }
   };
 }

@@ -8,7 +8,7 @@ import Button from '../../components/Button';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 import {IOrganization} from '../../../both/api/organizations/organizations';
 import {Events, IEvent} from '../../../both/api/events/events';
-import {setLoginRedirect} from '../../../both/api/users/accounts';
+import {loginGuestUser, setLoginRedirect} from '../../../both/api/users/accounts';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
 import PublicHeader, {HeaderTitle} from '../../components/PublicHeader';
@@ -26,6 +26,8 @@ interface IPageModel {
   user?: Meteor.User;
 }
 
+
+
 type InternalPageProperties = IAsyncDataByIdProps<IPageModel> &
   IStyledComponent & { params: IAcceptInviteParams, location: Location };
 
@@ -33,9 +35,11 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
   public state: {
     busy: boolean;
     error: string | null;
+    guestMode: boolean;
   } = {
     busy: false,
     error: null,
+    guestMode: true,
   };
 
   public componentWillReceiveProps(nextProps: InternalPageProperties) {
@@ -70,17 +74,37 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
         </div>
       );
     } else if (!user) {
-      content = (
-        <div className="content-area">
-          <h2>
-            Great to have you here!
-          </h2>
-          <div className="alert alert-info">
-            Please sign up with {organization.name} to join {event.name}.
+      if (this.state.guestMode) {
+        content = (
+          <div className="content-area">
+            <h2>
+              Great to have you here!
+            </h2>
+            <div className="alert alert-info">
+              Please sign up with {organization.name} to join {event.name}.
+            </div>
+
+            <button className="btn btn-primary" onClick={() => {
+              loginGuestUser('Heiner Wugold', (error, result) => {
+                console.log(error, result);
+              });
+            }}>LOGIN!
+            </button>
           </div>
-          <Accounts.ui.LoginForm formState={STATES.SIGN_UP}/>
-        </div>
-      );
+        );
+      } else {
+        content = (
+          <div className="content-area">
+            <h2>
+              Great to have you here!
+            </h2>
+            <div className="alert alert-info">
+              Please sign up with {organization.name} to join {event.name}.
+            </div>
+            <Accounts.ui.LoginForm formState={STATES.SIGN_UP}/>
+          </div>
+        );
+      }
     } else {
       content = (
         <div className="content-area">
@@ -96,7 +120,7 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
     }
 
     return (
-      <ScrollableLayout className={this.props.className}>
+      <ScrollableLayout id="PublicSignUpForEventPage" className={this.props.className}>
         <PublicHeader
           titleComponent={(
             <HeaderTitle

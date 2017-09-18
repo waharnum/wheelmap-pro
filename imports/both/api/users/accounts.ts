@@ -1,11 +1,10 @@
-import { getActiveOrganizationId } from '../organizations/organizations';
-import * as React from 'react';
-import { Meteor } from 'meteor/meteor';
-import { Tracker } from 'meteor/tracker';
-import { Session } from 'meteor/session';
-import { Accounts, STATES } from 'meteor/std:accounts-ui';
-import { LocationDescriptor } from 'history';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import {Meteor} from 'meteor/meteor';
+import {Tracker} from 'meteor/tracker';
+import {Session} from 'meteor/session';
+import {Accounts} from 'meteor/std:accounts-ui';
+import {LocationDescriptor} from 'history';
+import {browserHistory} from 'react-router';
+import SimpleSchema from 'simpl-schema';
 
 export function setLoginRedirect(redirect: LocationDescriptor | null) {
   Session.set('loginRedirect', redirect);
@@ -39,6 +38,24 @@ Accounts.ui.config({
   minimumPasswordLength: 6,
 });
 
+export function loginGuestUser(username, callback) {
+  if (!Meteor.userId()) {
+    Accounts.callLoginMethod({
+      methodArguments: [{
+        custom: 'guest',
+        username,
+      }],
+      userCallback: function (error, result) {
+        if (error) {
+          callback && callback(error);
+        } else {
+          callback && callback();
+        }
+      },
+    });
+  }
+}
+
 export function acceptInvitationOnLogin() {
   Tracker.autorun((c) => {
     const invitationToken = Session.get('invitationToken');
@@ -57,7 +74,7 @@ export function acceptInvitationOnLogin() {
 
     Meteor.call(
       'organizationMembers.acceptInvitation',
-      { organizationId, invitationToken },
+      {organizationId, invitationToken},
       (error) => {
         if (error) {
           console.error(`Could not accept invitation: ${error.reason}`);
@@ -73,3 +90,16 @@ export function acceptInvitationOnLogin() {
     c.stop();
   });
 }
+
+// allow custom uniforms fields
+SimpleSchema.extendOptions(['uniforms']);
+
+export const GuestUserSchema = new SimpleSchema({
+  username: {
+    type: String,
+    min: 3,
+    uniforms: {
+      placeholder: 'e.g. http://www.example.com/photo.jpg',
+    },
+  },
+});

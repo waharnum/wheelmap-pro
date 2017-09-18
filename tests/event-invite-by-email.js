@@ -9,7 +9,7 @@ let User;
 let Organization;
 let Event;
 
-describe('InviteToEventViaEmail @watch', function () {
+describe('InviteToEventViaEmail', function () {
   let event;
   before(function () {
 

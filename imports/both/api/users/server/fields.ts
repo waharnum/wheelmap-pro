@@ -1,19 +1,20 @@
+import {map} from 'lodash';
+import {uniq} from 'lodash';
+import {compact} from 'lodash';
 
-import { map } from 'lodash';
-import { uniq } from 'lodash';
-import { compact } from 'lodash';
-
-import { Apps } from '../../apps/apps';
-import { OrganizationMembers } from '../../organization-members/organization-members';
-import { Organizations, getActiveOrganizationId } from '../../organizations/organizations';
-import { OrganizationMemberVisibleForUserIdSelector } from '../../organization-members/server/fields';
+import {Apps} from '../../apps/apps';
+import {OrganizationMembers} from '../../organization-members/organization-members';
+import {Organizations, getActiveOrganizationId} from '../../organizations/organizations';
+import {OrganizationMemberVisibleForUserIdSelector} from '../../organization-members/server/fields';
 
 export const UserPublicFields = {
+  'username': 1,
   'emails.address': 1,
   'services.facebook.id': 1,
   'services.google.picture': 1,
   'services.twitter.profile_image_url_https': 1,
   'profile.gravatarHash': 1,
+  'profile.guest': 1,
 };
 
 function getUserSelectorForMemberSelector(selector: Mongo.Selector | null): Mongo.Selector | null {
@@ -34,7 +35,7 @@ export const UserVisibleSelectorForUserIdSelector = (userId: Mongo.ObjectID): Mo
 
 export const UserVisibleSelectorForAppIdSelector = (appId: Mongo.ObjectID): Mongo.Selector | null => {
   const app = Apps.findOne(appId);
-  return getUserSelectorForMemberSelector({ organizationId: app.organizationId });
+  return getUserSelectorForMemberSelector({organizationId: app.organizationId});
 };
 
 export const ActiveOrganizationForUserIdSelector = (userId: Mongo.ObjectID): Mongo.Selector | null => {
@@ -44,6 +45,6 @@ export const ActiveOrganizationForUserIdSelector = (userId: Mongo.ObjectID): Mon
 
   const organizationId = getActiveOrganizationId(userId);
   return {
-    _id: { $in: [organizationId] },
+    _id: {$in: [organizationId]},
   };
 };
