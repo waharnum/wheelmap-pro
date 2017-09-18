@@ -30,7 +30,7 @@ let User;
 let Organization;
 let Event;
 
-describe('PublicUserInvites @watch', function () {
+describe('PublicUserInvites', function () {
   before(function () {
 
     // initialize helpers
