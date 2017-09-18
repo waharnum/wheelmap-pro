@@ -23,9 +23,7 @@ publishAndLog('users.needApproval.admin', () => {
   });
 });
 
-// even though typescript complains about Meteor.users, this is fine. Kind of.
-// It is unclear why the SimplSchema addition is not applied here
-publishFields('users.public', Users, UserPublicFields, UserVisibleSelectorForUserIdSelector);
+publishFields('users.private', Users, UserPublicFields, UserVisibleSelectorForUserIdSelector);
 
 publishAndLog('users.my.private', () => {
   if (!this.userId) {

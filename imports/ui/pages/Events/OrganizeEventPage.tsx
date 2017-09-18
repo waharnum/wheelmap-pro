@@ -338,8 +338,7 @@ const ReactiveOrganizeOrganisationsPage = reactiveSubscriptionByParams(
     const organization = event ? event.getOrganization() : null;
     return event && organization ? {event, participants, organization} : null;
   },
-  // TODO: this should be changed to a private query. maybe.
-  'events.by_id.private', 'eventParticipants.by_eventId.private', 'organizations.by_eventId.public');
+  'events.by_id.private', 'eventParticipants.by_eventId.private', 'organizations.by_eventId.private');
 
 export default styled(ReactiveOrganizeOrganisationsPage) `
 

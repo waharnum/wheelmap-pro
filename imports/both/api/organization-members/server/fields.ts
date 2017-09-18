@@ -1,5 +1,5 @@
-import { Apps } from '../../apps/apps';
-import { getAccessibleOrganizationIdsForUserId } from '../../organizations/privileges';
+import {Apps} from '../../apps/apps';
+import {getAccessibleOrganizationIdsForUserId} from '../../organizations/privileges';
 
 export const OrganizationMembersPublicFields = {
   organizationId: 1,
@@ -17,7 +17,7 @@ export function OrganizationMemberVisibleForUserIdSelector(userId: Mongo.ObjectI
     return null;
   }
   return {
-    organizationId: { $in: getAccessibleOrganizationIdsForUserId(userId) },
+    organizationId: {$in: getAccessibleOrganizationIdsForUserId(userId)},
   };
 };
 
@@ -27,11 +27,11 @@ export function OrganizationVisibleForUserIdSelector(userId: Mongo.ObjectID): Mo
     return null;
   }
   return {
-    _id: { $in: getAccessibleOrganizationIdsForUserId(userId) },
+    _id: {$in: getAccessibleOrganizationIdsForUserId(userId)},
   };
 };
 
 export function OrganizationMembersVisibleForAppIdSelector(appId: Mongo.ObjectID): Mongo.Selector {
   const app = Apps.findOne(appId);
-  return { organizationId: app.organizationId };
+  return {organizationId: app.organizationId};
 };

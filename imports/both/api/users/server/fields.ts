@@ -4,8 +4,10 @@ import {compact} from 'lodash';
 
 import {Apps} from '../../apps/apps';
 import {OrganizationMembers} from '../../organization-members/organization-members';
-import {Organizations, getActiveOrganizationId} from '../../organizations/organizations';
+import {getActiveOrganizationId} from '../../organizations/organizations';
 import {OrganizationMemberVisibleForUserIdSelector} from '../../organization-members/server/fields';
+import {EventParticipants} from '../../event-participants/event-participants';
+import {buildVisibleForUserSelector} from '../../event-participants/server/_fields';
 
 export const UserPublicFields = {
   'username': 1,
@@ -29,8 +31,25 @@ function getUserSelectorForMemberSelector(selector: Mongo.Selector | null): Mong
   return {_id: {$in: compact(uniq(map(members, ((m) => m.userId))))}};
 }
 
+function getUserSelectorForParticipantSelector(selector: Mongo.Selector | null): Mongo.Selector | null {
+  if (!selector) {
+    return null;
+  }
+
+  const participants = EventParticipants.find(
+    selector,
+    {fields: {userId: 1}},
+  ).fetch();
+  return {_id: {$in: compact(uniq(map(participants, ((p) => p.userId))))}};
+}
+
 export const UserVisibleSelectorForUserIdSelector = (userId: Mongo.ObjectID): Mongo.Selector | null => {
-  return getUserSelectorForMemberSelector(OrganizationMemberVisibleForUserIdSelector(userId));
+  return {
+    $or: [
+      getUserSelectorForMemberSelector(OrganizationMemberVisibleForUserIdSelector(userId)),
+      getUserSelectorForParticipantSelector(buildVisibleForUserSelector(userId)),
+    ],
+  };
 };
 
 export const UserVisibleSelectorForAppIdSelector = (appId: Mongo.ObjectID): Mongo.Selector | null => {

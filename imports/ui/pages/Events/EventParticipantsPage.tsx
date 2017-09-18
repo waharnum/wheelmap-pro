@@ -170,11 +170,12 @@ const ReactiveEventParticipantsPage = reactiveSubscriptionByParams(
   (id): IPageModel | null => {
     const event = Events.findOne(id);
     const participants = event ? event.getParticipants() : [];
+    const eventUsers = participants.map((p) => p.userId);
+    const participantUsers = Meteor.users.find({_id: {$in: eventUsers}}).fetch();
     const organization = event ? event.getOrganization() : null;
     return event && organization ? {event, participants, organization} : null;
   },
-  // TODO: organizations should be changed to a private query. maybe.
-  'events.by_id.private', 'eventParticipants.by_eventId.private', 'organizations.by_eventId.public');
+  'events.by_id.private', 'eventParticipants.by_eventId.private', 'organizations.by_eventId.private', 'users.private');
 
 export default styled(ReactiveEventParticipantsPage) `
 
