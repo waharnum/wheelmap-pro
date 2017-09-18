@@ -12,7 +12,7 @@ export interface IEventParticipant extends IEventParticipantMixin {
   eventId: Mongo.ObjectID;
   userId: Mongo.ObjectID | null;
   gravatarHash?: string;
-  invitationState: 'draft' | 'queuedForSending' | 'sent' | 'accepted' | 'error';
+  invitationState: 'draft' | 'queuedForSending' | 'sent' | 'accepted' | 'error' | 'old-guest';
   invitationError?: string;
   invitationToken?: string;
   invitationEmailAddress?: string;

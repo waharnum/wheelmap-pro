@@ -45,7 +45,7 @@ export const EventParticipantSchema = new SimpleSchema({
   },
   invitationState: {
     type: String,
-    allowedValues: ['draft', 'queuedForSending', 'sent', 'accepted', 'error'],
+    allowedValues: ['draft', 'queuedForSending', 'sent', 'accepted', 'error', 'old-guest'],
   },
   invitationError: {
     type: String,

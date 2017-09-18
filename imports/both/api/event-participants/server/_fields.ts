@@ -3,7 +3,6 @@ import {check} from 'meteor/check';
 
 import {Events} from '../../events/events';
 import {isAdmin} from '../../../lib/is-admin';
-import {EventParticipants} from '../event-participants';
 import {getAccessibleOrganizationIdsForUserId} from '../../organizations/privileges';
 
 // make sure the invitationToken is omitted

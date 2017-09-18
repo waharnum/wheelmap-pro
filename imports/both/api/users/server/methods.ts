@@ -42,7 +42,10 @@ function cleanupOldGuestProfiles() {
 
   if (users.length > 0) {
     Meteor.users.remove({_id: {$in: users}});
-    EventParticipants.remove({userId: {$in: users}});
+    EventParticipants.update({userId: {$in: users}}, {
+      $unset: {userId: 1},
+      $set: {invitationState: 'old-guest'},
+    });
   }
 };
 
