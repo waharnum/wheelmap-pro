@@ -1,14 +1,14 @@
-import { isAdmin } from '../../../../imports/both/lib/is-admin';
-import { isApproved } from '../../lib/is-approved';
-import { OrganizationMembers } from '../organization-members/organization-members';
-import { IOrganization, Organizations } from './organizations';
-import { uniq } from 'lodash';
+import {isAdmin} from '../../../../imports/both/lib/is-admin';
+import {isApproved} from '../../lib/is-approved';
+import {OrganizationMembers} from '../organization-members/organization-members';
+import {IOrganization, Organizations} from './organizations';
+import {uniq} from 'lodash';
 
 export function isUserMemberOfOrganizationWithId(userId: Mongo.ObjectID, organizationId: Mongo.ObjectID) {
   if (!userId || !organizationId) {
     return false;
   }
-  return OrganizationMembers.find({ userId, organizationId }).count() > 0;
+  return OrganizationMembers.find({userId, organizationId}).count() > 0;
 }
 
 // An organization is accessible for a user when they are a member or when they are admin.
@@ -18,39 +18,37 @@ export function getAccessibleOrganizationIdsForUserId(userId: Mongo.ObjectID) {
     return [];
   }
 
-  const selector = isAdmin(userId) ? {} : { userId };
+  const selector = isAdmin(userId) ? {} : {userId};
 
   return uniq(OrganizationMembers
-    .find(selector, { fields: { organizationId: 1 } })
-    .fetch()
-    .map((member) => member.organizationId));
+  .find(selector, {fields: {organizationId: 1}})
+  .fetch()
+  .map((member) => member.organizationId));
 }
 
 // Functions for retrieving which roles a user has in which organization.
 // Note that admins are regarded as having all roles in all organizations.
-export function getAccessibleOrganizationIdsForRoles(
-  userId: Mongo.ObjectID,
-  includedRoles: string[] = []) {
+export function getAccessibleOrganizationIdsForRoles(userId: Mongo.ObjectID,
+                                                     includedRoles: string[] = []) {
   if (!userId) {
     return [];
   }
 
   if (isAdmin(userId)) {
-    return Organizations.find({}, { fields: { _id: 1 } }).fetch().map((o) => o._id);
+    return Organizations.find({}, {fields: {_id: 1}}).fetch().map((o) => o._id);
   }
 
   return uniq(OrganizationMembers.find({
     userId,
-    $or: includedRoles.map((role) => ({ role })),
+    $or: includedRoles.map((role) => ({role})),
   }).map((member) => member.organizationId));
 }
 
 // Returns true if the user has one of the given roles in the given organization, false otherwise.
 // Admins are considered as having all roles in every organization.
-export function userHasRole(
-    userId: Mongo.ObjectID,
-    organizationId: Mongo.ObjectID,
-    includedRoles: string[] = []): boolean {
+export function userHasRole(userId: Mongo.ObjectID,
+                            organizationId: Mongo.ObjectID,
+                            includedRoles: string[] = []): boolean {
   if (!userId || !organizationId || !includedRoles) {
     return false;
   }
@@ -64,13 +62,12 @@ export function userHasRole(
 
 // Returns true if the user is admin or can manage the organization with the given id, false
 // otherwise. Admins are considered as having all roles in every organization.
-export function userHasFullAccessToOrganizationId(
-    userId: Mongo.ObjectID | null | undefined,
-    organizationId: Mongo.ObjectID | null | undefined): boolean {
+export function userHasFullAccessToOrganizationId(userId: Mongo.ObjectID | null | undefined,
+                                                  organizationId: Mongo.ObjectID | null | undefined): boolean {
+  console.log('userHasFullAccessToOrganizationId', userId, organizationId);
   if (!userId || !organizationId) {
     return false;
   }
-
   return isAdmin(userId) ||
     isApproved(userId) &&
     userHasRole(userId, organizationId, ['manager', 'developer', 'founder']);
@@ -78,9 +75,8 @@ export function userHasFullAccessToOrganizationId(
 
 // Returns true if the user is admin or can manage the organization, false
 // otherwise. Admins are considered as having all roles in every organization.
-export function userHasFullAccessToOrganization(
-    userId: Mongo.ObjectID,
-    organization: IOrganization): boolean {
+export function userHasFullAccessToOrganization(userId: Mongo.ObjectID,
+                                                organization: IOrganization): boolean {
   if (!userId || !organization) {
     return false;
   }
@@ -90,9 +86,8 @@ export function userHasFullAccessToOrganization(
 
 // Returns true if the user is admin or can manage the organization referenced in the given MongoDB
 // document, false otherwise.
-export function userHasFullAccessToReferencedOrganization(
-    userId: Mongo.ObjectID,
-    doc: {organizationId: Mongo.ObjectID}): boolean {
+export function userHasFullAccessToReferencedOrganization(userId: Mongo.ObjectID,
+                                                          doc: { organizationId: Mongo.ObjectID }): boolean {
   if (!userId || !doc) {
     return false;
   }
@@ -102,9 +97,8 @@ export function userHasFullAccessToReferencedOrganization(
 
 // Returns true if the user is admin or can manage the organization referenced in the given MongoDB
 // document, false otherwise.
-export function userHasFullAccessToReferencedOrganizationByMethod(
-    userId: Mongo.ObjectID,
-    doc: { getOrganizationId: () => (Mongo.ObjectID | null) }): boolean {
+export function userHasFullAccessToReferencedOrganizationByMethod(userId: Mongo.ObjectID,
+                                                                  doc: { getOrganizationId: () => (Mongo.ObjectID | null) }): boolean {
   if (!userId || !doc) {
     return false;
   }

@@ -1,9 +1,9 @@
-import { Meteor } from 'meteor/meteor';
-import { Mongo } from 'meteor/mongo';
+import {Meteor} from 'meteor/meteor';
+import {Mongo} from 'meteor/mongo';
 
-import { OrganizationSchema } from './schema';
-import { OrganizationMembers } from '../organization-members/organization-members';
-import { IOrganizationMixin, OrganizationMixin } from './mixins';
+import {OrganizationSchema} from './schema';
+import {OrganizationMembers} from '../organization-members/organization-members';
+import {IOrganizationMixin, OrganizationMixin} from './mixins';
 
 export interface IOrganization extends IOrganizationMixin {
   // mongo id
@@ -27,17 +27,21 @@ Organizations.schema = OrganizationSchema;
 Organizations.helpers(OrganizationMixin);
 Organizations.attachSchema(Organizations.schema);
 
+export function getOrganizationsMemberships(userId: Mongo.ObjectID) {
+  const options = {fields: {organizationId: 1}};
+  return OrganizationMembers.find({userId}, options).fetch().map((m) => m.organizationId);
+};
+
 export function getOrganizationsWhereCurrentUserIsMember() {
   const userId = Meteor.userId();
-  const options = { fields: { organizationId: 1 } };
-  const orgIds = OrganizationMembers.find({ userId }, options).fetch().map((m) => m.organizationId);
-  return Organizations.find({ _id: { $in: orgIds } });
+  const orgIds = getOrganizationsMemberships(userId);
+  return Organizations.find({_id: {$in: orgIds}});
 };
 
 export function setActiveOrganization(userId: Mongo.ObjectID,
                                       activeOrganizationId: Mongo.ObjectID,
                                       callback?: (error?, result?) => void): number {
-  return Meteor.users.update(userId, { $set: { 'profile.activeOrganizationId': activeOrganizationId } }, {}, callback);
+  return Meteor.users.update(userId, {$set: {'profile.activeOrganizationId': activeOrganizationId}}, {}, callback);
 };
 
 export function getActiveOrganizationId(userId: Mongo.ObjectID): Mongo.ObjectID | null {

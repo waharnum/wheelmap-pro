@@ -105,11 +105,14 @@ const ReactiveOrganizeOrganisationsPage = reactiveSubscriptionByParams(
     IAsyncDataByIdProps<IPageModel>>(OrganizeOrganisationsPage),
   (id): IPageModel | null => {
     const organization = Organizations.findOne(id);
-    const events = organization ? organization.getEvents() : [];
+    if (!organization) {
+      return null;
+    }
+    const events = organization.getEvents();
     // pass model with organization & events in one go
-    return organization ? {organization, events} : null;
+    return {organization, events};
   },
-  'organizations.by_id.public', 'events.by_organizationId.private');
+  'organizations.by_id.private', 'events.by_organizationId.private');
 
 const StyledReactiveOrganizeOrganisationsPage = styled(ReactiveOrganizeOrganisationsPage)`
 

@@ -31,14 +31,14 @@ export const OrganizationMixin = {
     if (!userId) {
       return false;
     }
-    ;
     return userHasFullAccessToOrganizationId(userId, this._id);
   },
   isFullyVisibleForUserId(userId: Mongo.ObjectID): boolean {
+    console.log('isFullyVisibleForUserId', userId);
+
     if (!userId) {
       return false;
     }
-    ;
     return isAdmin(userId) || isUserMemberOfOrganizationWithId(userId, this._id);
   },
   getEvents() {

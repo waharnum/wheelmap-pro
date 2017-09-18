@@ -31,7 +31,7 @@ const ReactiveOrganizationMembersPage = reactiveModelSubscriptionByParams(
       IOrganization,
       IAsyncDataByIdProps<IOrganization | null>,
       IAsyncDataByIdProps<IOrganization>>(OrganizationMembersPage),
-  Organizations, 'organizations.by_id.public');
+  Organizations, 'organizations.by_id.private');
 
 export default styled(ReactiveOrganizationMembersPage) `
 `;
