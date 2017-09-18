@@ -1,5 +1,5 @@
 import expect from './helpers/matchers'
-import {prepareCleanTest} from "./helpers/server";
+import {BaseMeteorUrl, prepareCleanTest} from "./helpers/server";
 
 describe('SignUp', function () {
   const emailAddress = 'test@example.com';
@@ -58,7 +58,6 @@ describe('SignUp', function () {
     expect(browser.getUrl()).toEndWith('/signin');
   });
   it('sign-in with user name and password', function () {
-
     browser.waitForEnabled('#email');
     browser.addValue('form input#email', emailAddress);
 

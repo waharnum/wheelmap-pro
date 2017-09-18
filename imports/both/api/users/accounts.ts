@@ -3,6 +3,7 @@ import {Tracker} from 'meteor/tracker';
 import {Session} from 'meteor/session';
 import {Accounts} from 'meteor/std:accounts-ui';
 import {LocationDescriptor} from 'history';
+import BoolField from 'uniforms-bootstrap3/BoolField';
 import {browserHistory} from 'react-router';
 import SimpleSchema from 'simpl-schema';
 
@@ -102,5 +103,14 @@ export const GuestUserSchema = new SimpleSchema({
     uniforms: {
       placeholder: 'e.g. Petra',
     },
+  },
+  toc: {
+    label: 'Terms and Conditions',
+    type: Boolean,
+    uniforms: {
+      help: 'Provide link to t&c here',
+      component: BoolField,
+    },
+    allowedValues: [true],
   },
 });

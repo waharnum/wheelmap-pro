@@ -43,6 +43,15 @@ export const UserHelper = function (browser, server) {
       // browser.waitForExist('#ProfilePage');
       browser.click('button[type="submit"]');
       browser.waitForExist('#HomePage');
+    },
+    signUpAsGuestForEvent: (publicInviteLink, username) => {
+      browser.url(publicInviteLink);
+      browser.waitForExist('#PublicSignUpForEventPage');
+      browser.addValue('form input[name="username"]', username);
+      browser.click('input[name="toc"]');
+      browser.click('input[type="submit"]');
+      browser.waitForExist(".user-menu");
+      expect(browser.$('.user-menu a').getText().toLowerCase()).toBe(username.toLowerCase());
     }
   };
 }

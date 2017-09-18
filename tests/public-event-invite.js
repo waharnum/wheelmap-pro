@@ -1,6 +1,6 @@
 import expect from './helpers/matchers'
 
-import {prepareCleanTest} from "./helpers/server";
+import {BaseMeteorUrl, prepareCleanTest} from "./helpers/server";
 import {BrowserHelper} from "./helpers/browser";
 import {UserHelper} from "./helpers/user";
 import {OrganizationHelper} from "./helpers/organization";
@@ -10,7 +10,7 @@ let User;
 let Organization;
 let Event;
 
-describe('PublicUserInvites @watch', function () {
+describe('Public Invitation Flow @watch', function () {
   let publicInviteLink;
   let event;
 
@@ -37,7 +37,7 @@ describe('PublicUserInvites @watch', function () {
     User.signOut();
   });
 
-  describe('SignUpWithPublicLink', function () {
+  describe('Sign Up With Public Link', function () {
     it('accept-sign-up as new user');
 
     it('accept-sign-in as existing user');
@@ -47,37 +47,45 @@ describe('PublicUserInvites @watch', function () {
     it('visit accepted link again');
 
     describe('First Guest', function () {
-      it('accept-join-guest', function () {
-        browser.url(publicInviteLink);
-        browser.waitForExist('#PublicSignUpForEventPage');
-        browser.deleteCookie();
-
-        const username = "Heiner Wugold II";
-        browser.addValue('form input[name="username"]', username);
-        browser.click('input[type="submit"]');
-        browser.waitForExist(".user-menu");
-        expect(browser.$('.user-menu a').getText().toLowerCase()).toBe(username.toLowerCase());
+      it('signs up', function () {
+        User.signUpAsGuestForEvent(publicInviteLink, "Heiner Wugold II");
         User.signOut();
       });
     });
 
     describe('Second Guest', function () {
-      it('accept-join-guest', function () {
-        browser.url(publicInviteLink);
-        browser.waitForExist('#PublicSignUpForEventPage');
-        browser.deleteCookie();
-
-        const username = "Antoninia Burckhardth";
-        browser.addValue('form input[name="username"]', username);
-        browser.click('input[type="submit"]');
-        browser.waitForExist(".user-menu");
-        expect(browser.$('.user-menu a').getText().toLowerCase()).toBe(username.toLowerCase());
+      it('signs up', function () {
+        User.signUpAsGuestForEvent(publicInviteLink, "Antoninia Burckhardth");
         User.signOut();
       });
     });
 
-    describe('Check Participants', function () {
-      it('read-participants-moderator', function () {
+    describe('Failed Guest', function () {
+      it('cannot sign up without name', function () {
+        browser.url(publicInviteLink);
+        browser.waitForExist('#PublicSignUpForEventPage');
+
+        browser.click('input[type="submit"]');
+
+        browser.waitForExist("form.error");
+        browser.waitForExist('.field.form-group.has-error input[name="username"]');
+      });
+
+      it('cannot sign up without accepting toc', function () {
+        browser.url(publicInviteLink);
+        browser.waitForExist('#PublicSignUpForEventPage');
+        browser.setValue('input[name="username"]', "I gave a name");
+        browser.click('input[type="submit"]');
+
+        browser.waitForExist("form.error");
+        browser.waitForExist('.field.form-group.has-error input[name="toc"]');
+      });
+    });
+
+    describe('Moderator', function () {
+      it('has two guest participants', function () {
+        // need to reset url, otherwise redirect will bring us to the publicInviteLink
+        browser.url(BaseMeteorUrl);
         User.signIn("moderator@organization.com", "passwordHere");
         browser.waitForExist('#OrganizeOrganizationPage');
         const invitees = event.getInvitees();
