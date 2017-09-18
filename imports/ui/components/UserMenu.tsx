@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import {Link} from 'react-router';
 import * as React from 'react';
 
-import { IStyledComponent } from './IStyledComponent';
-import { getGravatarImageUrl } from '../../both/lib/user-icon';
-import { getDisplayedNameForUser } from '../../both/lib/user-name';
+import {IStyledComponent} from './IStyledComponent';
+import {getGravatarImageUrl} from '../../both/lib/user-icon';
+import {getDisplayedNameForUser} from '../../both/lib/user-name';
 
 // TODO: needs binding to current user
 
@@ -17,7 +17,7 @@ const UserMenu = (props: IStyledComponent) => {
 
   return (
     <li className={props.className + ' user-menu'}>
-      <img src={getGravatarImageUrl(user.profile.gravatarHash)} className="user-icon" />
+      <img src={getGravatarImageUrl(user.profile.gravatarHash)} className="user-icon"/>
       <Link to="/profile">{getDisplayedNameForUser(user)}</Link>
     </li>
   );
