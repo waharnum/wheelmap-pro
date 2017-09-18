@@ -62,7 +62,7 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
     const link = Meteor.absoluteUrl(`events/${event._id}/public-invitation/${event.invitationToken}`);
 
     return (
-      <ScrollableLayout className={this.props.className}>
+      <ScrollableLayout id="EventParticipantsPage" className={this.props.className}>
         <AdminHeader
           titleComponent={(
             // TODO: Move to shared component
