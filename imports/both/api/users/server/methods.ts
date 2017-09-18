@@ -37,15 +37,16 @@ Accounts.onLogout(function (options) {
 });
 
 function cleanupOldGuestProfiles() {
+  // find all users that logged out, but never connected with a real account
   const users = Meteor.users.find({'profile.guest': true, 'services.resume.loginTokens': {$size: 0}},
     {fields: {_id: 1}}).fetch().map((u) => u._id);
 
   if (users.length > 0) {
-    Meteor.users.remove({_id: {$in: users}});
+    // do not delete users Meteor.users.remove({_id: {$in: users}});
     EventParticipants.update({userId: {$in: users}}, {
-      $unset: {userId: 1},
+      // $unset: {userId: 1},
       $set: {invitationState: 'old-guest'},
-    });
+    }, {multi: true});
   }
 };
 

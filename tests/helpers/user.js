@@ -24,6 +24,18 @@ export const UserHelper = function (browser, server) {
       expect(browser.getUrl()).toEndWith('/organizations/none');
     },
     signIn: (email, password) => {
+      //  go to sign in page
+      browserHelper.replaceHistory('/signin');
+      browser.waitForExist('form.accounts');
+
+      // fill form
+      browser.waitForEnabled('#email');
+      browser.addValue('form input#email', email);
+      browser.waitForEnabled('#password[type="password"]');
+      browser.addValue('#password[type="password"]', password);
+
+      // submit
+      browser.click('button[type="submit"]');
     },
     signOut: () => {
       //  go to sign up page

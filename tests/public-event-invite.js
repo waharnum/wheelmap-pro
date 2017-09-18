@@ -12,6 +12,7 @@ let Event;
 
 describe('PublicUserInvites @watch', function () {
   let publicInviteLink;
+  let event;
 
   before(function () {
     // initialize helpers
@@ -20,7 +21,6 @@ describe('PublicUserInvites @watch', function () {
     Event = EventHelper(browser, server);
 
     const browserHelper = BrowserHelper(browser);
-
     prepareCleanTest(browser, server);
 
     // sign up moderator
@@ -28,22 +28,16 @@ describe('PublicUserInvites @watch', function () {
     // create organization
     Organization.create("My Organization");
     // create event
-    const event = Event.create("My Event");
+    event = Event.create("My Event");
     // publish event
     event.publish();
-    // get public invite link
+    // store public invite link for new accounts
     publicInviteLink = event.getPublicInviteLink();
     // sign out
     User.signOut();
   });
 
   describe('SignUpWithPublicLink', function () {
-    beforeEach(function () {
-      browser.url(publicInviteLink);
-      browser.deleteCookie();
-      browser.waitForExist('#PublicSignUpForEventPage');
-    });
-
     it('accept-sign-up as new user');
 
     it('accept-sign-in as existing user');
@@ -54,6 +48,10 @@ describe('PublicUserInvites @watch', function () {
 
     describe('First Guest', function () {
       it('accept-join-guest', function () {
+        browser.url(publicInviteLink);
+        browser.waitForExist('#PublicSignUpForEventPage');
+        browser.deleteCookie();
+
         const username = "Heiner Wugold II";
         browser.addValue('form input[name="username"]', username);
         browser.click('input[type="submit"]');
@@ -65,12 +63,27 @@ describe('PublicUserInvites @watch', function () {
 
     describe('Second Guest', function () {
       it('accept-join-guest', function () {
+        browser.url(publicInviteLink);
+        browser.waitForExist('#PublicSignUpForEventPage');
+        browser.deleteCookie();
+
         const username = "Antoninia Burckhardth";
         browser.addValue('form input[name="username"]', username);
         browser.click('input[type="submit"]');
         browser.waitForExist(".user-menu");
         expect(browser.$('.user-menu a').getText().toLowerCase()).toBe(username.toLowerCase());
         User.signOut();
+      });
+    });
+
+    describe('Check Participants', function () {
+      it('read-participants-moderator', function () {
+        User.signIn("moderator@organization.com", "passwordHere");
+        browser.waitForExist('#OrganizeOrganizationPage');
+        const invitees = event.getInvitees();
+        expect(invitees.length).toBe(2);
+        expect(invitees).toContain({name: "Heiner Wugold II", state: 'old-guest'});
+        expect(invitees).toContain({name: "Antoninia Burckhardth", state: 'old-guest'});
       });
     });
   });

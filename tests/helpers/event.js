@@ -1,6 +1,53 @@
 import expect from './matchers'
 import {BrowserHelper} from "./browser";
 
+class Event {
+  constructor(id, browser) {
+    this.id = id;
+    this.browserHelper = BrowserHelper(browser);
+    this.browser = browser;
+  }
+
+  organize = () => {
+    this.browserHelper.replaceHistory(`/events/${this.id}/organize`);
+    this.browser.waitForExist('#OrganizeEventPage');
+  }
+  publish = () => {
+    this.browserHelper.replaceHistory(`/events/${this.id}/organize`);
+    this.browser.waitForExist('#OrganizeEventPage');
+    this.browser.click('button=Publish event');
+  }
+  getPublicInviteLink = () => {
+    this.browserHelper.replaceHistory(`/events/${this.id}/participants`);
+    this.browser.waitForExist('#EventParticipantsPage');
+
+    return this.browser.$('input#public-link[type="text"]').getValue();
+  }
+  invite = (email) => {
+    this.browserHelper.replaceHistory(`/events/${this.id}/participants`);
+    this.browser.waitForExist('#EventParticipantsPage');
+
+    this.browser.addValue('form input[name="invitationEmailAddresses.0"]', email);
+    this.browser.click('input.btn-primary[type="submit"]');
+  }
+  uninvite = (email) => {
+    this.browserHelper.replaceHistory(`/events/${this.id}/participants`);
+    this.browser.waitForExist('#EventParticipantsPage');
+
+    this.browser.$(`.participant-name=${email}`).$('..').click('.participant-remove');
+  }
+  getInvitees = () => {
+    this.browserHelper.replaceHistory(`/events/${this.id}/participants`);
+    this.browser.waitForExist('#EventParticipantsPage');
+
+    return this.browser.elements(".participant-entry").value.map(e => {
+      const name = e.$(".participant-name").getText();
+      const state = e.$(".participant-state").getText();
+      return {name, state};
+    })
+  }
+}
+
 export const EventHelper = function (browser, server) {
   const browserHelper = BrowserHelper(browser);
   const eventIdRegEx = /events\/([\w]+)\/organize/;
@@ -23,44 +70,7 @@ export const EventHelper = function (browser, server) {
       }
 
       const id = match[1];
-      return {
-        organize: () => {
-          browserHelper.replaceHistory(`/events/${id}/organize`);
-          browser.waitForExist('#OrganizeEventPage');
-        },
-        publish: () => {
-          browserHelper.replaceHistory(`/events/${id}/organize`);
-          browser.waitForExist('#OrganizeEventPage');
-          browser.click('button=Publish event');
-        },
-        getPublicInviteLink: () => {
-          browserHelper.replaceHistory(`/events/${id}/participants`);
-          browser.waitForExist('#EventParticipantsPage');
-
-          return browser.$('input#public-link[type="text"]').getValue();
-        },
-        invite: (email) => {
-          browserHelper.replaceHistory(`/events/${id}/participants`);
-          browser.waitForExist('#EventParticipantsPage');
-
-          browser.addValue('form input[name="invitationEmailAddresses.0"]', email);
-          browser.click('input.btn-primary[type="submit"]');
-        },
-        uninvite: (email) => {
-          browserHelper.replaceHistory(`/events/${id}/participants`);
-          browser.waitForExist('#EventParticipantsPage');
-
-          browser.$(`.participant-name=${email}`).$('..').click('.participant-remove');
-        },
-        getInvitees: () => {
-          browserHelper.replaceHistory(`/events/${id}/participants`);
-          return browser.elements(".participant-entry").value.map(e => {
-            const name = e.$(".participant-name").getText();
-            const state = e.$(".participant-state").getText();
-            return {name, state};
-          })
-        },
-      }
+      return new Event(id, browser);
     },
   }
 }
