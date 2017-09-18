@@ -4,6 +4,9 @@ import SimpleSchema from 'simpl-schema';
 import {ValidatedMethod} from 'meteor/mdg:validated-method';
 
 import {IEvent, Events} from '../events';
+import {EventParticipants} from '../../event-participants/event-participants';
+import {Organizations} from '../../organizations/organizations';
+import {sendEventInvitationEmailTo} from '../../event-participants/server/_invitations';
 
 export const insert = new ValidatedMethod({
   name: 'events.insert',
@@ -18,7 +21,7 @@ export const insert = new ValidatedMethod({
 export const remove = new ValidatedMethod({
   name: 'events.remove',
   validate: new SimpleSchema({
-    organizationId: {
+    eventId: {
       type: String,
       regEx: SimpleSchema.RegEx.Id,
     },
@@ -26,9 +29,43 @@ export const remove = new ValidatedMethod({
   run({eventId}) {
     const event = Events.findOne(eventId);
 
+    if (!event) {
+      throw new Meteor.Error(404, 'Event not found.');
+    }
     if (!event.editableBy(this.userId)) {
-      throw new Meteor.Error(403, 'You don\'t have permission to remove this organization.');
+      throw new Meteor.Error(403, 'You don\'t have permission to remove this event.');
     }
     Events.remove(eventId);
+  },
+});
+
+export const publish = new ValidatedMethod({
+  name: 'events.publish',
+  validate: new SimpleSchema({
+    eventId: {
+      type: String,
+      regEx: SimpleSchema.RegEx.Id,
+    },
+  }).validator(),
+  run({eventId}) {
+    const event = Events.findOne(eventId);
+
+    if (!event) {
+      throw new Meteor.Error(404, 'Event not found.');
+    }
+    if (!event.editableBy(this.userId)) {
+      throw new Meteor.Error(403, 'You don\'t have permission to remove this event.');
+    }
+    if (event.status !== 'draft') {
+      throw new Meteor.Error(403, 'This event is already published.');
+    }
+
+    const organization = Organizations.findOne(event.organizationId);
+    Events.update(eventId, {$set: {status: 'planned'}});
+
+    EventParticipants.find({invitationState: 'draft', eventId}).forEach((invitation) => {
+      console.log('Publishing!', invitation._id);
+      sendEventInvitationEmailTo(invitation, event, organization);
+    });
   },
 });

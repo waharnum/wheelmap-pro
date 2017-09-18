@@ -49,8 +49,10 @@ export const insert = new ValidatedMethod({
       }
       const inserted = insertDraftEventParticipant(invitationEmailAddress, eventId);
 
-      // TODO: add only sending emails if the state of the event is already past draft!
-      sendEventInvitationEmailTo(inserted, event, organization);
+      // only send emails if the state of the event is already past draft
+      if (event.status !== 'draft') {
+        sendEventInvitationEmailTo(inserted, event, organization);
+      }
 
       return inserted._id;
     });
