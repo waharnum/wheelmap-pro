@@ -12,8 +12,18 @@ export const insert = new ValidatedMethod({
   name: 'events.insert',
   validate: Events.schema.validator(),
   run(doc: IEvent) {
+
+    const organization = Organizations.findOne(doc.organizationId);
+    if (!organization) {
+      throw new Meteor.Error(404, 'Organization for event not found.');
+    }
+    if (!organization.editableBy(this.userId)) {
+      throw new Meteor.Error(403, 'You don\'t have permission to create an event for this organization.');
+    }
+
     // assign invitation token
     doc.invitationToken = Random.secret();
+
     return Events.insert(doc);
   },
 });
