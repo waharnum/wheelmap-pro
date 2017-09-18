@@ -96,10 +96,11 @@ SimpleSchema.extendOptions(['uniforms']);
 
 export const GuestUserSchema = new SimpleSchema({
   username: {
+    label: 'What is your name (or nickname)?',
     type: String,
     min: 3,
     uniforms: {
-      placeholder: 'e.g. http://www.example.com/photo.jpg',
+      placeholder: 'e.g. Petra',
     },
   },
 });

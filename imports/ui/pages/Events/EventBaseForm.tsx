@@ -1,17 +1,16 @@
-import { AutoSizedStaticMap } from '../../components/StaticMap';
+import {AutoSizedStaticMap} from '../../components/StaticMap';
 import * as React from 'react';
 import styled from 'styled-components';
-import { browserHistory } from 'react-router';
+import {browserHistory} from 'react-router';
 
 import AutoForm from 'uniforms-bootstrap3/AutoForm';
 import AutoFields from 'uniforms-bootstrap3/AutoFields';
 import SubmitField from 'uniforms-bootstrap3/SubmitField';
-import BoolField from 'uniforms-bootstrap3/BoolField';
 import LongTextField from 'uniforms-bootstrap3/LongTextField';
 
 import ImageLinkUrlField from '../../components/ImageLinkUrlField';
-import { Events, IEvent } from '../../../both/api/events/events';
-import { IStyledComponent } from '../../components/IStyledComponent';
+import {Events, IEvent} from '../../../both/api/events/events';
+import {IStyledComponent} from '../../components/IStyledComponent';
 
 import * as moment from 'moment';
 
@@ -59,34 +58,34 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
 
     // convert the input time from utc to local
     this.state.model.startTime = this.props.initialModel ?
-        moment(this.props.initialModel.startTime).add(moment().utcOffset(), 'minutes').toDate() :
-        moment().add(7, 'days').add(moment().utcOffset(), 'minutes').minutes(0).seconds(0).toDate();
+      moment(this.props.initialModel.startTime).add(moment().utcOffset(), 'minutes').toDate() :
+      moment().add(7, 'days').add(moment().utcOffset(), 'minutes').minutes(0).seconds(0).toDate();
   }
 
   public render(): JSX.Element {
     return (
-    <div className={this.props.className + ' content-area hsplit'}>
-      <div className="content-left">
-        <AutoForm
-          placeholder={true}
-          showInlineError={true}
-          model={this.state.model}
-          disabled={this.state.isSaving}
-          schema={schema}
-          onSubmit={this.onSubmit}
-          onChangeModel={this.onChangeModel}>
-          <AutoFields fields={['name', 'description', 'regionName', 'startTime',
-              'verifyGpsPositionsOfEdits', 'openFor', 'photoUrl']} />
-          <div className="actions">
-            <SubmitField />
-            <button className="btn btn-default" onClick={browserHistory.goBack}>Cancel</button>
-          </div>
-        </AutoForm>
-      </div>
-      <div className="content-right">
-        <AutoSizedStaticMap />
-      </div>
-    </div>);
+      <div className={this.props.className + ' content-area hsplit'}>
+        <div className="content-left">
+          <AutoForm
+            placeholder={true}
+            showInlineError={true}
+            model={this.state.model}
+            disabled={this.state.isSaving}
+            schema={schema}
+            onSubmit={this.onSubmit}
+            onChangeModel={this.onChangeModel}>
+            <AutoFields fields={['name', 'description', 'regionName', 'startTime',
+              'verifyGpsPositionsOfEdits', 'openFor', 'photoUrl']}/>
+            <div className="actions">
+              <SubmitField/>
+              <button className="btn btn-default" onClick={browserHistory.goBack}>Cancel</button>
+            </div>
+          </AutoForm>
+        </div>
+        <div className="content-right">
+          <AutoSizedStaticMap/>
+        </div>
+      </div>);
   }
 
   private onChangeModel = (model) => {

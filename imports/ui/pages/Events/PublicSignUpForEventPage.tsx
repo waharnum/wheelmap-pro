@@ -8,12 +8,12 @@ import Button from '../../components/Button';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 import {IOrganization} from '../../../both/api/organizations/organizations';
 import {Events, IEvent} from '../../../both/api/events/events';
-import {loginGuestUser, setLoginRedirect} from '../../../both/api/users/accounts';
+import {GuestUserSchema, loginGuestUser, setLoginRedirect} from '../../../both/api/users/accounts';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
 import PublicHeader, {HeaderTitle} from '../../components/PublicHeader';
-import {EventParticipants, IEventParticipant} from '../../../both/api/event-participants/event-participants';
 import {IAsyncDataByIdProps, reactiveSubscriptionByParams} from '../../components/reactiveModelSubscription';
+import AutoForm from 'uniforms-bootstrap3/AutoForm';
 
 interface IAcceptInviteParams {
   _id: Mongo.ObjectID;
@@ -25,8 +25,6 @@ interface IPageModel {
   event: IEvent;
   user?: Meteor.User;
 }
-
-
 
 type InternalPageProperties = IAsyncDataByIdProps<IPageModel> &
   IStyledComponent & { params: IAcceptInviteParams, location: Location };
@@ -48,6 +46,12 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
 
   public componentWillMount() {
     this.modelChanged(this.props);
+  }
+
+  private onSubmit = (doc) => {
+    loginGuestUser(doc.username, (error, result) => {
+      console.log(error, result);
+    });
   }
 
   public render(): JSX.Element | null {
@@ -84,12 +88,12 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
               Please sign up with {organization.name} to join {event.name}.
             </div>
 
-            <button className="btn btn-primary" onClick={() => {
-              loginGuestUser('Heiner Wugold', (error, result) => {
-                console.log(error, result);
-              });
-            }}>LOGIN!
-            </button>
+            <AutoForm
+              placeholder={true}
+              showInlineError={true}
+              schema={GuestUserSchema}
+              onSubmit={this.onSubmit}/>
+            <Button to="">Sign-in/Sign-up with email</Button>
           </div>
         );
       } else {
@@ -102,6 +106,7 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
               Please sign up with {organization.name} to join {event.name}.
             </div>
             <Accounts.ui.LoginForm formState={STATES.SIGN_UP}/>
+            <Button to="">Sign-up as a guest</Button>
           </div>
         );
       }
@@ -143,10 +148,7 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
       setLoginRedirect(this.props.location.pathname);
     } else {
       setLoginRedirect(null);
-
-      //if (props.model.participant.invitationState !== 'accepted') {
       this.acceptInvite();
-      //}
     }
   }
 

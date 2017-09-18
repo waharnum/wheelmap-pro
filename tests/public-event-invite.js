@@ -38,9 +38,9 @@ describe('PublicUserInvites @watch', function () {
   });
 
   describe('SignUpWithPublicLink', function () {
-    before(function () {
-      browser.deleteCookie();
+    beforeEach(function () {
       browser.url(publicInviteLink);
+      browser.deleteCookie();
       browser.waitForExist('#PublicSignUpForEventPage');
     });
 
@@ -52,8 +52,26 @@ describe('PublicUserInvites @watch', function () {
 
     it('visit accepted link again');
 
-    it('accept-sign-in as guest user', function () {
-      browser.click("button=LOGIN!");
+    describe('First Guest', function () {
+      it('accept-join-guest', function () {
+        const username = "Heiner Wugold II";
+        browser.addValue('form input[name="username"]', username);
+        browser.click('input[type="submit"]');
+        browser.waitForExist(".user-menu");
+        expect(browser.$('.user-menu a').getText().toLowerCase()).toBe(username.toLowerCase());
+        User.signOut();
+      });
+    });
+
+    describe('Second Guest', function () {
+      it('accept-join-guest', function () {
+        const username = "Antoninia Burckhardth";
+        browser.addValue('form input[name="username"]', username);
+        browser.click('input[type="submit"]');
+        browser.waitForExist(".user-menu");
+        expect(browser.$('.user-menu a').getText().toLowerCase()).toBe(username.toLowerCase());
+        User.signOut();
+      });
     });
   });
 
