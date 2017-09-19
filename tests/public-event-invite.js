@@ -59,10 +59,25 @@ describe('Public Invitation Flow', function () {
         User.signUpAsGuestForEvent(publicInviteLink, "Antoninia Burckhardth");
       });
       it('claims account', function () {
+        const email = "antoninia.burckhardth@example.com";
         browserHelper.replaceHistory('/profile');
         browser.waitForExist('#ProfilePage');
-        browser.setValue('input[name="email"]', "antoninia.burckhardth@example.com");
+        browser.setValue('input[name="email"]', email);
         browser.click('input[type="submit"]');
+
+        // TODO move to wait for email method
+        browser.waitUntil(function () {
+          const emails = server.call('emailStub/getEmails');
+          const enrollEmail = emails.filter((e) => e.to === email);
+          return enrollEmail.length > 0;
+        });
+
+        const emails = server.call('emailStub/getEmails');
+        const enrollEmail = emails.filter((e) => e.to === email);
+        expect(enrollEmail.length).toBe(1);
+        console.log(enrollEmail);
+
+        // TODO extract link, change password with link
       });
     });
 
