@@ -1,8 +1,6 @@
-
-import styled from 'styled-components';
 import { Mongo } from 'meteor/mongo';
 import * as React from 'react';
-import { createContainer } from 'meteor/react-meteor-data';
+import {createContainer} from 'meteor/react-meteor-data';
 
 // base type for all data fetched by subscriptions
 export interface IAsyncDataProps<T> {

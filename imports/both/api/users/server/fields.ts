@@ -9,14 +9,14 @@ import {OrganizationMemberVisibleForUserIdSelector} from '../../organization-mem
 import {EventParticipants} from '../../event-participants/event-participants';
 import {buildVisibleForUserSelector} from '../../event-participants/server/_fields';
 
-export const UserPublicFields = {
+export const UserPrivateFields = {
   'username': 1,
+  'guest': 1,
   'emails.address': 1,
   'services.facebook.id': 1,
   'services.google.picture': 1,
   'services.twitter.profile_image_url_https': 1,
   'profile.gravatarHash': 1,
-  'profile.guest': 1,
 };
 
 function getUserSelectorForMemberSelector(selector: Mongo.Selector | null): Mongo.Selector | null {
@@ -48,6 +48,7 @@ export const UserVisibleSelectorForUserIdSelector = (userId: Mongo.ObjectID): Mo
     $or: [
       getUserSelectorForMemberSelector(OrganizationMemberVisibleForUserIdSelector(userId)),
       getUserSelectorForParticipantSelector(buildVisibleForUserSelector(userId)),
+      {_id: userId},
     ],
   };
 };

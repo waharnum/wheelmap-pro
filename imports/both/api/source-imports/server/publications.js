@@ -1,17 +1,18 @@
 import util from 'util';
-import { Meteor } from 'meteor/meteor';
-import { Sources } from '/imports/both/api/sources/sources';
-import { check } from 'meteor/check';
-import { SourceImports } from '../source-imports.js';
-import { publishPublicFields } from '/imports/server/publish';
-import { publishPrivateFieldsForMembers } from '/imports/both/api/organizations/server/publications';
+import {Meteor} from 'meteor/meteor';
+import {Sources} from '/imports/both/api/sources/sources';
+import {check} from 'meteor/check';
+import {SourceImports} from '../source-imports.js';
+import {publishPublicFields} from '/imports/server/publish';
+import {publishPrivateFieldsForMembers} from '/imports/both/api/organizations/server/publications';
 
 publishPublicFields('sourceImports', SourceImports);
 publishPrivateFieldsForMembers('sourceImports', SourceImports);
 
 Meteor.publish('sourceImports.stats.public', function publish(sourceId) {
   check(sourceId, String);
-  this.autorun(() => {
+  this.autorun(function () {
+    // do not convert into arrow function, otherwise this gets replaced
     const source = Sources.findOne(sourceId);
     if (!source) {
       return [];
@@ -21,14 +22,14 @@ Meteor.publish('sourceImports.stats.public', function publish(sourceId) {
 
     let selector;
     if (source.isFreelyAccessible) {
-      selector = { sourceId };
+      selector = {sourceId};
     } else {
-      selector = { $and: [visibleSelector, { sourceId }] };
+      selector = {$and: [visibleSelector, {sourceId}]};
     }
 
     return SourceImports.find(
       selector,
-      { fields: SourceImports.statsFields }
+      {fields: SourceImports.statsFields}
     );
   });
 });

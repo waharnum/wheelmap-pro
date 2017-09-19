@@ -6,6 +6,7 @@ import {Router, Route, Redirect, browserHistory} from 'react-router';
 import App from './App';
 
 import HomePage from './pages/Home/HomePage';
+import ProfilePage from './pages/Users/ProfilePage';
 import NotFoundPage from './pages/NotFound/NotFoundPage';
 import EditEventPage from './pages/Events/EditEventPage';
 import ShowEventPage from './pages/Events/ShowEventPage';
@@ -79,7 +80,7 @@ const AppRouter = (
       {/* organize pages */}
       <Route component={EnsureUserLoggedIn}>
 
-        <Route path="/profile" component={() => <Accounts.ui.LoginForm/>}/>
+        <Route path="/profile" component={ProfilePage}/>
 
         <Route path="/organizations/none" component={NoOrganizationsPage}/>
         <Route path="/organizations/create" component={CreateOrganizationPage}/>

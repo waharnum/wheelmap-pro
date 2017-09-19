@@ -9,8 +9,9 @@ import {EventHelper} from "./helpers/event";
 let User;
 let Organization;
 let Event;
+let browserHelper;
 
-describe('Public Invitation Flow @watch', function () {
+describe('Public Invitation Flow', function () {
   let publicInviteLink;
   let event;
 
@@ -19,8 +20,8 @@ describe('Public Invitation Flow @watch', function () {
     User = UserHelper(browser, server);
     Organization = OrganizationHelper(browser, server);
     Event = EventHelper(browser, server);
+    browserHelper = BrowserHelper(browser);
 
-    const browserHelper = BrowserHelper(browser);
     prepareCleanTest(browser, server);
 
     // sign up moderator
@@ -53,10 +54,15 @@ describe('Public Invitation Flow @watch', function () {
       });
     });
 
-    describe('Second Guest', function () {
+    describe('Second Guest @watch', function () {
       it('signs up', function () {
         User.signUpAsGuestForEvent(publicInviteLink, "Antoninia Burckhardth");
-        User.signOut();
+      });
+      it('claims account', function () {
+        browserHelper.replaceHistory('/profile');
+        browser.waitForExist('#ProfilePage');
+        browser.setValue('input[name="email"]', "antoninia.burckhardth@example.com");
+        browser.click('input[type="submit"]');
       });
     });
 

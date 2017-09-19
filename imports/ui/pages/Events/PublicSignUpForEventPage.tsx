@@ -50,7 +50,8 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
 
   private onSubmit = (doc) => {
     loginGuestUser(doc.username, (error, result) => {
-      console.log(error, result);
+      // TODO: handle error
+      console.log('HANDLE RESULT', error, result);
     });
   }
 

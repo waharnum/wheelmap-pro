@@ -7,6 +7,7 @@ import {EventParticipants} from '../../event-participants/event-participants';
 
 Accounts.onCreateUser((options: any, user: Meteor.User) => {
   user.username = options.username || undefined;
+  user.profile = user.profile || {};
 
   if (!user.username && user.emails && user.emails.length > 0) {
     user.username = user.emails[0].address;
@@ -22,23 +23,23 @@ Accounts.registerLoginHandler('guest', (options) => {
   // TODO check username not in use yet
 
   const username = options.username;
-  const user = {username, profile: {guest: true}};
+  const user = {username, guest: true};
   const newUserId = Accounts.insertUserDoc(options, user);
   return {
     userId: newUserId,
   };
 });
 
-Accounts.onLogout(function (options) {
+Accounts.onLogout((options: { user: Meteor.User }) => {
   // if a guest user logs out, their account is lost and can be deleted
-  if (options.user && options.user.profile.guest) {
+  if (options.user && options.user.guest) {
     cleanupOldGuestProfiles();
   }
 });
 
 function cleanupOldGuestProfiles() {
   // find all users that logged out, but never connected with a real account
-  const users = Meteor.users.find({'profile.guest': true, 'services.resume.loginTokens': {$size: 0}},
+  const users = Meteor.users.find({'guest': true, 'services.resume.loginTokens': {$size: 0}},
     {fields: {_id: 1}}).fetch().map((u) => u._id);
 
   if (users.length > 0) {

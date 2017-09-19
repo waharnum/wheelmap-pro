@@ -1,5 +1,9 @@
 import {OrganizationsPublicFields} from '../../organizations/server/fields';
-import {ActiveOrganizationForUserIdSelector, UserPublicFields, UserVisibleSelectorForUserIdSelector} from './fields';
+import {
+  ActiveOrganizationForUserIdSelector,
+  UserPrivateFields,
+  UserVisibleSelectorForUserIdSelector,
+} from './fields';
 import {Meteor} from 'meteor/meteor';
 import {Mongo} from 'meteor/mongo';
 
@@ -11,7 +15,8 @@ import './publish-user-is-admin-flag.ts';
 
 const Users = Meteor.users as Mongo.Collection<Meteor.User>;
 
-publishAndLog('users.needApproval.admin', () => {
+publishAndLog('users.needApproval.admin', function () {
+  // do not convert into arrow function, otherwise this gets replaced
   if (!isAdmin(this.userId)) {
     return [];
   }
@@ -23,13 +28,14 @@ publishAndLog('users.needApproval.admin', () => {
   });
 });
 
-publishFields('users.private', Users, UserPublicFields, UserVisibleSelectorForUserIdSelector);
+publishFields('users.private', Users, UserPrivateFields, UserVisibleSelectorForUserIdSelector);
 
-publishAndLog('users.my.private', () => {
+publishAndLog('users.my.private', function () {
+  // do not convert into arrow function, otherwise this gets replaced
   if (!this.userId) {
     return [];
   }
-  return Users.find(this.userId);
+  return Users.find(this.userId, {fields: UserPrivateFields});
 });
 
 // publish my active organization

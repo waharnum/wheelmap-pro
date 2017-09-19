@@ -3,9 +3,9 @@ import {Tracker} from 'meteor/tracker';
 import {Session} from 'meteor/session';
 import {Accounts} from 'meteor/std:accounts-ui';
 import {LocationDescriptor} from 'history';
-import BoolField from 'uniforms-bootstrap3/BoolField';
 import {browserHistory} from 'react-router';
 import SimpleSchema from 'simpl-schema';
+import BoolField from 'uniforms-bootstrap3/BoolField';
 
 export function setLoginRedirect(redirect: LocationDescriptor | null) {
   Session.set('loginRedirect', redirect);
@@ -112,5 +112,16 @@ export const GuestUserSchema = new SimpleSchema({
       component: BoolField,
     },
     allowedValues: [true],
+  },
+});
+
+export const ClaimAccountSchema = new SimpleSchema({
+  email: {
+    label: 'email',
+    type: String,
+    regEx: SimpleSchema.RegEx.Email,
+    uniforms: {
+      placeholder: 'e.g. petra@example.com',
+    },
   },
 });

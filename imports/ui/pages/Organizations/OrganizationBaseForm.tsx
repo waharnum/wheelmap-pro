@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { browserHistory } from 'react-router';
+import {browserHistory} from 'react-router';
 
 import AutoForm from 'uniforms-bootstrap3/AutoForm';
 import AutoFields from 'uniforms-bootstrap3/AutoFields';
@@ -9,9 +9,9 @@ import BoolField from 'uniforms-bootstrap3/BoolField';
 import LongTextField from 'uniforms-bootstrap3/LongTextField';
 
 import ImageLinkUrlField from '../../components/ImageLinkUrlField';
-import { HintBox, Hint } from '../../components/HintBox';
-import { IStyledComponent } from '../../components/IStyledComponent';
-import { Organizations, IOrganization } from '../../../both/api/organizations/organizations';
+import {HintBox, Hint} from '../../components/HintBox';
+import {IStyledComponent} from '../../components/IStyledComponent';
+import {Organizations, IOrganization} from '../../../both/api/organizations/organizations';
 
 export interface IOrganizationBaseFormProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
@@ -45,22 +45,22 @@ schema.extend({
 
 export const OrganizationFormHintBox = () => (
   <div className="content-right">
-    <HintBox>               
-      <Hint className="rocket"> 
-      Wheelmap Pro helps you to plan and organize mapping events for accessibility data.
+    <HintBox>
+      <Hint className="rocket">
+        Wheelmap Pro helps you to plan and organize mapping events for accessibility data.
       </Hint>
       <Hint className="info">
-      This gathered information can then be shared publictly to help people with with and 
-      without disabilities to navigate the world.
+        This gathered information can then be shared publictly to help people with with and
+        without disabilities to navigate the world.
       </Hint>
       <Hint className="map">
-      The app for your Organization will be setup and you’ll be ready to create your first mapping event.
+        The app for your Organization will be setup and you’ll be ready to create your first mapping event.
       </Hint>
     </HintBox>
   </div>);
 
 class InternalOrganizationBaseForm
-      extends React.Component<IOrganizationBaseFormProps & IStyledComponent, IBaseFormState> {
+  extends React.Component<IOrganizationBaseFormProps & IStyledComponent, IBaseFormState> {
   public state = {
     model: {} as IOrganization,
     isSaving: false,
@@ -73,22 +73,22 @@ class InternalOrganizationBaseForm
 
   public render(): JSX.Element {
     return (
-    <div className={this.props.className + ' content-left'} >
-      <AutoForm
-        placeholder={true}
-        showInlineError={true}
-        model={this.state.model}
-        disabled={this.state.isSaving}
-        schema={schema}
-        onSubmit={this.onSubmit}
-        onChangeModel={this.onChangeModel}>
-        <AutoFields fields={['name', 'description', 'webSite', 'logo', 'tocForOrganizationsAccepted']} />
-        <div className="actions">
-          <SubmitField/>
-          <button className="btn btn-default" onClick={browserHistory.goBack}>Cancel</button>
-        </div>
-      </AutoForm>
-    </div>);
+      <div className={this.props.className + ' content-left'}>
+        <AutoForm
+          placeholder={true}
+          showInlineError={true}
+          model={this.state.model}
+          disabled={this.state.isSaving}
+          schema={schema}
+          onSubmit={this.onSubmit}
+          onChangeModel={this.onChangeModel}>
+          <AutoFields fields={['name', 'description', 'webSite', 'logo', 'tocForOrganizationsAccepted']}/>
+          <div className="actions">
+            <SubmitField/>
+            <button className="btn btn-default" onClick={browserHistory.goBack}>Cancel</button>
+          </div>
+        </AutoForm>
+      </div>);
   }
 
   private onChangeModel = (model) => {
