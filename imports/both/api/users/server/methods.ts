@@ -1,4 +1,5 @@
 import {Meteor} from 'meteor/meteor';
+import {Random} from 'meteor/random';
 import {check} from 'meteor/check';
 import {TAPi18n} from 'meteor/tap:i18n';
 import {isAdmin} from '../../../lib/is-admin';
@@ -52,6 +53,18 @@ function cleanupOldGuestProfiles() {
 };
 
 Meteor.methods({
+  'users.claim'(email: string) {
+    if (!this.userId) {
+      throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));
+    }
+    check(email, String);
+    Accounts.addEmail(this.userId, email, false);
+    Accounts.setPassword(this.userId, Random.secret(), {logout: false});
+    Accounts.sendEnrollmentEmail(this.userId, email);
+    Meteor.users.update(this.userId, {$set: {guest: false}});
+
+    return true;
+  },
   'users.updateActiveOrganization'(organizationId: Mongo.ObjectID) {
     if (!this.userId) {
       throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));

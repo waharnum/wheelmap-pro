@@ -10,6 +10,7 @@ import AutoForm from 'uniforms-bootstrap3/AutoForm';
 import {ClaimAccountSchema} from '../../../both/api/users/accounts';
 import {createContainer} from 'meteor/react-meteor-data';
 
+
 const GuestContent = () => (
   <div>
     <h2>Claim your Account</h2>
@@ -17,6 +18,11 @@ const GuestContent = () => (
       placeholder={true}
       showInlineError={true}
       schema={ClaimAccountSchema}
+      onSubmit={(doc) => {
+        Meteor.call('users.claim', doc.email, (error, result) => {
+          console.log(error, result);
+        });
+      }}
     />
   </div>
 );
