@@ -17,7 +17,8 @@ interface IEditOrganizationFormProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
 }
 
-class EditOrganizationForm extends React.Component<IAsyncDataByIdProps<IOrganization> & IEditOrganizationFormProps & IStyledComponent> {
+class EditOrganizationForm extends React.Component<IAsyncDataByIdProps<IOrganization> &
+    IEditOrganizationFormProps & IStyledComponent> {
   public render(): JSX.Element {
     return (
       <ScrollableLayout className={this.props.className}>

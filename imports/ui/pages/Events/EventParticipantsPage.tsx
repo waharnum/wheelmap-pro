@@ -33,7 +33,7 @@ const removeParticipant = (id: Mongo.ObjectID) => {
   });
 };
 
-const CustomSubmitField = (props) => <SubmitField value="Send invites"/>;
+const CustomSubmitField = () => <SubmitField value="Send invites"/>;
 
 const EventParticipantEntry = (props: { model: IEventParticipant }) => (
   <li className="participant-entry">
@@ -113,7 +113,7 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
     );
   }
 
-  private renderPublicInvitation = (link): JSX.Element => {
+  private renderPublicInvitation = (link: string): JSX.Element => {
     return (
       <section><h2>Share a link</h2>
         <div>
@@ -146,7 +146,7 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
       Meteor.call('eventParticipants.invite', {
         invitationEmailAddresses: this.cleanUpEmailAddresses(doc.invitationEmailAddresses),
         eventId: this.props.model.event._id,
-      }, (error, result) => {
+      }, (error: any, result: any) => {
         this.setState({isSaving: false});
         if (!error) {
           resolve(true);

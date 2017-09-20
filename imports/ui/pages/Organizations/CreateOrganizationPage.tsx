@@ -13,7 +13,7 @@ interface ICreateOrganizationFormProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
 }
 
-const GoToOrganizationPage = (_id) => {
+const GoToOrganizationPage = (_id: Mongo.ObjectID) => {
   browserHistory.push(`/organizations/${_id}/organize`);
 };
 

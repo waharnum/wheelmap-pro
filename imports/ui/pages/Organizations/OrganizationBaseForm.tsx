@@ -102,7 +102,7 @@ class InternalOrganizationBaseForm
     if (id != null) {
       const {_id, ...strippedDoc} = doc;
       console.log('Updating doc', strippedDoc, id);
-      Organizations.update({_id: id}, {$set: strippedDoc}, (count) => {
+      Organizations.update({_id: id}, {$set: strippedDoc}, {}, (count) => {
         // TODO: handle errors
         console.log('Updated ', _id, count);
         this.setState({isSaving: false});

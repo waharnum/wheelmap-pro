@@ -1,16 +1,20 @@
 {
-    "compilerOptions": {
-        "target": "es5",
-        "allowJs": true,
-        "jsx": "preserve",
-        "moduleResolution": "node",
-        "types": [
-            "node"
-        ],
-        "lib": [
-            "es2016"
-        ],
-        "strictNullChecks": true
-    },
-    "compileOnSave": true
+  "compilerOptions": {
+    "target": "es5",
+    "allowJs": true,
+    "jsx": "preserve",
+    "moduleResolution": "node",
+    "types": [
+      "node"
+    ],
+    "lib": [
+      "es2016"
+    ],
+    "strictNullChecks": true,
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "alwaysStrict": true,
+    "module": "commonjs"
+  },
+  "compileOnSave": true
 }
