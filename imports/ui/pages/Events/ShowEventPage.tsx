@@ -7,13 +7,13 @@ import MapLayout from '../../layouts/MapLayout';
 import {default as PublicHeader, HeaderTitle} from '../../components/PublicHeader';
 
 import Button from '../../components/Button';
-import Map from '../../components/Map/Map';
 import {Countdown} from '../../components/Countdown';
 import {IEvent, Events} from '../../../both/api/events/events';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
 import {IOrganization} from '../../../both/api/organizations/organizations';
 import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
+import {AutoSizedStaticMap} from '../../components/StaticMap';
 
 interface IPageModel {
   organization: IOrganization;
@@ -45,7 +45,7 @@ const ShowEventPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent
         <Countdown start={moment(event.startTime)}/>
       </div>
       <div className="content-area">
-        <Map/>
+        <AutoSizedStaticMap/>
         <Button className="join-button btn-primary" to="">Join Us</Button>
       </div>
     </MapLayout>

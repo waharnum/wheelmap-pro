@@ -5,7 +5,7 @@ import {Accounts} from 'meteor/std:accounts-ui';
 import {LocationDescriptor} from 'history';
 import {browserHistory} from 'react-router';
 import SimpleSchema from 'simpl-schema';
-import BoolField from 'uniforms-bootstrap3/BoolField';
+import {BoolField} from 'uniforms-bootstrap3';
 
 export function setLoginRedirect(redirect: LocationDescriptor | null) {
   Session.set('loginRedirect', redirect);

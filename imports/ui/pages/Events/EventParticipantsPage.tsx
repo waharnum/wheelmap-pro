@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import {uniq} from 'lodash';
-import AutoForm from 'uniforms-bootstrap3/AutoForm';
+import {AutoForm, SubmitField} from 'uniforms-bootstrap3';
 import * as React from 'react';
-import SubmitField from 'uniforms-bootstrap3/SubmitField';
 import * as ClipboardButton from 'react-clipboard.js';
 
 import EventTabs from './EventTabs';

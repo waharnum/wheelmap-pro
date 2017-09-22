@@ -6,7 +6,7 @@ import {Accounts, STATES} from 'meteor/std:accounts-ui';
 import styled from 'styled-components';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import AdminTab from '../../components/AdminTab';
-import AutoForm from 'uniforms-bootstrap3/AutoForm';
+import {AutoForm} from 'uniforms-bootstrap3';
 import {ClaimAccountSchema} from '../../../both/api/users/accounts';
 import {createContainer} from 'meteor/react-meteor-data';
 

@@ -2,12 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import {browserHistory} from 'react-router';
 
-import AutoForm from 'uniforms-bootstrap3/AutoForm';
-import AutoFields from 'uniforms-bootstrap3/AutoFields';
-import SubmitField from 'uniforms-bootstrap3/SubmitField';
-import BoolField from 'uniforms-bootstrap3/BoolField';
-import LongTextField from 'uniforms-bootstrap3/LongTextField';
-
+import {AutoForm, AutoFields, SubmitField, BoolField, LongTextField} from 'uniforms-bootstrap3';
 import ImageLinkUrlField from '../../components/ImageLinkUrlField';
 import {HintBox, Hint} from '../../components/HintBox';
 import {IStyledComponent} from '../../components/IStyledComponent';

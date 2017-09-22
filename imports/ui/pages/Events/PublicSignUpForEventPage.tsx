@@ -13,7 +13,7 @@ import {IStyledComponent} from '../../components/IStyledComponent';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
 import PublicHeader, {HeaderTitle} from '../../components/PublicHeader';
 import {IAsyncDataByIdProps, reactiveSubscriptionByParams} from '../../components/reactiveModelSubscription';
-import AutoForm from 'uniforms-bootstrap3/AutoForm';
+import {AutoForm} from 'uniforms-bootstrap3';
 
 interface IAcceptInviteParams {
   _id: Mongo.ObjectID;
