@@ -4,16 +4,16 @@ import * as moment from 'moment';
 
 import MapLayout from '../../layouts/MapLayout';
 
-import { default as PublicHeader, HeaderTitle } from '../../components/PublicHeader';
+import {default as PublicHeader, HeaderTitle} from '../../components/PublicHeader';
 
 import Button from '../../components/Button';
-import { Countdown } from '../../components/Countdown';
-import { IEvent, Events } from '../../../both/api/events/events';
-import { IStyledComponent } from '../../components/IStyledComponent';
-import { wrapDataComponent } from '../../components/AsyncDataComponent';
-import { AutoSizedStaticMap } from '../../components/StaticMap';
-import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
-import { reactiveSubscriptionByParams, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
+import Map from '../../components/Map/Map';
+import {Countdown} from '../../components/Countdown';
+import {IEvent, Events} from '../../../both/api/events/events';
+import {IStyledComponent} from '../../components/IStyledComponent';
+import {wrapDataComponent} from '../../components/AsyncDataComponent';
+import {IOrganization} from '../../../both/api/organizations/organizations';
+import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
 
 interface IPageModel {
   organization: IOrganization;
@@ -39,13 +39,13 @@ const ShowEventPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent
         organizeLink={`/events/${event._id}/organize`}
       />
       <div>
-      <div className="event-date">{moment(event.startTime).format('LLLL')}</div>
+        <div className="event-date">{moment(event.startTime).format('LLLL')}</div>
       </div>
       <div>
-        <Countdown start={moment(event.startTime)} />
+        <Countdown start={moment(event.startTime)}/>
       </div>
       <div className="content-area">
-        <AutoSizedStaticMap />
+        <Map/>
         <Button className="join-button btn-primary" to="">Join Us</Button>
       </div>
     </MapLayout>
@@ -54,13 +54,13 @@ const ShowEventPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent
 
 const ReactiveShowEventPage = reactiveSubscriptionByParams(
   wrapDataComponent<IPageModel,
-      IAsyncDataByIdProps<IPageModel | null>,
-      IAsyncDataByIdProps<IPageModel>>(ShowEventPage),
+    IAsyncDataByIdProps<IPageModel | null>,
+    IAsyncDataByIdProps<IPageModel>>(ShowEventPage),
   (id): IPageModel | null => {
     const event = Events.findOne(id);
     const organization = event ? event.getOrganization() : null;
     // fetch model with organization & events in one go
-    return event && organization ? { organization, event } : null;
+    return event && organization ? {organization, event} : null;
   }, 'events.by_id.public', 'organizations.by_eventId.public');
 
 export default styled(ReactiveShowEventPage) `
