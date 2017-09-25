@@ -18,7 +18,7 @@ describe('Public Invitation Flow', function () {
   before(function () {
     // initialize helpers
     User = UserHelper(browser, server);
-    Organization = OrganizationHelper(browser, server);
+    Organization = new OrganizationHelper(browser, server);
     Event = EventHelper(browser, server);
     browserHelper = BrowserHelper(browser);
 
@@ -54,7 +54,7 @@ describe('Public Invitation Flow', function () {
       });
     });
 
-    describe('Second Guest @watch', function () {
+    describe('Second Guest', function () {
       it('signs up', function () {
         User.signUpAsGuestForEvent(publicInviteLink, "Antoninia Burckhardth");
       });

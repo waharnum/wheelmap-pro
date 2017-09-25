@@ -70,6 +70,7 @@ export const OrganizationSchema = new SimpleSchema({
   logo: {
     label: 'URL to Organization Logo',
     type: String,
+    regEx: SimpleSchema.RegEx.Url,
     max: 1000,
     optional: true,
     uniforms: {

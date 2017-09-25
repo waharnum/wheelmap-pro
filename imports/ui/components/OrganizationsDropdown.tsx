@@ -1,11 +1,11 @@
 import {Link} from 'react-router';
 import styled from 'styled-components';
 import * as React from 'react';
-import { wrapDataComponent } from './AsyncDataComponent';
+import {wrapDataComponent} from './AsyncDataComponent';
 
-import { IStyledComponent } from './IStyledComponent';
-import { IOrganization, Organizations } from '../../both/api/organizations/organizations';
-import { IAsyncDataProps, reactiveSubscription } from './reactiveModelSubscription';
+import {IStyledComponent} from './IStyledComponent';
+import {IOrganization, Organizations} from '../../both/api/organizations/organizations';
+import {IAsyncDataProps, reactiveSubscription} from './reactiveModelSubscription';
 
 interface IListEntryModelProps {
   model: IOrganization;
@@ -47,11 +47,11 @@ const OrganizationDropdown = (props: OrganizationDropdownInternalType & IOrganiz
 };
 
 const ReactiveOrganizationDropdown = reactiveSubscription(
-    wrapDataComponent<IOrganization[], IOrganizationDropdownProps & IAsyncDataProps<IOrganization[] | null>,
-                      IOrganizationDropdownProps & IAsyncDataProps<IOrganization[]>>(OrganizationDropdown),
-                      // TODO: align this filter to only display my organizations
-                      () => Organizations.find({}, {sort: {name: 1}}).fetch(),
-                      'organizations.my.private');
+  wrapDataComponent<IOrganization[], IOrganizationDropdownProps & IAsyncDataProps<IOrganization[] | null>,
+    IOrganizationDropdownProps & IAsyncDataProps<IOrganization[]>>(OrganizationDropdown),
+  // TODO: align this filter to only display my organizations
+  () => Organizations.find({}, {sort: {name: 1}}).fetch(),
+  'organizations.my.private');
 
 // hide all unneeded internal props
 type OrganizationDropdownExternalType = IStyledComponent & IOrganizationDropdownProps;

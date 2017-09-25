@@ -2,38 +2,60 @@ import styled from 'styled-components';
 import {TextField} from 'uniforms-bootstrap3';
 import * as React from 'react';
 import connectField from 'uniforms/connectField';
+import {debounce} from 'lodash';
 
-const ImageLinkUrl = class extends React.Component<any, { validImage: boolean }> {
+const ImageLinkUrl = class extends React.Component<any, { validImage: boolean, proposedUrl?: string }> {
   public state = {
     validImage: false,
+    proposedUrl: undefined,
   };
+  private image: HTMLImageElement | null;
 
   public componentWillReceiveProps(nextProps) {
-    if (nextProps.value !== this.props.value) {
+    if (nextProps.value !== this.state.proposedUrl) {
       this.setState({validImage: false});
     }
   }
 
   public render() {
-    const {className, ...remainingProps} = this.props;
+    // strip away properties
+    const {className, onChange, value, ...remainingProps} = this.props;
 
     return (
       <div className={'field form-group ' + className}>
-        <TextField {...remainingProps} type="url"/>
+        <TextField {...remainingProps}
+                   onChange={this.onInputChanged}
+                   value={this.state.proposedUrl} type="url"/>
         <div className={this.state.validImage ? 'preview-image-area' : 'hidden-image-area'}>
-          <img src={this.props.value} onError={this.imageError} onLoad={this.imageOkay}/>
+          <img ref={(ref) => this.image = ref} onError={this.imageError} onLoad={this.imageOkay}/>
           <img className="image-okay-mark" src="/images/image-okay.png"/>
         </div>
       </div>
     );
   }
 
+  private onInputChanged = (value) => {
+    this.setState({proposedUrl: value});
+    this.inputDebounced(value);
+  }
+
+  private inputDebounced = debounce((value: string) => {
+    if (this.image)
+      this.image.src = value;
+  }, 100);
+
   private imageError = () => {
+    if (!this.image)
+      return;
     this.setState({validImage: false});
+    this.props.onChange(this.state.proposedUrl);
   }
 
   private imageOkay = () => {
+    if (!this.image)
+      return;
     this.setState({validImage: true});
+    this.props.onChange(this.image.src);
   }
 };
 

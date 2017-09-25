@@ -15,7 +15,7 @@ describe('InviteToEventViaEmail', function () {
 
     // initialize helpers
     User = UserHelper(browser, server);
-    Organization = OrganizationHelper(browser, server);
+    Organization = new OrganizationHelper(browser, server);
     Event = EventHelper(browser, server);
 
     prepareCleanTest(browser, server);
