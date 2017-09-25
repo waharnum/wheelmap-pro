@@ -4,14 +4,14 @@ import * as moment from 'moment';
 
 import MapLayout from '../../layouts/MapLayout';
 
-import { default as PublicHeader, HeaderTitle } from '../../components/PublicHeader';
+import {default as PublicHeader, HeaderTitle} from '../../components/PublicHeader';
 
 import Button from '../../components/Button';
-import { wrapDataComponent } from '../../components/AsyncDataComponent';
-import { IStyledComponent } from '../../components/IStyledComponent';
-import { AutoSizedStaticMap } from '../../components/StaticMap';
-import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
-import { reactiveSubscriptionByParams, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
+import {wrapDataComponent} from '../../components/AsyncDataComponent';
+import {IStyledComponent} from '../../components/IStyledComponent';
+import {AutoSizedStaticMap} from '../../components/StaticMap';
+import {IOrganization, Organizations} from '../../../both/api/organizations/organizations';
+import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
 import {IEvent} from '../../../both/api/events/events';
 
 interface IPageModel {
@@ -36,17 +36,17 @@ const ShowOrganizationPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledCo
         organizeLink={`/organizations/${organization._id}/organize`}
       />
       <div className="content-area">
-        <AutoSizedStaticMap />
+        <AutoSizedStaticMap/>
         {event ? (
-        <div className="event-box">
-          <div className="event-body">
-            <h3>{event.name} ({event.status})</h3>
-            <div>{moment(event.startTime).format('LLLL')}</div>
-            <div>{event.regionName}</div>
-            <div>{moment(event.startTime).diff(moment(), 'days')} Days Left</div>
-            <Button to={`/events/${event._id}`}>Join Us</Button>
+          <div className="event-box">
+            <div className="event-body">
+              <h3>{event.name} ({event.status})</h3>
+              <div>{moment(event.startTime).format('LLLL')}</div>
+              <div>{event.regionName}</div>
+              <div>{moment(event.startTime).diff(moment(), 'days')} Days Left</div>
+              <Button to={`/events/${event._id}`}>Join Us</Button>
+            </div>
           </div>
-        </div>
         ) : null}
       </div>
     </MapLayout>
@@ -55,14 +55,14 @@ const ShowOrganizationPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledCo
 
 const ReactiveShowOrganisationPage = reactiveSubscriptionByParams(
   wrapDataComponent<IPageModel,
-      IAsyncDataByIdProps<IPageModel | null>,
-      IAsyncDataByIdProps<IPageModel>>(ShowOrganizationPage),
+    IAsyncDataByIdProps<IPageModel | null>,
+    IAsyncDataByIdProps<IPageModel>>(ShowOrganizationPage),
   (id): IPageModel | null => {
     const organization = Organizations.findOne(id);
     // fetch model with organization & events in one go
     return organization ? {organization, event: organization.getEvents()[0]} : null;
   },
-  'organizations.by_id.public', 'events.by_organizationId.private');
+  'organizations.by_id.public', 'events.by_organizationId.public');
 
 export default styled(ReactiveShowOrganisationPage) `
   .content-area {

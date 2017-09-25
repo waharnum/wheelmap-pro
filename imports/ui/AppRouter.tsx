@@ -95,11 +95,11 @@ const AppRouter = (
         <Route path="/events/:_id/organize" component={OrganizeEventPage}/>
         <Route path="/events/:_id/statistics" component={EventStatisticsPage}/>
         <Route path="/events/:_id/participants" component={EventParticipantsPage}/>
-        <Route path="/events/:_id" component={ShowEventPage}/>
       </Route>
 
       {/* public pages  */}
       <Route path="/organizations/:_id" component={ShowOrganizationPage}/>
+      <Route path="/events/:_id" component={ShowEventPage}/>
 
       <Route path="/welcome" component={HomePage}/>
 

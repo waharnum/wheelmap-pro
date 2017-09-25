@@ -1,13 +1,13 @@
-import { Meteor } from 'meteor/meteor';
-import { Mongo } from 'meteor/mongo';
-
-import { Events } from '../events.js';
-import { publishAndLog, publishFields} from '../../../../server/publish';
+import {Events} from '../events.js';
+import {publishFields} from '../../../../server/publish';
 import {
   EventsPrivateFields,
+  EventsPublicFields,
   buildVisibleForPublicByEventIdSelector,
   buildVisibleForUserByEventIdSelector,
-  buildVisibleForUserByOrganizationIdSelector } from './_fields';
+  buildVisibleForUserByOrganizationIdSelector,
+  buildVisibleForPublicByOrganizationIdSelector,
+} from './_fields';
 
 publishFields('events.by_id.private',
   Events,
@@ -21,8 +21,14 @@ publishFields('events.by_organizationId.private',
   buildVisibleForUserByOrganizationIdSelector,
 );
 
+publishFields('events.by_organizationId.public',
+  Events,
+  EventsPublicFields,
+  buildVisibleForPublicByOrganizationIdSelector,
+);
+
 publishFields('events.by_id.public',
   Events,
-  EventsPrivateFields,
+  EventsPublicFields,
   buildVisibleForPublicByEventIdSelector,
 );

@@ -1,8 +1,8 @@
-import { uniq } from 'lodash';
-import { check } from 'meteor/check';
+import {uniq} from 'lodash';
+import {check} from 'meteor/check';
 
-import { isAdmin } from '../../../lib/is-admin';
-import { getAccessibleOrganizationIdsForUserId } from '../../organizations/privileges';
+import {isAdmin} from '../../../lib/is-admin';
+import {getAccessibleOrganizationIdsForUserId} from '../../organizations/privileges';
 
 export const EventsPrivateFields = {
   organizationId: 1,
@@ -21,8 +21,9 @@ export const EventsPrivateFields = {
   openFor: 1,
 };
 
-export function buildVisibleForUserByEventIdSelector(
-  userId: Mongo.ObjectID, eventId: Mongo.ObjectID): Mongo.Selector | null {
+export const EventsPublicFields = EventsPrivateFields;
+
+export function buildVisibleForUserByEventIdSelector(userId: Mongo.ObjectID, eventId: Mongo.ObjectID): Mongo.Selector | null {
 
   // always sanitize to ensure no injection is possible from params (e.g. sending {$ne: -1} as an object)
   check(eventId, String);
@@ -33,17 +34,16 @@ export function buildVisibleForUserByEventIdSelector(
 
   // admins can see all events
   if (isAdmin(userId)) {
-    return { eventId };
+    return {eventId};
   }
 
   // get all the orgs a user can access
   const userOrganizationIds = getAccessibleOrganizationIdsForUserId(userId);
   // select the event, if the user is allowed to access with the organizations
-  return {_id: eventId, organizationId: { $in: userOrganizationIds }};
+  return {_id: eventId, organizationId: {$in: userOrganizationIds}};
 };
 
-export function buildVisibleForUserByOrganizationIdSelector(
-  userId: Mongo.ObjectID, organizationId: Mongo.ObjectID): Mongo.Selector | null {
+export function buildVisibleForUserByOrganizationIdSelector(userId: Mongo.ObjectID, organizationId: Mongo.ObjectID): Mongo.Selector | null {
 
   // always sanitize to ensure no injection is possible from params (e.g. sending {$ne: -1} as an object)
   check(organizationId, String);
@@ -54,20 +54,26 @@ export function buildVisibleForUserByOrganizationIdSelector(
 
   // admins can see all the participants of any event
   if (isAdmin(userId)) {
-    return { organizationId };
+    return {organizationId};
   }
 
   // get all the orgs a user can access
   const userOrganizationIds = getAccessibleOrganizationIdsForUserId(userId);
   // select all the events the user is allowed to access with the organizations
-  return {organizationId: { $in: userOrganizationIds }};
+  return {organizationId: {$in: userOrganizationIds}};
 };
 
-export function buildVisibleForPublicByEventIdSelector(
-  userId: Mongo.ObjectID, eventId: Mongo.ObjectID): Mongo.Selector | null {
+export function buildVisibleForPublicByOrganizationIdSelector(userId: Mongo.ObjectID, organizationId: Mongo.ObjectID) {
+  // always sanitize to ensure no injection is possible from params (e.g. sending {$ne: -1} as an object)
+  check(organizationId, String);
+
+  return {organizationId, status: {$ne: 'draft'}};
+}
+
+export function buildVisibleForPublicByEventIdSelector(userId: Mongo.ObjectID, eventId: Mongo.ObjectID): Mongo.Selector | null {
 
   // always sanitize to ensure no injection is possible from params (e.g. sending {$ne: -1} as an object)
   check(eventId, String);
 
-  return { _id: eventId };
+  return {_id: eventId};
 };
