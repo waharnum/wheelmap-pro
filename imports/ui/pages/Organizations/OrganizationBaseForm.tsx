@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import {browserHistory} from 'react-router';
 
-import {AutoForm, AutoFields, SubmitField, BoolField, LongTextField} from 'uniforms-bootstrap3';
+import {AutoForm, AutoFields, SubmitField, BoolField, LongTextField, ErrorsField} from 'uniforms-bootstrap3';
 import ImageLinkUrlField from '../../components/ImageLinkUrlField';
 import {HintBox, Hint} from '../../components/HintBox';
 import {IStyledComponent} from '../../components/IStyledComponent';
@@ -15,7 +15,6 @@ export interface IOrganizationBaseFormProps {
 
 interface IBaseFormState {
   model?: IOrganization;
-  isSaving: boolean;
 }
 
 const schema = Organizations.schema;
@@ -45,7 +44,7 @@ export const OrganizationFormHintBox = () => (
         Wheelmap Pro helps you to plan and organize mapping events for accessibility data.
       </Hint>
       <Hint className="info">
-        This gathered information can then be shared publictly to help people with with and
+        This gathered information can then be shared publicly to help people with with and
         without disabilities to navigate the world.
       </Hint>
       <Hint className="map">
@@ -58,8 +57,8 @@ class InternalOrganizationBaseForm
   extends React.Component<IOrganizationBaseFormProps & IStyledComponent, IBaseFormState> {
   public state = {
     model: {} as IOrganization,
-    isSaving: false,
   };
+  private formRef: AutoForm;
 
   constructor(props: IOrganizationBaseFormProps & IStyledComponent) {
     super(props);
@@ -73,11 +72,12 @@ class InternalOrganizationBaseForm
           placeholder={true}
           showInlineError={true}
           model={this.state.model}
-          disabled={this.state.isSaving}
           schema={schema}
           onSubmit={this.onSubmit}
-          onChangeModel={this.onChangeModel}>
+          onChangeModel={this.onChangeModel}
+          ref={this.storeFormReference}>
           <AutoFields fields={['name', 'description', 'webSite', 'logo', 'tocForOrganizationsAccepted']}/>
+          <ErrorsField/>
           <div className="actions">
             <SubmitField/>
             <button className="btn btn-default" onClick={browserHistory.goBack}>Cancel</button>
@@ -90,42 +90,46 @@ class InternalOrganizationBaseForm
     this.setState({model});
   }
 
+  private storeFormReference = (ref: AutoForm) => {
+    this.formRef = ref;
+  }
+
   private onSubmit = (doc: IOrganization) => {
-    this.setState({isSaving: true});
-
-    const id = this.state.model._id;
-    if (id != null) {
-      const {_id, ...strippedDoc} = doc;
-      console.log('Updating doc', strippedDoc, id);
-      Organizations.update({_id: id}, {$set: strippedDoc}, {}, (count) => {
-        // TODO: handle errors
-        console.log('Updated ', _id, count);
-        this.setState({isSaving: false});
-        if (count !== false && _id) {
-          if (this.props.afterSubmit) {
-            this.props.afterSubmit(_id);
+    return new Promise((resolve: (id: Mongo.ObjectID) => void, reject: (error: Error) => void) => {
+      const id = this.state.model._id;
+      if (id != null) {
+        const {_id, ...strippedDoc} = doc;
+        console.log('Updating doc', strippedDoc, id);
+        Organizations.update({_id: id}, {$set: strippedDoc}, {}, (error, count) => {
+          console.log('Updated ', _id, count);
+          if (!error && _id) {
+            resolve(_id);
+          } else {
+            reject(error);
           }
-        }
 
-      });
-    } else {
-      console.log('Creating doc', doc);
-      Meteor.call('organizations.insert', doc, (error, resultId: Mongo.ObjectID) => {
-        // TODO: handle errors
-        console.log('Saved as ', resultId, error);
-        if (!error) {
-          this.setState({model: {_id: resultId} as IOrganization, isSaving: false});
-          if (this.props.afterSubmit) {
-            this.props.afterSubmit(resultId);
+        });
+      } else {
+        console.log('Creating doc', doc);
+        Meteor.call('organizations.insert', doc, (error, resultId: Mongo.ObjectID) => {
+          console.log('Saved as ', resultId, error);
+          if (!error) {
+            this.setState({model: {_id: resultId} as IOrganization});
+            resolve(resultId);
+          } else {
+            reject(error);
           }
-        } else {
-          this.setState({isSaving: false});
-        }
-      });
-    }
+        });
+      }
+    }).then((resultId: Mongo.ObjectID) => {
+      if (this.props.afterSubmit) {
+        this.props.afterSubmit(resultId);
+      }
+    }, (error) => {
+      this.formRef.setState({error});
+    });
   }
 };
 
 export const OrganizationBaseForm = styled(InternalOrganizationBaseForm) `
-
 `;

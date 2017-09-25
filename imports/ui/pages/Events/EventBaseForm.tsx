@@ -3,7 +3,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import {browserHistory} from 'react-router';
 
-import {AutoForm, AutoFields, SubmitField, LongTextField} from 'uniforms-bootstrap3';
+import {AutoForm, AutoFields, SubmitField, LongTextField, ErrorsField} from 'uniforms-bootstrap3';
 
 import ImageLinkUrlField from '../../components/ImageLinkUrlField';
 import {Events, IEvent} from '../../../both/api/events/events';
@@ -18,7 +18,6 @@ export interface IEventBaseFormProps {
 
 interface IBaseFormState {
   model?: IEvent;
-  isSaving: boolean;
 }
 
 const schema = Events.schema;
@@ -41,8 +40,8 @@ schema.extend({
 class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyledComponent, IBaseFormState> {
   public state = {
     model: {} as IEvent,
-    isSaving: false,
   };
+  private formRef: AutoForm;
 
   constructor(props: IEventBaseFormProps & IStyledComponent) {
     super(props);
@@ -67,12 +66,13 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
             placeholder={true}
             showInlineError={true}
             model={this.state.model}
-            disabled={this.state.isSaving}
             schema={schema}
             onSubmit={this.onSubmit}
-            onChangeModel={this.onChangeModel}>
+            onChangeModel={this.onChangeModel}
+            ref={this.storeFormReference}>
             <AutoFields fields={['name', 'description', 'regionName', 'startTime',
               'verifyGpsPositionsOfEdits', 'openFor', 'photoUrl']}/>
+            <ErrorsField/>
             <div className="actions">
               <SubmitField/>
               <button className="btn btn-default" onClick={browserHistory.goBack}>Cancel</button>
@@ -89,45 +89,46 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
     this.setState({model});
   }
 
+  private storeFormReference = (ref: AutoForm) => {
+    this.formRef = ref;
+  }
+
   private onSubmit = (doc: IEvent) => {
-    this.setState({isSaving: true});
-
-    const id = this.state.model._id;
-
-    // remove id
-    const {_id, ...strippedDoc} = doc;
-
-    // convert local back to utc when saving
-    strippedDoc.startTime = moment(strippedDoc.startTime).subtract(moment().utcOffset(), 'minutes').toDate();
-
-    if (id != null) {
-      console.log('Updating doc', strippedDoc, id);
-      Events.update({_id: id}, {$set: strippedDoc}, (count) => {
-        // TODO: handle errors
-        console.log('Updated ', _id, count);
-        this.setState({isSaving: false});
-        if (count !== false && _id) {
-          if (this.props.afterSubmit) {
-            this.props.afterSubmit(_id);
+    return new Promise((resolve: (id: Mongo.ObjectID) => void, reject: (error: Error) => void) => {
+      const id = this.state.model._id;
+      // remove id
+      const {_id, ...strippedDoc} = doc;
+      // convert local back to utc when saving
+      strippedDoc.startTime = moment(strippedDoc.startTime).subtract(moment().utcOffset(), 'minutes').toDate();
+      if (id != null) {
+        console.log('Updating doc', strippedDoc, id);
+        Events.update({_id: id}, {$set: strippedDoc}, (error, count) => {
+          console.log('Updated ', _id, count);
+          if (!error && _id) {
+            resolve(_id);
+          } else {
+            reject(error);
           }
-        }
-
-      });
-    } else {
-      console.log('Creating doc', strippedDoc);
-      Meteor.call('events.insert', strippedDoc, (error, resultId: Mongo.ObjectID) => {
-        // TODO: handle errors
-        console.log('Saved as ', resultId, error);
-        if (!error) {
-          this.setState({model: {_id: resultId} as IEvent, isSaving: false});
-          if (this.props.afterSubmit) {
-            this.props.afterSubmit(resultId);
+        });
+      } else {
+        console.log('Creating doc', strippedDoc);
+        Meteor.call('events.insert', strippedDoc, (error, resultId: Mongo.ObjectID) => {
+          console.log('Saved as ', resultId, error);
+          if (!error) {
+            this.setState({model: {_id: resultId} as IEvent});
+            resolve(resultId);
+          } else {
+            reject(error);
           }
-        } else {
-          this.setState({isSaving: false});
-        }
-      });
-    }
+        });
+      }
+    }).then((resultId: Mongo.ObjectID) => {
+      if (this.props.afterSubmit) {
+        this.props.afterSubmit(resultId);
+      }
+    }, (error) => {
+      this.formRef.setState({error});
+    });
   }
 };
 

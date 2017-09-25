@@ -130,6 +130,7 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
       </section>
     );
   }
+
   private storeFormReference = (ref: AutoForm) => {
     this.formRef = ref;
   }
