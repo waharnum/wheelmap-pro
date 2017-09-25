@@ -76,6 +76,7 @@ export const EventSchema = new SimpleSchema({
   'photoUrl': {
     label: 'URL to a picture of the event',
     type: String,
+    regEx: SimpleSchema.RegEx.Url,
     max: 1000,
     optional: true,
     uniforms: {
