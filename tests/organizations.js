@@ -9,7 +9,7 @@ let User;
 let Organization;
 let browserHelper;
 
-describe('Organizations @watch', function () {
+describe('Organizations', function () {
   let publicInviteLink;
   let event;
 

@@ -11,7 +11,7 @@ let Organization;
 let Event;
 let browserHelper;
 
-describe('Public Invitation Flow', function () {
+describe('Public Invitation Flow @watch', function () {
   let publicInviteLink;
   let event;
 
@@ -78,6 +78,7 @@ describe('Public Invitation Flow', function () {
         console.log(enrollEmail);
 
         // TODO extract link, change password with link
+        User.signOut();
       });
     });
 
@@ -112,7 +113,7 @@ describe('Public Invitation Flow', function () {
         const invitees = event.getInvitees();
         expect(invitees.length).toBe(2);
         expect(invitees).toContain({name: "Heiner Wugold II", state: 'old-guest'});
-        expect(invitees).toContain({name: "Antoninia Burckhardth", state: 'old-guest'});
+        expect(invitees).toContain({name: "Antoninia Burckhardth", state: 'accepted'});
       });
     });
   });
