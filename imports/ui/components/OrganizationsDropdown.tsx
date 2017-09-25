@@ -32,14 +32,14 @@ const OrganizationDropdown = (props: OrganizationDropdownInternalType & IOrganiz
   return (
     <div className={props.className + ' dropdown'}>
       <div className="dropdown-toggle title-bar" id="OrganizationDropdown" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="true">
+           aria-haspopup="true" aria-expanded="true">
         {props.current.logo ?
-          <div className="organisation-logo" style={{backgroundImage: `url(${props.current.logo})`}} /> : null}
+          <div className="organisation-logo" style={{backgroundImage: `url(${props.current.logo})`}}/> : null}
         <h1>{props.current.name}</h1>
       </div>
       <ul className="dropdown-menu" aria-labelledby="OrganizationDropdown">
         {props.model.map((m) =>
-          <OrganizationEntry key={m._id as React.Key} model={m} active={props.current === m._id}/> )}
+          <OrganizationEntry key={m._id as React.Key} model={m} active={props.current === m._id}/>)}
         {props.children}
       </ul>
     </div>
