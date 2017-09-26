@@ -1,18 +1,18 @@
-import { Meteor } from 'meteor/meteor';
-import { check } from 'meteor/check';
-import { TAPi18n } from 'meteor/tap:i18n';
-import { Categories } from '/imports/both/api/categories/categories.js';
-import { isAdmin } from '/imports/both/lib/is-admin';
+import {Meteor} from 'meteor/meteor';
+import {check} from 'meteor/check';
+import {t} from 'c-3po';
+import {Categories} from '/imports/both/api/categories/categories.js';
+import {isAdmin} from '/imports/both/lib/is-admin';
 import compact from 'lodash/compact';
 
 Meteor.methods({
   'categories.import'(newCategoryDefinitionsAsCSV) {
     check(newCategoryDefinitionsAsCSV, String);
     if (!this.userId) {
-      throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));
+      throw new Meteor.Error(401, t`Please log in first.`);
     }
     if (!isAdmin(this.userId)) {
-      throw new Meteor.Error(403, TAPi18n.__('You are not authorized to import categories.'));
+      throw new Meteor.Error(403, t`You are not authorized to import categories.`);
     }
 
     const lines = newCategoryDefinitionsAsCSV.split(/\n/);
@@ -29,7 +29,7 @@ Meteor.methods({
           throw new Meteor.Error(422, 'Precondition Failed',
             `The header of the csv data does not have the correct format:${expectedFormat}`);
         }
-        lineCount ++;
+        lineCount++;
         continue;
       }
 
@@ -38,7 +38,7 @@ Meteor.methods({
       const synonyms = synonymStrings === undefined ? [] : compact(synonymStrings.split(','));
 
       Categories.upsert(
-        { _id },
+        {_id},
         {
           $set: {
             _id,
@@ -54,7 +54,7 @@ Meteor.methods({
           },
         }
       );
-      lineCount ++;
+      lineCount++;
     }
     return `Imported ${lineCount} categories`;
   },

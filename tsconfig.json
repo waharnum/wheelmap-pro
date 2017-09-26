@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "module": "commonjs",
     "target": "es5",
     "allowJs": true,
     "jsx": "preserve",
@@ -15,7 +16,7 @@
     "noImplicitAny": false,
     "noImplicitThis": false,
     "alwaysStrict": true,
-    "module": "commonjs"
+    "sourceMap": true
   },
   "compileOnSave": true
 }

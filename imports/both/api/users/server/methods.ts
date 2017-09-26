@@ -1,7 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
 import {check} from 'meteor/check';
-import {TAPi18n} from 'meteor/tap:i18n';
+import { t } from 'c-3po';
 import {isAdmin} from '../../../lib/is-admin';
 import {Accounts} from 'meteor/accounts-base';
 import {EventParticipants} from '../../event-participants/event-participants';
@@ -55,7 +55,7 @@ function cleanupOldGuestProfiles() {
 Meteor.methods({
   'users.claim'(email: string) {
     if (!this.userId) {
-      throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));
+      throw new Meteor.Error(401, t`Please log in first.`);
     }
     check(email, String);
     Accounts.addEmail(this.userId, email, false);
@@ -67,7 +67,7 @@ Meteor.methods({
   },
   'users.updateActiveOrganization'(organizationId: Mongo.ObjectID) {
     if (!this.userId) {
-      throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));
+      throw new Meteor.Error(401, t`Please log in first.`);
     }
     check(organizationId, String);
     Meteor.users.update(this.userId, {$set: {'profile.activeOrganizationId': organizationId}});
@@ -76,14 +76,14 @@ Meteor.methods({
     check(_id, String);
 
     if (!this.userId) {
-      throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));
+      throw new Meteor.Error(401, t`Please log in first.`);
     }
     if (!isAdmin(this.userId)) {
-      throw new Meteor.Error(403, TAPi18n.__('You are not authorized to approve users.'));
+      throw new Meteor.Error(403, t`You are not authorized to approve users.`);
     }
     const user = Meteor.users.find({_id});
     if (!user) {
-      throw new Meteor.Error(403, TAPi18n.__('Can not find user with this id.'));
+      throw new Meteor.Error(403, t`Can not find user with this id.`);
     }
     Meteor.users.update({_id}, {$set: {isApproved: true}});
   },
@@ -91,14 +91,14 @@ Meteor.methods({
     check(_id, String);
 
     if (!this.userId) {
-      throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));
+      throw new Meteor.Error(401, t`Please log in first.`);
     }
     if (!isAdmin(this.userId)) {
-      throw new Meteor.Error(403, TAPi18n.__('You are not authorized to remove users.'));
+      throw new Meteor.Error(403, t`You are not authorized to remove users.`);
     }
     const user = Meteor.users.find({_id});
     if (!user) {
-      throw new Meteor.Error(403, TAPi18n.__('Can not find user with this id.'));
+      throw new Meteor.Error(403, t`Can not find user with this id.`);
     }
     Meteor.users.remove({_id});
   },

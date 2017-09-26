@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/factory';
-import { TAPi18n } from 'meteor/tap:i18n';
+import {t} from 'c-3po';
 
 import { Languages } from '/imports/both/api/languages/languages';
 import { Licenses } from '/imports/both/api/licenses/licenses';
@@ -304,10 +304,10 @@ function createStubData() {
 
 function checkIfAdmin(userId) {
   if (!userId) {
-    throw new Meteor.Error(401, TAPi18n.__('Please log in first.'));
+    throw new Meteor.Error(401, t`Please log in first.`);
   }
   if (!isAdmin(userId)) {
-    throw new Meteor.Error(403, TAPi18n.__('Not authorized.'));
+    throw new Meteor.Error(403, t`Not authorized.`);
   }
 }
 

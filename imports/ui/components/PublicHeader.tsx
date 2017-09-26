@@ -5,7 +5,7 @@ import { IStyledComponent } from '../components/IStyledComponent';
 import PreviewToggle from './PreviewToggle';
 import UserMenu from './UserMenu';
 import {LocationDescriptor} from 'history';
-import { TAPi18n } from 'meteor/tap:i18n';
+import {t} from 'c-3po';
 import { colors } from '../stylesheets/colors';
 import {Link} from 'react-router';
 

@@ -1,4 +1,4 @@
-import { TAPi18n } from 'meteor/tap:i18n';
+import {t} from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
 
@@ -13,8 +13,8 @@ const NoOrganizationsPage = (props: IStyledComponent) => {
     <ScrollableLayout className={props.className} id="NoOrganizationsPage">
       <AdminHeader titleComponent={<h1>Welcome to $pageName</h1>} />
       <div className="content-area scrollable">
-        <div>{TAPi18n.__('It seems you are not part of any organization yet. Please wait for your invite, or create your own organization.')}</div>
-        <div><Button className="btn-primary" to="/organizations/create" >{TAPi18n.__('Create Organization')}</Button></div>
+        <div>{t`It seems you are not part of any organization yet. Please wait for your invite, or create your own organization.`}</div>
+        <div><Button className="btn-primary" to="/organizations/create" >{t`Create Organization`}</Button></div>
       </div>
     </ScrollableLayout>
   );

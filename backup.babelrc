@@ -1,0 +1,16 @@
+// Sadly this requires a newer version of babel that is incompatible with the one included in meteor
+{
+  "plugins": [
+    [
+      "transform-typescript"
+    ],
+    [
+      "c-3po",
+      {
+        "extract": {
+          "output": "extract.pot"
+        }
+      }
+    ]
+  ]
+}

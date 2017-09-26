@@ -1,23 +1,22 @@
 {
-    "public": {
-      "aws": {
-        "region": "eu-central-1",
-        "s3": {
-          "bucket": "accessibility-cloud-uploads"
-        }
-      },
-      "mapbox": "..."
-    },
+  "public": {
     "aws": {
-      "accessKeyId": "...",
-      "secretAccessKey": "..."
+      "region": "eu-central-1",
+      "s3": {
+        "bucket": "accessibility-cloud-uploads"
+      }
     },
-    "transifex": {
-      "projectSlug": "accessibility-cloud",
-      "username": "...",
-      "password": "..."
-    },
-    "scripts": {
-      "timeoutMs": 10000
-    }
+    "mapbox": "..."
+  },
+  "aws": {
+    "accessKeyId": "...",
+    "secretAccessKey": "..."
+  },
+  "transifex": {
+    "projectSlug": "accessibility-cloud",
+    "token": "..."
+  },
+  "scripts": {
+    "timeoutMs": 10000
+  }
 }

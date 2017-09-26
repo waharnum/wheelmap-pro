@@ -1,54 +1,54 @@
-import { TAPi18n } from 'meteor/tap:i18n';
+import {t} from 'c-3po';
 import * as React from 'react';
 import styled from 'styled-components';
 import Button from '../../components/Button';
-import { Link } from 'react-router';
-import { colors } from '../../stylesheets/colors';
+import {Link} from 'react-router';
+import {colors} from '../../stylesheets/colors';
 
 const HomePage = (props) => (
   <div className={`${props.className}`} id="HomePage">
     <header className="header beforeLogin onHomepage">
         <span className="logo">
-          <h1>{TAPi18n.__('wheelmap.pro')}</h1>
+          <h1>{t`wheelmap.pro`}</h1>
         </span>
-        <span className="loginState">
-          {!Meteor.user() ? <Link to="/signup" className="onDark">{TAPi18n.__('Sign-Up')}</Link> : null}
-          {!Meteor.user() ? <Link to="/signin" className="onDark">{TAPi18n.__('Login')}</Link> : null}
-          {Meteor.user() ? <Link to="/profile" className="onDark">{TAPi18n.__('Profile')}</Link> : null}
-        </span> 
+      <span className="loginState">
+        {!Meteor.user() ? <Link to="/signup" className="onDark">{t`Sign-Up`}</Link> : null}
+        {!Meteor.user() ? <Link to="/signin" className="onDark">{t`Login`}</Link> : null}
+        {Meteor.user() ? <Link to="/profile" className="onDark">{t`Profile`}</Link> : null}
+        </span>
     </header>
     <div className="wrapper sawblade">
       <section className="hero-banner">
         <div className="wrapper">
           <div className="hero-image"></div>
-          <h2>{TAPi18n.__('Like Wheelmap but customized to fit your own community.')}</h2>
-          <p>{TAPi18n.__('Which public places are accessible for people with disabilities? Create your own mapping community and empower your volunteers to go out and mark the accessibility of places! Wheelmap Pro is a powerful tool with your own brand, your specific accessibility criteria and step-by-step action plans.')}</p>
-          <Button to="/organizations/create" className="btn-primary">{TAPi18n.__('Create your community')}</Button>
+          <h2>{t`Like Wheelmap but customized to fit your own community.`}</h2>
+          <p>{t`Which public places are accessible for people with disabilities? Create your own mapping community and empower your volunteers to go out and mark the accessibility of places! Wheelmap Pro is a powerful tool with your own brand, your specific accessibility criteria and step-by-step action plans.`}</p>
+          <Button to="/organizations/create" className="btn-primary">{t`Create your community`}</Button>
         </div>
       </section>
     </div>
     <div className="wrapper onGreen">
       <section className="explainSteps">
         <article className="explainStep step1">
-          <h2>{TAPi18n.__('Step 1.')}</h2>
-          <p>{TAPi18n.__('Start a new mapping community or join a community as a volunteer. We help you plan and organize successful mapping events for collecting accessibility data.')}</p>
+          <h2>{t`Step 1.`}</h2>
+          <p>{t`Start a new mapping community or join a community as a volunteer. We help you plan and organize successful mapping events for collecting accessibility data.`}</p>
           <img src="/images/comic-step1@2x.png" width="246px" height="202px"></img>
         </article>
         <article className="explainStep step2">
-          <h2>{TAPi18n.__('Step 2.')}</h2>
-          <p>{TAPi18n.__('Invite volunteers to mapping events during which groups evaluate the accessibility of local public places.')}</p>
+          <h2>{t`Step 2.`}</h2>
+          <p>{t`Invite volunteers to mapping events during which groups evaluate the accessibility of local public places.`}</p>
           <img src="/images/comic-step2@2x.png" width="246px" height="202px"></img>
         </article>
         <article className="explainStep step3">
-          <h2>{TAPi18n.__('Step 3.')}</h2>
-          <p>{TAPi18n.__('The accessibility information which your community gathers can then be shared publicly to help people with and without disabilities to navigate the world.')}</p>
+          <h2>{t`Step 3.`}</h2>
+          <p>{t`The accessibility information which your community gathers can then be shared publicly to help people with and without disabilities to navigate the world.`}</p>
           <img src="/images/comic-step3@2x.png" width="246px" height="202px"></img>
         </article>
       </section>
     </div>
     <div className="wrapper onDarkGrey">
       <section className="videoIntroduction">
-        <h2>{TAPi18n.__('Watch a short video introduction.')}</h2>
+        <h2>{t`Watch a short video introduction.`}</h2>
         <div className="media">
           <div className="media-left">
           </div>
@@ -65,8 +65,8 @@ const HomePage = (props) => (
     <div className="wrapper onDarkGrey">
       <footer>
         <div className="wrapper">
-          <Link to="/" className="onDark">{TAPi18n.__('About us')}</Link>
-          <Link to="/" className="onDark">{TAPi18n.__('Imprint')}</Link>
+          <Link to="/" className="onDark">{t`About us`}</Link>
+          <Link to="/" className="onDark">{t`Imprint`}</Link>
         </div>
       </footer>
     </div>
