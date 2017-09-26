@@ -1,10 +1,8 @@
-import { Mongo } from 'meteor/mongo';
-import { Meteor } from 'meteor/meteor';
-import SimpleSchema from 'simpl-schema';
+import {Mongo} from 'meteor/mongo';
 
-import { RoleType } from './roles';
-import { OrganizationMemberMixin, IOrganizationMemberMixin } from './mixins';
-import { OrganizationMemberSchema } from './schema';
+import {RoleType} from './roles';
+import {OrganizationMemberMixin, IOrganizationMemberMixin} from './mixins';
+import {OrganizationMemberSchema} from './schema';
 
 export interface IOrganizationMember {
   // mongo id
