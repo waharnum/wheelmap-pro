@@ -1,9 +1,10 @@
 import {uniq, flatten, intersection} from 'lodash';
 import {useLocale, addLocale} from 'c-3po';
 import * as moment from 'moment';
+import {T9n} from 'meteor/softwarerero:accounts-t9n';
 
-const defaultLocale = 'en-DEV';
-const existingLocales = ['de-DE', 'en-DEV'];
+const fallbackLanguage = 'en-DEV';
+const availableLanguages = ['de-DE', 'en-DEV'];
 
 // Returns the locale as language code without country code etc. removed
 // (for example "en" if given "en-GB").
@@ -12,28 +13,31 @@ function localeWithoutCountry(locale: string): string {
 }
 
 // Returns an expanded list of preferred locales.
-export function expandedPreferredLocales() {
+export function readUserLanguages() {
   // Note that some browsers don't support navigator.languages
-  const localesPreferredByUser = window.navigator.languages || [];
-  const locales = localesPreferredByUser.concat([window.navigator.language, defaultLocale]);
+  const languagesPreferredByUser = window.navigator.languages || [];
+  const languages = languagesPreferredByUser.concat([window.navigator.language, fallbackLanguage]);
 
-  // Try all locales without country code, too
-  return uniq(flatten(locales.map(l => [l, localeWithoutCountry(l)])));
+  // Try all locales without a country code, too
+  return uniq(flatten(languages.map(l => [l, localeWithoutCountry(l)])));
 }
 
-const locales = intersection(expandedPreferredLocales(), existingLocales);
+const userLanguages = readUserLanguages();
+const validLanguages = intersection(userLanguages, availableLanguages);
 
-locales.forEach((locale) => {
-  fetch(Meteor.absoluteUrl(`/i18n/${locale}.po.json`))
+validLanguages.forEach((language) => {
+  fetch(Meteor.absoluteUrl(`/i18n/${language}.po.json`))
     .then((response) => response.json())
     .then((translationObject) => {
-      addLocale(locale, translationObject);
+      addLocale(language, translationObject);
     });
   // TODO: disable locales that failed loading & choose correct locale again
 });
 
-const c3poLocale = locales[0] || defaultLocale
+const c3poLocale = validLanguages[0] || fallbackLanguage
 useLocale(c3poLocale);
 
-const momentLocale = locales.length > 0 ? locales[0].toLowerCase() : 'en-us';
+const momentLocale = userLanguages.length > 0 ? userLanguages[0].toLowerCase() : 'en-us';
 moment.locale(momentLocale);
+
+T9n.setLanguage(userLanguages[0] || 'en');
