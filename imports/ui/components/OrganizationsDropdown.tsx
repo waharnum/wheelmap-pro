@@ -39,7 +39,7 @@ const OrganizationDropdown = (props: OrganizationDropdownInternalType & IOrganiz
       </div>
       <ul className="dropdown-menu" aria-labelledby="OrganizationDropdown">
         {props.model.map((m) =>
-          <OrganizationEntry key={m._id as React.Key} model={m} active={props.current === m._id}/>)}
+          <OrganizationEntry key={String(m._id)} model={m} active={props.current._id === m._id}/>)}
         {props.children}
       </ul>
     </div>
