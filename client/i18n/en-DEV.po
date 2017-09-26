@@ -9,16 +9,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: server/counter.js:3
-msgid "starting count up to ${ n }"
-msgstr "starting count up to ${ n }"
-
-#: server/counter.js:6
-msgid "${ i } tick passed"
-msgid_plural "${ i } ticks passed"
-msgstr[0] "${ i } tick passed"
-msgstr[1] "${ i } ticks passed"
-
 #: imports/both/api/categories/server/csv-methods.js:11 imports/both/api/event-participants/server/methods.js:19
 #: imports/both/api/event-participants/server/methods.js:54 imports/both/api/event-participants/server/methods.js:70
 #: imports/both/api/event-participants/server/methods.js:83 imports/both/api/organization-members/server/methods.js:14
