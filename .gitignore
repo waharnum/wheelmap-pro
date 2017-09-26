@@ -5,5 +5,6 @@ settings/*
 .vscode/typings/meteor.d.ts
 .idea
 dump/
-packages/
+packages/std_*
 tests/chimp.js
+packages/ff_po-compiler/.npm/

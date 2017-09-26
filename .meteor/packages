@@ -40,3 +40,4 @@ xolvio:email-stub
 babel-compiler
 ecmascript
 babel-runtime
+ff:po-compiler
