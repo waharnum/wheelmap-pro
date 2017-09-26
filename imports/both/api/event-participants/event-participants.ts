@@ -1,6 +1,4 @@
 import {Mongo} from 'meteor/mongo';
-import {Meteor} from 'meteor/meteor';
-import SimpleSchema from 'simpl-schema';
 
 import {EventParticipantMixin, IEventParticipantMixin} from './mixins';
 import {EventParticipantSchema} from './schema';
