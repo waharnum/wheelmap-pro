@@ -1,7 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
 import {check} from 'meteor/check';
-import { t } from 'c-3po';
+import {t} from 'c-3po';
 import {isAdmin} from '../../../lib/is-admin';
 import {Accounts} from 'meteor/accounts-base';
 import {EventParticipants} from '../../event-participants/event-participants';
