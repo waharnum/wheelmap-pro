@@ -2,7 +2,6 @@ const gulp = require("gulp");
 const ts = require("gulp-typescript");
 const babel = require("gulp-babel");
 const debug = require('gulp-debug');
-const filter = require('gulp-filter');
 
 gulp.task("ts-babel", function () {
   const tsProject = ts.createProject(__dirname + "/../../tsconfig.json", {
