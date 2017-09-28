@@ -6,7 +6,8 @@
     "test": "meteor test --once --driver-package dispatch:mocha-phantomjs",
     "test:dev": "meteor test --driver-package dispatch:mocha-phantomjs",
     "collectTranslations": "meteor node packages/tools/collectTranslations.js",
-    "importStrings": "msginit -i used-strings.pot -o client/i18n/en_DEV.po -l en_DEV --no-translator"
+    "importStrings": "msginit -i used-strings.pot -o client/i18n/en_DEV.po -l en_DEV --no-translator",
+    "fetchFromTransifex": "meteor node packages/tools/fetchFromTransifex.js"
   },
   "dependencies": {
     "JSONStream": "^1.3.1",
