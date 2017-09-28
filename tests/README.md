@@ -1,5 +1,5 @@
 
-# Testing mapping-event-planner
+# Testing wheelmap-pro
 
 ## Installation
 

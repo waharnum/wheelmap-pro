@@ -1,5 +1,5 @@
 {
-  "name": "mapping-event-planner",
+  "name": "wheelmap-pro",
   "private": true,
   "scripts": {
     "start": "meteor run",
