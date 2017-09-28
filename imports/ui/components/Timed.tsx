@@ -1,8 +1,8 @@
 import * as moment from 'moment';
 import * as React from 'react';
 
-export const  withTime = (WrappedComponent, interval: number = 1000) => {
-  return class extends React.Component<any, {now: moment.Moment}> {
+export const withTime = (WrappedComponent, interval: number = 1000) => {
+  return class extends React.Component<any, { now: moment.Moment }> {
     public state = {
       now: moment(),
     };
@@ -14,7 +14,7 @@ export const  withTime = (WrappedComponent, interval: number = 1000) => {
     }
 
     public componentDidMount() {
-      this.setState({ now: moment() });
+      this.setState({now: moment()});
       // TODO: switch to ONE static interval
       this.intervalId = setInterval(this.tick, interval);
     }

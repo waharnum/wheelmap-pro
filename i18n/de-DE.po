@@ -1,0 +1,196 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Language-Team: German (Germany) (https://www.transifex.com/sozialhelden/teams/54219/de_DE/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de_DE\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: imports/both/api/categories/server/csv-methods.js:11
+#: imports/both/api/event-participants/server/methods.js:19
+#: imports/both/api/event-participants/server/methods.js:54
+#: imports/both/api/event-participants/server/methods.js:70
+#: imports/both/api/event-participants/server/methods.js:83
+#: imports/both/api/organization-members/server/methods.js:14
+#: imports/both/api/organization-members/server/methods.js:31
+#: imports/both/api/organization-members/server/methods.js:43
+#: imports/both/api/sources/server/privileges.js:83
+#: imports/both/api/sources/server/privileges.js:98
+#: imports/both/api/users/server/methods.js:49
+#: imports/both/api/users/server/methods.js:60
+#: imports/both/api/users/server/methods.js:68
+#: imports/both/api/users/server/methods.js:82
+#: imports/server/i18n/rpc-method.js:42 imports/server/stub-data.js:287
+msgid "Please log in first."
+msgstr ""
+
+#: imports/both/api/event-participants/server/methods.js:96
+#: imports/both/api/organization-members/server/methods.js:58
+#: imports/both/api/sources/server/privileges.js:90
+#: imports/server/stub-data.js:290
+msgid "Not authorized."
+msgstr ""
+
+#: imports/both/api/categories/server/csv-methods.js:14
+#: imports/server/i18n/rpc-method.js:45
+msgid "You are not authorized to import categories."
+msgstr ""
+
+#: imports/ui/components/PreviewToggle.js:16
+msgid "Edit view"
+msgstr ""
+
+#: imports/ui/components/PreviewToggle.js:16
+msgid "Public View"
+msgstr ""
+
+#: imports/ui/pages/Events/CreateEventPage.js:15
+#: imports/ui/pages/Organizations/CreateOrganizationPage.js:15
+msgid "Dashboard"
+msgstr ""
+
+#: imports/ui/pages/Events/CreateEventPage.js:16
+#: imports/ui/pages/Organizations/CreateOrganizationPage.js:16
+msgid "Create"
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:10
+msgid "wheelmap.pro"
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:12
+msgid "Sign-Up"
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:13
+msgid "Login"
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:14
+msgid "Profile"
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:19
+msgid "Like Wheelmap but customized to fit your own community."
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:20
+msgid ""
+"Which public places are accessible for people with disabilities? Create your"
+" own mapping community and empower your volunteers to go out and mark the "
+"accessibility of places! Wheelmap Pro is a powerful tool with your own "
+"brand, your specific accessibility criteria and step-by-step action plans."
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:21
+msgid "Create your community"
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:25
+msgid "Step 1."
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:26
+msgid ""
+"Start a new mapping community or join a community as a volunteer. We help "
+"you plan and organize successful mapping events for collecting accessibility"
+" data."
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:29
+msgid "Step 2."
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:30
+msgid ""
+"Invite volunteers to mapping events during which groups evaluate the "
+"accessibility of local public places."
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:33
+msgid "Step 3."
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:34
+msgid ""
+"The accessibility information which your community gathers can then be "
+"shared publicly to help people with and without disabilities to navigate the"
+" world."
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:38
+msgid "Watch a short video introduction."
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:50
+msgid "About us"
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:51
+msgid "Imprint"
+msgstr ""
+
+#: imports/ui/pages/Organizations/NoOrganizationsPage.js:11
+msgid ""
+"It seems you are not part of any organization yet. Please wait for your "
+"invite, or create your own organization."
+msgstr ""
+
+#: imports/ui/pages/Organizations/NoOrganizationsPage.js:13
+msgid "Create Organization"
+msgstr ""
+
+#: imports/both/api/event-participants/server/methods.js:23
+#: imports/both/api/event-participants/server/methods.js:58
+#: imports/both/api/event-participants/server/methods.js:74
+#: imports/both/api/event-participants/server/methods.js:91
+msgid "Event not found"
+msgstr ""
+
+#: imports/both/api/event-participants/server/methods.js:26
+#: imports/both/api/organization-members/server/methods.js:21
+msgid "You are not authorized to invite users to this organization."
+msgstr ""
+
+#: imports/both/api/event-participants/server/methods.js:30
+#: imports/both/api/organization-members/server/methods.js:18
+#: imports/both/api/organization-members/server/methods.js:35
+#: imports/both/api/organization-members/server/methods.js:52
+msgid "Organization not found"
+msgstr ""
+
+#: imports/both/api/event-participants/server/methods.js:87
+msgid "Event participants not found"
+msgstr ""
+
+#: imports/both/api/organization-members/server/methods.js:47
+msgid "Organization member not found"
+msgstr ""
+
+#: imports/both/api/organization-members/server/methods.js:62
+msgid "Cannot revoke last organization membership."
+msgstr ""
+
+#: imports/both/api/sources/server/privileges.js:87
+msgid "Source not found."
+msgstr ""
+
+#: imports/both/api/sources/server/privileges.js:107
+msgid "Source not found or not visible."
+msgstr ""
+
+#: imports/both/api/users/server/methods.js:71
+msgid "You are not authorized to approve users."
+msgstr ""
+
+#: imports/both/api/users/server/methods.js:75
+#: imports/both/api/users/server/methods.js:89
+msgid "Can not find user with this id."
+msgstr ""
+
+#: imports/both/api/users/server/methods.js:85
+msgid "You are not authorized to remove users."
+msgstr ""
