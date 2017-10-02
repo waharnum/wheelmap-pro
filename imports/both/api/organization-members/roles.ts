@@ -1,4 +1,4 @@
-import {t} from 'c-3po';
+import {t, gettext} from 'c-3po';
 
 export type RoleType = 'manager' | 'developer' | 'founder' | 'volunteer' | 'member';
 
@@ -19,5 +19,5 @@ export function getLabelForRole(role: RoleType): string {
     return re.value == role;
   });
 
-  return found ? found.label : t`Unknown Role`;
+  return found ? gettext(found.label) : t`Unknown Role`;
 }
