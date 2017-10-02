@@ -109,7 +109,7 @@ const ReactiveOrganizationMembersPage = reactiveSubscriptionByParams(
     const members = organization.getMembers();
     // pass model with organization & events in one go
     return {organization, members};
-  }, 'organizations.by_id.private', 'organizationMembers.by_id.private');
+  }, 'organizations.by_id.private', 'organizationMembers.by_id.private', 'users.private');
 
 export default styled(ReactiveOrganizationMembersPage) `
 `;
