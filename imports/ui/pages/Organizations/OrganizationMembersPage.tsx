@@ -36,15 +36,20 @@ const OrganizationMemberEntry = (props: { model: IOrganizationMember, onError: E
   <li className="member-entry">
     <section className="member-icon" dangerouslySetInnerHTML={{__html: props.model.getIconHTML()}}/>
     <section className="member-name">{props.model.getUserName()}</section>
-    <section className="member-role">{getLabelForRole(props.model.role)}</section>
-    <section className="member-state">{props.model.invitationState}</section>
-    {props.model.invitationState === 'error' ?
-      <section className="member-error">{props.model.invitationError}</section> : null}
-    <section className="member-remove">
-      <button className="btn btn-danger" onClick={() => removeMember(props.model._id || '', props.onError)}>Remove
-        Member
-      </button>
-    </section>
+    {props.model.editableBy(Meteor.userId()) ?
+      (<section>
+        {props.model.invitationState === 'error' ?
+          <section className="member-error">{props.model.invitationError}</section> : null}
+        <section className="member-role">{getLabelForRole(props.model.role)}</section>
+        <section className="member-state">{props.model.invitationState}</section>
+        <section className="member-remove">
+          <button className="btn btn-danger" onClick={() => removeMember(props.model._id || '', props.onError)}>
+            {t`Remove Member`}
+          </button>
+        </section>
+      </section>) :
+      (<section className="member-role">{getLabelForRole(props.model.role)}</section>)
+    }
   </li>
 );
 
@@ -108,4 +113,4 @@ const ReactiveOrganizationMembersPage = reactiveSubscriptionByParams(
   }, 'organizations.by_id.private', 'organizationMembers.by_id.private', 'users.private');
 
 export default styled(ReactiveOrganizationMembersPage) `
-`;
+      `;
