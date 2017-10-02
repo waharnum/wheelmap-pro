@@ -1,33 +1,9 @@
 import SimpleSchema from 'simpl-schema';
+import {t} from 'c-3po';
+import {EmailInviteSchema} from '../../lib/invite-schema';
 
 // allow custom uniforms fields
 SimpleSchema.extendOptions(['uniforms']);
-
-const customUserIdFunction = () => {
-  if (this.field('invitationEmailAddress')) {
-    return null;
-  }
-  if (!this.operator) { // inserts
-    if (!this.isSet || this.value === null || this.value === '') {
-      return 'required';
-    }
-    ;
-  } else if (this.isSet) { // updates
-    if (this.operator === '$set' && this.value === null || this.value === '') {
-      return 'required';
-    }
-    ;
-    if (this.operator === '$unset') {
-      return 'required';
-    }
-    ;
-    if (this.operator === '$rename') {
-      return 'required';
-    }
-    ;
-  }
-  return null;
-};
 
 export const EventParticipantSchema = new SimpleSchema({
   eventId: {
@@ -62,23 +38,11 @@ export const EventParticipantSchema = new SimpleSchema({
   },
 });
 
-export const EventParticipantInviteSchema = new SimpleSchema({
+export const EventInviteSchema = new SimpleSchema({
   'eventId': {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
   },
-  'invitationEmailAddresses': {
-    type: Array,
-    minCount: 1,
-    maxCount: 10,
-    label: 'Email Addresses',
-  },
-  'invitationEmailAddresses.$': {
-    type: String,
-    regEx: SimpleSchema.RegEx.Email,
-    label: 'Email Address',
-    uniforms: {
-      placeholder: 'e.g. lisa@example.com',
-    },
-  },
 });
+
+EventInviteSchema.extend(EmailInviteSchema);

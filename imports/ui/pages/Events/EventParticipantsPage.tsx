@@ -1,6 +1,4 @@
 import styled from 'styled-components';
-import {uniq} from 'lodash';
-import {AutoForm, SubmitField} from 'uniforms-bootstrap3';
 import * as React from 'react';
 import * as ClipboardButton from 'react-clipboard.js';
 
@@ -12,12 +10,10 @@ import {IEvent, Events} from '../../../both/api/events/events';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
 import AdminHeader, {HeaderTitle} from '../../components/AdminHeader';
-import {EventParticipantInviteSchema} from '../../../both/api/event-participants/schema';
 import {IEventParticipant} from '../../../both/api/event-participants/event-participants';
 import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
+import InviteByEmailForm from '../../components/InviteByEmailForm';
 
-const invitationsListSchema = EventParticipantInviteSchema.pick(
-  'invitationEmailAddresses', 'invitationEmailAddresses.$');
 
 interface IPageModel {
   event: IEvent;
@@ -31,8 +27,6 @@ const removeParticipant = (id: Mongo.ObjectID) => {
     console.log('eventParticipants.remove', error, result);
   });
 };
-
-const CustomSubmitField = () => <SubmitField value="Send invites"/>;
 
 const EventParticipantEntry = (props: { model: IEventParticipant }) => (
   <li className="participant-entry">
@@ -49,8 +43,6 @@ const EventParticipantEntry = (props: { model: IEventParticipant }) => (
 );
 
 class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageModel> & IStyledComponent> {
-  public state = {isSaving: false};
-  private formRef: AutoForm;
 
   public render(): JSX.Element {
     const event = this.props.model.event;
@@ -78,15 +70,7 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
         <div className="content-area scrollable hsplit">
           <div className="content-left">
             <h2>Invite Participants to event</h2>
-            <AutoForm
-              placeholder={true}
-              showInlineError={true}
-              disabled={this.state.isSaving}
-              schema={invitationsListSchema}
-              submitField={CustomSubmitField}
-              onSubmit={this.onSubmit}
-              ref={this.storeFormReference}
-            />
+            <InviteByEmailForm onSubmit={this.onInvite}/>
             {hasPublicInvitation ? this.renderPublicInvitation(link) : null}
           </div>
           <div className="content-right">
@@ -131,35 +115,12 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
     );
   }
 
-  private storeFormReference = (ref: AutoForm) => {
-    this.formRef = ref;
-  }
-
-  private cleanUpEmailAddresses = (invitationEmailAddresses: string[]): string[] => {
-    // remove all dupes and null values, trim emails and convert to lower case
-    return uniq(invitationEmailAddresses.map((s) => s.toLowerCase().trim())).filter(Boolean);
-  }
-
-  private onSubmit = (doc: { invitationEmailAddresses: string[] }) => {
-    this.setState({isSaving: true});
-    return new Promise((resolve, reject) => {
-      Meteor.call('eventParticipants.invite', {
-        invitationEmailAddresses: this.cleanUpEmailAddresses(doc.invitationEmailAddresses),
-        eventId: this.props.model.event._id,
-      }, (error: any, result: any) => {
-        this.setState({isSaving: false});
-        if (!error) {
-          resolve(true);
-        } else {
-          reject(error);
-        }
-      });
-    }).then(() => {
-      this.formRef.setState({validate: false});
-      this.formRef.change('invitationEmailAddresses', ['']);
-    }, (error) => {
-      this.formRef.setState({error});
-    });
+  private onInvite = (emails: string[],
+                      callback: (error: Meteor.Error | null, result: any) => void) => {
+    Meteor.call('eventParticipants.invite', {
+      invitationEmailAddresses: emails,
+      eventId: this.props.model.event._id,
+    }, callback);
   }
 }
 
@@ -170,8 +131,6 @@ const ReactiveEventParticipantsPage = reactiveSubscriptionByParams(
   (id): IPageModel | null => {
     const event = Events.findOne(id);
     const participants = event ? event.getParticipants() : [];
-    const eventUsers = participants.map((p) => p.userId);
-    const participantUsers = Meteor.users.find({_id: {$in: eventUsers}}).fetch();
     const organization = event ? event.getOrganization() : null;
     return event && organization ? {event, participants, organization} : null;
   },

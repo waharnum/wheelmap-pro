@@ -7,7 +7,7 @@ import {Events} from '../../events/events';
 import {Organizations} from '../../organizations/organizations';
 import {EventParticipants} from '../event-participants';
 import {userHasFullAccessToOrganizationId} from '../../organizations/privileges';
-import {EventParticipantInviteSchema, EventParticipantSchema} from '../schema';
+import {EventInviteSchema, EventParticipantSchema} from '../schema';
 import {
   insertDraftEventParticipant, sendEventInvitationEmailTo, acceptEventInvitation,
   acceptPublicEventInvitation,
@@ -15,7 +15,7 @@ import {
 
 export const insert = new ValidatedMethod({
   name: 'eventParticipants.invite',
-  validate: EventParticipantInviteSchema.validator(),
+  validate: EventInviteSchema.validator(),
   run({invitationEmailAddresses, eventId}) {
     check(invitationEmailAddresses, [String]);
     check(eventId, String);
