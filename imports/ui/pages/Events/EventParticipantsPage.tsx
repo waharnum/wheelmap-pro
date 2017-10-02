@@ -103,7 +103,7 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
               <h3>Invited Participants</h3>
               <ol>
                 {participants.length === 0 ? <section>No one invited yet.</section> : null}
-                {participants.map((p) => (<EventParticipantEntry key={p._id as React.Key} model={p}/>))}
+                {participants.map((p) => (<EventParticipantEntry key={String(p._id)} model={p}/>))}
               </ol>
             </div>
           </div>
