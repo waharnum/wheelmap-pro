@@ -148,7 +148,12 @@ export function inviteUserToOrganization(emailAddress: string, organizationId: M
       console.log(`${invitationEmailAddress} is already in organization ${organizationId}.`);
       return member;
     }
-    const memberId = OrganizationMembers.insert({userId, organizationId, role} as IOrganizationMember);
+    const memberId = OrganizationMembers.insert({
+      userId,
+      organizationId,
+      role,
+      invitationState: 'accepted',
+    } as IOrganizationMember);
     console.log(`Inserted member ${memberId}.`);
     return OrganizationMembers.findOne(memberId);
   }

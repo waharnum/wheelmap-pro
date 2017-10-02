@@ -2,7 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {Mongo} from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import {ValidatedMethod} from 'meteor/mdg:validated-method';
-import {OrganizationMembers} from '../../organization-members/organization-members';
+import {IOrganizationMember, OrganizationMembers} from '../../organization-members/organization-members';
 import {IOrganization, Organizations, setActiveOrganization} from '../organizations';
 
 export const insert = new ValidatedMethod({
@@ -17,7 +17,8 @@ export const insert = new ValidatedMethod({
       organizationId,
       userId: this.userId as Mongo.ObjectID,
       role: 'manager',
-    });
+      invitationState: 'accepted',
+    } as IOrganizationMember);
     return organizationId;
   },
 });
