@@ -60,7 +60,7 @@ const EventListEntry = (props: { model: IEvent }) => (
 const EventList = (props: { model: IEvent[] }) => (
   <div>
     {props.model.map((event) => (
-      <EventListEntry key={event._id as React.Key} model={event}/>
+      <EventListEntry key={String(event._id)} model={event}/>
     ))}
   </div>
 );
