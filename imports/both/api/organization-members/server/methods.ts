@@ -1,35 +1,39 @@
 import {Meteor} from 'meteor/meteor';
+import {Mongo} from 'meteor/mongo';
 import {Organizations} from '../../organizations/organizations';
 import {userHasFullAccessToOrganization} from '../../organizations/privileges';
 import {OrganizationMembers} from '../organization-members';
-import { t } from 'c-3po';
+import {t} from 'c-3po';
 import {ValidatedMethod} from 'meteor/mdg:validated-method';
 import {acceptInvitation, inviteUserToOrganization} from './invitations';
+import {MemberInviteSchema} from '../schema';
 
 export const insert = new ValidatedMethod({
-  name: 'organizationMembers.invite',
-  validate: OrganizationMembers.schema.pick('invitationEmailAddress', 'organizationId').validator(),
-  run({invitationEmailAddress, organizationId}) {
-    console.log('Inviting', invitationEmailAddress, 'to', organizationId, '...');
+    name: 'organizationMembers.invite',
+    validate: MemberInviteSchema.validator(),
+    run({invitationEmailAddresses, organizationId}) {
 
-    if (!this.userId) {
-      throw new Meteor.Error(401, t`Please log in first.`);
+      if (!this.userId) {
+        throw new Meteor.Error(401, t`Please log in first.`);
+      }
+
+      const organization = Organizations.findOne({_id: organizationId});
+      if (!organization) {
+        throw new Meteor.Error(404, t`Organization not found`);
+      }
+
+      if (!userHasFullAccessToOrganization(this.userId, organization)) {
+        throw new Meteor.Error(403,
+          t`You are not authorized to invite users to this organization.`);
+      }
+
+      return invitationEmailAddresses.map((invitationEmailAddress) => {
+        return inviteUserToOrganization(invitationEmailAddress, organizationId, 'member');
+      });
     }
-
-    const organization = Organizations.findOne({_id: organizationId});
-
-    if (!organization) {
-      throw new Meteor.Error(404, t`Organization not found`);
-    }
-
-    if (!userHasFullAccessToOrganization(this.userId, organization)) {
-      throw new Meteor.Error(403,
-        t`You are not authorized to invite users to this organization.`);
-    }
-
-    return inviteUserToOrganization(invitationEmailAddress, organizationId, 'member');
-  },
-});
+    ,
+  })
+;
 
 export const accept = new ValidatedMethod({
   name: 'organizationMembers.acceptInvitation',

@@ -1,22 +1,10 @@
 import SimpleSchema from 'simpl-schema';
-import { roles } from './roles';
+
+import {roles} from './roles';
+import {EmailInviteSchema} from '../../lib/invite-schema';
 
 // allow custom uniforms fields
 SimpleSchema.extendOptions(['uniforms']);
-
-const customUserIdFunction = () => {
-  if (this.field('invitationEmailAddress')) {
-    return null;
-  }
-  if (!this.operator) { // inserts
-    if (!this.isSet || this.value === null || this.value === '') { return 'required'; };
-  } else if (this.isSet) { // updates
-    if (this.operator === '$set' && this.value === null || this.value === '') { return 'required'; };
-    if (this.operator === '$unset') { return 'required'; };
-    if (this.operator === '$rename') { return 'required'; };
-  }
-  return null;
-};
 
 export const OrganizationMemberSchema = new SimpleSchema({
   organizationId: {
@@ -26,6 +14,7 @@ export const OrganizationMemberSchema = new SimpleSchema({
   userId: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
+    optional: true,
   },
   gravatarHash: {
     type: String,
@@ -54,3 +43,12 @@ export const OrganizationMemberSchema = new SimpleSchema({
     allowedValues: roles.map((v) => v.value),
   },
 });
+
+export const MemberInviteSchema = new SimpleSchema({
+  'organizationId': {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+  },
+});
+
+MemberInviteSchema.extend(EmailInviteSchema);

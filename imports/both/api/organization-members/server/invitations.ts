@@ -1,30 +1,34 @@
-import { RoleType } from '../roles';
-import { Meteor } from 'meteor/meteor';
-import { map } from 'lodash';
-import { Random } from 'meteor/random';
-import { Email } from 'meteor/email';
-import { check } from 'meteor/check';
+import {RoleType} from '../roles';
+import {Meteor} from 'meteor/meteor';
+import {Mongo} from 'meteor/mongo';
+import {map} from 'lodash';
+import {Random} from 'meteor/random';
+import {Email} from 'meteor/email';
+import {check} from 'meteor/check';
 
-import { Organizations } from '../../organizations/organizations';
-import { getDisplayedNameForUser } from '../../../lib/user-name';
-import { getGravatarHashForEmailAddress } from '../../../lib/user-icon';
-import { IOrganizationMember, OrganizationMembers } from '../organization-members';
+import {Organizations} from '../../organizations/organizations';
+import {getDisplayedNameForUser} from '../../../lib/user-name';
+import {getGravatarHashForEmailAddress} from '../../../lib/user-icon';
+import {IOrganizationMember, OrganizationMembers} from '../organization-members';
 
-const invitationEmailBody = ({ userName, organizationId, organizationName, token }) =>
-`Hi,
+const appName = 'wheelmap.pro';
+const appSupportEmail = 'support@wheelmap.pro';
 
-${userName} invites you to their organization “${organizationName}” on accessibility.cloud,
+const invitationEmailBody = ({userName, organizationId, organizationName, token}) =>
+  `Hi,
+
+${userName} invites you to their organization “${organizationName}” on ${appName},
 an app that collects accessibility information about places.
 
 Use this link to sign up and get access:
 
 ${Meteor.absoluteUrl(
-  `organizations/${organizationId}/accept-invitation/${token}`,
-  { secure: true },
-)}
+    `organizations/${organizationId}/accept-invitation/${token}`,
+    {secure: true},
+  )}
 
 All the best,
-Your accessibility.cloud team.
+Your ${appName} team.
 `;
 
 function insertPlaceholderMembership(options) {
@@ -40,7 +44,7 @@ function insertPlaceholderMembership(options) {
 
   console.log('Placeholder member:', member);
 
-  const id = OrganizationMembers.insert(member);
+  const id = OrganizationMembers.insert(member as IOrganizationMember);
   return OrganizationMembers.findOne(id);
 }
 
@@ -49,26 +53,28 @@ function sendInvitationEmailTo(userEmailAddress: string, organizationId: Mongo.O
   check(organizationId, String);
   check(role, String);
   const emailAddress = userEmailAddress.toLowerCase().trim();
-  const organization = Organizations.findOne({ _id: organizationId });
+  const organization = Organizations.findOne({_id: organizationId});
   const token = Random.secret();
   const organizationName = organization.name;
-  const member = insertPlaceholderMembership({ emailAddress, organizationId, token, role });
+  const member = insertPlaceholderMembership({emailAddress, organizationId, token, role});
   const userName = getDisplayedNameForUser(Meteor.user());
-  const selector = { _id: member._id };
+  const selector = {_id: member._id};
   try {
     Email.send({
-      from: 'support@accessibility.cloud',
+      from: appSupportEmail,
       to: emailAddress,
       subject: `${userName} invites you to access their organization “${organizationName}”`,
-      text: invitationEmailBody({ userName, organizationName, organizationId, token }),
+      text: invitationEmailBody({userName, organizationName, organizationId, token}),
     });
 
-    OrganizationMembers.update(selector, { $set: { invitationState: 'sent' } });
+    OrganizationMembers.update(selector, {$set: {invitationState: 'sent'}});
   } catch (error) {
-    OrganizationMembers.update(selector, { $set: {
-      invitationState: 'error',
-      invitationError: error,
-    } });
+    OrganizationMembers.update(selector, {
+      $set: {
+        invitationState: 'error',
+        invitationError: error,
+      },
+    });
   }
 
   return member;
@@ -79,7 +85,7 @@ function useTokenToVerifyEmailAddressIfPossible(userId: Mongo.ObjectID, memberId
   check(memberId, String);
   check(token, String);
   console.log('Trying to use invitation token to verify email address...');
-  const member = OrganizationMembers.findOne({ _id: memberId, invitationToken: token });
+  const member = OrganizationMembers.findOne({_id: memberId, invitationToken: token});
   if (!member) {
     throw new Meteor.Error(404, `No member with id ${memberId} existing.`);
   }
@@ -110,7 +116,7 @@ function useTokenToVerifyEmailAddressIfPossible(userId: Mongo.ObjectID, memberId
   }
 
   console.log('Verifying email address \'${emailAddress}\' via invitation token...');
-  Meteor.users.update({ _id: userId }, { $set: { [`emails.${index}.verified`]: true } });
+  Meteor.users.update({_id: userId}, {$set: {[`emails.${index}.verified`]: true}});
   return true;
 }
 
@@ -119,7 +125,7 @@ export function inviteUserToOrganization(emailAddress: string, organizationId: M
 
   console.log(`Inviting ${emailAddress} to organization ${organizationId}...`);
 
-  let member = OrganizationMembers.findOne({ organizationId, invitationEmailAddress });
+  let member = OrganizationMembers.findOne({organizationId, invitationEmailAddress});
 
   if (member) {
     console.log(`${invitationEmailAddress} already invited.`);
@@ -128,19 +134,21 @@ export function inviteUserToOrganization(emailAddress: string, organizationId: M
 
   const addressRegExp = invitationEmailAddress.replace(/([^a-zA-Z0-9])/g, '\\$1');
   const user = Meteor.users.findOne(
-    { 'emails.address': { $regex: addressRegExp, $options: 'i' } },
+    {'emails.address': {$regex: addressRegExp, $options: 'i'}},
   );
 
   if (user && user._id) {
+    const userId = user._id as any as Mongo.ObjectID;
+
     console.log(
-      `${invitationEmailAddress} already registered (${user._id}), adding a member if necessary…`,
+      `${invitationEmailAddress} already registered (${userId}), adding a member if necessary…`,
     );
-    member = OrganizationMembers.findOne({ userId: user._id, organizationId });
+    member = OrganizationMembers.findOne({userId, organizationId});
     if (member) {
       console.log(`${invitationEmailAddress} is already in organization ${organizationId}.`);
       return member;
     }
-    const memberId = OrganizationMembers.insert({ userId: user._id, organizationId, role });
+    const memberId = OrganizationMembers.insert({userId, organizationId, role} as IOrganizationMember);
     console.log(`Inserted member ${memberId}.`);
     return OrganizationMembers.findOne(memberId);
   }
@@ -158,14 +166,14 @@ export function acceptInvitation(userId: Mongo.ObjectID, organizationId: Mongo.O
 
   console.log(userId, 'accepts invitation to', organizationId, 'with token', token, '…');
 
-  const member = OrganizationMembers.findOne({ organizationId, invitationToken: token });
+  const member = OrganizationMembers.findOne({organizationId, invitationToken: token});
 
   if (!member || !member._id) {
     console.log(`No invitation found to ${organizationId} with token ${token}.`);
     return null;
   }
 
-  if (OrganizationMembers.findOne({ organizationId, userId })) {
+  if (OrganizationMembers.findOne({organizationId, userId})) {
     OrganizationMembers.remove(member._id);
     console.log(`${userId} accepted invitation to ${organizationId} already.`);
     console.log('Deleted existing invitation.');
@@ -175,10 +183,10 @@ export function acceptInvitation(userId: Mongo.ObjectID, organizationId: Mongo.O
   useTokenToVerifyEmailAddressIfPossible(userId, member._id, token);
 
   OrganizationMembers.update(
-    { _id: member._id },
+    {_id: member._id},
     {
-      $set: { userId, invitationState: 'accepted' },
-      $unset: { invitationToken: 1 },
+      $set: {userId, invitationState: 'accepted'},
+      $unset: {invitationToken: 1},
     },
   );
 

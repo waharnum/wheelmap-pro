@@ -5,7 +5,7 @@ import {Apps} from '../apps/apps';
 import {isAdmin} from '../../lib/is-admin';
 import {Sources} from '../sources/sources';
 import {IEvent, Events} from '../events/events';
-import {OrganizationMembers} from '../organization-members/organization-members';
+import {IOrganizationMember, OrganizationMembers} from '../organization-members/organization-members';
 import {userHasFullAccessToOrganizationId, isUserMemberOfOrganizationWithId} from './privileges';
 
 const ACCESS_REQUEST_APPROVING_ROLES = [
@@ -19,6 +19,7 @@ export interface IOrganizationMixin {
   editableBy: (userId: Mongo.ObjectID) => boolean;
   isFullyVisibleForUserId: (userId: Mongo.ObjectID) => boolean;
   getEvents: () => IEvent[];
+  getMembers: () => IOrganizationMember[];
   // TODO: Use correct type once Sources has been ported
   getSources: () => any[];
   // TODO: Use correct type once App has been ported
@@ -60,6 +61,9 @@ export const OrganizationMixin = {
       }
       return diffSecond - diffFirst;
     });
+  },
+  getMembers() {
+    return OrganizationMembers.find({organizationId: this._id}).fetch();
   },
   getSources() {
     const sources = Sources.find({organizationId: this._id}).fetch();
