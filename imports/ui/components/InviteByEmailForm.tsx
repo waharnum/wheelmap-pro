@@ -16,6 +16,7 @@ class InviteByEmailForm extends React.Component<{ onSubmit: MeteorInsertionCall 
 
   public render(): JSX.Element {
     return (<AutoForm
+      className={this.props.className}
       placeholder={true}
       showInlineError={true}
       disabled={this.state.isSaving}
@@ -58,4 +59,12 @@ class InviteByEmailForm extends React.Component<{ onSubmit: MeteorInsertionCall 
 }
 
 export default styled(InviteByEmailForm) `
+  .panel-body {    
+    > div:nth-of-type(2) .badge {
+      background: none;
+      i {
+        display: none;
+      }
+    }
+  }
 `;

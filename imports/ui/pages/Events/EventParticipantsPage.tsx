@@ -178,15 +178,6 @@ export default styled(ReactiveEventParticipantsPage) `
     }
   }
 
-  .panel-body {    
-    > div:nth-of-type(2) .badge {
-      background: none;
-      i {
-        display: none;
-      }
-    }
-  }
-
   .copy-to-clipboard {
     display: flex;
 
