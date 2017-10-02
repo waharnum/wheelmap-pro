@@ -4,10 +4,8 @@ import {t, gettext} from 'c-3po';
 import {ErrorsField} from 'uniforms-bootstrap3';
 
 import ScrollableLayout from '../../layouts/ScrollableLayout';
-import OrganizationTabs from './OrganizationTabs';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
-import AdminHeader, {HeaderTitle} from '../../components/AdminHeader';
 import {IOrganization, Organizations} from '../../../both/api/organizations/organizations';
 import {
   IAsyncDataByIdProps,
@@ -15,7 +13,8 @@ import {
 } from '../../components/reactiveModelSubscription';
 import {IOrganizationMember} from '../../../both/api/organization-members/organization-members';
 import {getLabelForRole} from '../../../both/api/organization-members/roles';
-import InviteByEmailForm, {MeteorInsertionCall} from '../../components/InviteByEmailForm';
+import InviteByEmailForm from '../../components/InviteByEmailForm';
+import OrganizationAdminHeader from './OrganizationAdminHeader';
 
 interface IPageModel {
   organization: IOrganization;
@@ -64,10 +63,7 @@ class OrganizationMembersPage extends React.Component<IAsyncDataByIdProps<IPageM
 
     return (
       <ScrollableLayout className={this.props.className}>
-        <AdminHeader
-          titleComponent={<HeaderTitle title="Members"/>}
-          tabs={<OrganizationTabs id={organization._id || ''}/>}
-        />
+        <OrganizationAdminHeader organization={organization}/>
         <div className="content-area scrollable">
           <div className="participants-box">
             <h2>{t`Invite to Organization`}</h2>

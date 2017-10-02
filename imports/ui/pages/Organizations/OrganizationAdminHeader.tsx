@@ -27,15 +27,15 @@ interface IHeaderModel {
   organization: IOrganization;
 };
 
-const OrganizationAdminHeader = (props: IStyledComponent & { model: IHeaderModel }) => (
+const OrganizationAdminHeader = (props: IStyledComponent & IHeaderModel) => (
   <AdminHeader
     titleComponent={(
-      <OrganizationsDropdown current={props.model.organization}>
+      <OrganizationsDropdown current={props.organization}>
         <Button to="/organizations/create" className="btn-primary">Create Organization</Button>
       </OrganizationsDropdown>
     )}
-    tabs={<OrganizationTabs id={props.model.organization._id || ''}/>}
-    publicLink={`/organizations/${props.model.organization._id}`}
+    tabs={<OrganizationTabs id={props.organization._id || ''}/>}
+    publicLink={`/organizations/${props.organization._id}`}
   />);
 
 export default styled(OrganizationAdminHeader) `

@@ -64,7 +64,7 @@ const EventList = (props: { model: IEvent[] }) => (
 
 const OrganizeOrganisationsPage = (props: IStyledComponent & IAsyncDataByIdProps<IPageModel>) => (
   <ScrollableLayout id="OrganizeOrganizationPage" className={props.className}>
-    <OrganizationAdminHeader model={props.model}/>
+    <OrganizationAdminHeader organization={props.model.organization}/>
     <div className="content-area scrollable">
       <div className="stats organization-stats">
         <section className="participant-stats">
