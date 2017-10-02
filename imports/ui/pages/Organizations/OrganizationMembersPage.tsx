@@ -21,16 +21,20 @@ interface IPageModel {
   members: IOrganizationMember[];
 };
 
-type ErrorMethod = (error: Error | string | null) => void;
+type CallbackFunction = (error: string | null, result: any) => void;
 
-const changeMemberRole = (memberId: Mongo.ObjectID, role: RoleType, callback: ErrorMethod) => {
-  OrganizationMembers.update(memberId, {$set: {role}}, {}, (error: Meteor.Error) => {
+const changeMemberRole = (memberId: Mongo.ObjectID, role: RoleType, callback: CallbackFunction) => {
+  Meteor.call('organizationMembers.changeRole', {_id: memberId, role}, (error: Meteor.Error, result: any) => {
     // fetch translated error reason, the server is not aware of user language
-    callback(error.isClientSafe ? gettext(error.reason) : t`An unknown error occurred`);
+    if (error) {
+      callback(error.isClientSafe ? gettext(error.reason) : t`An unknown error occurred`, result);
+    } else {
+      callback(null, result);
+    }
   });
 };
 
-const OrganizationMemberRoleDropDown = (props: { model: IOrganizationMember, onError: ErrorMethod }) => (
+const OrganizationMemberRoleDropDown = (props: { model: IOrganizationMember, onError: CallbackFunction }) => (
   <section className="member-role dropdown">
     <button className="btn btn-default btn-sm dropdown-toggle" type="button"
             id={`roleDropdownMenuButtonFor${props.model._id}`}
@@ -47,16 +51,18 @@ const OrganizationMemberRoleDropDown = (props: { model: IOrganizationMember, onE
   </section>
 );
 
-const removeMember = (id: Mongo.ObjectID, callback: ErrorMethod) => {
+const removeMember = (id: Mongo.ObjectID, callback: CallbackFunction) => {
   Meteor.call('organizationMembers.remove', id, (error: Meteor.Error, result) => {
     if (error) {
       // fetch translated error reason, the server is not aware of user language
-      callback(error.isClientSafe ? gettext(error.reason) : t`An unknown error occurred`);
+      callback(error.isClientSafe ? gettext(error.reason) : t`An unknown error occurred`, null);
+    } else {
+      callback(null, result);
     }
   });
 };
 
-const OrganizationMemberEntry = (props: { model: IOrganizationMember, onError: ErrorMethod }) => (
+const OrganizationMemberEntry = (props: { model: IOrganizationMember, onError: CallbackFunction }) => (
   <li className="member-entry">
     <section className="member-icon" dangerouslySetInnerHTML={{__html: props.model.getIconHTML()}}/>
     <section className="member-name">{props.model.getUserName()}</section>
@@ -77,12 +83,12 @@ const OrganizationMemberEntry = (props: { model: IOrganizationMember, onError: E
   </li>
 );
 
-const ErrorBox = (props: { error: Error | string }) => (
+const ErrorBox = (props: { error: string }) => (
   <div className="error-box alert alert-danger" role="alert">{props.error}</div>
 );
 
 class OrganizationMembersPage extends React.Component<IAsyncDataByIdProps<IPageModel> & IStyledComponent> {
-  public state: { error: Error | string | null } = {
+  public state: { error: string | null } = {
     error: null,
   }
 
@@ -109,13 +115,14 @@ class OrganizationMembersPage extends React.Component<IAsyncDataByIdProps<IPageM
 
   private onInvite = (invitationEmailAddresses: string[],
                       callback: (error: Meteor.Error | null, result: any) => void) => {
+    this.setState({error: null});
     Meteor.call('organizationMembers.invite', {
       invitationEmailAddresses,
       organizationId: this.props.model.organization._id,
     }, callback);
   };
 
-  private onError = (error: Error | string | null) => {
+  private onError = (error: string | null) => {
     this.setState({error});
   };
 }
@@ -135,4 +142,4 @@ const ReactiveOrganizationMembersPage = reactiveSubscriptionByParams(
   }, 'organizations.by_id.private', 'organizationMembers.by_id.private', 'users.private');
 
 export default styled(ReactiveOrganizationMembersPage) `
-      `;
+`;

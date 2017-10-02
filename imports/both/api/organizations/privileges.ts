@@ -3,6 +3,7 @@ import {isApproved} from '../../lib/is-approved';
 import {OrganizationMembers} from '../organization-members/organization-members';
 import {IOrganization, Organizations} from './organizations';
 import {uniq} from 'lodash';
+import {AdministrativeRoles, RoleType} from '../organization-members/roles';
 
 export function isUserMemberOfOrganizationWithId(userId: Mongo.ObjectID, organizationId: Mongo.ObjectID) {
   if (!userId || !organizationId) {
@@ -29,13 +30,14 @@ export function getAccessibleOrganizationIdsForUserId(userId: Mongo.ObjectID) {
 // Functions for retrieving which roles a user has in which organization.
 // Note that admins are regarded as having all roles in all organizations.
 export function getAccessibleOrganizationIdsForRoles(userId: Mongo.ObjectID,
-                                                     includedRoles: string[] = []) {
+                                                     includedRoles: ReadonlyArray<RoleType> = []): Mongo.ObjectID[] {
   if (!userId) {
     return [];
   }
 
   if (isAdmin(userId)) {
-    return Organizations.find({}, {fields: {_id: 1}}).fetch().map((o) => o._id);
+    return Organizations.find({}, {fields: {_id: 1}})
+      .fetch().map((o) => o._id) as Mongo.ObjectID[];
   }
 
   return uniq(OrganizationMembers.find({
@@ -48,7 +50,7 @@ export function getAccessibleOrganizationIdsForRoles(userId: Mongo.ObjectID,
 // Admins are considered as having all roles in every organization.
 export function userHasRole(userId: Mongo.ObjectID,
                             organizationId: Mongo.ObjectID,
-                            includedRoles: string[] = []): boolean {
+                            includedRoles: ReadonlyArray<RoleType> = []): boolean {
   if (!userId || !organizationId || !includedRoles) {
     return false;
   }
@@ -69,7 +71,18 @@ export function userHasFullAccessToOrganizationId(userId: Mongo.ObjectID | null 
   }
   return isAdmin(userId) ||
     isApproved(userId) &&
-    userHasRole(userId, organizationId, ['manager', 'developer', 'founder']);
+    userHasRole(userId, organizationId, AdministrativeRoles);
+}
+
+// Returns the count of administrative roles in an organization
+export function usersWithFullAccessToOrganizationCount(organization: IOrganization): number {
+  if (!organization) {
+    return -1;
+  }
+
+  return OrganizationMembers.find(
+    {organizationId: organization._id, role: {$in: AdministrativeRoles}},
+  ).count();
 }
 
 // Returns true if the user is admin or can manage the organization, false

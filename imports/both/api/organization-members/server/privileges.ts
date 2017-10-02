@@ -1,15 +1,9 @@
-import {OrganizationMembers} from '../organization-members';
-import {userHasFullAccessToReferencedOrganization} from '../../organizations/privileges';
+// everything is denied
 
-OrganizationMembers.allow({
-  insert: userHasFullAccessToReferencedOrganization,
-  update: userHasFullAccessToReferencedOrganization,
-  remove: userHasFullAccessToReferencedOrganization,
-});
+// use
+//    organizationMembers.changeRole,
+//    organizationMembers.invite,
+//    organizationMembers.acceptInvitation,
+//    organizationMembers.remove
+// instead
 
-// Allow to remove your own organization memberships
-OrganizationMembers.allow({
-  remove(userId, organizationMember) {
-    return String(organizationMember.userId) === userId;
-  },
-});

@@ -34,7 +34,7 @@ export function getOrganizationsMemberships(userId: Mongo.ObjectID) {
 
 export function getOrganizationsWhereCurrentUserIsMember() {
   const userId = Meteor.userId();
-  const orgIds = getOrganizationsMemberships(userId);
+  const orgIds = getOrganizationsMemberships(userId as any as Mongo.ObjectID);
   return Organizations.find({_id: {$in: orgIds}});
 };
 

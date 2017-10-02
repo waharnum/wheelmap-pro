@@ -8,7 +8,11 @@ export const roles = Object.freeze([
   {label: t`Founder'`, value: 'founder'},
   {label: t`Volunteer`, value: 'volunteer'},
   {label: t`Member`, value: 'member'},
-]) as Array<{ label: string, value: RoleType }>;
+]) as ReadonlyArray<{ label: string, value: RoleType }>;
+
+export const AdministrativeRoles = Object.freeze(
+  ['manager', 'developer', 'founder'],
+) as ReadonlyArray<RoleType>;
 
 export function getLabelForRole(role: RoleType): string {
   const found = roles.find((re) => {

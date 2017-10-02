@@ -7,6 +7,11 @@ import {EmailInviteSchema} from '../../lib/invite-schema';
 SimpleSchema.extendOptions(['uniforms']);
 
 export const OrganizationMemberSchema = new SimpleSchema({
+  _id: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    optional: true,
+  },
   organizationId: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
