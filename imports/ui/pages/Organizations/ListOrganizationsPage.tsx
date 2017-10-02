@@ -1,11 +1,11 @@
-
 import * as React from 'react';
 import styled from 'styled-components';
+import {Mongo} from 'meteor/mongo';
 
-import { reactiveModelSubscription, IAsyncDataProps } from '../../components/reactiveModelSubscription';
-import { default as AdminHeader, HeaderTitle } from '../../components/AdminHeader';
-import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
-import { IStyledComponent } from '../../components/IStyledComponent';
+import {reactiveModelSubscription, IAsyncDataProps} from '../../components/reactiveModelSubscription';
+import {default as AdminHeader, HeaderTitle} from '../../components/AdminHeader';
+import {IOrganization, Organizations} from '../../../both/api/organizations/organizations';
+import {IStyledComponent} from '../../components/IStyledComponent';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 import Button from '../../components/Button';
 
@@ -21,7 +21,7 @@ const ListEntry = (props: IListEntryModelProps) => {
       {props.model.webSite}
       {props.model.logo}
       <Button to={`/organizations/${props.model._id}`}>View</Button>
-      {props.model.editableBy(Meteor.userId()) ?
+      {props.model.editableBy(Meteor.userId() as any as Mongo.ObjectID) ?
         <Button to={`/organizations/edit/${props.model._id}`}>Edit</Button> : ''}
     </div>
   );
@@ -36,9 +36,9 @@ const ListOrganizationPage = (props: IStyledComponent & IAsyncDataProps<IOrganiz
 
   return (
     <ScrollableLayout className={props.className}>
-      <AdminHeader titleComponent={<HeaderTitle title="All Organizations" />} />
+      <AdminHeader titleComponent={<HeaderTitle title="All Organizations"/>}/>
       <section>
-      {props.model.map((m) => <ListEntry key={m._id as React.Key} model={m} />)}
+        {props.model.map((m) => <ListEntry key={String(m._id)} model={m}/>)}
       </section>
       <Button to="/organizations/create">Create new organization</Button>
     </ScrollableLayout>
