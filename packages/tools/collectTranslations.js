@@ -20,7 +20,12 @@ gulp.task("ts-babel", function () {
         "c-3po",
         {
           "extract": {
-            "output": __dirname + "/../../used-strings.pot"
+            "output": __dirname + "/../../used-strings.pot",
+          },
+          "extractors": {
+            "gettext": {
+              "invalidFormat": 'skip',
+            },
           }
         }
       ]
