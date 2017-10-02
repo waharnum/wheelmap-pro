@@ -33,6 +33,7 @@ import EnsureUserLoggedIn from './components/EnsureUserLoggedIn';
 import AppLayoutScrollableAdmin from './_layouts/AppLayoutScrollableAdmin';
 import AppLayoutPublicOrganization from './_layouts/AppLayoutPublicOrganization';
 import AppLayoutPublicEvent from './_layouts/AppLayoutPublicEvent';
+import SignUpForOrganizationPage from './pages/Organizations/SignUpForOrganizationPage';
 
 const RedirectAccordingToUser = () => {
   const user = Meteor.user();
@@ -74,6 +75,7 @@ const AppRouter = (
       </Route>
 
       {/* Invitations */}
+      <Route path="/organizations/:_id/accept-invitation/:token" component={SignUpForOrganizationPage}/>
       <Route path="/events/:_id/accept-invitation/:token" component={SignUpForEventPage}/>
       <Route path="/events/:_id/public-invitation/:token" component={PublicSignUpForEventPage}/>
 
