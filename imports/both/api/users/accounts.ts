@@ -33,8 +33,9 @@ Accounts.ui.config({
     browserHistory.push('/');
   },
   onPostSignUpHook: () => {
+    const redirect = Session.get('loginRedirect');
     setLoginRedirect(null);
-    browserHistory.push('/');
+    redirect ? browserHistory.replace(redirect) : browserHistory.push('/');
   },
   minimumPasswordLength: 6,
 });
