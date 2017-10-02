@@ -13,7 +13,7 @@ const AppLayoutScrollableAdmin = (props: Props) => (
     <header className="main-header on-dark">
       <div className="left-side">
         <div className="title-bar">
-          <div className="organisation-logo">
+          <div className="organization-logo">
           </div>
           <h1>Canadian Abilities Foundation</h1>
         </div>
@@ -48,9 +48,9 @@ header.main-header {
   .title-bar {
     display: flex;
     
-    .organisation-logo {
+    .organization-logo {
       flex-shrink: 0;
-      background-image: url(/images/organisations/logo-abilities.png); 
+      background-image: url(/images/organizations/logo-abilities.png); 
       background-position: center center;
       background-repeat: no-repeat;
       background-size: 100% 100%;
@@ -134,7 +134,7 @@ header.main-header {
       flex-grow: 2;
       padding-top: 20px;
 
-      .organisation-logo {
+      .organization-logo {
         position: relative;
         width: 95px; /* FIXME: width should be dynamic */
         height: 52px;
@@ -216,7 +216,7 @@ header.main-header {
     flex-direction: column;
     justify-content: flex-end;
     
-    .organisation-logo {
+    .organization-logo {
       width: 192px; /* FIXME: width should be dynamic */
       height: 105px;
     }
@@ -254,7 +254,7 @@ header.main-header {
       flex-direction: column;
       justify-content: flex-end;
       
-      .organisation-logo {
+      .organization-logo {
         width: 192px; /* FIXME: width should be dynamic */
         height: 105px;
       }
@@ -282,7 +282,7 @@ header.main-header {
     flex-direction: row;
     justify-content: flex-start;
     
-    .organisation-logo {
+    .organization-logo {
       position: relative;
       width: 95px; /* FIXME: width should be dynamic */
       height: 52px;

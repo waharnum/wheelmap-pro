@@ -53,7 +53,7 @@ const ShowOrganizationPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledCo
   );
 };
 
-const ReactiveShowOrganisationPage = reactiveSubscriptionByParams(
+const ReactiveShowOrganizationPage = reactiveSubscriptionByParams(
   wrapDataComponent<IPageModel,
     IAsyncDataByIdProps<IPageModel | null>,
     IAsyncDataByIdProps<IPageModel>>(ShowOrganizationPage),
@@ -64,7 +64,7 @@ const ReactiveShowOrganisationPage = reactiveSubscriptionByParams(
   },
   'organizations.by_id.public', 'events.by_organizationId.public');
 
-export default styled(ReactiveShowOrganisationPage) `
+export default styled(ReactiveShowOrganizationPage) `
   .content-area {
     justify-content: center;
     align-content: center;

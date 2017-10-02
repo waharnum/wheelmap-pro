@@ -62,7 +62,7 @@ const EventList = (props: { model: IEvent[] }) => (
   </div>
 );
 
-const OrganizeOrganisationsPage = (props: IStyledComponent & IAsyncDataByIdProps<IPageModel>) => (
+const OrganizeOrganizationsPage = (props: IStyledComponent & IAsyncDataByIdProps<IPageModel>) => (
   <ScrollableLayout id="OrganizeOrganizationPage" className={props.className}>
     <OrganizationAdminHeader organization={props.model.organization}/>
     <div className="content-area scrollable">
@@ -88,10 +88,10 @@ const OrganizeOrganisationsPage = (props: IStyledComponent & IAsyncDataByIdProps
   </ScrollableLayout>
 );
 
-const ReactiveOrganizeOrganisationsPage = reactiveSubscriptionByParams(
+const ReactiveOrganizeOrganizationsPage = reactiveSubscriptionByParams(
   wrapDataComponent<IPageModel,
     IAsyncDataByIdProps<IPageModel | null>,
-    IAsyncDataByIdProps<IPageModel>>(OrganizeOrganisationsPage),
+    IAsyncDataByIdProps<IPageModel>>(OrganizeOrganizationsPage),
   (id): IPageModel | null => {
     const organization = Organizations.findOne(id);
     if (!organization) {
@@ -103,7 +103,7 @@ const ReactiveOrganizeOrganisationsPage = reactiveSubscriptionByParams(
   },
   'organizations.by_id.private', 'events.by_organizationId.private');
 
-const StyledReactiveOrganizeOrganisationsPage = styled(ReactiveOrganizeOrganisationsPage)`
+const StyledReactiveOrganizeOrganizationsPage = styled(ReactiveOrganizeOrganizationsPage)`
 
   .content-area {
     padding-top: 0;
@@ -279,4 +279,4 @@ const StyledReactiveOrganizeOrganisationsPage = styled(ReactiveOrganizeOrganisat
 
 `;
 
-export default StyledReactiveOrganizeOrganisationsPage;
+export default StyledReactiveOrganizeOrganizationsPage;

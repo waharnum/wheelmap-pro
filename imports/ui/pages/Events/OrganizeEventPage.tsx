@@ -328,7 +328,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
   }
 };
 
-const ReactiveOrganizeOrganisationsPage = reactiveSubscriptionByParams(
+const ReactiveOrganizeOrganizationsPage = reactiveSubscriptionByParams(
   wrapDataComponent<IPageModel,
     IAsyncDataByIdProps<IPageModel | null>,
     IAsyncDataByIdProps<IPageModel>>(OrganizeEventPage),
@@ -340,7 +340,7 @@ const ReactiveOrganizeOrganisationsPage = reactiveSubscriptionByParams(
   },
   'events.by_id.private', 'eventParticipants.by_eventId.private', 'organizations.by_eventId.private');
 
-export default styled(ReactiveOrganizeOrganisationsPage) `
+export default styled(ReactiveOrganizeOrganizationsPage) `
 
 /* -------------------------- event stats styling --------------------------------*/
 

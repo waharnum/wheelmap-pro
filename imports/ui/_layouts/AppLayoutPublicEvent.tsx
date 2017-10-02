@@ -1,7 +1,7 @@
 import * as React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 
-import { IStyledComponent } from '../components/IStyledComponent';
+import {IStyledComponent} from '../components/IStyledComponent';
 
 interface Props {
   bodyText: string;
@@ -13,17 +13,18 @@ const AppLayoutPublicEvent = (props: Props) => (
     <header className="main-header on-white for-event">
       <div className="left-side">
         <div className="title-bar">
-          <div className="organisation-logo"></div>
+          <div className="organization-logo"></div>
           <div className="meta-information">
             <h1>Mapathon Montreal</h1>
-            <p>We are an international organization for medical emergency relief. We provide medical emergency assistance in crisis and war zones. We collect medical facilities.</p>
+            <p>We are an international organization for medical emergency relief. We provide medical emergency
+              assistance in crisis and war zones. We collect medical facilities.</p>
           </div>
         </div>
       </div>
       <div className="right-side">
         <ol className="secondary-tools">
-          <li className="public-view"><a href="." >Public view</a></li>
-          <li className="user-menu"><a href="#" >Alex Bright</a></li>
+          <li className="public-view"><a href=".">Public view</a></li>
+          <li className="user-menu"><a href="#">Alex Bright</a></li>
         </ol>
       </div>
     </header>
@@ -45,9 +46,9 @@ header.main-header {
   .title-bar {
     display: flex;
     
-    .organisation-logo {
+    .organization-logo {
       flex-shrink: 0;
-      background-image: url(/images/organisations/logo-abilities.png); 
+      background-image: url(/images/organizations/logo-abilities.png); 
       background-position: center center;
       background-repeat: no-repeat;
       background-size: 100% 100%;
@@ -131,7 +132,7 @@ header.main-header {
       flex-grow: 2;
       padding-top: 20px;
 
-      .organisation-logo {
+      .organization-logo {
         position: relative;
         width: 95px; /* FIXME: width should be dynamic */
         height: 52px;
@@ -213,7 +214,7 @@ header.main-header {
     flex-direction: column;
     justify-content: flex-end;
     
-    .organisation-logo {
+    .organization-logo {
       width: 192px; /* FIXME: width should be dynamic */
       height: 105px;
     }
@@ -251,7 +252,7 @@ header.main-header {
       flex-direction: column;
       justify-content: flex-end;
       
-      .organisation-logo {
+      .organization-logo {
         width: 192px; /* FIXME: width should be dynamic */
         height: 105px;
       }
@@ -279,7 +280,7 @@ header.main-header {
     flex-direction: row;
     justify-content: flex-start;
     
-    .organisation-logo {
+    .organization-logo {
       position: relative;
       width: 95px; /* FIXME: width should be dynamic */
       height: 52px;

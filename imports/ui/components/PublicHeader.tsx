@@ -28,11 +28,11 @@ export const HeaderTitle = (props: IHeaderTitleProps) => {
     <div className="title-bar">
       {props.logo ? (
         <Link to={props.prefixLink || ''}> 
-          <div className="organisation-logo" style={{backgroundImage: `url(${props.logo})`}} />
+          <div className="organization-logo" style={{backgroundImage: `url(${props.logo})`}} />
         </Link>)
         : null}
       {props.prefixTitle && !props.logo ?
-        <h1 className="organisation-logo"><Link to={props.prefixLink || ''}>{props.prefixTitle}</Link></h1> : null}
+        <h1 className="organization-logo"><Link to={props.prefixLink || ''}>{props.prefixTitle}</Link></h1> : null}
       <div className="header-information">
         <h1><Link to={props.titleLink || ''}>{props.title}</Link></h1>
         <p>{props.description}</p>
@@ -93,7 +93,7 @@ export default styled(PublicHeader) `
       .title-bar {
         display: flex;
         
-        .organisation-logo {
+        .organization-logo {
           flex-shrink: 0;
           background-position: center center;
           background-repeat: no-repeat;
@@ -138,7 +138,7 @@ export default styled(PublicHeader) `
       .title-bar {
         display: flex;
         
-        .organisation-logo {
+        .organization-logo {
           flex-shrink: 0;
           position: relative;
           width: 95px;
