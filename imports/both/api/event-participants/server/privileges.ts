@@ -1,7 +1,7 @@
-import { Meteor } from 'meteor/meteor';
+import {Meteor} from 'meteor/meteor';
 
-import { EventParticipants } from '../event-participants';
-import { userHasFullAccessToReferencedOrganizationByMethod } from '../../organizations/privileges';
+import {EventParticipants} from '../event-participants';
+import {userHasFullAccessToReferencedOrganizationByMethod} from '../../organizations/privileges';
 
 EventParticipants.allow({
   insert: userHasFullAccessToReferencedOrganizationByMethod,
@@ -12,6 +12,6 @@ EventParticipants.allow({
 // Allow to remove your own organization memberships
 EventParticipants.allow({
   remove(userId, organizationMember) {
-    return organizationMember.userId === userId;
+    return String(organizationMember.userId) === userId;
   },
 });
