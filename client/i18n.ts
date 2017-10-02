@@ -22,6 +22,6 @@ export function preparei18n(callback: Function) {
     moment.locale(momentLocale);
 
     T9n.setLanguage(result.language || 'en');
-    callback();
+    callback(result.language);
   });
 }

@@ -1,5 +1,6 @@
 import SimpleSchema from 'simpl-schema';
 import {t} from 'c-3po';
+import {registerSchemaForI18n} from '../i18n/i18n';
 
 // allow custom uniforms fields
 SimpleSchema.extendOptions(['uniforms']);
@@ -20,3 +21,5 @@ export const EmailInviteSchema = new SimpleSchema({
     },
   },
 });
+
+registerSchemaForI18n(EmailInviteSchema);
