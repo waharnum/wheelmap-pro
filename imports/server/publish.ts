@@ -48,11 +48,15 @@ export function publishFields(publicationName: string,
       //
       // console.log('Using fields', fields, 'for', publicationName);
 
-      return collection.find(
+      const results = collection.find(
         // if there is no selector, search with a selector that will yield nothing
         visibleSelector || {_id: -1},
         Object.assign({}, options, {fields}),
       );
+
+      // console.log('Results for', publicationName, results.fetch());
+
+      return results;
     },
   );
 };

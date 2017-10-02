@@ -7,8 +7,10 @@ import {OrganizationsPublicFields} from '../../organizations/server/fields';
 import {
   OrganizationMemberByIdVisibleForUserIdSelector,
   OrganizationMembersPrivateFields,
+  OrganizationMembersPublicFields,
   OrganizationMemberVisibleForUserIdSelector,
   OrganizationVisibleForUserIdSelector,
+  buildByOrganizationIdAndTokenSelector,
 } from './fields';
 
 publishFields(
@@ -17,6 +19,12 @@ publishFields(
   OrganizationMembersPrivateFields,
   OrganizationMemberByIdVisibleForUserIdSelector);
 
+
+publishFields('organizationMembers.by_eventIdAndToken.public',
+  OrganizationMembers,
+  OrganizationMembersPublicFields,
+  buildByOrganizationIdAndTokenSelector,
+);
 
 publishFields(
   'organizationMembers.private',
@@ -29,3 +37,4 @@ publishFields(
   Organizations,
   OrganizationsPublicFields,
   OrganizationVisibleForUserIdSelector);
+

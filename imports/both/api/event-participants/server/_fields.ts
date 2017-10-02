@@ -77,7 +77,7 @@ export function buildVisibleForUserByEventIdSelector(userId: Mongo.ObjectID,
 
 export function buildByEventIdAndTokenSelector(userId: Mongo.ObjectID,
                                                eventId: Mongo.ObjectID,
-                                               params: { token: string }): Mongo.Selector | null {
+                                               params: { token: string }): Mongo.Selector {
 
   // always sanitize to ensure no injection is possible from params (e.g. sending {$ne: -1} as an object)
   check(params.token, String);
