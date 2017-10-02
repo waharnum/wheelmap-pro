@@ -3,19 +3,16 @@ import * as React from 'react';
 import * as moment from 'moment';
 
 import Button from '../../components/Button';
-import AdminTab from '../../components/AdminTab';
 import StaticMap from '../../components/StaticMap';
-import AdminHeader from '../../components/AdminHeader';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
-import OrganizationTabs from './OrganizationTabs';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
-import OrganizationsDropdown from '../../components/OrganizationsDropdown';
 import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
 
 import {IEvent} from '../../../both/api/events/events';
 import {IOrganization, Organizations} from '../../../both/api/organizations/organizations';
 import {colors} from '../../stylesheets/colors';
+import OrganizationAdminHeader from './OrganizationAdminHeader';
 
 interface IPageModel {
   organization: IOrganization;
@@ -67,15 +64,7 @@ const EventList = (props: { model: IEvent[] }) => (
 
 const OrganizeOrganisationsPage = (props: IStyledComponent & IAsyncDataByIdProps<IPageModel>) => (
   <ScrollableLayout id="OrganizeOrganizationPage" className={props.className}>
-    <AdminHeader
-      titleComponent={(
-        <OrganizationsDropdown current={props.model.organization}>
-          <Button to="/organizations/create" className="btn-primary">Create Organization</Button>
-        </OrganizationsDropdown>
-      )}
-      tabs={<OrganizationTabs id={props.model.organization._id || ''}/>}
-      publicLink={`/organizations/${props.model.organization._id}`}
-    />
+    <OrganizationAdminHeader model={props.model}/>
     <div className="content-area scrollable">
       <div className="stats organization-stats">
         <section className="participant-stats">
