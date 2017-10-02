@@ -11,8 +11,8 @@ import {
   IAsyncDataByIdProps,
   reactiveSubscriptionByParams,
 } from '../../components/reactiveModelSubscription';
-import {IOrganizationMember} from '../../../both/api/organization-members/organization-members';
-import {getLabelForRole} from '../../../both/api/organization-members/roles';
+import {IOrganizationMember, OrganizationMembers} from '../../../both/api/organization-members/organization-members';
+import {roles, getLabelForRole, RoleType} from '../../../both/api/organization-members/roles';
 import InviteByEmailForm from '../../components/InviteByEmailForm';
 import OrganizationAdminHeader from './OrganizationAdminHeader';
 
@@ -23,11 +23,35 @@ interface IPageModel {
 
 type ErrorMethod = (error: Error | string | null) => void;
 
-const removeMember = (id: Mongo.ObjectID, errBack: ErrorMethod) => {
-  Meteor.call('organizationMembers.remove', id, (error, result) => {
+const changeMemberRole = (memberId: Mongo.ObjectID, role: RoleType, callback: ErrorMethod) => {
+  OrganizationMembers.update(memberId, {$set: {role}}, {}, (error: Meteor.Error) => {
+    // fetch translated error reason, the server is not aware of user language
+    callback(error.isClientSafe ? gettext(error.reason) : t`An unknown error occurred`);
+  });
+};
+
+const OrganizationMemberRoleDropDown = (props: { model: IOrganizationMember, onError: ErrorMethod }) => (
+  <section className="member-role dropdown">
+    <button className="btn btn-default btn-sm dropdown-toggle" type="button"
+            id={`roleDropdownMenuButtonFor${props.model._id}`}
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {getLabelForRole(props.model.role)}
+      <span className="caret"/>
+    </button>
+    <div className="dropdown-menu" aria-labelledby={`roleDropdownMenuButtonFor${props.model._id}`}>
+      {roles.map((r) =>
+        (<li key={r.value}><a className="dropdown-item" onClick={() => {
+          changeMemberRole(props.model._id || '', r.value, props.onError);
+        }}>{getLabelForRole(r.value)}</a></li>))}
+    </div>
+  </section>
+);
+
+const removeMember = (id: Mongo.ObjectID, callback: ErrorMethod) => {
+  Meteor.call('organizationMembers.remove', id, (error: Meteor.Error, result) => {
     if (error) {
       // fetch translated error reason, the server is not aware of user language
-      errBack(error.isClientSafe ? gettext(error.reason) : t`An unknown error occurred`);
+      callback(error.isClientSafe ? gettext(error.reason) : t`An unknown error occurred`);
     }
   });
 };
@@ -40,7 +64,7 @@ const OrganizationMemberEntry = (props: { model: IOrganizationMember, onError: E
       (<section>
         {props.model.invitationState === 'error' ?
           <section className="member-error">{props.model.invitationError}</section> : null}
-        <section className="member-role">{getLabelForRole(props.model.role)}</section>
+        <OrganizationMemberRoleDropDown model={props.model} onError={props.onError}/>
         <section className="member-state">{props.model.invitationState}</section>
         <section className="member-remove">
           <button className="btn btn-danger" onClick={() => removeMember(props.model._id || '', props.onError)}>
@@ -70,16 +94,14 @@ class OrganizationMembersPage extends React.Component<IAsyncDataByIdProps<IPageM
       <ScrollableLayout className={this.props.className}>
         <OrganizationAdminHeader organization={organization}/>
         <div className="content-area scrollable">
-          <div className="participants-box">
-            <h2>{t`Invite to Organization`}</h2>
-            <InviteByEmailForm onSubmit={this.onInvite}/>
-            <h2>{t`Organization Members`}</h2>
-            {this.state.error ? <ErrorBox error={this.state.error}/> : null}
-            <ol>
-              {members.map((m) =>
-                (<OrganizationMemberEntry key={String(m._id)} model={m} onError={this.onError}/>))}
-            </ol>
-          </div>
+          {this.state.error ? <ErrorBox error={this.state.error}/> : null}
+          <h2>{t`Invite to Organization`}</h2>
+          <InviteByEmailForm onSubmit={this.onInvite}/>
+          <h2>{t`Organization Members`}</h2>
+          <ol>
+            {members.map((m) =>
+              (<OrganizationMemberEntry key={String(m._id)} model={m} onError={this.onError}/>))}
+          </ol>
         </div>
       </ScrollableLayout>
     );
