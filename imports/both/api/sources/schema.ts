@@ -74,6 +74,7 @@ export const SourcesSchema = new SimpleSchema({
   },
   'accessRestrictedTo.$': {
     type: String,
+    regEx: SimpleSchema.RegEx.Id,
   },
   hasRunningImport: {
     type: Boolean,

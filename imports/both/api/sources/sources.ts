@@ -9,7 +9,6 @@ export interface ISource extends ISourceMixin {
   // mongo id
   _id?: Mongo.ObjectID;
   // fields
-
   organizationId: Mongo.ObjectID;
   name: string;
   shortName: string;
@@ -21,14 +20,13 @@ export interface ISource extends ISourceMixin {
   streamChain: Array<{ parameters: Array<any & { inputMimeType }>, type: string } & any>;
   isFreelyAccessible: boolean;
   isRequestable: boolean;
-  accessRestrictedTo: string[];
+  accessRestrictedTo: Mongo.ObjectID[];
   hasRunningImport?: boolean;
   placeInfoCount: number;
   isShownOnStartPage?: boolean;
 };
 
 export const Sources = new Mongo.Collection<ISource>('Sources');
-
 
 Sources.schema = SourcesSchema;
 Sources.attachSchema(SourcesSchema);

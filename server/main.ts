@@ -28,7 +28,6 @@ import '../imports/both/api/event-participants/server/indexing';
 import '../imports/both/api/event-participants/server/privileges';
 import '../imports/both/api/event-participants/server/methods';
 
-
 // register sources
 import '../imports/both/api/sources/server/publications';
 import '../imports/both/api/sources/server/indexing';
