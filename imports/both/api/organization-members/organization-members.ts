@@ -3,6 +3,7 @@ import {Mongo} from 'meteor/mongo';
 import {RoleType} from './roles';
 import {OrganizationMemberMixin, IOrganizationMemberMixin} from './mixins';
 import {OrganizationMemberSchema} from './schema';
+import {InvitationStateType} from './invitationStates';
 
 export interface IOrganizationMember extends IOrganizationMemberMixin {
   // mongo id
@@ -11,7 +12,7 @@ export interface IOrganizationMember extends IOrganizationMemberMixin {
   organizationId: Mongo.ObjectID;
   userId: Mongo.ObjectID | null;
   gravatarHash?: string;
-  invitationState?: 'queuedForSending' | 'sent' | 'accepted' | 'error';
+  invitationState?: InvitationStateType;
   invitationError?: string;
   invitationToken?: string;
   invitationEmailAddress?: string;

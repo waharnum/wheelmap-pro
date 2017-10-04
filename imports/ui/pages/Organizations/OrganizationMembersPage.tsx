@@ -15,6 +15,7 @@ import {IOrganizationMember, OrganizationMembers} from '../../../both/api/organi
 import {roles, getLabelForRole, RoleType} from '../../../both/api/organization-members/roles';
 import InviteByEmailForm from '../../components/InviteByEmailForm';
 import OrganizationAdminHeader from './OrganizationAdminHeader';
+import {getLabelForInvitationState} from '../../../both/api/organization-members/invitationStates';
 
 interface IPageModel {
   organization: IOrganization;
@@ -71,7 +72,7 @@ const OrganizationMemberEntry = (props: { model: IOrganizationMember, onError: C
         {props.model.invitationState === 'error' ?
           <section className="member-error">{props.model.invitationError}</section> : null}
         <OrganizationMemberRoleDropDown model={props.model} onError={props.onError}/>
-        <section className="member-state">{props.model.invitationState}</section>
+        <section className="member-state">{getLabelForInvitationState(props.model.invitationState)}</section>
         <section className="member-remove">
           <button className="btn btn-danger" onClick={() => removeMember(props.model._id || '', props.onError)}>
             {t`Remove Member`}

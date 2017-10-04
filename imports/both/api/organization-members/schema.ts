@@ -2,6 +2,7 @@ import SimpleSchema from 'simpl-schema';
 
 import {roles} from './roles';
 import {EmailInviteSchema} from '../../lib/invite-schema';
+import {invitationStates} from './invitationStates';
 
 // allow custom uniforms fields
 SimpleSchema.extendOptions(['uniforms']);
@@ -28,7 +29,7 @@ export const OrganizationMemberSchema = new SimpleSchema({
   invitationState: {
     type: String,
     optional: true,
-    allowedValues: ['queuedForSending', 'sent', 'accepted', 'error'],
+    allowedValues: invitationStates.map((v) => v.value),
   },
   invitationError: {
     type: String,
