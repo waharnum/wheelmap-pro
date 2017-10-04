@@ -26,7 +26,7 @@ publishAndLog('organizations.by_id.private', (_id: Mongo.ObjectID) => {
   // always sanitize to ensure no injection is possible from params (e.g. sending {$ne: -1} as an object)
   check(_id, String);
 
-  const userId = Meteor.userId();
+  const userId = Meteor.userId() as any as Mongo.ObjectID;
   const allowedIds = intersection(getOrganizationsMemberships(userId), [_id]);
   return Organizations.find({_id: {$in: allowedIds}}, {limit: 1});
 });
