@@ -24,11 +24,11 @@ interface IPageModel {
 
 type CallbackFunction = (error: string | null, result: any) => void;
 
-const changeMemberRole = (memberId: Mongo.ObjectID, role: RoleType, callback: CallbackFunction) => {
+const changeMemberRole = (memberId: Mongo.ObjectID | undefined, role: RoleType, callback: CallbackFunction) => {
   Meteor.call('organizationMembers.changeRole', {_id: memberId, role}, (error: Meteor.Error, result: any) => {
     // fetch translated error reason, the server is not aware of user language
     if (error) {
-      callback(error.isClientSafe ? gettext(error.reason) : t`An unknown error occurred`, result);
+      callback(gettext(error.reason), result);
     } else {
       callback(null, result);
     }
@@ -46,17 +46,17 @@ const OrganizationMemberRoleDropDown = (props: { model: IOrganizationMember, onE
     <div className="dropdown-menu" aria-labelledby={`roleDropdownMenuButtonFor${props.model._id}`}>
       {roles.map((r) =>
         (<li key={r.value}><a className="dropdown-item" onClick={() => {
-          changeMemberRole(props.model._id || '', r.value, props.onError);
+          changeMemberRole(props.model._id, r.value, props.onError);
         }}>{getLabelForRole(r.value)}</a></li>))}
     </div>
   </section>
 );
 
-const removeMember = (id: Mongo.ObjectID, callback: CallbackFunction) => {
+const removeMember = (id: Mongo.ObjectID | undefined, callback: CallbackFunction) => {
   Meteor.call('organizationMembers.remove', id, (error: Meteor.Error, result) => {
     if (error) {
       // fetch translated error reason, the server is not aware of user language
-      callback(error.isClientSafe ? gettext(error.reason) : t`An unknown error occurred`, null);
+      callback(gettext(error.reason), null);
     } else {
       callback(null, result);
     }
@@ -67,14 +67,14 @@ const OrganizationMemberEntry = (props: { model: IOrganizationMember, onError: C
   <li className="member-entry">
     <section className="member-icon" dangerouslySetInnerHTML={{__html: props.model.getIconHTML()}}/>
     <section className="member-name">{props.model.getUserName()}</section>
-    {props.model.editableBy(Meteor.userId()) ?
+    {props.model.editableBy(Meteor.userId() as any as Mongo.ObjectID) ?
       (<section>
         {props.model.invitationState === 'error' ?
           <section className="member-error">{props.model.invitationError}</section> : null}
         <OrganizationMemberRoleDropDown model={props.model} onError={props.onError}/>
         <section className="member-state">{getLabelForInvitationState(props.model.invitationState)}</section>
         <section className="member-remove">
-          <button className="btn btn-danger" onClick={() => removeMember(props.model._id || '', props.onError)}>
+          <button className="btn btn-danger" onClick={() => removeMember(props.model._id, props.onError)}>
             {t`Remove Member`}
           </button>
         </section>

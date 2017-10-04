@@ -5,7 +5,7 @@ import {IOrganization, Organizations} from './organizations';
 import {uniq} from 'lodash';
 import {AdministrativeRoles, RoleType} from '../organization-members/roles';
 
-export function isUserMemberOfOrganizationWithId(userId: Mongo.ObjectID, organizationId: Mongo.ObjectID) {
+export function isUserMemberOfOrganizationWithId(userId: Mongo.ObjectID | null | undefined, organizationId: Mongo.ObjectID) {
   if (!userId || !organizationId) {
     return false;
   }
@@ -48,7 +48,7 @@ export function getAccessibleOrganizationIdsForRoles(userId: Mongo.ObjectID,
 
 // Returns true if the user has one of the given roles in the given organization, false otherwise.
 // Admins are considered as having all roles in every organization.
-export function userHasRole(userId: Mongo.ObjectID,
+export function userHasRole(userId: Mongo.ObjectID | null | undefined,
                             organizationId: Mongo.ObjectID,
                             includedRoles: ReadonlyArray<RoleType> = []): boolean {
   if (!userId || !organizationId || !includedRoles) {
@@ -87,7 +87,7 @@ export function usersWithFullAccessToOrganizationCount(organization: IOrganizati
 
 // Returns true if the user is admin or can manage the organization, false
 // otherwise. Admins are considered as having all roles in every organization.
-export function userHasFullAccessToOrganization(userId: Mongo.ObjectID,
+export function userHasFullAccessToOrganization(userId: Mongo.ObjectID | null | undefined,
                                                 organization: IOrganization): boolean {
   if (!userId || !organization) {
     return false;
@@ -98,7 +98,7 @@ export function userHasFullAccessToOrganization(userId: Mongo.ObjectID,
 
 // Returns true if the user is admin or can manage the organization referenced in the given MongoDB
 // document, false otherwise.
-export function userHasFullAccessToReferencedOrganization(userId: Mongo.ObjectID,
+export function userHasFullAccessToReferencedOrganization(userId: Mongo.ObjectID | null | undefined,
                                                           doc: { organizationId: Mongo.ObjectID }): boolean {
   if (!userId || !doc) {
     return false;
@@ -109,7 +109,7 @@ export function userHasFullAccessToReferencedOrganization(userId: Mongo.ObjectID
 
 // Returns true if the user is admin or can manage the organization referenced in the given MongoDB
 // document, false otherwise.
-export function userHasFullAccessToReferencedOrganizationByMethod(userId: Mongo.ObjectID,
+export function userHasFullAccessToReferencedOrganizationByMethod(userId: Mongo.ObjectID | null | undefined,
                                                                   doc: { getOrganizationId: () => (Mongo.ObjectID | null) }): boolean {
   if (!userId || !doc) {
     return false;

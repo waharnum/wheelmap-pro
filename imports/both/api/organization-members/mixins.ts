@@ -28,7 +28,7 @@ export const OrganizationMemberMixin = {
     }
     return `<img src="${getGravatarImageUrl(this.gravatarHash)}" class='user-icon'>`;
   },
-  editableBy(userId: Mongo.ObjectID) {
+  editableBy(userId: Mongo.ObjectID | null | undefined) {
     return userHasFullAccessToReferencedOrganization(userId, this);
   },
 } as IOrganizationMemberMixin;
