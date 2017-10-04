@@ -3,7 +3,7 @@ import {sortBy} from 'lodash';
 
 import {Apps} from '../apps/apps';
 import {isAdmin} from '../../lib/is-admin';
-import {Sources} from '../sources/sources';
+import {ISource, Sources} from '../sources/sources';
 import {IEvent, Events} from '../events/events';
 import {IOrganizationMember, OrganizationMembers} from '../organization-members/organization-members';
 import {userHasFullAccessToOrganizationId, isUserMemberOfOrganizationWithId} from './privileges';
@@ -20,8 +20,7 @@ export interface IOrganizationMixin {
   isFullyVisibleForUserId: (userId: Mongo.ObjectID) => boolean;
   getEvents: () => IEvent[];
   getMembers: () => IOrganizationMember[];
-  // TODO: Use correct type once Sources has been ported
-  getSources: () => any[];
+  getSources: () => ISource[];
   // TODO: Use correct type once App has been ported
   getApps: () => any[];
   getMostAuthoritativeUserThatCanApproveAccessRequests: () => any[];
