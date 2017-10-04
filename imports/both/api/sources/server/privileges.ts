@@ -1,42 +1,20 @@
-import { Meteor } from 'meteor/meteor';
-import { check, Match } from 'meteor/check';
+import {Meteor} from 'meteor/meteor';
+import {check, Match} from 'meteor/check';
 import {t} from 'c-3po';
-import { Sources } from '../sources';
-import { Organizations } from '/imports/both/api/organizations/organizations';
-import { Apps } from '/imports/both/api/apps/apps';
+import {Sources} from '../sources';
+import {Organizations} from '../../organizations/organizations';
+import {Apps} from '../../apps/apps';
 import {
   getAccessibleOrganizationIdsForUserId,
   userHasFullAccessToReferencedOrganization,
   userHasFullAccessToOrganizationId,
-} from '/imports/both/api/organizations/privileges';
+} from '../../organizations/privileges';
 
 Sources.allow({
   insert: userHasFullAccessToReferencedOrganization,
   update: userHasFullAccessToReferencedOrganization,
   remove: userHasFullAccessToReferencedOrganization,
 });
-
-Sources.publicFields = {
-  organizationId: 1,
-  licenseId: 1,
-  name: 1,
-  shortName: 1,
-  description: 1,
-  originWebsiteURL: 1,
-  languageId: 1,
-  isDraft: 1,
-  isFreelyAccessible: 1,
-  isRequestable: 1,
-  accessRestrictedTo: 1,
-  hasRunningImport: 1,
-  placeInfoCount: 1,
-  additionalAccessibilityInformation: 1,
-  'translations.additionalAccessibilityInformation': 1,
-};
-
-Sources.privateFields = {
-  streamChain: 1,
-};
 
 Sources.helpers({
   editableBy(userId) {
@@ -56,44 +34,44 @@ function sourceSelectorForOrganizationIds(organizationIds) {
   check(organizationIds, [String]);
 
   const otherOrganizationIdsWithAcceptedToS = Organizations.find(
-    { tocForOrganizationsAccepted: true },
-    { fields: { _id: 1 } }
+    {tocForOrganizationsAccepted: true},
+    {fields: {_id: 1}},
   ).map(organization => organization._id);
 
   return {
     $or: [
       // match sources of my own organizations
-      { organizationId: { $in: organizationIds } },
+      {organizationId: {$in: organizationIds}},
       // match published freely accessible sources of other organizations that have accepted ToS
       {
         isDraft: false,
         isFreelyAccessible: true,
-        organizationId: { $in: otherOrganizationIdsWithAcceptedToS },
+        organizationId: {$in: otherOrganizationIdsWithAcceptedToS},
       },
       // match published restricted-access sources of other organizations that have accepted ToS
       {
         isDraft: false,
         isFreelyAccessible: false,
-        organizationId: { $in: otherOrganizationIdsWithAcceptedToS },
-        accessRestrictedTo: { $elemMatch: { $in: organizationIds } },
+        organizationId: {$in: otherOrganizationIdsWithAcceptedToS},
+        accessRestrictedTo: {$elemMatch: {$in: organizationIds}},
       },
     ],
   };
 }
 
-Sources.visibleSelectorForUserId = (userId) => {
+export const visibleSelectorForUserId = (userId) => {
   check(userId, Match.Maybe(String));
   return sourceSelectorForOrganizationIds(getAccessibleOrganizationIdsForUserId(userId));
 };
 
-Sources.visibleSelectorForAppId = (appId) => {
+export const visibleSelectorForAppId = (appId) => {
   check(appId, String);
   const app = Apps.findOne(appId);
   const organizationId = app.organizationId;
-  return { $and: [sourceSelectorForOrganizationIds([organizationId]), { isDraft: false }] };
+  return {$and: [sourceSelectorForOrganizationIds([organizationId]), {isDraft: false}]};
 };
 
-Sources.apiParameterizedSelector = selector => selector;
+export const apiParameterizedSelector = selector => selector;
 
 export function checkExistenceAndFullAccessToSourceId(userId, sourceId) {
   check(sourceId, String);
@@ -103,7 +81,7 @@ export function checkExistenceAndFullAccessToSourceId(userId, sourceId) {
     throw new Meteor.Error(401, t`Please log in first.`);
   }
 
-  const source = Sources.findOne({ _id: sourceId });
+  const source = Sources.findOne({_id: sourceId});
   if (!source) {
     throw new Meteor.Error(404, t`Source not found.`);
   }
@@ -125,8 +103,8 @@ export function checkExistenceAndVisibilityForSourceId(userId, sourceId) {
 
   const source = Sources.findOne({
     $and: [
-      Sources.visibleSelectorForUserId(userId),
-      { _id: sourceId },
+      visibleSelectorForUserId(userId),
+      {_id: sourceId},
     ],
   });
   if (!source) {

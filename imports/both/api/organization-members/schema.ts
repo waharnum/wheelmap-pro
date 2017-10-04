@@ -1,8 +1,8 @@
 import SimpleSchema from 'simpl-schema';
 
 import {roles} from './roles';
-import {EmailInviteSchema} from '../../lib/invite-schema';
 import {invitationStates} from './invitationStates';
+import {EmailInviteSchema} from '../../lib/invite-schema';
 
 // allow custom uniforms fields
 SimpleSchema.extendOptions(['uniforms']);

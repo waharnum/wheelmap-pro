@@ -1,4 +1,4 @@
-import { Meteor } from 'meteor/meteor';
+import {Meteor} from 'meteor/meteor';
 
 // register organizations
 import '../imports/both/api/organizations/server/publications';
@@ -27,6 +27,13 @@ import '../imports/both/api/event-participants/server/publications';
 import '../imports/both/api/event-participants/server/indexing';
 import '../imports/both/api/event-participants/server/privileges';
 import '../imports/both/api/event-participants/server/methods';
+
+
+// register sources
+import '../imports/both/api/sources/server/publications';
+import '../imports/both/api/sources/server/indexing';
+import '../imports/both/api/sources/server/privileges';
+import '../imports/both/api/sources/server/methods';
 
 // configure account system
 import '../imports/both/api/users/accounts';
