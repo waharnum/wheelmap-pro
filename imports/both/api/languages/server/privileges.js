@@ -1,5 +1,5 @@
-import { isAdmin } from '/imports/both/lib/is-admin';
-import { Languages } from '../languages';
+import {isAdmin} from '/imports/both/lib/is-admin';
+import {Languages} from '../languages';
 
 Languages.allow({
   insert: isAdmin,
@@ -17,5 +17,3 @@ Languages.helpers({
 });
 
 Languages.visibleSelectorForUserId = () => ({});
-Languages.visibleSelectorForAppId = () => ({});
-Languages.apiParameterizedSelector = selector => selector;

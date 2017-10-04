@@ -1,4 +1,3 @@
-import {Apps} from '../../apps/apps';
 import {check} from 'meteor/check';
 import {intersection} from 'lodash';
 import {getAccessibleOrganizationIdsForUserId} from '../../organizations/privileges';
@@ -50,11 +49,6 @@ export function OrganizationVisibleForUserIdSelector(userId: Mongo.ObjectID): Mo
   return {
     _id: {$in: getAccessibleOrganizationIdsForUserId(userId)},
   };
-};
-
-export function OrganizationMemberVisibleForAppIdSelector(appId: Mongo.ObjectID): Mongo.Selector {
-  const app = Apps.findOne(appId);
-  return {organizationId: app.organizationId};
 };
 
 export function buildByOrganizationIdAndTokenSelector(userId: Mongo.ObjectID,

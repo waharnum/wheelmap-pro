@@ -1,5 +1,5 @@
-import { isAdmin } from '/imports/both/lib/is-admin';
-import { GlobalStats } from '../global-stats';
+import {isAdmin} from '/imports/both/lib/is-admin';
+import {GlobalStats} from '../global-stats';
 
 GlobalStats.allow({
   insert: isAdmin,
@@ -18,4 +18,3 @@ GlobalStats.helpers({
 });
 
 GlobalStats.visibleSelectorForUserId = () => ({});
-GlobalStats.visibleSelectorForAppId = () => ({});

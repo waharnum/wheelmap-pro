@@ -1,10 +1,10 @@
-import { check } from 'meteor/check';
+import {check} from 'meteor/check';
 import {
   getAccessibleOrganizationIdsForUserId,
   userHasFullAccessToReferencedOrganization,
 } from '/imports/both/api/organizations/privileges';
-import { SourceImports } from '../source-imports';
-import { Sources } from '/imports/both/api/sources/sources';
+import {SourceImports} from '../source-imports';
+import {Sources} from '/imports/both/api/sources/sources';
 
 SourceImports.allow({
   insert: userHasFullAccessToReferencedOrganization,
@@ -48,31 +48,24 @@ SourceImports.helpers({
 
 // An import is visible if the user has access to its source.
 SourceImports.visibleSelectorForUserId = (userId) => {
-  if (!userId) { return null; }
+  if (!userId) {
+    return null;
+  }
   check(userId, String);
   const selector = Sources.visibleSelectorForUserId(userId);
-  const sourceIds = Sources.find(selector, { fields: { _id: 1 } }).fetch().map(s => s._id);
+  const sourceIds = Sources.find(selector, {fields: {_id: 1}}).fetch().map(s => s._id);
   return {
-    sourceId: { $in: sourceIds },
-  };
-};
-
-SourceImports.visibleSelectorForAppId = (appId) => {
-  check(appId, String);
-  const selector = Sources.visibleSelectorForAppId(appId);
-  const sourceIds = Sources.find(selector, { fields: { _id: 1 } }).fetch().map(s => s._id);
-  return {
-    sourceId: { $in: sourceIds },
+    sourceId: {$in: sourceIds},
   };
 };
 
 SourceImports.fromFreelyAccessibleSourcesSelector = () => {
   const freelyAccessibleSourceIds = Sources.find(
-    { isFreelyAccessible: 1 },
-    { fields: { _id: 1 } }
+    {isFreelyAccessible: 1},
+    {fields: {_id: 1}}
   ).fetch().map(source => source._id);
 
   return {
-    _id: { $in: freelyAccessibleSourceIds },
+    _id: {$in: freelyAccessibleSourceIds},
   };
 };

@@ -4,7 +4,6 @@ import {isAdmin} from '../../../lib/is-admin';
 import {PlaceInfos} from '../place-infos';
 import {Sources} from '../../sources/sources';
 import {
-  SourceVisibleSelectorForAppId,
   SourceVisibleSelectorForUserId,
 } from '../../sources/server/privileges';
 
@@ -40,9 +39,4 @@ export const PlaceInfoVisibleSelectorForUserId = (userId) => {
 
   check(userId, String);
   return placeInfoSelectorForSourceSelector(SourceVisibleSelectorForUserId(userId));
-};
-
-export const PlaceInfoVisibleSelectorForAppId = (appId) => {
-  check(appId, String);
-  return placeInfoSelectorForSourceSelector(SourceVisibleSelectorForAppId(appId));
 };

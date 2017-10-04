@@ -24,7 +24,7 @@ export const stairsFormat = {
     isHighContrast: false,
     isAntiSlip: true,
   },
-  name: 'mainStaris',
+  name: 'mainStairs',
   stepHeight: 1,
   hasHandRail: true,
   hasStairLift: true,

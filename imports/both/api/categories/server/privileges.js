@@ -1,5 +1,5 @@
-import { isAdmin } from '/imports/both/lib/is-admin';
-import { Categories } from '../categories.js';
+import {isAdmin} from '/imports/both/lib/is-admin';
+import {Categories} from '../categories.js';
 
 Categories.allow({
   insert: isAdmin,
@@ -19,4 +19,3 @@ Categories.helpers({
 });
 
 Categories.visibleSelectorForUserId = () => ({});
-Categories.visibleSelectorForAppId = () => ({});

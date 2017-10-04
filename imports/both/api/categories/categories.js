@@ -1,5 +1,5 @@
-import { Mongo } from 'meteor/mongo';
-import { Match } from 'meteor/check';
+import {Mongo} from 'meteor/mongo';
+import {Match} from 'meteor/check';
 import SimpleSchema from 'simpl-schema';
 
 export const Categories = new Mongo.Collection('Categories');
@@ -54,5 +54,3 @@ Categories.schema = new SimpleSchema({
 Categories.attachSchema(Categories.schema);
 
 Categories.visibleSelectorForUserId = () => ({});
-Categories.visibleSelectorForAppId = () => ({});
-Categories.apiParameterizedSelector = selector => selector;

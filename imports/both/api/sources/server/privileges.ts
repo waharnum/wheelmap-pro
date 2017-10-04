@@ -3,7 +3,6 @@ import {check, Match} from 'meteor/check';
 import {t} from 'c-3po';
 import {Sources} from '../sources';
 import {Organizations} from '../../organizations/organizations';
-import {Apps} from '../../apps/apps';
 import {
   getAccessibleOrganizationIdsForUserId,
   userHasFullAccessToReferencedOrganization,
@@ -63,15 +62,6 @@ export const SourceVisibleSelectorForUserId = (userId) => {
   check(userId, Match.Maybe(String));
   return sourceSelectorForOrganizationIds(getAccessibleOrganizationIdsForUserId(userId));
 };
-
-export const SourceVisibleSelectorForAppId = (appId) => {
-  check(appId, String);
-  const app = Apps.findOne(appId);
-  const organizationId = app.organizationId;
-  return {$and: [sourceSelectorForOrganizationIds([organizationId]), {isDraft: false}]};
-};
-
-export const SourceApiParameterizedSelector = selector => selector;
 
 export function checkExistenceAndFullAccessToSourceId(userId, sourceId) {
   check(sourceId, String);

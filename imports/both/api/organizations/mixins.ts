@@ -1,7 +1,6 @@
 import {Mongo} from 'meteor/mongo';
 import {sortBy} from 'lodash';
 
-import {Apps} from '../apps/apps';
 import {isAdmin} from '../../lib/is-admin';
 import {ISource, Sources} from '../sources/sources';
 import {IEvent, Events} from '../events/events';
@@ -21,8 +20,6 @@ export interface IOrganizationMixin {
   getEvents: () => IEvent[];
   getMembers: () => IOrganizationMember[];
   getSources: () => ISource[];
-  // TODO: Use correct type once App has been ported
-  getApps: () => any[];
   getMostAuthoritativeUserThatCanApproveAccessRequests: () => any[];
 }
 
@@ -67,9 +64,6 @@ export const OrganizationMixin = {
   getSources() {
     const sources = Sources.find({organizationId: this._id}).fetch();
     return sortBy(sortBy(sources, (s) => -s.placeInfoCount), 'isDraft');
-  },
-  getApps() {
-    return Apps.find({organizationId: this._id}).fetch();
   },
   getMostAuthoritativeUserThatCanApproveAccessRequests(): Meteor.User | null {
     for (const role of ACCESS_REQUEST_APPROVING_ROLES) {

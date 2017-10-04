@@ -1,5 +1,5 @@
-import { userHasFullAccessToReferencedOrganization } from '/imports/both/api/organizations/privileges';
-import { Licenses } from '../licenses';
+import {userHasFullAccessToReferencedOrganization} from '/imports/both/api/organizations/privileges';
+import {Licenses} from '../licenses';
 
 Licenses.allow({
   insert: userHasFullAccessToReferencedOrganization,
@@ -18,5 +18,3 @@ Licenses.publicFields = {
 };
 
 Licenses.visibleSelectorForUserId = () => ({});
-Licenses.visibleSelectorForAppId = () => ({});
-Licenses.apiParameterizedSelector = selector => selector;

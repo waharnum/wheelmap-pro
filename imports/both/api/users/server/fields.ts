@@ -1,8 +1,6 @@
-import {map} from 'lodash';
-import {uniq} from 'lodash';
-import {compact} from 'lodash';
+import {map, uniq, compact} from 'lodash';
+import {Mongo} from 'meteor/mongo';
 
-import {Apps} from '../../apps/apps';
 import {OrganizationMembers} from '../../organization-members/organization-members';
 import {getActiveOrganizationId} from '../../organizations/organizations';
 import {OrganizationMemberVisibleForUserIdSelector} from '../../organization-members/server/fields';
@@ -51,11 +49,6 @@ export const UserVisibleSelectorForUserIdSelector = (userId: Mongo.ObjectID): Mo
       {_id: userId},
     ],
   };
-};
-
-export const UserVisibleSelectorForAppIdSelector = (appId: Mongo.ObjectID): Mongo.Selector | null => {
-  const app = Apps.findOne(appId);
-  return getUserSelectorForMemberSelector({organizationId: app.organizationId});
 };
 
 export const ActiveOrganizationForUserIdSelector = (userId: Mongo.ObjectID): Mongo.Selector | null => {
