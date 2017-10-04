@@ -49,6 +49,7 @@
     "uniforms-bootstrap3": "^1.20.4"
   },
   "devDependencies": {
+    "@types/fibers": "0.0.29",
     "@types/lodash": "^4.14.76",
     "@types/meteor": "^1.4.7",
     "@types/node": "^7.0.5",

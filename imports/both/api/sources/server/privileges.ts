@@ -59,19 +59,19 @@ function sourceSelectorForOrganizationIds(organizationIds) {
   };
 }
 
-export const visibleSelectorForUserId = (userId) => {
+export const SourceVisibleSelectorForUserId = (userId) => {
   check(userId, Match.Maybe(String));
   return sourceSelectorForOrganizationIds(getAccessibleOrganizationIdsForUserId(userId));
 };
 
-export const visibleSelectorForAppId = (appId) => {
+export const SourceVisibleSelectorForAppId = (appId) => {
   check(appId, String);
   const app = Apps.findOne(appId);
   const organizationId = app.organizationId;
   return {$and: [sourceSelectorForOrganizationIds([organizationId]), {isDraft: false}]};
 };
 
-export const apiParameterizedSelector = selector => selector;
+export const SourceApiParameterizedSelector = selector => selector;
 
 export function checkExistenceAndFullAccessToSourceId(userId, sourceId) {
   check(sourceId, String);
@@ -103,7 +103,7 @@ export function checkExistenceAndVisibilityForSourceId(userId, sourceId) {
 
   const source = Sources.findOne({
     $and: [
-      visibleSelectorForUserId(userId),
+      SourceVisibleSelectorForUserId(userId),
       {_id: sourceId},
     ],
   });

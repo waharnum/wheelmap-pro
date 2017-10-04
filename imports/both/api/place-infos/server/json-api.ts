@@ -1,14 +1,12 @@
-import cloneDeep from 'lodash/cloneDeep';
-import set from 'lodash/set';
-import omit from 'lodash/omit';
-import { geoDistance } from '/imports/both/lib/geo-distance';
-import { Sources } from '/imports/both/api/sources/sources';
+import {cloneDeep, set, omit} from 'lodash';
+import {geoDistance} from '../../../lib/geo-distance';
+import {Sources} from '../../sources/sources';
 import {
   pathsInObject,
   getTranslationForAccessibilityAttribute,
-} from '/imports/server/i18n/ac-format-translations';
-import { Categories } from '/imports/both/api/categories/categories';
-import { PlaceInfos } from '/imports/both/api/place-infos/place-infos';
+} from '../../../../server/i18n/ac-format-translations';
+import {Categories} from '../../categories/categories';
+import {IPlaceInfo, PlaceInfos} from '../place-infos';
 
 const helpers = {
   getLocalizedCategory(locale) {
@@ -31,9 +29,12 @@ const helpers = {
 
 
 // Convert a given plain MongoDB document (not transformed) into a GeoJSON feature
-PlaceInfos.convertToGeoJSONFeature = (doc, coordinatesForDistance, locale) => {
-  const properties = {};
-  Object.assign(properties, doc.properties, doc);
+export const convertToGeoJSONFeature = (doc: IPlaceInfo, coordinatesForDistance, locale) => {
+  let properties = Object.assign({} as {
+    distance?: number,
+    localizedCategory?: string,
+    accessibility?: any,
+  }, doc.properties, doc);
   if (coordinatesForDistance && properties.geometry && properties.geometry.coordinates) {
     properties.distance = geoDistance(coordinatesForDistance, properties.geometry.coordinates);
   }
@@ -49,7 +50,7 @@ PlaceInfos.convertToGeoJSONFeature = (doc, coordinatesForDistance, locale) => {
   };
 };
 
-PlaceInfos.wrapAPIResponse = ({ results, req, related, resultsCount }) => {
+export const wrapAPIResponse = ({results, req, related, resultsCount}) => {
   // This is checked in buildSelectorAndOptions already, so no extra check here
   let coordinates;
   if (req.query.latitude && req.query.longitude) {
@@ -63,11 +64,11 @@ PlaceInfos.wrapAPIResponse = ({ results, req, related, resultsCount }) => {
     featureCount: results.length,
     totalFeatureCount: resultsCount,
     related,
-    features: results.map(doc => PlaceInfos.convertToGeoJSONFeature(doc, coordinates, locale)),
+    features: results.map(doc => convertToGeoJSONFeature(doc, coordinates, locale)),
   };
 };
 
-PlaceInfos.relationships = {
+export const PlaceInfosRelationships = {
   belongsTo: {
     source: {
       foreignCollection: Sources,
@@ -78,4 +79,4 @@ PlaceInfos.relationships = {
 
 PlaceInfos.helpers(helpers);
 
-PlaceInfos.includePathsByDefault = ['source.license'];
+export const PlaceInfosIncludePathsByDefault = ['source.license'];

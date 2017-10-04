@@ -11,7 +11,7 @@ export function buildSelectorAndOptions({ req, _id, collection, appId, userId })
   const selectors = [];
 
   if (!collection.apiParameterizedSelector) {
-    // To make the collection accessible as a developer, implement the `apiParameterizedSelector` method.
+    // To make the collection accessible as a developer, implement the `SourceApiParameterizedSelector` method.
     throw new Meteor.Error(404, `${collection._name} collection is not accessible over API yet. If you need access to it, you can contact us at support@accessibility.cloud.`);
   }
 

@@ -1,24 +1,28 @@
-import pick from 'lodash/pick';
+import {pick} from 'lodash';
 import SimpleSchema from 'simpl-schema';
-import { FilterPresets } from '/imports/both/api/filter-presets/filter-presets';
+import {FilterPresets} from '../../filter-presets/filter-presets';
+
+interface IFieldsQuery {
+  filter: string;
+}
+
+const FieldsSchema = new SimpleSchema({
+  filter: {
+    type: String,
+    optional: true,
+  },
+});
 
 // Returns MongoDB query options for given request
 
 export function filterPresetSelector(req) {
-  const fieldsQuery = pick(req.query, 'filter');
-
-  const schema = new SimpleSchema({
-    filter: {
-      type: String,
-      optional: true,
-    },
-  });
+  const fieldsQuery = pick(req.query, 'filter') as IFieldsQuery;
 
   // Clean the data to remove whitespaces and have correct types
-  schema.clean(fieldsQuery);
+  FieldsSchema.clean(fieldsQuery);
 
   // Throw ValidationError if something is wrong
-  schema.validate(fieldsQuery);
+  FieldsSchema.validate(fieldsQuery);
 
   if (fieldsQuery.filter) {
     const filter = FilterPresets.findOne(fieldsQuery.filter);
