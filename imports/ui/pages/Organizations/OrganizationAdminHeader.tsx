@@ -32,7 +32,7 @@ const OrganizationAdminHeader = (props: IStyledComponent & IHeaderModel) => (
   <AdminHeader
     titleComponent={(
       <OrganizationsDropdown current={props.organization}>
-        <Button to="/organizations/create" className="btn-primary">Create Organization</Button>
+        <Button to="/organizations/create">Create Organization</Button>
       </OrganizationsDropdown>
     )}
     tabs={<OrganizationTabs id={props.organization._id || ''}/>}

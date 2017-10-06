@@ -96,7 +96,8 @@ header.main-header {
         background-position: center center;
         background-repeat: no-repeat;
         background-size: contain;
-        /* background-color: white; /* logos are optimized to work on public header and on white backgrounds */ 
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
 
         a {
           text-overflow: ellipsis;

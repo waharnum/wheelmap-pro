@@ -1,5 +1,6 @@
 import {Link} from 'react-router';
 import styled from 'styled-components';
+import { colors } from '../stylesheets/colors';
 import * as React from 'react';
 import {wrapDataComponent} from './AsyncDataComponent';
 
@@ -62,4 +63,61 @@ const StyledReactiveOrganizationDropdown = styled<OrganizationDropdownExternalTy
   }
 `;
 
-export default StyledReactiveOrganizationDropdown;
+export default styled(StyledReactiveOrganizationDropdown) `
+
+ul {
+  width: 20em;
+  padding: 8px;
+  background-color: ${colors.bgAnthracite};
+
+  li a {
+    font-size: 21px;
+    line-height: 34px;
+    font-weight: 300;
+    margin: 4px 0;
+    background: transparent !important;
+  }
+  
+  a.btn {
+    color: ${colors.ctaGreen} !important;
+  }
+
+  li:hover,
+  li.active:hover {
+
+    a {
+      background: rgba(255, 255, 255, 0.2) !important;
+    }
+
+    &:after {
+      opacity: 1;
+    }
+  }
+
+  li.active,
+  li:hover {
+    position: relative;
+    background: transparent;
+
+    a {
+      font-weight: 800;
+      background: transparent;
+    }
+
+    &:after { /* checkmark icon */
+      content: "";
+      position: absolute;
+      top: 5px;
+      right: 12px;
+      width: 20px;
+      height: 20px;
+      color: white;
+      opacity: 0.5;
+      font-family: "iconfield-v03";
+      font-size: 21px;
+      text-align: center;
+    }
+  } 
+}
+
+`;
