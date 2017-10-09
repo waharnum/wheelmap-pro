@@ -80,6 +80,7 @@ export const OrganizationSchema = new SimpleSchema({
     },
   },
   tocForOrganizationsAccepted: {
+    label: t`Accept Terms & Conditions`,
     type: Boolean,
     allowedValues: [true],
     defaultValue: false,
