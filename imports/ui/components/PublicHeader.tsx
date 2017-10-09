@@ -106,6 +106,12 @@ export default styled(PublicHeader) `
             white-space: nowrap;
           }      
         }
+
+        .header-information {
+          p {
+            font-size: 16px;
+          }
+        }
       }
 
       .right-side {

@@ -30,14 +30,14 @@ const EventListEntry = (props: { model: IEvent }) => (
           <p className="event-region">{props.model.regionName}</p>
         </div>
         <div className="time-until-event">
-          <p>{moment(props.model.startTime).diff(moment(), 'days')}</p>
+          <p>{moment(props.model.startTime).diff(moment(), t`days`)}</p>
           <small>{t`Days Left`}</small>
         </div>
       </div>
       <div className="event-footer">
         <div className="stats event-stats">
           <section className="participant-stats">
-            <span className="participants-invited">99<small>{`invited`}</small></span>
+            <span className="participants-invited">99<small>{t`invited`}</small></span>
             <span className="participants-registered key-figure">98<small>{t`registered`}</small></span>
           </section>
           <section className="location-stats">

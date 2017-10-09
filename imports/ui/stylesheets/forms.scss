@@ -41,7 +41,8 @@ label,
 
 .btn-primary,
 .btn-primary.active,
-.btn-primary:active {
+.btn-primary:active,
+.btn-primary:focus {
   color: white;
   background-color: $cta-green;
   box-shadow: none;

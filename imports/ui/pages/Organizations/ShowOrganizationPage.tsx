@@ -5,15 +5,16 @@ import * as moment from 'moment';
 
 import MapLayout from '../../layouts/MapLayout';
 
-import {default as PublicHeader, HeaderTitle} from '../../components/PublicHeader';
-
 import Button from '../../components/Button';
-import {wrapDataComponent} from '../../components/AsyncDataComponent';
-import {IStyledComponent} from '../../components/IStyledComponent';
 import Map from '../../components/Map';
-import {IOrganization, Organizations} from '../../../both/api/organizations/organizations';
+import {IStyledComponent} from '../../components/IStyledComponent';
+import {wrapDataComponent} from '../../components/AsyncDataComponent';
 import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
+
 import {IEvent} from '../../../both/api/events/events';
+import {IOrganization, Organizations} from '../../../both/api/organizations/organizations';
+import {colors} from '../../stylesheets/colors';
+import {default as PublicHeader, HeaderTitle} from '../../components/PublicHeader';
 
 interface IPageModel {
   organization: IOrganization;
@@ -40,13 +41,35 @@ const ShowOrganizationPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledCo
         <Map/>
         {event ? (
           <div className="map-overlay">
-            <div className="event-box">
-              <div className="event-body">
-                <h3>{event.name} ({event.status})</h3>
-                <div>{moment(event.startTime).format('LLLL')}</div>
-                <div>{event.regionName}</div>
-                <div>{moment(event.startTime).diff(moment(), 'days')} {t`Days Left`}</div>
-                <Button to={`/events/${event._id}`}>{t`Join Us`}</Button>
+            <div className="box-area">
+              <div className="event-box">
+                <div className="event-information">
+                  <div className="event-description">
+                    <h3>{event.name} ({event.status})</h3>
+                    <h4>{moment(event.startTime).format('LL')}</h4>
+                    <p className="event-region">{event.regionName}</p>
+                  </div>
+                    <Button to={`/events/${event._id}`} className='btn-primary'>{t`Join Us`}</Button>
+                </div>
+                <div className="event-footer">
+                  <div className="stats event-stats">
+                    <section className="participant-stats">
+                      <span className="participants-registered key-figure">98
+                          <small>{t`registered`}</small>
+                      </span>
+                    </section>
+                    <section className="location-stats">
+                      <span className="locations-mapped key-figure">98
+                        <small>{t`mapped`}</small>
+                      </span>
+                    </section>
+                    <section className="event-stats">
+                      <span className="time-until-event key-figure">{moment(event.startTime).diff(moment(), 'days')}
+                        <small>{t`Days Left`}</small>
+                      </span>
+                    </section>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -79,10 +102,132 @@ export default styled(ReactiveShowOrganizationPage) `
     justify-content: center;
     align-content: center;
   
-    .event-box {
+    .box-area {
       margin: auto;
-      background: white;
-      padding: 20px 30px;
-      box-shadow: 0 0 7px 1px rgba(0,0,0,0.4);
+
+      .event-box {
+        margin: 10px;
+        padding: 16px 16px 0 16px;
+        background: white;
+        box-shadow: 0 0 2px 0 rgba(55,64,77,0.40);
+
+        .event-information {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          flex-wrap: wrap;
+          
+          .event-description {         
+            
+            h3,
+            h4 {
+              margin-top: 0px;
+              margin-bottom: 4px;
+              font-size: 21px;
+              font-weight: 300 !important;
+            }
+            h4 {
+              opacity: 0.6;
+            }
+          }
+          
+          .time-until-event {
+            text-align: center;
+
+            p {
+              margin: 0;
+              font-size: 32px;
+              line-height: 32px;
+              font-weight: 200 !important;
+            }
+
+            small {
+              font-size: 11px;
+              line-height: 11px;
+              font-weight: 300;
+              text-transform: uppercase;
+            }
+          } 
+        }
+
+        .event-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+    
+          a.btn {
+            margin-bottom: 10px;
+            padding-right: 0;
+          }
+        }
+
+        .stats {
+          padding-top: 20px;
+          background-color: white;
+          display: flex;
+          justify-content: flex-start;
+          
+          &.organization-stats {
+            border-bottom: 1px solid ${colors.shadowGrey};
+          }
+      
+          section {
+            padding: 0px 10px 0 10px;
+            text-align: center;
+            border-right: 1px solid ${colors.shadowGrey};
+            display: flex;
+      
+            &:last-child {
+              border-right: 0;
+            }
+      
+            span {
+              position: relative;
+              padding: 0 10px 16px 10px;
+              font-size: 30px;
+              line-height: 30px;
+              font-weight: 200;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+      
+              &.key-figure {
+                font-size: 32px;
+                // font-weight: 800;
+              }
+      
+              small {
+                font-size: 11px;
+                line-height: 11px;
+                font-weight: 300;
+                text-transform: uppercase;
+              }
+            }
+      
+            &:before {
+              position: relative;
+              top: 2px;
+              left: 0;
+              width: 27px;
+              height: 27px;
+              content: " ";
+              background-image: url(/images/icon-person@2x.png); 
+              background-position: center center;
+              background-repeat: no-repeat;
+              background-size: 100% 100%;
+            }
+          }
+      
+          /* prefix icons*/
+          section.participant-stats:before { background-image: url(/images/icon-person@2x.png); }
+          section.location-stats:before { background-image: url(/images/icon-location@2x.png); }
+          section.event-stats:before { background-image: url(/images/icon-date@2x.png); }
+          section.new-event:before { 
+            width: 0;
+            height: 0;
+            background-image: none; 
+          }
+        }
+      }
     }
   }`;
