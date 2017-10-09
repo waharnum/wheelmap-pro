@@ -1,4 +1,4 @@
-import { t } from 'c-3po';
+import {t} from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
 import * as moment from 'moment';
