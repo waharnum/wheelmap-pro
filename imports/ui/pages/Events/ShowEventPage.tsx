@@ -13,6 +13,7 @@ import {wrapDataComponent} from '../../components/AsyncDataComponent';
 import {IOrganization} from '../../../both/api/organizations/organizations';
 import {default as PublicHeader, HeaderTitle} from '../../components/PublicHeader';
 import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
+import {colors} from '../../stylesheets/colors';
 
 interface IPageModel {
   organization: IOrganization;
@@ -55,24 +56,30 @@ const HeaderShareAction = () => (
 const FinishedEventMapContent = (props: { event: IEvent }) => (
   <div className="event-stats">
     <div className="event-picture-container">
-      <img src={props.event.photoUrl} alt={t`Event picture`}/>
+      {props.event.photoUrl?<img src={props.event.photoUrl} alt={t`Event picture`} />:null}
       <section className="image-overlay">
         <div className="participant-count">18</div>
         <div className="participants-block">
           <section className="participants-label">{t`Participants`}</section>
-          <section className="participants-icons">{Array(18).join(' ­')}</section>
+          <section className="participants-icons">{Array(18).join('p ­')}</section>
         </div>
       </section>
     </div>
-    <div>
+    <div className="stats-box">
       <div className="places-block">
-        <section className="poi-icon"></section>
-        <section className="planned-label"><b>{40}</b>{t`Planned`}</section>
-        <section className="achieved-label"><b>{96}</b> {t`Achieved`}</section>
+        <section className="poi-icon"></section>
+        <section className="planned-label">
+          <p>{40}</p>
+          <small>{t`Planned`}</small>
+        </section>
+        <section className="achieved-label">
+          <p>{96}</p> 
+          <small>{t`Achieved`}</small>
+        </section>
       </div>
       <div className="places-graph">
-        <section style={{width: '20%'}} className="line-graph-achieved">{20}%</section>
-        <section style={{width: '60%'}} className="line-graph-failed">{60}%</section>
+        <section style={{width: '60%'}} className="line-graph-achieved">{60}%</section>
+        <section style={{width: '20%'}} className="line-graph-failed">{20}%</section>
         <section style={{width: '20%'}} className="line-graph-remaining">{20}%</section>
       </div>
     </div>
@@ -116,54 +123,74 @@ export default styled(ReactiveShowEventPage) `
     align-content: center;
     
     .event-stats {
-      background-color: white;
       width: 400px;    
       position: absolute;
-      right: 20px;
+      right: 10px;
       bottom: 40px;
+      background-color: white;
+      box-shadow: 0 0 2px 0 rgba(55,64,77,0.40);
       
+      .stats-box {
+        padding: 10px;
+      }
+
       .places-block {
         display: flex;
-        margin: 10px;
-        justify-content: space-around;
-        
-        b {      
-          font-size: 35px;
-          display: block;
-        }
+        justify-content: space-between;
         
         .poi-icon {
-          font-size: 35px;
-          font-family: 'iconfield-v03';
-          margin-left: 10px;
-          margin-right: 50px;
+          content: " ";
+          width: 42px;
+          height: 42px;
+          background-image: url(/images/icon-location@2x.png); 
+          background-position: center center;
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
         }
-        .planned-label, .achieved-label {
+        
+        section {
           text-align: center;
-          font-weight: 400;
+
+          p {
+            margin: 0;
+            padding-top: 4px;
+            font-size: 32px;
+            line-height: 28px;
+            font-weight: 200;
+          }
+
+          small {
+            font-size: 11px;
+            line-height: 11px;
+            font-weight: 300;
+            text-transform: uppercase;
+          }
+        }
+
+        section.achieved-label p {
+          font-weight: 800;
         }
       }
-      
+ 
       .places-graph {
-        margin: 10px;
+        margin-top: 4px;
         
         section {
           width: 30%;
-          height: 25px;      
-          padding: 5px;
-          line-height: 15px;
+          height: 18px;      
+          padding-right: 4px;
+          line-height: 18px;
           display: inline-block;
           text-align: right;
-          vertical-align: middle;
           font-weight: 400;
         }
         
         .line-graph-achieved {
-          background-color: lightgreen;
+          background-color: ${colors.ctaGreen};
           color: white;
         }
         .line-graph-failed {
-          background-color: lightcoral;
+          background-color: ${colors.errorRed};
           color: white;
         }
         .line-graph-remaining {
@@ -176,6 +203,7 @@ export default styled(ReactiveShowEventPage) `
         position: relative;
         
         img {
+          min-height: 88px;
           width: 100%;
         }
         
@@ -185,34 +213,38 @@ export default styled(ReactiveShowEventPage) `
           bottom: 0px;
           padding: 10px;
           width: 100%;
+          background-color: rgba(0, 0, 0, 0.4);
           
           .participant-count {
-            font-size: 48px;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px black; 
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 36px;
           }
           
           .participants-block {
-            display: flex;
             margin-right: 10px;
+            display: flex;
+            justify-content: flex-start;
             
-            .participants-label {
+            section.participants-label {
               margin-right: 10px;
-              text-shadow: 1px 1px 2px black; 
+              margin-top: 4px;
               font-weight: 400;
+              font-size: 11px;
+              line-height: 14px;
+              text-transform: uppercase;
             }
-            .participants-icons {          
+
+            section.participants-icons {          
               margin-right: 10px;
               font-family: 'iconfield-v03';
-              text-shadow: 1px 1px 2px black; 
-              font-size: 10px;
-              flex-grow: 1;
+              font-size: 11px;
             }
           }
         }
       }
     }
-  
+
     .join-button {
       margin: auto;    
       box-shadow: 0 0 7px 1px rgba(0,0,0,0.4);
