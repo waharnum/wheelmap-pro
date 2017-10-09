@@ -34,7 +34,7 @@ schema.extend({
   photoUrl: {
     uniforms: {
       component: ImageLinkUrlField,
-      help: 'Optimal a 640 x 400 PNG-file.',
+      help: t`Optimal a 640 x 400 PNG-file.`,
     },
   },
 });
