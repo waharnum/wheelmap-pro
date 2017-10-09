@@ -9,6 +9,10 @@ Plugin.registerCompiler({
   class PoCompiler {
     processFilesForTarget(files) {
       files.forEach((file) => {
+        if (!file.getPathInPackage().startsWith("i18n")) {
+          return;
+        }
+
         // Process and add the output.
         const translationsObject = c3poLoader.loadFile(file.getPathInPackage());
 
