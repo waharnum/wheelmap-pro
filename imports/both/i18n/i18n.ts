@@ -22,6 +22,9 @@ export function localeChanged(locale: string) {
       if (origNode.label) {
         resultNode.label = gettext(origNode.label);
       }
+      if (origNode.uniforms && origNode.uniforms.help) {
+        resultNode.uniforms.help = gettext(origNode.uniforms.help);
+      }
       if (origNode.uniforms && origNode.uniforms.placeholder) {
         resultNode.uniforms.placeholder = gettext(origNode.uniforms.placeholder);
       }
