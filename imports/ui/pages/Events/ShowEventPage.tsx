@@ -4,25 +4,14 @@ import * as moment from 'moment';
 import {t} from 'c-3po';
 
 import MapLayout from '../../layouts/MapLayout';
-
-import Map from 'wheelmap-react/lib/components/Map/Map';
-import 'wheelmap-react/src/Map.css'
-
-import config from 'wheelmap-react/lib/lib/config';
-
-config.mapboxAccessToken = Meteor.settings.public.mapbox;
-
-
-// import {AutoSizedStaticMap as Map} from '../../components/StaticMap';
-
-import {default as PublicHeader, HeaderTitle} from '../../components/PublicHeader';
-
+import Map from '../../components/Map';
 import Button from '../../components/Button';
 import {Countdown} from '../../components/Countdown';
 import {IEvent, Events} from '../../../both/api/events/events';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
 import {IOrganization} from '../../../both/api/organizations/organizations';
+import {default as PublicHeader, HeaderTitle} from '../../components/PublicHeader';
 import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
 
 interface IPageModel {
@@ -63,7 +52,7 @@ const FinishedEventHeader = () => (
 );
 
 const FinishedEventMapContent = (props: { event: IEvent }) => (
-  <div className="map-overlay event-stats">
+  <div className="event-stats">
     <div className="event-picture-container">
       <img src={props.event.photoUrl} alt={t`Event picture`}/>
       <section className="image-overlay">
@@ -100,7 +89,9 @@ const ShowEventPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent
       {showResultPage ? <FinishedEventHeader/> : <OngoingEventHeader event={event}/>}
       <div className="content-area">
         <Map/>
-        {showResultPage ? <FinishedEventMapContent event={event}/> : <OngoingEventMapContent/>}
+        <div className="map-overlay">
+          {showResultPage ? <FinishedEventMapContent event={event}/> : <OngoingEventMapContent/>}
+        </div>
       </div>
     </MapLayout>
   );
@@ -118,116 +109,114 @@ const ReactiveShowEventPage = reactiveSubscriptionByParams(
   }, 'events.by_id.public', 'organizations.by_eventId.public');
 
 export default styled(ReactiveShowEventPage) `
-  .content-area {
+    .map-overlay {  
+    display: flex;
     justify-content: center;
     align-content: center;
-    display: flex;
-  }
-  
-  .map-overlay {
-    position: relative;
-  }
-
-  .event-stats {
-    background-color: white;
-    width: 400px;    
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
     
-    .places-block {
-      display: flex;
-      margin: 10px;
-      justify-content: space-around;
+    .event-stats {
+      background-color: white;
+      width: 400px;    
+      position: absolute;
+      right: 20px;
+      bottom: 40px;
       
-      b {      
-        font-size: 35px;
-        display: block;
-      }
-      
-      .poi-icon {
-        font-size: 35px;
-        font-family: 'iconfield-v03';
-        margin-left: 10px;
-        margin-right: 50px;
-      }
-      .planned-label, .achieved-label {
-        text-align: center;
-        font-weight: 400;
-      }
-    }
-    
-    .places-graph {
-      margin: 10px;
-      
-      section {
-        width: 30%;
-        height: 25px;      
-        padding: 5px;
-        line-height: 15px;
-        display: inline-block;
-        text-align: right;
-        vertical-align: middle;
-        font-weight: 400;
-      }
-      
-      .line-graph-achieved {
-        background-color: lightgreen;
-        color: white;
-      }
-      .line-graph-failed {
-        background-color: lightcoral;
-        color: white;
-      }
-      .line-graph-remaining {
-        background-color: lightgrey;
-        color: black;
-      }
-    }
-    
-    .event-picture-container {
-      position: relative;
-      
-      img {
-        width: 100%;
-      }
-      
-      section.image-overlay {
-        position: absolute;
-        color: white;
-        bottom: 0px;
-        padding: 10px;
-        width: 100%;
+      .places-block {
+        display: flex;
+        margin: 10px;
+        justify-content: space-around;
         
-        .participant-count {
-          font-size: 48px;
-          font-weight: bold;
-          text-shadow: 1px 1px 2px black; 
+        b {      
+          font-size: 35px;
+          display: block;
         }
         
-        .participants-block {
-          display: flex;
-          margin-right: 10px;
+        .poi-icon {
+          font-size: 35px;
+          font-family: 'iconfield-v03';
+          margin-left: 10px;
+          margin-right: 50px;
+        }
+        .planned-label, .achieved-label {
+          text-align: center;
+          font-weight: 400;
+        }
+      }
+      
+      .places-graph {
+        margin: 10px;
+        
+        section {
+          width: 30%;
+          height: 25px;      
+          padding: 5px;
+          line-height: 15px;
+          display: inline-block;
+          text-align: right;
+          vertical-align: middle;
+          font-weight: 400;
+        }
+        
+        .line-graph-achieved {
+          background-color: lightgreen;
+          color: white;
+        }
+        .line-graph-failed {
+          background-color: lightcoral;
+          color: white;
+        }
+        .line-graph-remaining {
+          background-color: lightgrey;
+          color: black;
+        }
+      }
+      
+      .event-picture-container {
+        position: relative;
+        
+        img {
+          width: 100%;
+        }
+        
+        section.image-overlay {
+          position: absolute;
+          color: white;
+          bottom: 0px;
+          padding: 10px;
+          width: 100%;
           
-          .participants-label {
-            margin-right: 10px;
+          .participant-count {
+            font-size: 48px;
+            font-weight: bold;
             text-shadow: 1px 1px 2px black; 
-            font-weight: 400;
           }
-          .participants-icons {          
+          
+          .participants-block {
+            display: flex;
             margin-right: 10px;
-            font-family: 'iconfield-v03';
-            text-shadow: 1px 1px 2px black; 
-            font-size: 10px;
-            flex-grow: 1;
+            
+            .participants-label {
+              margin-right: 10px;
+              text-shadow: 1px 1px 2px black; 
+              font-weight: 400;
+            }
+            .participants-icons {          
+              margin-right: 10px;
+              font-family: 'iconfield-v03';
+              text-shadow: 1px 1px 2px black; 
+              font-size: 10px;
+              flex-grow: 1;
+            }
           }
         }
       }
     }
+  
+    .join-button {
+      margin: auto;    
+      box-shadow: 0 0 7px 1px rgba(0,0,0,0.4);
+    }
   }
 
-  .join-button {
-    margin: auto;    
-    box-shadow: 0 0 7px 1px rgba(0,0,0,0.4);
-  }
+  
 `;

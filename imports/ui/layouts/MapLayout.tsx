@@ -25,9 +25,21 @@ export default styled(MapLayout) `
   .content-area {
     flex-grow: 1;
     position: relative;
-
-    > div.auto-sized-map {
+    
+    justify-content: center;
+    align-content: center;
+    display: flex;
+    
+    .map-overlay {
       position: absolute;
+      z-index: 800;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      
+      * {
+        pointer-events: auto;
+      }
     }
   }
 `;

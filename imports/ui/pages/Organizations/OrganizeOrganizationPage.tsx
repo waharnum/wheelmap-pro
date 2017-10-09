@@ -4,7 +4,7 @@ import * as React from 'react';
 import * as moment from 'moment';
 
 import Button from '../../components/Button';
-import StaticMap from '../../components/StaticMap';
+import Map from '../../components/Map';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
@@ -51,7 +51,7 @@ const EventListEntry = (props: { model: IEvent }) => (
     <div className="event-status corner-ribbon">
       {props.model.status}
     </div>
-    <StaticMap className="event-mini-map" containerWidth={180} containerHeight={180}/>
+    <Map className="event-mini-map"/>
   </div>
 );
 

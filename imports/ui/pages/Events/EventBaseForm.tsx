@@ -1,5 +1,5 @@
+import Map from '../../components/Map';
 import {t} from 'c-3po';
-import {AutoSizedStaticMap} from '../../components/StaticMap';
 import * as React from 'react';
 import styled from 'styled-components';
 import {browserHistory} from 'react-router';
@@ -81,7 +81,7 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
           </AutoForm>
         </div>
         <div className="content-right">
-          <AutoSizedStaticMap/>
+          <Map/>
         </div>
       </div>);
   }
@@ -103,7 +103,7 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
       strippedDoc.startTime = moment(strippedDoc.startTime).subtract(moment().utcOffset(), 'minutes').toDate();
       if (id != null) {
         console.log('Updating doc', strippedDoc, id);
-        Events.update({_id: id}, {$set: strippedDoc}, (error, count) => {
+        Events.update({_id: id}, {$set: strippedDoc}, {}, (error, count) => {
           console.log('Updated ', _id, count);
           if (!error && _id) {
             resolve(_id);
@@ -146,5 +146,6 @@ export const EventBaseForm = styled(InternalEventBaseForm) `
   }
   .content-right {
     flex-grow: 1;
+    display: flex;
   }
 `;
