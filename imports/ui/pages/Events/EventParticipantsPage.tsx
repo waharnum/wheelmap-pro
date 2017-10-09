@@ -22,7 +22,7 @@ interface IPageModel {
   organization: IOrganization;
 }
 
-const removeParticipant = (id: Mongo.ObjectID) => {
+const removeParticipant = (id: Mongo.ObjectID | undefined) => {
   Meteor.call('eventParticipants.remove', id, (error, result) => {
     // TODO: handle error!
     console.log('eventParticipants.remove', error, result);
@@ -34,12 +34,11 @@ const EventParticipantEntry = (props: { model: IEventParticipant }) => (
     <section className="participant-icon" dangerouslySetInnerHTML={{__html: props.model.getIconHTML()}}/>
     <section className="participant-name">{props.model.getUserName()}</section>
     <section className="participant-user glyphicon">{props.model.userId ? 'p' : ''}</section>
-    <section className="participant-state">{props.model.invitationState}</section>
     <section className="participant-state">{getLabelForInvitationState(props.model.invitationState)}</section>
     {props.model.invitationState === 'error' ?
       <section className="participant-error">{props.model.invitationError}</section> : null}
     <section className="participant-remove glyphicon">
-      <a onClick={() => removeParticipant(props.model._id || '')}>x</a>
+      <a onClick={() => removeParticipant(props.model._id)}>x</a>
     </section>
   </li>
 );
@@ -66,7 +65,7 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
               prefixLink={`/organizations/${organization._id}/organize`}
             />
           )}
-          tabs={<EventTabs id={event._id || ''}/>}
+          tabs={<EventTabs id={event._id}/>}
           publicLink={`/events/${event._id}`}
         />
         <div className="content-area scrollable hsplit">
