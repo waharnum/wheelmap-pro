@@ -5,6 +5,16 @@ import {t} from 'c-3po';
 
 import MapLayout from '../../layouts/MapLayout';
 
+import Map from 'wheelmap-react/lib/components/Map/Map';
+import 'wheelmap-react/src/Map.css'
+
+import config from 'wheelmap-react/lib/lib/config';
+
+config.mapboxAccessToken = Meteor.settings.public.mapbox;
+
+
+// import {AutoSizedStaticMap as Map} from '../../components/StaticMap';
+
 import {default as PublicHeader, HeaderTitle} from '../../components/PublicHeader';
 
 import Button from '../../components/Button';
@@ -14,7 +24,6 @@ import {IStyledComponent} from '../../components/IStyledComponent';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
 import {IOrganization} from '../../../both/api/organizations/organizations';
 import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
-import {AutoSizedStaticMap} from '../../components/StaticMap';
 
 interface IPageModel {
   organization: IOrganization;
@@ -90,7 +99,7 @@ const ShowEventPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent
       <PublicEventHeader event={event} organization={organization}/>
       {showResultPage ? <FinishedEventHeader/> : <OngoingEventHeader event={event}/>}
       <div className="content-area">
-        <AutoSizedStaticMap/>
+        <Map/>
         {showResultPage ? <FinishedEventMapContent event={event}/> : <OngoingEventMapContent/>}
       </div>
     </MapLayout>

@@ -1,4 +1,6 @@
 @import "../../../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+@import '../../../../node_modules/leaflet/dist/leaflet.css';
+@import '../../../../node_modules/leaflet.locatecontrol/src/L.Control.Locate.scss';
 @import "./colors.scss";
 @import "./fonts.scss";
 
@@ -16,8 +18,8 @@ body {
 }
 
 * {
-  margin:0;
-  padding:0;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -44,7 +46,7 @@ a {
   align-items: center;
   display: flex;
   justify-content: center;
-  background-color: rgba(50,50,50,0.5);
+  background-color: rgba(50, 50, 50, 0.5);
 }
 
 .user-icon {
