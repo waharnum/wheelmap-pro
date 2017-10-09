@@ -5,6 +5,7 @@ import {map} from 'lodash';
 import {Random} from 'meteor/random';
 import {Email} from 'meteor/email';
 import {check} from 'meteor/check';
+import {t} from 'c-3po';
 
 import {Organizations} from '../../organizations/organizations';
 import {getDisplayedNameForUser} from '../../../lib/user-name';

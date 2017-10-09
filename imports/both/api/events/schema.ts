@@ -1,4 +1,6 @@
 import SimpleSchema from 'simpl-schema';
+import {t} from 'c-3po';
+import {registerSchemaForI18n} from '../../i18n/i18n';
 
 // allow custom uniforms fields
 SimpleSchema.extendOptions(['uniforms']);
@@ -9,29 +11,29 @@ export const EventSchema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
   },
   'name': {
-    label: 'Name',
+    label: t`Name`,
     type: String,
     max: 1000,
     uniforms: {
-      placeholder: 'e.g. Event title',
+      placeholder: t`e.g. Event title`,
     },
   },
   'description': {
-    label: 'Description (optional)',
+    label: t`Description (optional)`,
     type: String,
     max: 1000,
     optional: true,
     uniforms: {
-      placeholder: 'e.g. Healthcare places in…',
+      placeholder: t`e.g. Healthcare places in…`,
     },
   },
   'regionName': {
-    label: 'Region name',
+    label: t`Region name`,
     type: String,
     max: 200,
     optional: true,
     uniforms: {
-      placeholder: 'e.g. Berlin Alexanderplatz',
+      placeholder: t`e.g. Berlin Alexanderplatz`,
     },
   },
   'region': {
@@ -54,37 +56,37 @@ export const EventSchema = new SimpleSchema({
     type: Number,
   },
   'startTime': {
-    label: 'Start Date and Time',
+    label: t`Start Date and Time`,
     type: Date,
     optional: true,
   },
   'endTime': {
-    label: 'End Date and Time',
+    label: t`End Date and Time`,
     type: Date,
     optional: true,
   },
   'webSiteUrl': {
-    label: 'Website URL',
+    label: t`Website URL`,
     type: String,
     regEx: SimpleSchema.RegEx.Url,
     max: 1000,
     optional: true,
     uniforms: {
-      placeholder: 'e.g. http://www.example.com',
+      placeholder: t`e.g. http://www.example.com`,
     },
   },
   'photoUrl': {
-    label: 'URL to a picture of the event',
+    label: t`URL to a picture of the event`,
     type: String,
     regEx: SimpleSchema.RegEx.Url,
     max: 1000,
     optional: true,
     uniforms: {
-      placeholder: 'e.g. http://www.example.com/photo.jpg',
+      placeholder: t`e.g. http://www.example.com/photo.jpg`,
     },
   },
   'invitationToken': {
-    label: 'Invitation token',
+    label: t`Invitation token`,
     type: String,
     max: 50,
     optional: true,
@@ -98,7 +100,7 @@ export const EventSchema = new SimpleSchema({
     optional: true,
   },
   'targets.mappedPlacesCount': {
-    label: 'Goal for mapped places',
+    label: t`Goal for mapped places`,
     type: Number,
     optional: true,
   },
@@ -107,8 +109,10 @@ export const EventSchema = new SimpleSchema({
     allowedValues: ['draft', 'planned', 'ongoing', 'completed', 'canceled'],
   },
   'openFor': {
-    label: 'Open for…',
+    label: t`Open for…`,
     type: String,
     allowedValues: ['inviteOnly', 'everybody'],
   },
 });
+
+registerSchemaForI18n(EventSchema);

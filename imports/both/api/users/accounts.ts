@@ -6,6 +6,7 @@ import {LocationDescriptor} from 'history';
 import {browserHistory} from 'react-router';
 import SimpleSchema from 'simpl-schema';
 import {BoolField} from 'uniforms-bootstrap3';
+import {t} from 'c-3po';
 
 export function setLoginRedirect(redirect: LocationDescriptor | null) {
   Session.set('loginRedirect', redirect);
@@ -98,18 +99,18 @@ SimpleSchema.extendOptions(['uniforms']);
 
 export const GuestUserSchema = new SimpleSchema({
   username: {
-    label: 'What is your name (or nickname)?',
+    label: t`What is your name (or nickname)?`,
     type: String,
     min: 3,
     uniforms: {
-      placeholder: 'e.g. Petra',
+      placeholder: t`e.g. Petra`,
     },
   },
   toc: {
-    label: 'Terms and Conditions',
+    label: t`Terms and Conditions`,
     type: Boolean,
     uniforms: {
-      help: 'Provide link to t&c here',
+      help: t`Provide link to t&c here`,
       component: BoolField,
     },
     allowedValues: [true],
@@ -118,11 +119,11 @@ export const GuestUserSchema = new SimpleSchema({
 
 export const ClaimAccountSchema = new SimpleSchema({
   email: {
-    label: 'email',
+    label: t`email`,
     type: String,
     regEx: SimpleSchema.RegEx.Email,
     uniforms: {
-      placeholder: 'e.g. petra@example.com',
+      placeholder: t`e.g. petra@example.com`,
     },
   },
 });

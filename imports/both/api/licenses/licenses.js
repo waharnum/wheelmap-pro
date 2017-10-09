@@ -5,6 +5,7 @@ import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { Organizations } from '/imports/both/api/organizations/organizations';
 import { userHasFullAccessToOrganizationId } from '/imports/both/api/organizations/privileges';
+import {t} from 'c-3po';
 
 export const Licenses = new Mongo.Collection('Licenses');
 
@@ -15,44 +16,44 @@ Licenses.schema = new SimpleSchema({
   },
   name: {
     type: String,
-    label: 'Official english title',
+    label: t`Official english title`,
     max: 1000,
   },
   shortName: {
     type: String,
-    label: 'shortName (optional)',
+    label: t`Short name (optional)`,
     optional: true,
     max: 1000,
   },
   websiteURL: {
     type: String,
-    label: 'Link to descriptive website (optional)',
+    label: t`Link to descriptive website (optional)`,
     regEx: SimpleSchema.RegEx.Url,
     optional: true,
     max: 1000,
   },
   fullTextURL: {
     type: String,
-    label: 'Link to full legal text (optional)',
+    label: t`Link to full legal text (optional)`,
     regEx: SimpleSchema.RegEx.Url,
     optional: true,
     max: 1000,
   },
   plainTextSummary: {
     type: String,
-    label: 'Plaintext summary (optional)',
+    label: t`Plaintext summary (optional)`,
     max: 100000,
     optional: true,
   },
   consideredAs: {
     type: String,
-    label: 'Considered as...',
+    label: t`Considered as...`,
     max: 100,
     allowedValues: [
-      { label: 'Public Domain (CC0)', value: 'CC0' },
-      { label: 'Free, with Attribution required (CCBY)', value: 'CCBY' },
-      { label: 'Share Alike (CCSA)', value: 'CCSA' },
-      { label: 'Restricted / Proprietary (©)', value: 'restricted' },
+      { label: t`Public Domain (CC0)`, value: 'CC0' },
+      { label: t`Free, with Attribution required (CCBY)`, value: 'CCBY' },
+      { label: t`Share Alike (CCSA)`, value: 'CCSA' },
+      { label: t`Restricted / Proprietary (©)`, value: 'restricted' },
     ],
   },
 });
