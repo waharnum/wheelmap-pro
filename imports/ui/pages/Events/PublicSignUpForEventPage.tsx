@@ -14,7 +14,7 @@ import {IStyledComponent} from '../../components/IStyledComponent';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
 import PublicHeader, {HeaderTitle} from '../../components/PublicHeader';
 import {IAsyncDataByIdProps, reactiveSubscriptionByParams} from '../../components/reactiveModelSubscription';
-import {AutoForm} from 'uniforms-bootstrap3';
+import {AutoForm, SubmitField} from 'uniforms-bootstrap3';
 
 interface IAcceptInviteParams {
   _id: Mongo.ObjectID;
@@ -90,6 +90,7 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
               placeholder={true}
               showInlineError={true}
               schema={GuestUserSchema}
+              submitField={() => (<SubmitField value={t`Sign up as a guest`}/>)}
               onSubmit={this.onSubmit}/>
             <Button to="">{t`Sign-in/Sign-up with email`}</Button>
           </div>

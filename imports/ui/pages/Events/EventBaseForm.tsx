@@ -15,6 +15,7 @@ import * as moment from 'moment';
 export interface IEventBaseFormProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
   initialModel?: IEvent;
+  mode: 'edit' | 'create';
 }
 
 interface IBaseFormState {
@@ -75,7 +76,9 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
               'verifyGpsPositionsOfEdits', 'openFor', 'photoUrl']}/>
             <ErrorsField/>
             <div className="actions">
-              <SubmitField/>
+              {this.props.mode == 'edit' ?
+                <SubmitField value={t`Update`}/> :
+                <SubmitField value={t`Create`}/>}
               <button className="btn btn-default" onClick={browserHistory.goBack}>{t`Cancel`}</button>
             </div>
           </AutoForm>

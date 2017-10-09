@@ -31,7 +31,7 @@ const CreateEventPage = (props: ICreateEventFormProps & IStyledComponent) => {
           </section>
         )}
       />
-      <EventBaseForm afterSubmit={GoToEventPage}/>
+      <EventBaseForm afterSubmit={GoToEventPage} mode="create"/>
     </MapLayout>
   );
 };

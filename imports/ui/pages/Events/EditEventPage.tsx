@@ -27,7 +27,8 @@ class EditEventForm extends React.Component<IAsyncDataByIdProps<IEvent> & IEditE
         />
         <EventBaseForm
           initialModel={this.props.model}
-          afterSubmit={this.goToEvent}/>
+          afterSubmit={this.goToEvent}
+          mode="edit"/>
       </MapLayout>
     );
   }

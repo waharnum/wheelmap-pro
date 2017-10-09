@@ -1,4 +1,4 @@
-import { t } from 'c-3po';
+import {t} from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
 import {browserHistory} from 'react-router';
@@ -30,7 +30,7 @@ const CreateOrganizationPage = (props: ICreateOrganizationFormProps & IStyledCom
         )}
       />
       <div className="content-area scrollable hsplit">
-        <OrganizationBaseForm afterSubmit={GoToOrganizationPage}/>
+        <OrganizationBaseForm afterSubmit={GoToOrganizationPage} mode="create"/>
         <OrganizationFormHintBox/>
       </div>
     </ScrollableLayout>

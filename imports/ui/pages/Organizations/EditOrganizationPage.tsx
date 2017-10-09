@@ -24,7 +24,8 @@ class EditOrganizationForm extends React.Component<IAsyncDataByIdProps<IOrganiza
         <div className="content-area scrollable hsplit">
           <OrganizationBaseForm
             initialModel={this.props.model}
-            afterSubmit={this.goToDashboard}/>
+            afterSubmit={this.goToDashboard}
+            mode="edit"/>
           <OrganizationFormHintBox/>
         </div>
 

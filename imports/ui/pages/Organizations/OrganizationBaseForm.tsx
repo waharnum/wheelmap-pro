@@ -1,4 +1,4 @@
-import { t } from 'c-3po';
+import {t} from 'c-3po';
 import * as React from 'react';
 import styled from 'styled-components';
 import {browserHistory} from 'react-router';
@@ -12,6 +12,7 @@ import {Organizations, IOrganization} from '../../../both/api/organizations/orga
 export interface IOrganizationBaseFormProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
   initialModel?: IOrganization;
+  mode: 'edit' | 'create';
 }
 
 interface IBaseFormState {
@@ -80,7 +81,9 @@ class InternalOrganizationBaseForm
           <AutoFields fields={['name', 'description', 'webSite', 'logo', 'tocForOrganizationsAccepted']}/>
           <ErrorsField/>
           <div className="actions">
-            <SubmitField/>
+            {this.props.mode == 'edit' ?
+              <SubmitField value={t`Update`}/> :
+              <SubmitField value={t`Create`}/>}
             <button className="btn btn-default" onClick={browserHistory.goBack}>{t`Cancel`}</button>
           </div>
         </AutoForm>
