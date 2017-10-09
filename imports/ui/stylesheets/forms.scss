@@ -40,7 +40,8 @@ label,
 }
 
 .btn-primary,
-.btn-primary.active {
+.btn-primary.active,
+.btn-primary:active {
   color: white;
   background-color: $cta-green;
   box-shadow: none;
