@@ -6,14 +6,16 @@
         "bucket": "accessibility-cloud-uploads"
       }
     },
-    "mapbox": "..."
+    "mapbox": "...",
+    "wheelmap": "...",
+    "accessibilityCloud": "..."
   },
   "aws": {
     "accessKeyId": "...",
     "secretAccessKey": "..."
   },
   "transifex": {
-    "projectSlug": "accessibility-cloud",
+    "projectSlug": "...",
     "token": "..."
   },
   "scripts": {

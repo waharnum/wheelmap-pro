@@ -8,6 +8,8 @@ import styled from 'styled-components';
 import {IStyledComponent} from './IStyledComponent';
 
 config.mapboxAccessToken = Meteor.settings.public.mapbox;
+config.wheelmapApiKey = Meteor.settings.public.wheelmap;
+config.accessibilityCloudAppToken = Meteor.settings.public.accessibilityCloud;
 
 
 class Map extends React.Component<IStyledComponent> {
