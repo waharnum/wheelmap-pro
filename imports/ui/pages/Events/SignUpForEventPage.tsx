@@ -1,4 +1,4 @@
-import {t} from 'c-3po';
+import {gettext, t} from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
 import {Meteor} from 'meteor/meteor';
@@ -81,7 +81,8 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
       content = (
         <div className="content-area">
           <h2>{t`Welcome to our community!`}</h2>
-          <div className="alert alert-success">{t`Thanks for signing up with ${organization.name} to join ${event.name}!`}</div>
+          <div
+            className="alert alert-success">{t`Thanks for signing up with ${organization.name} to join ${event.name}!`}</div>
           <Button className="btn-primary" to={`/events/${event._id}`}>{t`Start mapping now!`}</Button>
         </div>
       );
@@ -131,7 +132,7 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
       {eventId: this.props.params._id, invitationToken: this.props.params.token},
       (error, result) => {
         if (error) {
-          this.setState({busy: false, error: t`Accepting invitation failed.`});
+          this.setState({busy: false, error: t`Accepting invitation failed.` + gettext(error.reason)});
         } else {
           this.setState({busy: false});
         }

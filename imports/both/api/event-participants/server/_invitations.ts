@@ -1,6 +1,7 @@
 import {map} from 'lodash';
 import {Email} from 'meteor/email';
 import {Random} from 'meteor/random';
+import {t} from 'c-3po';
 
 import {IOrganization} from '../../organizations/organizations';
 import {Events, IEvent} from '../../events/events';
@@ -86,7 +87,7 @@ function verifyEmailAddressIfPossible(userId: Mongo.ObjectID, participant: IEven
 
   const emailAddress = participant.invitationEmailAddress;
   if (!emailAddress) {
-    throw new Meteor.Error(403, 'Email address in invitation is invalid');
+    throw new Meteor.Error(403, t`Email address in invitation is invalid`);
   }
 
   const user = Meteor.user();
@@ -94,7 +95,7 @@ function verifyEmailAddressIfPossible(userId: Mongo.ObjectID, participant: IEven
   const index = addresses.indexOf(emailAddress);
 
   if (!user.emails) {
-    throw new Meteor.Error(404, `User ${userId} has no assigned emails.`);
+    throw new Meteor.Error(404, t`User ${userId} has no assigned emails.`);
   }
 
   if (index < 0) {
@@ -135,18 +136,18 @@ export function acceptEventInvitation(userId: Mongo.ObjectID, eventId: Mongo.Obj
   const pendingInvitation = EventParticipants.findOne(
     {eventId, invitationToken: token, invitationState: {$ne: 'accepted'}});
   if (!pendingInvitation || !pendingInvitation._id) {
-    throw new Meteor.Error(404, `No unaccepted invitation to ${eventId} found with token ${token}.`);
+    throw new Meteor.Error(404, t`No unaccepted invitation to ${eventId} found with token ${token}.`);
   }
 
   if (!pendingInvitation.invitationEmailAddress) {
-    throw new Meteor.Error(403, 'Email address in invitation is invalid');
+    throw new Meteor.Error(403, t`Email address in invitation is invalid`);
   }
 
   // check if the email address used matches the current user or is unused
   const addressState = emailAddressIsUsersOrFree(pendingInvitation.invitationEmailAddress);
   if (addressState === 'in-use') {
     console.log('Email is already used by another user. Acceptance aborted.');
-    throw new Meteor.Error(403, 'Email is already used by another user. Please sign with that email address');
+    throw new Meteor.Error(403, t`Email is already used by another user. Please sign with that email address.`);
   }
 
   const existingParticipation = EventParticipants.findOne({eventId, userId, invitationState: 'accepted'});
@@ -186,7 +187,7 @@ export function acceptPublicEventInvitation(userId: Mongo.ObjectID, eventId: Mon
   // find an event that matches the token and is not a draft
   const event = Events.findOne({_id: eventId, invitationToken: token, status: {$ne: 'draft'}});
   if (!event) {
-    throw new Meteor.Error(404, `No invitation in ${eventId} found with token ${token}.`);
+    throw new Meteor.Error(404, t`No invitation in ${eventId} found with token ${token}.`);
   }
 
   const existingParticipation = EventParticipants.findOne({eventId, userId, invitationState: 'accepted'});
