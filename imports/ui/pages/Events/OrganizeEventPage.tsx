@@ -197,7 +197,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
               prefixLink={`/organizations/${organization._id}/organize`}
             />
           )}
-          tabs={(<EventTabs id={event._id || ''}/>)}
+          tabs={(<EventTabs id={event._id}/>)}
           publicLink={`/events/${event._id}`}
         />
         <div className="content-area scrollable">
