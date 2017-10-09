@@ -1,11 +1,11 @@
-
 import * as React from 'react';
-import { Meteor } from 'meteor/meteor';
-import { browserHistory } from 'react-router';
-import { createContainer } from 'meteor/react-meteor-data';
-import { LocationDescriptor } from 'history';
+import {Meteor} from 'meteor/meteor';
+import {t} from 'c-3po';
+import {browserHistory} from 'react-router';
+import {createContainer} from 'meteor/react-meteor-data';
+import {LocationDescriptor} from 'history';
 
-import { setLoginRedirect } from '../../both/api/users/accounts';
+import {setLoginRedirect} from '../../both/api/users/accounts';
 
 interface IUserProps {
   user: Meteor.User;
@@ -37,7 +37,7 @@ class EnsureUserLoggedIn extends React.Component<IUserProps & IEnsureUserLoggedI
 
   public render(): JSX.Element | null {
     if (!this.props.ready) {
-      return (<p>Loading...</p>);
+      return (<p>{t`Loading...`}</p>);
     }
 
     if (this.userAuthorized()) {
@@ -52,7 +52,7 @@ class EnsureUserLoggedIn extends React.Component<IUserProps & IEnsureUserLoggedI
       return;
     }
     if (!this.isSignedIn()) {
-      browserHistory.replace('/signin');
+      browserHistory.replace('/signup');
       return;
     }
     if (!this.hasMatchingRole()) {
