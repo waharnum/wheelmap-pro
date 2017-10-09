@@ -1,5 +1,6 @@
-import styled from 'styled-components';
+import {t} from 'c-3po';
 import {Link} from 'react-router';
+import styled from 'styled-components';
 import * as React from 'react';
 
 import {IStyledComponent} from './IStyledComponent';
@@ -12,9 +13,13 @@ const UserMenu = (props: IStyledComponent) => {
   const user = Meteor.user();
 
   if (!user) {
-    return null;
+    return (
+      <li className={props.className + ' login-menu'}>
+        <Link to="/signup" className="onDark">{t`Sign-Up`}</Link>
+        <Link to="/signin" className="onDark">{t`Login`}</Link>
+      </li>
+    );
   }
-
   return (
     <li className={props.className + ' user-menu'}>
       <img src={getGravatarImageUrl(user.profile.gravatarHash)} className="user-icon"/>

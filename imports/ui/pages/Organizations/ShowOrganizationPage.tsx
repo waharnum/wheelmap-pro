@@ -49,7 +49,7 @@ const ShowOrganizationPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledCo
                     <h4>{moment(event.startTime).format('LL')}</h4>
                     <p className="event-region">{event.regionName}</p>
                   </div>
-                    <Button to={`/events/${event._id}`} className='btn-primary'>{t`Join Us`}</Button>
+                  <Button to={`/events/${event._id}`} className='btn-primary'>{t`Join Us`}</Button>
                 </div>
                 <div className="event-footer">
                   <div className="stats event-stats">

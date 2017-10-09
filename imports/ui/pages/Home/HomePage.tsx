@@ -1,26 +1,24 @@
 import {t} from 'c-3po';
 import * as React from 'react';
-import styled from 'styled-components';
+
 import Button from '../../components/Button';
 import {Link} from 'react-router';
 import {colors} from '../../stylesheets/colors';
+import UserMenu from '../../components/UserMenu';
+import styled from 'styled-components';
 
 const HomePage = (props) => (
   <div className={`${props.className}`} id="HomePage">
     <header className="header beforeLogin onHomepage">
-        <span className="logo">
-          <h1>{t`wheelmap.pro`}</h1>
-        </span>
-      <span className="loginState">
-        {!Meteor.user() ? <Link to="/signup" className="onDark">{t`Sign-Up`}</Link> : null}
-        {!Meteor.user() ? <Link to="/signin" className="onDark">{t`Login`}</Link> : null}
-        {Meteor.user() ? <Link to="/profile" className="onDark">{t`Profile`}</Link> : null}
-        </span>
+      <span className="logo">
+        <h1>{t`wheelmap.pro`}</h1>
+      </span>
+      <UserMenu/>
     </header>
     <div className="wrapper sawblade">
       <section className="hero-banner">
         <div className="wrapper">
-          <div className="hero-image"></div>
+          <div className="hero-image"/>
           <h2>{t`Like Wheelmap but customized to fit your own community.`}</h2>
           <p>{t`Which public places are accessible for people with disabilities? Create your own mapping community and empower your volunteers to go out and mark the accessibility of places! Wheelmap Pro is a powerful tool with your own brand, your specific accessibility criteria and step-by-step action plans.`}</p>
           <Button to="/organizations/create" className="btn-primary">{t`Create your community`}</Button>
@@ -32,17 +30,17 @@ const HomePage = (props) => (
         <article className="explainStep step1">
           <h2>{t`Step 1.`}</h2>
           <p>{t`Start a new mapping community or join a community as a volunteer. We help you plan and organize successful mapping events for collecting accessibility data.`}</p>
-          <img src="/images/comic-step1@2x.png" width="246px" height="202px"></img>
+          <img src="/images/comic-step1@2x.png" width="246px" height="202px"/>
         </article>
         <article className="explainStep step2">
           <h2>{t`Step 2.`}</h2>
           <p>{t`Invite volunteers to mapping events during which groups evaluate the accessibility of local public places.`}</p>
-          <img src="/images/comic-step2@2x.png" width="246px" height="202px"></img>
+          <img src="/images/comic-step2@2x.png" width="246px" height="202px"/>
         </article>
         <article className="explainStep step3">
           <h2>{t`Step 3.`}</h2>
           <p>{t`The accessibility information which your community gathers can then be shared publicly to help people with and without disabilities to navigate the world.`}</p>
-          <img src="/images/comic-step3@2x.png" width="246px" height="202px"></img>
+          <img src="/images/comic-step3@2x.png" width="246px" height="202px"/>
         </article>
       </section>
     </div>
@@ -56,11 +54,11 @@ const HomePage = (props) => (
       </section>
     </div>
     <section className="partners">
-      <a href="." className="partnerLogo jaccede"></a>
+      <a href="." className="partnerLogo jaccede"/>
       <a href="." className="partnerLogo foursquare"></a>
-      <a href="." className="partnerLogo axsmap"></a>
-      <a href="." className="partnerLogo wheelmap"></a>
-      <a href="." className="partnerLogo google"></a>
+      <a href="." className="partnerLogo axsmap"/>
+      <a href="." className="partnerLogo wheelmap"/>
+      <a href="." className="partnerLogo google"/>
     </section>
     <div className="wrapper onDarkGrey">
       <footer>
@@ -123,8 +121,8 @@ export default styled(HomePage) `
       }
     }
 
-    span.loginState {
-      padding-top: 10px;   
+    li.login-menu, li.user-menu {
+      padding-top: 10px;
 
       a {
         display: inline-block;
