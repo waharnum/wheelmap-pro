@@ -8,3 +8,4 @@ dump/
 packages/std_*
 tests/chimp.js
 packages/ff_po-compiler/.npm/
+used-strings.pot
