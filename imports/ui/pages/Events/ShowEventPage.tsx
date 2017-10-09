@@ -30,6 +30,7 @@ const PublicEventHeader = (props: { event: IEvent, organization: IOrganization }
         prefixLink={`/organizations/${props.organization._id}`}
       />
     )}
+    action={(<HeaderShareAction/>)}
     organizeLink={`/events/${props.event._id}/organize`}
   />
 );
@@ -47,7 +48,7 @@ const OngoingEventMapContent = () => (
   </div>
 );
 
-const FinishedEventHeader = () => (
+const HeaderShareAction = () => (
   <Button className="btn-primary" to="">{t`Share…`}</Button>
 );
 
@@ -86,7 +87,7 @@ const ShowEventPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent
   return (
     <MapLayout className={props.className}>
       <PublicEventHeader event={event} organization={organization}/>
-      {showResultPage ? <FinishedEventHeader/> : <OngoingEventHeader event={event}/>}
+      {showResultPage ? null : <OngoingEventHeader event={event}/>}
       <div className="content-area">
         <Map/>
         <div className="map-overlay">

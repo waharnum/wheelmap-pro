@@ -12,6 +12,7 @@ import {Link} from 'react-router';
 interface IPublicHeaderProps {
   titleComponent: JSX.Element | string;
   organizeLink?: LocationDescriptor;
+  action?: JSX.Element | null;
 }
 
 interface IHeaderTitleProps {
@@ -53,6 +54,9 @@ const PublicHeader = (props: IPublicHeaderProps & IStyledComponent) => {
           <div className="left-side">
             {props.titleComponent ||
               <HeaderTitle title="Please specificy title component" description="Pretty please?!" />}
+          </div>
+          <div className="right-side">
+            {props.action}
           </div>
         </div>
       </header>
@@ -98,7 +102,7 @@ export default styled(PublicHeader) `
           background-position: center center;
           background-repeat: no-repeat;
           background-size: contain;
-
+          
           a {
             text-overflow: ellipsis;
             display: block;
@@ -106,16 +110,21 @@ export default styled(PublicHeader) `
             white-space: nowrap;
           }      
         }
-
+        
         .header-information {
           p {
             font-size: 16px;
           }
         }
       }
-
+      
       .right-side {
         display: flex;
+        align-items: flex-start;
+
+        a.btn-primary {
+          margin-top: 6px;
+        }
       }
     }
   }
