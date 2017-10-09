@@ -1,7 +1,11 @@
 import SimpleSchema from 'simpl-schema';
 import {ValidatedMethod} from 'meteor/mdg:validated-method';
 import {readdirSync} from 'fs';
-import {uniq, flatten, intersection, fromPairs} from 'lodash';
+import {uniq, flatten, intersection, fromPairs, mapKeys, Dictionary} from 'lodash';
+import * as moment from 'moment';
+
+// load all moment locales
+import 'moment/min/locales';
 
 const files = readdirSync('./assets/app/i18n');
 const fallbackLanguage = 'en-DEV';
@@ -36,7 +40,13 @@ export const remove = new ValidatedMethod({
     const potentialLanguages = intersection(languagesWithFallback, Object.keys(availableLanguages));
     const language = potentialLanguages[0] || fallbackLanguage;
 
+    // remove all the leading underscores
+    const momentData = mapKeys(moment.localeData(language) as Dictionary<any>, function (value, key) {
+      return key.substr(1);
+    });
+
+
     // we could potentially combine languages on the fly here, but this would be very confusing for plurals etc.
-    return {language, data: availableLanguages[language]};
+    return {language, data: availableLanguages[language], momentData};
   },
 });

@@ -12,10 +12,10 @@ export function preparei18n(callback: Function) {
   const languages = readUserLanguages();
 
   Meteor.call('i18n.getBestMatch', {languages}, (error, result) => {
-
     if (!error) {
       addLocale(result.language, result.data);
       useLocale(result.language);
+      moment.defineLocale(result.momentData.abbr, result.momentData);
     }
 
     const momentLocale = result.language || 'en-us';
@@ -23,5 +23,8 @@ export function preparei18n(callback: Function) {
 
     T9n.setLanguage(result.language || 'en');
     callback(result.language);
+
   });
 }
+
+
