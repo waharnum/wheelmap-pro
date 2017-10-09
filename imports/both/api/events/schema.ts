@@ -92,6 +92,7 @@ export const EventSchema = new SimpleSchema({
     optional: true,
   },
   'verifyGpsPositionsOfEdits': {
+    label: t`Verify GPS position of edits`,
     type: Boolean,
     defaultValue: false,
   },
@@ -112,6 +113,12 @@ export const EventSchema = new SimpleSchema({
     label: t`Open for…`,
     type: String,
     allowedValues: ['inviteOnly', 'everybody'],
+    uniforms: {
+      options: [
+        {label: t`Invite Only`, value: 'inviteOnly'},
+        {label: t`Everybody`, value: 'everybody'},
+      ],
+    },
   },
 });
 
