@@ -1,6 +1,7 @@
 import SimpleSchema from 'simpl-schema';
 import {t} from 'c-3po';
 import {EmailInviteSchema} from '../../lib/invite-schema';
+import {invitationStates} from './invitationStates';
 
 // allow custom uniforms fields
 SimpleSchema.extendOptions(['uniforms']);
@@ -21,7 +22,7 @@ export const EventParticipantSchema = new SimpleSchema({
   },
   invitationState: {
     type: String,
-    allowedValues: ['draft', 'queuedForSending', 'sent', 'accepted', 'error', 'old-guest'],
+    allowedValues: invitationStates.map((v) => v.value),
   },
   invitationError: {
     type: String,

@@ -2,6 +2,7 @@ import {Mongo} from 'meteor/mongo';
 
 import {EventParticipantMixin, IEventParticipantMixin} from './mixins';
 import {EventParticipantSchema} from './schema';
+import {InvitationStateType} from './invitationStates';
 
 export interface IEventParticipant extends IEventParticipantMixin {
   // mongo id
@@ -10,7 +11,7 @@ export interface IEventParticipant extends IEventParticipantMixin {
   eventId: Mongo.ObjectID;
   userId: Mongo.ObjectID | null;
   gravatarHash?: string;
-  invitationState: 'draft' | 'queuedForSending' | 'sent' | 'accepted' | 'error' | 'old-guest';
+  invitationState: InvitationStateType;
   invitationError?: string;
   invitationToken?: string;
   invitationEmailAddress?: string;

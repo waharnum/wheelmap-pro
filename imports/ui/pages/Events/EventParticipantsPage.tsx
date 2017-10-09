@@ -13,6 +13,7 @@ import AdminHeader, {HeaderTitle} from '../../components/AdminHeader';
 import {IEventParticipant} from '../../../both/api/event-participants/event-participants';
 import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
 import InviteByEmailForm from '../../components/InviteByEmailForm';
+import {getLabelForInvitationState} from '../../../both/api/event-participants/invitationStates';
 
 
 interface IPageModel {
@@ -34,6 +35,7 @@ const EventParticipantEntry = (props: { model: IEventParticipant }) => (
     <section className="participant-name">{props.model.getUserName()}</section>
     <section className="participant-user glyphicon">{props.model.userId ? 'p' : ''}</section>
     <section className="participant-state">{props.model.invitationState}</section>
+    <section className="participant-state">{getLabelForInvitationState(props.model.invitationState)}</section>
     {props.model.invitationState === 'error' ?
       <section className="participant-error">{props.model.invitationError}</section> : null}
     <section className="participant-remove glyphicon">
