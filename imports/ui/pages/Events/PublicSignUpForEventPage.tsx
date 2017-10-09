@@ -1,3 +1,4 @@
+import {t} from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
 import {Meteor} from 'meteor/meteor';
@@ -65,7 +66,7 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
       content = (
         <div className="content-area">
           <h2>
-            Something went wrong
+            {t`Something went wrong`}
           </h2>
           <div className="alert alert-danger">
             {this.state.error}
@@ -75,52 +76,40 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
     } else if (this.state.busy) {
       content = (
         <div className="content-area busy">
-          <div className="loading-area">Accepting invitation</div>
+          <div className="loading-area">{t`Accepting invitation`}</div>
         </div>
       );
     } else if (!user) {
       if (this.state.guestMode) {
         content = (
           <div className="content-area">
-            <h2>
-              Great to have you here!
-            </h2>
-            <div className="alert alert-info">
-              Please sign up with {organization.name} to join {event.name}.
-            </div>
+            <h2> {t`Great to have you here!`}</h2>
+            <div className="alert alert-info">{t`Please sign up with ${organization.name} to join ${event.name}.`}</div>
 
             <AutoForm
               placeholder={true}
               showInlineError={true}
               schema={GuestUserSchema}
               onSubmit={this.onSubmit}/>
-            <Button to="">Sign-in/Sign-up with email</Button>
+            <Button to="">{t`Sign-in/Sign-up with email`}</Button>
           </div>
         );
       } else {
         content = (
           <div className="content-area">
-            <h2>
-              Great to have you here!
-            </h2>
-            <div className="alert alert-info">
-              Please sign up with {organization.name} to join {event.name}.
-            </div>
+            <h2>{t`Great to have you here!`}</h2>
+            <div className="alert alert-info">{t`Please sign up with ${organization.name} to join ${event.name}.`}</div>
             <Accounts.ui.LoginForm formState={STATES.SIGN_UP}/>
-            <Button to="">Sign-up as a guest</Button>
+            <Button to="">{t`Sign-up as a guest`}</Button>
           </div>
         );
       }
     } else {
       content = (
         <div className="content-area">
-          <h2>
-            Welcome to our community!
-          </h2>
-          <div className="alert alert-success">
-            Thanks for signing up with {organization.name} to join {event.name}!
-          </div>
-          <Button className="btn-primary" to={`/events/${event._id}`}>Start mapping now!</Button>
+          <h2>{t`Welcome to our community!`}</h2>
+          <div className="alert alert-success">{t`Thanks for signing up with ${organization.name} to join ${event.name}!`}</div>
+          <Button className="btn-primary" to={`/events/${event._id}`}>{t`Start mapping now!`}</Button>
         </div>
       );
     }
@@ -159,7 +148,7 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
       {eventId: this.props.params._id, invitationToken: this.props.params.token},
       (error, result) => {
         if (error) {
-          this.setState({busy: false, error: 'Accepting invitation failed. ' + error.message});
+          this.setState({busy: false, error: t`Accepting invitation failed.`});
         } else {
           this.setState({busy: false});
         }

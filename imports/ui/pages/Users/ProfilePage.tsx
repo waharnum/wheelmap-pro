@@ -1,3 +1,4 @@
+import { t } from 'c-3po';
 import * as React from 'react';
 import {Meteor} from 'meteor/meteor';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
@@ -13,7 +14,7 @@ import {createContainer} from 'meteor/react-meteor-data';
 
 const GuestContent = () => (
   <div>
-    <h2>Claim your Account</h2>
+    <h2>{t`Claim your Account`}</h2>
     <AutoForm
       placeholder={true}
       showInlineError={true}
@@ -35,7 +36,7 @@ const ProfilePage = (props: IStyledComponent & { user: Meteor.User, ready: boole
         titleComponent={<HeaderTitle title="User Profile"/>}
         tabs={
           <section>
-            <AdminTab to={`/`} title="Home"/>
+            <AdminTab to={`/`} title={t`Home`}/>
           </section>}
       />
       <div className="content-area scrollable">

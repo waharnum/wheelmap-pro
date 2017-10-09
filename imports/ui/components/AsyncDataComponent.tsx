@@ -1,3 +1,4 @@
+import {t} from 'c-3po';
 import * as React from 'react';
 
 import { IAsyncDataProps } from './reactiveModelSubscription';
@@ -8,7 +9,7 @@ const Loading = (props: any) => {
 };
 
 const DataNotFound = (props: any) => {
-  return (<p>Missing data</p>);
+  return (<p>{t`Missing data`}</p>);
 };
 
 type InputPropsComponent<T> = React.ComponentClass<T> | React.StatelessComponent<T>;

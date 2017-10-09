@@ -1,3 +1,4 @@
+import { t } from 'c-3po';
 import * as React from 'react';
 import styled from 'styled-components';
 import {browserHistory} from 'react-router';
@@ -32,7 +33,7 @@ schema.extend({
   logo: {
     uniforms: {
       component: ImageLinkUrlField,
-      help: 'Optimal a 640 x 400 PNG-file with transparency.',
+      help: t`Optimal a 640 x 400 PNG-file with transparency.`,
     },
   },
 });
@@ -41,14 +42,14 @@ export const OrganizationFormHintBox = () => (
   <div className="content-right">
     <HintBox>
       <Hint className="rocket">
-        Wheelmap Pro helps you to plan and organize mapping events for accessibility data.
+        {t`Wheelmap Pro helps you to plan and organize mapping events for accessibility data.`}
       </Hint>
       <Hint className="info">
-        This gathered information can then be shared publicly to help people with with and
-        without disabilities to navigate the world.
+        {t`This gathered information can then be shared publicly to help people with with and
+        without disabilities to navigate the world.`}
       </Hint>
       <Hint className="map">
-        The app for your Organization will be setup and you’ll be ready to create your first mapping event.
+        {t`The app for your Organization will be setup and you’ll be ready to create your first mapping event.`}
       </Hint>
     </HintBox>
   </div>);
@@ -80,7 +81,7 @@ class InternalOrganizationBaseForm
           <ErrorsField/>
           <div className="actions">
             <SubmitField/>
-            <button className="btn btn-default" onClick={browserHistory.goBack}>Cancel</button>
+            <button className="btn btn-default" onClick={browserHistory.goBack}>{t`Cancel`}</button>
           </div>
         </AutoForm>
       </div>);

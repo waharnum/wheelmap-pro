@@ -1,3 +1,4 @@
+import {t} from 'c-3po';
 import {AutoSizedStaticMap} from '../../components/StaticMap';
 import * as React from 'react';
 import styled from 'styled-components';
@@ -75,7 +76,7 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
             <ErrorsField/>
             <div className="actions">
               <SubmitField/>
-              <button className="btn btn-default" onClick={browserHistory.goBack}>Cancel</button>
+              <button className="btn btn-default" onClick={browserHistory.goBack}>{t`Cancel`}</button>
             </div>
           </AutoForm>
         </div>

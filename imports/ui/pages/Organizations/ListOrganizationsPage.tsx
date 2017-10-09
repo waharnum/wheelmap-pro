@@ -1,3 +1,4 @@
+import { t } from 'c-3po';
 import * as React from 'react';
 import styled from 'styled-components';
 import {Mongo} from 'meteor/mongo';
@@ -30,17 +31,17 @@ const ListEntry = (props: IListEntryModelProps) => {
 const ListOrganizationPage = (props: IStyledComponent & IAsyncDataProps<IOrganization[]>) => {
   if (!props.ready) {
     return (
-      <div className={props.className}>Loading…</div>
+      <div className={props.className}>{t`Loading…`}</div>
     );
   }
 
   return (
     <ScrollableLayout className={props.className}>
-      <AdminHeader titleComponent={<HeaderTitle title="All Organizations"/>}/>
+      <AdminHeader titleComponent={<HeaderTitle title={t`All Organizations`}/>}/>
       <section>
         {props.model.map((m) => <ListEntry key={String(m._id)} model={m}/>)}
       </section>
-      <Button to="/organizations/create">Create new organization</Button>
+      <Button to="/organizations/create">{t`Create new organization`}</Button>
     </ScrollableLayout>
   );
 };

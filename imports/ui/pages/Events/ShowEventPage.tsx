@@ -45,12 +45,12 @@ const OngoingEventHeader = (props: { event: IEvent }) => (
 
 const OngoingEventMapContent = () => (
   <div className="map-overlay">
-    <Button className="join-button btn-primary" to="">Join Us</Button>
+    <Button className="join-button btn-primary" to="">{t`Join Us`}</Button>
   </div>
 );
 
 const FinishedEventHeader = () => (
-  <Button className="btn-primary" to="">Share…</Button>
+  <Button className="btn-primary" to="">{t`Share…`}</Button>
 );
 
 const FinishedEventMapContent = (props: { event: IEvent }) => (
@@ -114,7 +114,7 @@ export default styled(ReactiveShowEventPage) `
     align-content: center;
     display: flex;
   }
-
+  
   .map-overlay {
     position: relative;
   }

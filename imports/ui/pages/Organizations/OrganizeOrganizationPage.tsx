@@ -1,3 +1,4 @@
+import { t } from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
 import * as moment from 'moment';
@@ -30,21 +31,21 @@ const EventListEntry = (props: { model: IEvent }) => (
         </div>
         <div className="time-until-event">
           <p>{moment(props.model.startTime).diff(moment(), 'days')}</p>
-          <small>Days Left</small>
+          <small>{t`Days Left`}</small>
         </div>
       </div>
       <div className="event-footer">
         <div className="stats event-stats">
           <section className="participant-stats">
-            <span className="participants-invited">0<small>invited</small></span>
-            <span className="participants-registered key-figure">1<small>registered</small></span>
+            <span className="participants-invited">99<small>{`invited`}</small></span>
+            <span className="participants-registered key-figure">98<small>{t`registered`}</small></span>
           </section>
           <section className="location-stats">
-            <span className="locations-planned">0<small>planned</small></span>
-            <span className="locations-mapped key-figure">0<small>mapped</small></span>
+            <span className="locations-planned">99<small>{t`planned`}</small></span>
+            <span className="locations-mapped key-figure">98<small>{t`mapped`}</small></span>
           </section>
         </div>
-        <Button to={`/events/${props.model._id}/organize`}>Show details</Button>
+        <Button to={`/events/${props.model._id}/organize`}>{t`Show details`}</Button>
       </div>
     </div>
     <div className="event-status corner-ribbon">
@@ -68,19 +69,19 @@ const OrganizeOrganizationsPage = (props: IStyledComponent & IAsyncDataByIdProps
     <div className="content-area scrollable">
       <div className="stats organization-stats">
         <section className="participant-stats">
-          <span className="participants-invited">0<small>invited</small></span>
-          <span className="participants-registered key-figure">1<small>registered</small></span>
+          <span className="participants-invited">70<small>{t`invited`}</small></span>
+          <span className="participants-registered key-figure">69<small>{t`registered`}</small></span>
         </section>
         <section className="location-stats">
-          <span className="locations-planned">0<small>planned</small></span>
-          <span className="locations-mapped key-figure">0<small>mapped</small></span>
+          <span className="locations-planned">70<small>{t`planned`}</small></span>
+          <span className="locations-mapped key-figure">69<small>{t`mapped`}</small></span>
         </section>
         <section className="event-stats">
-          <span className="events-planned key-figure">1<small>created</small></span>
-          <span className="events-completed">0<small>completed</small></span>
+          <span className="events-planned key-figure">70<small>{t`created`}</small></span>
+          <span className="events-completed">69<small>{t`completed`}</small></span>
         </section>
         <section className="new-event">
-          <Button to="/events/create" className="btn-primary">Create event</Button>
+          <Button to="/events/create" className="btn-primary">{t`Create event`}</Button>
         </section>
       </div>
       <EventList model={props.model.events}/>

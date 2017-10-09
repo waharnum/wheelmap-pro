@@ -1,11 +1,13 @@
 import SimpleSchema from 'simpl-schema';
+import {t} from 'c-3po';
+import {registerSchemaForI18n} from '../../i18n/i18n';
 
 // allow custom uniforms fields
 SimpleSchema.extendOptions(['uniforms']);
 
 export const OrganizationSchema = new SimpleSchema({
   name: {
-    label: 'Name',
+    label: t`Name`,
     type: String,
     max: 1000,
     uniforms: {
@@ -83,3 +85,5 @@ export const OrganizationSchema = new SimpleSchema({
     defaultValue: false,
   },
 });
+
+registerSchemaForI18n(OrganizationSchema);

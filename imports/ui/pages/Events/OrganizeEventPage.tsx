@@ -1,3 +1,4 @@
+import {t} from 'c-3po';
 import {IEventParticipant} from '../../../both/api/event-participants/event-participants';
 import {Countdown} from '../../components/Countdown';
 import {IOrganization} from '../../../both/api/organizations/organizations';
@@ -203,23 +204,23 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
           <div className="stats event-stats">
             <section className="participant-stats">
               <span className="participants-invited">{stats.invited}
-                <small>invited</small></span>
+                <small>{t`invited`}</small></span>
               <span className="participants-registered key-figure">{stats.registered}
-                <small>registered</small></span>
+                <small>{t`registered`}</small></span>
             </section>
             <Countdown start={moment(event.startTime)}/>
             <section className="location-stats">
-              <span className="locations-planned">0<small>planned</small></span>
-              <span className="locations-mapped key-figure">0<small>mapped</small></span>
+              <span className="locations-planned">0<small>{t`planned`}</small></span>
+              <span className="locations-mapped key-figure">0<small>{t`mapped`}</small></span>
             </section>
           </div>
           <ol className="event-timeline before-event">
             <li className={'event-timeline-step event-details ' + stepStates.createEvent}>
-              <div className="notification-completed">Event created successfully.</div>
+              <div className="notification-completed">{t`Event created successfully.`}</div>
               <div className="step-details">
                 <div className="event-name">
                   {event.name}
-                  <Button to={`/events/${event._id}/edit`}>Edit</Button>
+                  <Button to={`/events/${event._id}/edit`}>{t`Edit`}</Button>
                 </div>
                 <div className="event-description">{event.description}</div>
                 <div className="event-date">{moment(event.startTime).format('LLLL')}</div>
@@ -227,98 +228,98 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
               </div>
             </li>
             <li className={'event-timeline-step invite-participants ' + stepStates.inviteParticipants}>
-              <div className="notification-completed">{stats.invited} invitations sent.</div>
+              <div className="notification-completed">{t`${stats.invited} Invitations sent.`}</div>
               <div className="step-status step-todo">
                 <div className="step-information">
-                  <h3>No participants invited.</h3>
-                  <p>Emails will be send when you publish.</p>
+                  <h3>{t`No participants invited.`}</h3>
+                  <p>{t`Emails will be send when you publish.`}</p>
                 </div>
-                <Button className="btn-primary" to={`/events/${event._id}/participants`}>Invite participants</Button>
+                <Button className="btn-primary" to={`/events/${event._id}/participants`}>{t`Invite participants`}</Button>
               </div>
               <div className="step-status step-completed">
                 <div className="step-information">
-                  <h3>{stats.invited} participants invited.</h3>
-                  <p>Emails will be send when you publish.</p>
+                  <h3>{t`${stats.invited} participants invited`}.</h3>
+                  <p>{t`Emails will be send when you publish.`}</p>
                 </div>
-                <Button to={`/events/${event._id}/participants`}>Invite more</Button>
+                <Button to={`/events/${event._id}/participants`}>{t`Invite more`}</Button>
               </div>
             </li>
             <li className={'event-timeline-step organizer-tips ' + stepStates.organizerTips}>
-              <div className="notification-completed">1 document to read.</div>
+              <div className="notification-completed">{t`Some documents to read.`}</div>
               <div className="step-status">
-                <h3>Tips for event organizers</h3>
+                <h3>{t`Tips for event organizers`}</h3>
                 <a className="btn" target="_blank"
                    href="https://developmentseed.org/blog/2015/06/07/organizing-mapathons/">Learn more</a>
               </div>
             </li>
           </ol>
           <ol className="event-timeline during-event">
-            <h2>Publish event</h2>
+            <h2>{t`Publish event`}</h2>
             <li className={'event-timeline-step publish-event ' + stepStates.startEvent}>
               <div className="step-status step-todo">
                 <div className="step-information">
-                  <h3>Mapping event still a draft</h3>
-                  <p>Please make sure all details are correct. When you publish, invitation emails will be sent.</p>
+                  <h3>{t`Mapping event still a draft`}</h3>
+                  <p>{t`Please make sure all details are correct. When you publish, invitation emails will be sent.`}</p>
                 </div>
                 <div className="publishing-actions">
-                  <button className="btn btn-primary" onClick={this.publishEvent}>Publish event</button>
+                  <button className="btn btn-primary" onClick={this.publishEvent}>{t`Publish event`}</button>
                 </div>
               </div>
-              <div className="notification-completed step-active">Congratulations! Your event has been published</div>
+              <div className="notification-completed step-active">{t`Congratulations! Your event has been published`}</div>
               <div className="step-status step-active">
                 <div className="step-information">
-                  <h3>Mapping event published</h3>
-                  <p>Your event is now online. It will be closed the day after. Be careful when canceling your event:
-                    you can not undo this.</p>
+                  <h3>{t`Mapping event published`}</h3>
+                  <p>{t`Your event is now online. It will be closed the day after. Be careful when canceling your event:
+                    you can not undo this.`}</p>
                 </div>
                 <div className="publishing-actions">
-                  <Button to={`/events/${event._id}`}>View event</Button>
-                  <Button className="btn-primary" to='.'>Cancel event</Button>
+                  <Button to={`/events/${event._id}`}>{t`View event`}</Button>
+                  <Button className="btn-primary" to='.'>{t`Cancel event`}</Button>
                 </div>
               </div>
-              <div className="notification-completed step-completed">Your event has been completed</div>
+              <div className="notification-completed step-completed">{t`Your event has been completed`}</div>
               <div className="step-status step-completed">
                 <div className="step-information">
-                  <h3>Mapping event finished</h3>
-                  <p>Your event is over now.</p>
+                  <h3>{t`Mapping event finished`}</h3>
+                  <p>{t`Your event is over now.`}</p>
                 </div>
                 <div className="publishing-actions">
-                  <Button to={`/events/${event._id}`}>View event</Button>
+                  <Button to={`/events/${event._id}`}>{t`View event`}</Button>
                 </div>
               </div>
             </li>
           </ol>
           <ol className="event-timeline after-event">
-            <h2>After the event</h2>
+            <h2>{t`After the event`}</h2>
             <li className={'event-timeline-step set-event-picture ' + stepStates.setEventPicture}>
-              <div className="notification-completed">Event picture has been set.</div>
+              <div className="notification-completed">{t`Event picture has been set.`}</div>
               <div className="step-status step-todo">
-                <h3>Set event picture</h3>
+                <h3>{t`Set event picture`}</h3>
               </div>
               <div className="step-status step-active">
-                <h3>Set event picture</h3>
+                <h3>{t`Set event picture`}</h3>
                 <Button to={`/events/${event._id}/edit`}>Set</Button>
               </div>
               <div className="step-status step-completed">
                 <section>
-                  <h3>Event picture was set</h3>
-                  <Button to={`/events/${event._id}/edit`}>Edit</Button>
+                  <h3>{t`Event picture was set`}</h3>
+                  <Button to={`/events/${event._id}/edit`}>{t`Edit`}</Button>
                 </section>
                 <img src={event.photoUrl}/>
               </div>
             </li>
             <li className={'event-timeline-step share-results ' + stepStates.shareResults}>
-              <div className="notification-completed">Great. You may share the link now.</div>
+              <div className="notification-completed">{t`Great. You may share the link now.`}</div>
               <div className="step-status step-todo">
-                <h3>Share results</h3>
+                <h3>{t`Share results`}</h3>
               </div>
               <div className="step-status step-active">
-                <h3>Share results</h3>
-                <Button to={`/events/${event._id}`}>Share</Button>
+                <h3>{t`Share results`}</h3>
+                <Button to={`/events/${event._id}`}>{t`Share`}</Button>
               </div>
               <div className="step-status step-completed">
-                <h3>Results have been shared</h3>
-                <Button to={`/events/${event._id}`}>View</Button>
+                <h3>{t`Results have been shared`}</h3>
+                <Button to={`/events/${event._id}`}>{t`View`}</Button>
               </div>
             </li>
           </ol>

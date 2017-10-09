@@ -11,7 +11,7 @@ import ScrollableLayout from '../../layouts/ScrollableLayout';
 const NoOrganizationsPage = (props: IStyledComponent) => {
   return (
     <ScrollableLayout className={props.className} id="NoOrganizationsPage">
-      <AdminHeader titleComponent={<h1>Welcome to $pageName</h1>} />
+      <AdminHeader titleComponent={<h1>{t`Welcome to $pageName`}</h1>} />
       <div className="content-area scrollable">
         <div>{t`It seems you are not part of any organization yet. Please wait for your invite, or create your own organization.`}</div>
         <div><Button className="btn-primary" to="/organizations/create" >{t`Create Organization`}</Button></div>

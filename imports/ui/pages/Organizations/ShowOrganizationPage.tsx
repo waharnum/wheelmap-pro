@@ -1,3 +1,4 @@
+import { t } from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
 import * as moment from 'moment';
@@ -43,8 +44,8 @@ const ShowOrganizationPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledCo
               <h3>{event.name} ({event.status})</h3>
               <div>{moment(event.startTime).format('LLLL')}</div>
               <div>{event.regionName}</div>
-              <div>{moment(event.startTime).diff(moment(), 'days')} Days Left</div>
-              <Button to={`/events/${event._id}`}>Join Us</Button>
+              <div>{moment(event.startTime).diff(moment(), 'days')} {t`Days Left`}</div>
+              <Button to={`/events/${event._id}`}>{t`Join Us`}</Button>
             </div>
           </div>
         ) : null}
