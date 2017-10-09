@@ -234,7 +234,8 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
                   <h3>{t`No participants invited.`}</h3>
                   <p>{t`Emails will be send when you publish.`}</p>
                 </div>
-                <Button className="btn-primary" to={`/events/${event._id}/participants`}>{t`Invite participants`}</Button>
+                <Button className="btn-primary"
+                        to={`/events/${event._id}/participants`}>{t`Invite participants`}</Button>
               </div>
               <div className="step-status step-completed">
                 <div className="step-information">
@@ -249,7 +250,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
               <div className="step-status">
                 <h3>{t`Tips for event organizers`}</h3>
                 <a className="btn" target="_blank"
-                   href="https://developmentseed.org/blog/2015/06/07/organizing-mapathons/">Learn more</a>
+                   href="https://developmentseed.org/blog/2015/06/07/organizing-mapathons/">{t`Learn more`}</a>
               </div>
             </li>
           </ol>
@@ -265,7 +266,8 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
                   <button className="btn btn-primary" onClick={this.publishEvent}>{t`Publish event`}</button>
                 </div>
               </div>
-              <div className="notification-completed step-active">{t`Congratulations! Your event has been published`}</div>
+              <div
+                className="notification-completed step-active">{t`Congratulations! Your event has been published`}</div>
               <div className="step-status step-active">
                 <div className="step-information">
                   <h3>{t`Mapping event published`}</h3>
