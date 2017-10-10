@@ -14,6 +14,7 @@ import {IEvent} from '../../../both/api/events/events';
 import {IOrganization, Organizations} from '../../../both/api/organizations/organizations';
 import {colors} from '../../stylesheets/colors';
 import OrganizationAdminHeader from './OrganizationAdminHeader';
+import OrganizationStatistics from './OrganizationStatistics';
 
 interface IPageModel {
   organization: IOrganization;
@@ -74,23 +75,13 @@ const OrganizeOrganizationsPage = (props: IStyledComponent & IAsyncDataByIdProps
   <ScrollableLayout id="OrganizeOrganizationPage" className={props.className}>
     <OrganizationAdminHeader organization={props.model.organization}/>
     <div className="content-area scrollable">
-      <div className="stats organization-stats">
-        <section className="participant-stats">
-          <span className="participants-invited">70<small>{t`invited`}</small></span>
-          <span className="participants-registered key-figure">69<small>{t`registered`}</small></span>
-        </section>
-        <section className="location-stats">
-          <span className="locations-planned">70<small>{t`planned`}</small></span>
-          <span className="locations-mapped key-figure">69<small>{t`mapped`}</small></span>
-        </section>
-        <section className="event-stats">
-          <span className="events-planned key-figure">70<small>{t`created`}</small></span>
-          <span className="events-completed">69<small>{t`completed`}</small></span>
-        </section>
-        <section className="new-event">
-          <Button to="/events/create" className="btn-primary">{t`Create event`}</Button>
-        </section>
-      </div>
+      <OrganizationStatistics
+        action={(
+          <section className="new-event">
+            <Button to="/events/create" className="btn-primary">{t`Create event`}</Button>
+          </section>
+        )}
+      />
       <EventList model={props.model.events}/>
     </div>
   </ScrollableLayout>
