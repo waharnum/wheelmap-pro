@@ -15,6 +15,7 @@ import {IEvent} from '../../../both/api/events/events';
 import {IOrganization, Organizations} from '../../../both/api/organizations/organizations';
 import {colors} from '../../stylesheets/colors';
 import {default as PublicHeader, HeaderTitle} from '../../components/PublicHeader';
+import OrganizationStatistics from './OrganizationStatistics';
 
 interface IPageModel {
   organization: IOrganization;
@@ -37,6 +38,7 @@ const ShowOrganizationPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledCo
         )}
         organizeLink={`/organizations/${organization._id}/organize`}
       />
+      <OrganizationStatistics />
       <div className="content-area">
         <Map/>
         {event ? (

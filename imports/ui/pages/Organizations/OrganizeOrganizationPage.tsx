@@ -110,77 +110,7 @@ const StyledReactiveOrganizeOrganizationsPage = styled(ReactiveOrganizeOrganizat
     padding-right: 0; /* to have a marginless stats bar */
   }
 
-  .stats {
-    padding-top: 20px;
-    background-color: white;
-    display: flex;
-    justify-content: space-between;
-    
-    &.organization-stats {
-      border-bottom: 1px solid ${colors.shadowGrey};
-    }
-
-    section {
-      padding: 0px 20px 0 20px;
-      text-align: center;
-      border-right: 1px solid ${colors.shadowGrey};
-      display: flex;
-
-      &:last-child {
-        border-right: 0;
-      }
-
-      span {
-        position: relative;
-        padding: 0 10px 16px 10px;
-        font-size: 30px;
-        line-height: 30px;
-        font-weight: 200;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        &.key-figure {
-          font-size: 32px;
-          font-weight: 800;
-        }
-
-        small {
-          font-size: 11px;
-          line-height: 11px;
-          font-weight: 300;
-          text-transform: uppercase;
-        }
-      }
-
-      &:before {
-        position: relative;
-        top: 2px;
-        left: 0;
-        width: 27px;
-        height: 27px;
-        content: " ";
-        background-image: url(/images/icon-person@2x.png); 
-        background-position: center center;
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
-      }
-    }
-
-    /* prefix icons*/
-    section.participant-stats:before { background-image: url(/images/icon-person@2x.png); }
-    section.location-stats:before { background-image: url(/images/icon-location@2x.png); }
-    section.event-stats:before { background-image: url(/images/icon-date@2x.png); }
-    section.new-event:before { 
-      width: 0;
-      height: 0;
-      background-image: none; 
-    }
-
-    section.new-event {
-      padding-bottom: 20px;
-    }
-  }
+  
 
   /* -------------------------- event list styling -----------------------------------*/
 
