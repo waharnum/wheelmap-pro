@@ -16,6 +16,7 @@ import {IOrganization, Organizations} from '../../../both/api/organizations/orga
 import {colors} from '../../stylesheets/colors';
 import {default as PublicHeader, HeaderTitle} from '../../components/PublicHeader';
 import OrganizationStatistics from './OrganizationStatistics';
+import EventStatistics from '../Events/EventStatistics';
 
 interface IPageModel {
   organization: IOrganization;
@@ -38,7 +39,7 @@ const ShowOrganizationPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledCo
         )}
         organizeLink={`/organizations/${organization._id}/organize`}
       />
-      <OrganizationStatistics />
+      <OrganizationStatistics/>
       <div className="content-area">
         <Map/>
         {event ? (
@@ -53,33 +54,10 @@ const ShowOrganizationPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledCo
                   </div>
                   <Button to={`/events/${event._id}`} className='btn-primary'>{t`Join Us`}</Button>
                 </div>
-                <div className="event-footer">
-                  <div className="stats event-stats">
-                    <section className="participant-stats">
-                      <span className="participants-registered key-figure">98
-                          <small>{t`registered`}</small>
-                      </span>
-                    </section>
-                    <section className="location-stats">
-                      <span className="locations-mapped key-figure">98
-                        <small>{t`mapped`}</small>
-                      </span>
-                    </section>
-                    <section className="event-stats">
-                      {(event.startTime && event.startTime > new Date()) ?
-                        (<span className="time-until-event key-figure">
-                          {moment(event.startTime).diff(moment(), 'days')}
-                          <small>{t`Days Left`}</small>
-                        </span>) :
-                        (
-                          <span className="time-until-event key-figure">
-                            {moment().diff(moment(event.startTime), 'days')}
-                            <small>{t`Days Ago`}</small>
-                        </span>)
-                      }
-                    </section>
-                  </div>
-                </div>
+                <EventStatistics
+                  event={event}
+                  achieved={true}
+                  countdown={'short'}/>
               </div>
             </div>
           </div>

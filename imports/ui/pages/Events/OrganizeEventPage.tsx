@@ -18,6 +18,7 @@ import Button from '../../components/Button';
 import {withTime} from '../../components/Timed';
 import EventTabs from './EventTabs';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
+import EventStatistics from './EventStatistics';
 
 interface IPageModel {
   event: IEvent;
@@ -199,19 +200,11 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
           publicLink={`/events/${event._id}`}
         />
         <div className="content-area scrollable">
-          <div className="stats event-stats">
-            <section className="participant-stats">
-              <span className="participants-invited">{stats.invited}
-                <small>{t`invited`}</small></span>
-              <span className="participants-registered key-figure">{stats.registered}
-                <small>{t`registered`}</small></span>
-            </section>
-            <Countdown start={moment(event.startTime)}/>
-            <section className="location-stats">
-              <span className="locations-planned">0<small>{t`planned`}</small></span>
-              <span className="locations-mapped key-figure">0<small>{t`mapped`}</small></span>
-            </section>
-          </div>
+          <EventStatistics
+            event={event}
+            planned={true}
+            achieved={true}
+            countdown="full"/>
           <ol className="event-timeline before-event">
             <li className={'event-timeline-step event-details ' + stepStates.createEvent}>
               <div className="notification-completed">{t`Event created successfully.`}</div>
@@ -341,7 +334,7 @@ const ReactiveOrganizeOrganizationsPage = reactiveSubscriptionByParams(
   },
   'events.by_id.private', 'eventParticipants.by_eventId.private', 'organizations.by_eventId.private');
 
-export default styled(ReactiveOrganizeOrganizationsPage) `
+export default styled(ReactiveOrganizeOrganizationsPage)`
 
 /* -------------------------- event stats styling --------------------------------*/
 
@@ -351,73 +344,6 @@ export default styled(ReactiveOrganizeOrganizationsPage) `
   padding-right: 0; /* to have a marginless stats bar */
 }
 
-.stats {
-  padding-top: 20px;
-  background-color: white;
-  border-bottom: 1px solid ${colors.shadowGrey};
-  display: flex;
-  justify-content: space-between;
-  
-  section {
-    padding: 0px 20px 0 20px;
-    text-align: center;
-    display: flex;
-    
-
-    span {
-      position: relative;
-      padding: 0 10px 16px 10px;
-      font-size: 30px;
-      line-height: 30px;
-      font-weight: 200;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      &.key-figure {
-        font-size: 32px;
-        font-weight: 800;
-      }
-
-      small {
-        font-size: 11px;
-        line-height: 11px;
-        font-weight: 300;
-        text-transform: uppercase;
-      }
-    }
-
-    &:before {
-      position: relative;
-      top: 2px;
-      left: 0;
-      width: 27px;
-      height: 27px;
-      content: " ";
-      background-image: url(/images/icon-person@2x.png); 
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-size: 100% 100%;
-    }
-  }
-
-  section.participant-stats {
-    border-right: 1px solid ${colors.shadowGrey};
-    
-    &:before { background-image: url(/images/icon-person@2x.png); }
-  }
-
-  section.event-countdown {
-
-    &:before { background-image: url(/images/icon-date@2x.png); }
-  }
-  
-  section.location-stats {
-    border-left: 1px solid ${colors.shadowGrey};
-
-    &:before { background-image: url(/images/icon-location@2x.png); }
-  }
-}
 /* -------------------------- event timeline styling -----------------------------------*/
 
 ol.event-timeline.before-event {

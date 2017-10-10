@@ -15,6 +15,7 @@ import {IOrganization, Organizations} from '../../../both/api/organizations/orga
 import {colors} from '../../stylesheets/colors';
 import OrganizationAdminHeader from './OrganizationAdminHeader';
 import OrganizationStatistics from './OrganizationStatistics';
+import EventStatistics from '../Events/EventStatistics';
 
 interface IPageModel {
   organization: IOrganization;
@@ -42,19 +43,11 @@ const EventListEntry = (props: { model: IEvent }) => (
             </div>)
         }
       </div>
-      <div className="event-footer">
-        <div className="stats event-stats">
-          <section className="participant-stats">
-            <span className="participants-invited">99<small>{t`invited`}</small></span>
-            <span className="participants-registered key-figure">98<small>{t`registered`}</small></span>
-          </section>
-          <section className="location-stats">
-            <span className="locations-planned">99<small>{t`planned`}</small></span>
-            <span className="locations-mapped key-figure">98<small>{t`mapped`}</small></span>
-          </section>
-        </div>
-        <Button to={`/events/${props.model._id}/organize`}>{t`Show details`}</Button>
-      </div>
+      <EventStatistics className="event-footer"
+                       event={props.model}
+                       planned={true}
+                       achieved={true}
+                       action={<Button to={`/events/${props.model._id}/organize`}>{t`Show details`}</Button>}/>
     </div>
     <div className="event-status corner-ribbon">
       {props.model.status}

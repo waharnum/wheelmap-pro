@@ -36,7 +36,7 @@ class OrganizationStatistics extends React.Component<IOrganizationStatistics & I
 //   return {};
 // }, OrganizationStatistics);
 
-export default styled<IOrganizationStatistics>(OrganizationStatistics) `
+export default styled<IOrganizationStatistics & IStyledComponent>(OrganizationStatistics) `
 
 padding-top: 20px;
 background-color: white;
@@ -90,7 +90,8 @@ section {
     background-image: url(/images/icon-person@2x.png); 
     background-position: center center;
     background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background-size: contain;
+    flex-shrink: 0;
   }
 }
 

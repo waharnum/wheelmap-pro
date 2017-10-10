@@ -14,6 +14,7 @@ import {IOrganization} from '../../../both/api/organizations/organizations';
 import {default as PublicHeader, HeaderTitle} from '../../components/PublicHeader';
 import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
 import {colors} from '../../stylesheets/colors';
+import EventStatistics from './EventStatistics';
 
 interface IPageModel {
   organization: IOrganization;
@@ -39,7 +40,10 @@ const PublicEventHeader = (props: { event: IEvent, organization: IOrganization }
 const OngoingEventHeader = (props: { event: IEvent }) => (
   <div>
     <div className="event-date">{moment(props.event.startTime).format('LLLL')}</div>
-    <Countdown start={moment(props.event.startTime)}/>
+    <EventStatistics
+      event={props.event}
+      achieved={true}
+      countdown={'full'}/>
   </div>
 );
 
@@ -117,7 +121,11 @@ const ReactiveShowEventPage = reactiveSubscriptionByParams(
   }, 'events.by_id.public', 'organizations.by_eventId.public');
 
 export default styled(ReactiveShowEventPage) `
-    .map-overlay {  
+  .event-date {
+    background-color: white;
+  }
+
+  .map-overlay {  
     display: flex;
     justify-content: center;
     align-content: center;
