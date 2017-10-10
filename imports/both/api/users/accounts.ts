@@ -19,7 +19,7 @@ Accounts.config({
 
 Accounts.ui.config({
   passwordSignupFields: 'EMAIL_ONLY',
-  loginPath: '/signin',
+  loginPath: '/signup',
   signUpPath: '/signup',
   resetPasswordPath: '/reset-password',
   profilePath: '/profile',

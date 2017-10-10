@@ -56,7 +56,7 @@ class EnsureUserLoggedIn extends React.Component<IUserProps & IEnsureUserLoggedI
       return;
     }
     if (!this.hasMatchingRole()) {
-      browserHistory.replace('/403');
+      browserHistory.replace('/');
       return;
     }
   }

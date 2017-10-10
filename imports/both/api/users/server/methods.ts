@@ -5,6 +5,7 @@ import {t} from 'c-3po';
 import {isAdmin} from '../../../lib/is-admin';
 import {Accounts} from 'meteor/accounts-base';
 import {EventParticipants} from '../../event-participants/event-participants';
+import {T9n} from 'meteor/softwarerero:accounts-t9n';
 
 Accounts.onCreateUser((options: any, user: Meteor.User) => {
   user.username = options.username || undefined;

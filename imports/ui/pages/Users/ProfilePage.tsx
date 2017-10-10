@@ -6,42 +6,15 @@ import AdminHeader, {HeaderTitle} from '../../components/AdminHeader';
 import {Accounts, STATES} from 'meteor/std:accounts-ui';
 import styled from 'styled-components';
 import {IStyledComponent} from '../../components/IStyledComponent';
-import AdminTab from '../../components/AdminTab';
-import {AutoForm, SubmitField} from 'uniforms-bootstrap3';
-import {ClaimAccountSchema} from '../../../both/api/users/accounts';
 import {createContainer} from 'meteor/react-meteor-data';
+import {Link} from 'react-router';
 
-
-const GuestContent = () => (
-  <div>
-    <h2>{t`Claim your Account`}</h2>
-    <AutoForm
-      placeholder={true}
-      showInlineError={true}
-      schema={ClaimAccountSchema}
-      submitField={() => (<SubmitField value={t`Claim Account`}/>)}
-      onSubmit={(doc) => {
-        Meteor.call('users.claim', doc.email, (error, result) => {
-          console.log(error, result);
-        });
-      }}
-    />
-  </div>
-);
 
 const ProfilePage = (props: IStyledComponent & { user: Meteor.User, ready: boolean }) => {
-  const user = props.user;
   return (
     <ScrollableLayout id="ProfilePage" className={props.className}>
-      <AdminHeader
-        titleComponent={<HeaderTitle title="User Profile"/>}
-        tabs={
-          <section>
-            <AdminTab to={`/`} title={t`Home`}/>
-          </section>}
-      />
+      <AdminHeader titleComponent={<Link to="/" className="logo"><h1>{t`wheelmap.pro`}</h1></Link>}/>
       <div className="content-area scrollable">
-        {user.guest ? <GuestContent/> : null}
         <Accounts.ui.LoginForm/>
       </div>
     </ScrollableLayout>

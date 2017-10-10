@@ -6,7 +6,7 @@ import {Router, Route, Redirect, browserHistory} from 'react-router';
 import App from './App';
 
 import HomePage from './pages/Home/HomePage';
-import ProfilePage from './pages/Users/ProfilePage';
+import SignUpPage from './pages/Users/SignUpPage';
 import NotFoundPage from './pages/NotFound/NotFoundPage';
 import EditEventPage from './pages/Events/EditEventPage';
 import ShowEventPage from './pages/Events/ShowEventPage';
@@ -22,9 +22,10 @@ import EventParticipantsPage from './pages/Events/EventParticipantsPage';
 import ListOrganizationsPage from './pages/Organizations/ListOrganizationsPage';
 import CreateOrganizationPage from './pages/Organizations/CreateOrganizationPage';
 import OrganizationMembersPage from './pages/Organizations/OrganizationMembersPage';
-import OrganizeOrganizationPage from './pages/Organizations/OrganizeOrganizationPage';
-import OrganizationStatisticsPage from './pages/Organizations/OrganizationStatisticsPage';
 import PublicSignUpForEventPage from './pages/Events/PublicSignUpForEventPage';
+import OrganizeOrganizationPage from './pages/Organizations/OrganizeOrganizationPage';
+import SignUpForOrganizationPage from './pages/Organizations/SignUpForOrganizationPage';
+import OrganizationStatisticsPage from './pages/Organizations/OrganizationStatisticsPage';
 
 import EnsureUserLoggedIn from './components/EnsureUserLoggedIn';
 
@@ -33,7 +34,7 @@ import EnsureUserLoggedIn from './components/EnsureUserLoggedIn';
 import AppLayoutScrollableAdmin from './_layouts/AppLayoutScrollableAdmin';
 import AppLayoutPublicOrganization from './_layouts/AppLayoutPublicOrganization';
 import AppLayoutPublicEvent from './_layouts/AppLayoutPublicEvent';
-import SignUpForOrganizationPage from './pages/Organizations/SignUpForOrganizationPage';
+import ProfilePage from './pages/Users/ProfilePage';
 
 const RedirectAccordingToUser = () => {
   const user = Meteor.user();
@@ -42,6 +43,8 @@ const RedirectAccordingToUser = () => {
     browserHistory.replace('/welcome');
     return;
   }
+
+  console.log(user);
 
   const organizationId = user.profile.activeOrganizationId;
   if (!organizationId) {
@@ -78,12 +81,10 @@ const AppRouter = (
       <Route path="/organizations/:_id/accept-invitation/:token" component={SignUpForOrganizationPage}/>
       <Route path="/events/:_id/accept-invitation/:token" component={SignUpForEventPage}/>
       <Route path="/events/:_id/public-invitation/:token" component={PublicSignUpForEventPage}/>
+      <Route path="/signup" component={SignUpPage}/>
 
       {/* organize pages */}
       <Route component={EnsureUserLoggedIn}>
-
-        <Route path="/profile" component={ProfilePage}/>
-
         <Route path="/organizations/none" component={NoOrganizationsPage}/>
         <Route path="/organizations/create" component={CreateOrganizationPage}/>
         <Route path="/organizations/:_id/edit" component={EditOrganizationPage}/>
@@ -97,6 +98,8 @@ const AppRouter = (
         <Route path="/events/:_id/organize" component={OrganizeEventPage}/>
         <Route path="/events/:_id/statistics" component={EventStatisticsPage}/>
         <Route path="/events/:_id/participants" component={EventParticipantsPage}/>
+
+        <Route path="/profile" component={ProfilePage}/>
       </Route>
 
       {/* public pages  */}
@@ -106,9 +109,8 @@ const AppRouter = (
       <Route path="/welcome" component={HomePage}/>
 
       {/* user management */}
-      <Route path="/signin" component={() => <Accounts.ui.LoginForm/>}/>
-      <Route path="/signup" component={() => <Accounts.ui.LoginForm formState={STATES.SIGN_UP}/>}/>
       <Route path="/reset-password" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET}/>}/>
+      <Route path="/reset-password/:id" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET}/>}/>
       <Route path="/#/reset-password/:id" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET}/>}/>
 
       {/* only as styling props – has to be removed later !*/}

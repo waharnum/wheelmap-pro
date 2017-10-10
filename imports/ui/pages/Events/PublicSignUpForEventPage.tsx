@@ -4,6 +4,7 @@ import * as React from 'react';
 import {Meteor} from 'meteor/meteor';
 import {Location} from 'history';
 import {Accounts, STATES} from 'meteor/std:accounts-ui';
+import {AutoForm, SubmitField} from 'uniforms-bootstrap3';
 
 import Button from '../../components/Button';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
@@ -14,7 +15,6 @@ import {IStyledComponent} from '../../components/IStyledComponent';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
 import PublicHeader, {HeaderTitle} from '../../components/PublicHeader';
 import {IAsyncDataByIdProps, reactiveSubscriptionByParams} from '../../components/reactiveModelSubscription';
-import {AutoForm, SubmitField} from 'uniforms-bootstrap3';
 
 interface IAcceptInviteParams {
   _id: Mongo.ObjectID;
