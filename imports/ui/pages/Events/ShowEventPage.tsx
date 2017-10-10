@@ -56,7 +56,7 @@ const HeaderShareAction = () => (
 const FinishedEventMapContent = (props: { event: IEvent }) => (
   <div className="event-stats">
     <div className="event-picture-container">
-      {props.event.photoUrl?<img src={props.event.photoUrl} alt={t`Event picture`} />:null}
+      {props.event.photoUrl ? <img src={props.event.photoUrl} alt={t`Event picture`}/> : null}
       <section className="image-overlay">
         <div className="participant-count">18</div>
         <div className="participants-block">
@@ -73,7 +73,7 @@ const FinishedEventMapContent = (props: { event: IEvent }) => (
           <small>{t`Planned`}</small>
         </section>
         <section className="achieved-label">
-          <p>{96}</p> 
+          <p>{96}</p>
           <small>{t`Achieved`}</small>
         </section>
       </div>
