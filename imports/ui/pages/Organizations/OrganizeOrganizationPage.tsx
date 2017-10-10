@@ -29,10 +29,17 @@ const EventListEntry = (props: { model: IEvent }) => (
           <h4>{moment(props.model.startTime).format('LLLL')}</h4>
           <p className="event-region">{props.model.regionName}</p>
         </div>
-        <div className="time-until-event">
-          <p>{moment(props.model.startTime).diff(moment(), t`days`)}</p>
-          <small>{t`Days Left`}</small>
-        </div>
+        {
+          (props.model.startTime && props.model.startTime > new Date()) ?
+            (<div className="time-until-event">
+              <p>{moment(props.model.startTime).diff(moment(), 'days')}</p>
+              <small>{t`Days Left`}</small>
+            </div>) :
+            (<div className="time-until-event">
+              <p>{moment().diff(moment(props.model.startTime), 'days')}</p>
+              <small>{t`Days Ago`}</small>
+            </div>)
+        }
       </div>
       <div className="event-footer">
         <div className="stats event-stats">

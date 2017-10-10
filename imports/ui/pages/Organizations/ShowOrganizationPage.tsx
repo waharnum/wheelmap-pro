@@ -64,9 +64,17 @@ const ShowOrganizationPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledCo
                       </span>
                     </section>
                     <section className="event-stats">
-                      <span className="time-until-event key-figure">{moment(event.startTime).diff(moment(), 'days')}
-                        <small>{t`Days Left`}</small>
-                      </span>
+                      {(event.startTime && event.startTime > new Date()) ?
+                        (<span className="time-until-event key-figure">
+                          {moment(event.startTime).diff(moment(), 'days')}
+                          <small>{t`Days Left`}</small>
+                        </span>) :
+                        (
+                          <span className="time-until-event key-figure">
+                            {moment().diff(moment(event.startTime), 'days')}
+                            <small>{t`Days Ago`}</small>
+                        </span>)
+                      }
                     </section>
                   </div>
                 </div>
