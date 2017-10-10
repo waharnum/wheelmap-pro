@@ -35,7 +35,7 @@ label,
 .btn-default {
   
   &:hover {
-    color: $link-blue-lighter;
+    color: $cta-green-lighter;
   }
 }
 
@@ -49,7 +49,25 @@ label,
 
   &:hover {
     color: white;
-    background-color: $cta-green-lighter;
+    background-color: $cta-green;
+  }
+}
+
+.btn-danger,
+.btn-danger:hover {
+  color: $error-red;
+  box-shadow: none;
+}
+
+.btn-danger:focus {
+  box-shadow: none !important;
+}
+
+.dropdown-toggle {
+  color: $bg-anthracite;
+
+  &:hover {
+    color: $cta-green-lighter;
   }
 }
 
@@ -127,6 +145,10 @@ label,
       background: white;
     } 
   }
+}
+
+.panel.panel-danger {
+  color: $error-red;
 }
 
 form {

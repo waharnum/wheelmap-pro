@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import * as React from 'react';
 import {t} from 'c-3po';
 import * as ClipboardButton from 'react-clipboard.js';
+import {colors} from '../../stylesheets/colors';
 
 import EventTabs from './EventTabs';
 import {IOrganization} from '../../../both/api/organizations/organizations';
@@ -32,15 +33,19 @@ const removeParticipant = (id: Mongo.ObjectID | undefined) => {
 
 const EventParticipantEntry = (props: { model: IEventParticipant }) => (
   <li className="participant-entry">
-    <section className="participant-icon" dangerouslySetInnerHTML={{__html: props.model.getIconHTML()}}/>
-    <section className="participant-name">{props.model.getUserName()}</section>
-    <section className="participant-user glyphicon">{props.model.userId ? 'p' : ''}</section>
-    <section className="participant-state">{getLabelForInvitationState(props.model.invitationState)}</section>
+    <section className="participant-info">
+      <div className="participant-icon" dangerouslySetInnerHTML={{__html: props.model.getIconHTML()}}/>
+      <div className="participant-name">{props.model.getUserName()}</div>
+    </section>
+    <section className="participant-state">
+      <div className="participant-user glyphicon">{props.model.userId ? 'p' : ''}</div>
+      <div className="participant-state-description">{getLabelForInvitationState(props.model.invitationState)}</div>
+      <div className="participant-remove glyphicon">
+        <a onClick={() => removeParticipant(props.model._id)}></a>
+      </div>
+    </section>
     {props.model.invitationState === 'error' ?
       <section className="participant-error">{props.model.invitationError}</section> : null}
-    <section className="participant-remove glyphicon">
-      <a onClick={() => removeParticipant(props.model._id)}>x</a>
-    </section>
   </li>
 );
 
@@ -78,10 +83,12 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
             </ol>
             <InviteByEmailForm onSubmit={this.onInvite}/>
             {hasPublicInvitation ? this.renderPublicInvitation(link) : null}
+            <h3 className="hint-important">{event.status === 'draft' ?
+              t`The event is not published yet. Invitations will be send when published.` : t`You made this event public. Invitations will be send immediatly.`}
+            </h3>
           </div>
           <div className="content-right">
-            <HintBox title={event.status === 'draft' ?
-              t`The event is not published yet.` : t`You made this event public.`}>
+            <HintBox>
               <Hint className="user">
                 {t`Invited people will receive a personal invitation which is only valid for them.`}
               </Hint>
@@ -135,6 +142,95 @@ const ReactiveEventParticipantsPage = reactiveSubscriptionByParams(
   'events.by_id.private', 'eventParticipants.by_eventId.private', 'organizations.by_eventId.private', 'users.private');
 
 export default styled(ReactiveEventParticipantsPage) `
+  
+  .content-left {
+
+    ol {
+
+      li.participant-entry {
+        padding: 6px 0;
+        border-bottom: 2px solid ${colors.bgGreyDarker};
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+        section.participant-info {
+          display: flex;
+          align-items: center;
+
+          .participant-icon img {
+            width: 32px;
+            height: 32px;
+            margin-left: 2px;
+            margin-right: 8px;
+            border-radius: 32px;
+          }
+          
+          .participant-name {
+            padding: 0 6px;
+            font-size: 16px;
+          }
+        }
+
+        section.participant-state,
+        section.participant-remove.glyphicon {
+          text-align: right;
+        }
+
+        section.participant-state {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          
+          .participant-user.glyphicon,
+          .participant-state-description {
+            display: inline-block;
+            padding: 4px;
+            line-height: 18px;
+            color: rgba(0,0,0,0.5);
+            background: ${colors.bgGreyDarker};
+          }
+
+          .participant-user.glyphicon {
+            top: 0;
+            margin-right: 4px;
+            padding: 6px;
+            text-align: center;
+            border-radius: 16px;
+          }
+
+          .participant-state-description {
+            padding: 3px 6px;
+            text-transform: uppercase;
+            border-radius: 16px;
+          }
+
+          .participant-remove.glyphicon {
+            padding: 0 8px;
+  
+            a {
+              cursor: pointer;
+              font-size: 18px;
+              font-family: "iconfield-v03";
+              color: ${colors.bgAnthracite};
+              opacity: 0.5;
+            }
+          }
+        }
+
+        section.participant-error {
+          
+        }
+
+      }
+    }
+  }
+
+  h3.hint-important {
+    font-size: 16px;
+    font-weight: 300;
+  }
+
   .copy-to-clipboard {
     display: flex;
 
@@ -154,5 +250,6 @@ export default styled(ReactiveEventParticipantsPage) `
     }
   }
 
+  
 
 `;

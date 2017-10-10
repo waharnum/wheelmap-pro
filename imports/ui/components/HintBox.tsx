@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import * as React from 'react';
+import {colors} from '../stylesheets/colors';
 
 import { IStyledComponent } from '../components/IStyledComponent';
 interface IHintHeader {
@@ -43,6 +44,9 @@ export const HintBox = styled(InternalHintBox) `
   flex-grow: 1;
   flex-basis: 100px;
   margin-left: 2em;
+  padding-left: 2em;
+  padding-bottom: 5em;
+  border-left: 2px solid ${colors.bgGreyDarker};
 
   h3 {
     position: relative;
@@ -94,6 +98,9 @@ export const HintBox = styled(InternalHintBox) `
 
     .idea::before {
       content: '';
+    }
+    .done::before {
+      content: '';
     }
     .user::before {
       content: 'p';

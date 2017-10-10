@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import * as React from 'react';
 import {t, gettext} from 'c-3po';
 import {ErrorsField} from 'uniforms-bootstrap3';
+import {colors} from '../../stylesheets/colors';
 
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 import {IStyledComponent} from '../../components/IStyledComponent';
@@ -64,23 +65,29 @@ const removeMember = (id: Mongo.ObjectID | undefined, callback: CallbackFunction
 };
 
 const OrganizationMemberEntry = (props: { model: IOrganizationMember, onError: CallbackFunction }) => (
+
   <li className="member-entry">
-    <section className="member-icon" dangerouslySetInnerHTML={{__html: props.model.getIconHTML()}}/>
-    <section className="member-name">{props.model.getUserName()}</section>
-    {props.model.editableBy(Meteor.userId() as any as Mongo.ObjectID) ?
-      (<section>
-        {props.model.invitationState === 'error' ?
-          <section className="member-error">{props.model.invitationError}</section> : null}
-        <OrganizationMemberRoleDropDown model={props.model} onError={props.onError}/>
-        <section className="member-state">{getLabelForInvitationState(props.model.invitationState)}</section>
-        <section className="member-remove">
-          <button className="btn btn-danger" onClick={() => removeMember(props.model._id, props.onError)}>
-            {t`Remove Member`}
-          </button>
-        </section>
-      </section>) :
-      (<section className="member-role">{getLabelForRole(props.model.role)}</section>)
-    }
+    <section className="member-info">
+      <div className="member-icon" dangerouslySetInnerHTML={{__html: props.model.getIconHTML()}}/>
+      <div className="member-name">{props.model.getUserName()}</div>
+    </section>
+    <section className="member-state">
+      <div className="member-user glyphicon">{props.model.userId ? 'p' : ''}</div>
+      <div className="member-state-description">{getLabelForInvitationState(props.model.invitationState)}</div>
+      {props.model.editableBy(Meteor.userId() as any as Mongo.ObjectID) ?
+        (<div>
+          {props.model.invitationState === 'error' ?
+            <section className="member-error">{props.model.invitationError}</section> : null}
+          <OrganizationMemberRoleDropDown model={props.model} onError={props.onError}/>
+        </div>) :
+        (<div className="member-role">{getLabelForRole(props.model.role)}</div>)
+      }
+      <div className="member-remove">
+        <button className="btn btn-danger" onClick={() => removeMember(props.model._id, props.onError)}>
+          {t`Remove`}
+        </button>
+      </div>
+    </section>
   </li>
 );
 
@@ -100,14 +107,16 @@ class OrganizationMembersPage extends React.Component<IAsyncDataByIdProps<IPageM
     return (
       <ScrollableLayout className={this.props.className}>
         <OrganizationAdminHeader organization={organization}/>
-        <div className="content-area scrollable">
-          {this.state.error ? <ErrorBox error={this.state.error}/> : null}
-          <h2>{t`Invite to Organization`}</h2>
-          <ol>
-            {members.map((m) =>
-              (<OrganizationMemberEntry key={String(m._id)} model={m} onError={this.onError}/>))}
-          </ol>
-          <InviteByEmailForm onSubmit={this.onInvite}/>
+        <div className="content-area scrollable hsplit">
+          <div className="content-left">
+            {this.state.error ? <ErrorBox error={this.state.error}/> : null}
+            <h2>{t`Invite to Organization`}</h2>
+            <ol>
+              {members.map((m) =>
+                (<OrganizationMemberEntry key={String(m._id)} model={m} onError={this.onError}/>))}
+            </ol>
+            <InviteByEmailForm onSubmit={this.onInvite}/>
+          </div>
         </div>
       </ScrollableLayout>
     );
@@ -142,4 +151,89 @@ const ReactiveOrganizationMembersPage = reactiveSubscriptionByParams(
   }, 'organizations.by_id.private', 'organizationMembers.by_id.private', 'users.private');
 
 export default styled(ReactiveOrganizationMembersPage) `
+
+  .content-left {
+  
+    ol {
+
+      li.member-entry {
+        padding: 6px 0;
+        border-bottom: 2px solid ${colors.bgGreyDarker};
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+        section.member-info {
+          display: flex;
+          align-items: center;
+
+          .member-icon img {
+            width: 32px;
+            height: 32px;
+            margin-left: 2px;
+            margin-right: 8px;
+            border-radius: 32px;
+          }
+          
+          .member-name {
+            min-width: 24em;
+            padding: 0 6px;
+            font-size: 16px;
+          }
+        }
+
+        section.member-state,
+        section.member-remove.glyphicon {
+          text-align: right;
+        }
+
+        section.member-state {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          
+          .member-user.glyphicon,
+          .member-state-description {
+            display: inline-block;
+            padding: 4px;
+            line-height: 18px;
+            color: rgba(0,0,0,0.5);
+            background: ${colors.bgGreyDarker};
+          }
+
+          .member-user.glyphicon {
+            top: 0;
+            margin-right: 4px;
+            padding: 6px;
+            text-align: center;
+            border-radius: 16px;
+          }
+
+          .member-state-description {
+            padding: 3px 6px;
+            text-transform: uppercase;
+            border-radius: 16px;
+          }
+
+          .member-remove button.btn.btn-danger {
+            color: ${colors.bgAnthracite} !important;
+
+            &:hover {
+              color: ${colors.errorRed} !important;
+            }
+
+            &:focus {
+              color: white !important;
+            }
+          }
+        }
+
+        section.member-error {
+          
+        }
+
+      }
+    }
+  }
+
 `;
