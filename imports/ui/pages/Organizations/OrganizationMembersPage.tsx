@@ -103,12 +103,11 @@ class OrganizationMembersPage extends React.Component<IAsyncDataByIdProps<IPageM
         <div className="content-area scrollable">
           {this.state.error ? <ErrorBox error={this.state.error}/> : null}
           <h2>{t`Invite to Organization`}</h2>
-          <InviteByEmailForm onSubmit={this.onInvite}/>
-          <h2>{t`Organization Members`}</h2>
           <ol>
             {members.map((m) =>
               (<OrganizationMemberEntry key={String(m._id)} model={m} onError={this.onError}/>))}
           </ol>
+          <InviteByEmailForm onSubmit={this.onInvite}/>
         </div>
       </ScrollableLayout>
     );
