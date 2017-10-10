@@ -44,7 +44,7 @@ export default styled(ScrollableLayout) `
     }
 
     .content-right {
-      max-width: 600px;
+      max-width: 540px;
     }
   }
 

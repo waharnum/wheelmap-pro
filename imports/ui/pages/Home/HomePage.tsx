@@ -106,6 +106,7 @@ export default styled(HomePage) `
     span.logo {
       content: " ";
       width: 309px;
+      min-width: 309px;
       height: 82px;
       background-image: url(/images/logo-wheelmappro@2x.png); 
       background-position: center center;
@@ -233,11 +234,15 @@ export default styled(HomePage) `
     padding: 42px 20px;
     display: flex;
     flex-direction: row-reverse;
-    // flex-wrap: wrap-reverse;
+    justify-content: space-around;
+    flex-wrap: wrap;
 
     h2 {
       color: white;
       position: relative;
+      padding-left: 8px;
+      max-width: 15em;
+      min-width: 10em;
       font-weight: 200;
       font-size: 28px;
       text-align: center;
@@ -247,7 +252,7 @@ export default styled(HomePage) `
         content: " ";
         width: 164px;
         height: 95px;
-        top: 60px;
+        top: 80px;
         left: 20px;
         background-image: url(/images/hintLine.svg); 
         background-position: center center;
@@ -259,15 +264,17 @@ export default styled(HomePage) `
 
     .media {
       margin: auto;
+      flex-shrink: 0;
 
       .media-left {
         content: " ";
         width: 557px;
+        min-width: 557px;
         height: 348px;
         background-image: url(/images/videoPreview@2x.png); 
         background-position: center center;
         background-repeat: no-repeat;
-        background-size: 100% 100%;
+        background-size: contain;
       }
     }
   }
@@ -275,11 +282,15 @@ export default styled(HomePage) `
   section.partners {
     padding: 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    flex-wrap: wrap;
 
     a {
+      flex-shrink: 0;
       position: relative;
       height: 52px;
+      margin-right: 10px;
+      margin-bottom: 10px;
       background-position: center center;
       background-repeat: no-repeat;
       background-size: 100% 100%;
@@ -303,31 +314,37 @@ export default styled(HomePage) `
 
     a.jaccede {
       width: 52px;
+      min-width: 52px;
       background-image: url(/images/partners/logo-jaccede.png); 
     }
 
     a.foursquare {
       width: 70px;
+      min-width: 70px;
       background-image: url(/images/partners/logo-foursquare.png); 
     }
 
     a.axsmap {
       width: 150px;
+      min-width: 150px;
       background-image: url(/images/partners/logo-axsmap.png); 
     }
 
     a.wheelmap {
       width: 181px;
+      min-width: 181px;
       background-image: url(/images/partners/logo-wheelmap.png); 
     }
 
     a.google {
       width: 153px;
+      min-width: 153px;
       background-image: url(/images/partners/logo-google.png); 
     }
 
     a.iwheelshare {
       width: 181px;
+      min-width: 181px;
       background-image: url(/images/partners/logo-iwheelshare.png); 
     }
   }
