@@ -33,14 +33,19 @@ export function getIconHTMLForUser(user) {
       if (!url && services.google) {
         url = services.google.picture;
       }
-    } else {
-      const hash = user.profile && user.profile.gravatarHash;
+    }
+
+    if (!url) {
+      let hash = user.profile && user.profile.gravatarHash;
+      if (!hash && user.emails && user.emails.length > 0) {
+        hash = getGravatarHashForEmailAddress(user.emails[0]);
+      }
       if (hash) {
         url = getGravatarImageUrl(hash);
       }
     }
   }
-  url = url || '/icons/anonymous.svg';
+  url = url || '/images/icon-person@2x.png';
   return `<img src="${url}" class='user-icon'>`;
 }
 
