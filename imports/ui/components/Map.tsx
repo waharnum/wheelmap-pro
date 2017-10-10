@@ -15,7 +15,12 @@ config.accessibilityCloudAppToken = Meteor.settings.public.accessibilityCloud;
 class Map extends React.Component<IStyledComponent> {
   public render(): JSX.Element {
     return (
-      <ReactWheelmapMap className={`wheelmap-map ${this.props.className}`} data-component="Map"/>
+      <ReactWheelmapMap
+        className={`wheelmap-map ${this.props.className}`}
+        data-component="Map"
+        accessibilityFilter={[]}
+        toiletFilter={[]}
+      />
     );
   }
 };
