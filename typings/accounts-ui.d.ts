@@ -10,5 +10,13 @@ declare module 'meteor/accounts-base' {
     export function insertUserDoc(options: any, user: Meteor.User);
 
     export function onLogout(callback: (params: { user: Meteor.User, connection: Meteor.Connection }) => void);
+
+    export function addEmail(userId: string, email: string, force: boolean);
+
+    export function setPassword(userId: string, password: string, options: any | undefined);
+
+    export function sendEnrollmentEmail(userId: string, email: string);
+
+    export function onCreateUser(callback: (options: any, user: Meteor.User) => Meteor.User);
   }
 }
