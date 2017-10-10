@@ -14,7 +14,7 @@ const EventTabs = (props: IStyledComponent & ITabProps) => {
     <section className={props.className}>
       <AdminTab to={`/events/${props.id}/organize`} title="Event Overview"/>
       <AdminTab to={`/events/${props.id}/participants`} title="Participants"/>
-      <AdminTab to={`/events/${props.id}/statistics`} title="Statistics"/>
+      {/* <AdminTab to={`/events/${props.id}/statistics`} title="Statistics"/> */}
       <AdminTab to={`/events/${props.id}/edit`} title="Customize"/>
     </section>
   );

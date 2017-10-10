@@ -39,7 +39,6 @@ const ShowOrganizationPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledCo
         )}
         organizeLink={`/organizations/${organization._id}/organize`}
       />
-      <OrganizationStatistics/>
       <div className="content-area">
         <Map/>
         {event ? (

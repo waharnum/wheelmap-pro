@@ -18,7 +18,7 @@ const OrganizationTabs = (props: IStyledComponent & ITabProps) => {
     <section className={props.className}>
       <AdminTab to={`/organizations/${props.id}/organize`} title={t`Dashboard`}/>
       <AdminTab to={`/organizations/${props.id}/members`} title={t`Members`}/>
-      <AdminTab to={`/organizations/${props.id}/statistics`} title={t`Statistics`}/>
+      {/* <AdminTab to={`/organizations/${props.id}/statistics`} title={t`Statistics`}/> */}
       <AdminTab to={`/organizations/${props.id}/edit`} title={t`Customize`}/>
     </section>
   );

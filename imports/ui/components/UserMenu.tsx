@@ -134,13 +134,34 @@ img {
 
 .dropdown-toggle {
   cursor: pointer;
+  
+  &:after {
+    position: absolute;
+    // right: -8px;
+    top: 11px;
+    content: 'Í';
+    font-family: 'iconfield-v03';
+    font-size: 14px;
+  }
 }
 
-&:after {
-  position: absolute;
-  right: -8px;
-  top: 8px;
-  content: 'Í';
-  font-family: 'iconfield-v03';
-  font-size: 14px;
-}`;
+// .dropdown.open {
+//   position: relative;
+
+  ul.dropdown-menu {
+    position: absolute;
+    right:-8px;
+    top: 36px;
+    
+    form {
+      width: 24em;
+      padding: 10px;
+
+      fieldset.form-group {
+        // width: 100%;
+      }
+    }
+  }
+
+
+`;

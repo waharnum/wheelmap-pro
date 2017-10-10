@@ -74,6 +74,7 @@ header.main-header {
     margin: 0;
     text-transform: uppercase;
     text-align: right;
+    min-height: 39px;
     
     li {
       padding: 8px 10px;
@@ -120,7 +121,7 @@ header.main-header {
 /* ----------------------------- dark admin version -----------------------*/
 
 .on-dark {
-  color: ${colors.bgAnthracite};
+  // color: ${colors.bgAnthracite};
   background-color: #37404D;
 }
 
@@ -142,6 +143,11 @@ header.main-header {
    
     li.public-view::before {
       background-image: url(/images/icon-public-view@2x.png); 
+    }
+
+    section.user-menu,
+    .dropdown-toggle:after {
+      color: ${colors.shadowGrey};
     }
   }
 
