@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import * as React from 'react';
+import {t} from 'c-3po';
 import * as ClipboardButton from 'react-clipboard.js';
 
 import EventTabs from './EventTabs';
@@ -70,27 +71,24 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
         />
         <div className="content-area scrollable hsplit">
           <div className="content-left">
-            <h2>Invite Participants to event</h2>
+            <h2>{t`Invite Participants to event`}</h2>
+            <ol>
+              {participants.length === 0 ? <section>{t`No one invited yet.`}</section> : null}
+              {participants.map((p) => (<EventParticipantEntry key={String(p._id)} model={p}/>))}
+            </ol>
             <InviteByEmailForm onSubmit={this.onInvite}/>
             {hasPublicInvitation ? this.renderPublicInvitation(link) : null}
           </div>
           <div className="content-right">
             <HintBox title={event.status === 'draft' ?
-              'The event is not published yet.' : 'You made this event public.'}>
+              t`The event is not published yet.` : t`You made this event public.`}>
               <Hint className="user">
-                Invited people will receive a personal invitation which is only valid for them.
+                {t`Invited people will receive a personal invitation which is only valid for them.`}
               </Hint>
               <Hint className="group">
-                Everybody with the share-link below can join.
+                {t`Everybody with the share-link below can join.`}
               </Hint>
             </HintBox>
-            <div className="participants-box">
-              <h3>Invited Participants</h3>
-              <ol>
-                {participants.length === 0 ? <section>No one invited yet.</section> : null}
-                {participants.map((p) => (<EventParticipantEntry key={String(p._id)} model={p}/>))}
-              </ol>
-            </div>
           </div>
         </div>
       </ScrollableLayout>
@@ -99,15 +97,14 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
 
   private renderPublicInvitation = (link: string): JSX.Element => {
     return (
-      <section><h2>Share a link</h2>
+      <section><h2>{t`Share a link`}</h2>
         <div>
-          You can also share the following link to invite people,
-          e.g. via Social Media or handouts.
+          {t`You can also share the following link to invite people, e.g. via Social Media or handouts.`}
           <form>
             <div className="field form-group copy-to-clipboard">
               <input className="form-group" type="text" id="public-link" value={link} disabled={true}/>
               <ClipboardButton className="btn btn-dark" data-clipboard-text={link}>
-                Copy to clipboard
+                {t`Copy to clipboard`}
               </ClipboardButton>
             </div>
           </form>
@@ -138,47 +135,6 @@ const ReactiveEventParticipantsPage = reactiveSubscriptionByParams(
   'events.by_id.private', 'eventParticipants.by_eventId.private', 'organizations.by_eventId.private', 'users.private');
 
 export default styled(ReactiveEventParticipantsPage) `
-
-  .participants-box {
-    margin-left: 2em;
-
-    h3 {
-      padding-bottom: 1em;
-      font-size: 20px;
-      line-height: 24px;
-      font-weight: 300;
-    }
-
-    .participant-entry {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 5px;
-      padding-left: 1em;
-
-      section {
-        margin-left: 5px;      
-      }
-
-      .participant-icon img {
-        width: 24px;
-      }
-      .participant-name {
-        flex-grow: 1;
-      }
-      .participant-state {
-
-      }
-      .participant-error {
-
-      }
-      .participant-remove a {
-        color: red;
-      }
-    }
-  }
-
   .copy-to-clipboard {
     display: flex;
 
