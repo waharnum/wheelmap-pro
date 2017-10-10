@@ -87,33 +87,33 @@ export function usersWithFullAccessToOrganizationCount(organization: IOrganizati
 
 // Returns true if the user is admin or can manage the organization, false
 // otherwise. Admins are considered as having all roles in every organization.
-export function userHasFullAccessToOrganization(userId: Mongo.ObjectID | null | undefined,
+export function userHasFullAccessToOrganization(userId: string,
                                                 organization: IOrganization): boolean {
   if (!userId || !organization) {
     return false;
   }
 
-  return userHasFullAccessToOrganizationId(userId, organization._id);
+  return userHasFullAccessToOrganizationId(userId as any as Mongo.ObjectID, organization._id);
 }
 
 // Returns true if the user is admin or can manage the organization referenced in the given MongoDB
 // document, false otherwise.
-export function userHasFullAccessToReferencedOrganization(userId: Mongo.ObjectID | null | undefined,
+export function userHasFullAccessToReferencedOrganization(userId: string,
                                                           doc: { organizationId: Mongo.ObjectID }): boolean {
   if (!userId || !doc) {
     return false;
   }
 
-  return userHasFullAccessToOrganizationId(userId, doc.organizationId);
+  return userHasFullAccessToOrganizationId(userId as any as Mongo.ObjectID, doc.organizationId);
 }
 
 // Returns true if the user is admin or can manage the organization referenced in the given MongoDB
 // document, false otherwise.
-export function userHasFullAccessToReferencedOrganizationByMethod(userId: Mongo.ObjectID | null | undefined,
+export function userHasFullAccessToReferencedOrganizationByMethod(userId: string,
                                                                   doc: { getOrganizationId: () => (Mongo.ObjectID | null) }): boolean {
   if (!userId || !doc) {
     return false;
   }
 
-  return userHasFullAccessToOrganizationId(userId, doc.getOrganizationId());
+  return userHasFullAccessToOrganizationId(userId as any as Mongo.ObjectID, doc.getOrganizationId());
 }

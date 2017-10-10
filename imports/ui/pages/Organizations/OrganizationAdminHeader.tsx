@@ -10,7 +10,7 @@ import AdminTab from '../../components/AdminTab';
 import Button from '../../components/Button';
 
 interface ITabProps {
-  id: Mongo.ObjectID;
+  id: Mongo.ObjectID | undefined;
 };
 
 const OrganizationTabs = (props: IStyledComponent & ITabProps) => {
@@ -35,7 +35,7 @@ const OrganizationAdminHeader = (props: IStyledComponent & IHeaderModel) => (
         <Button to="/organizations/create">{t`Create Organization`}</Button>
       </OrganizationsDropdown>
     )}
-    tabs={<OrganizationTabs id={props.organization._id || ''}/>}
+    tabs={<OrganizationTabs id={props.organization._id}/>}
     publicLink={`/organizations/${props.organization._id}`}
   />);
 

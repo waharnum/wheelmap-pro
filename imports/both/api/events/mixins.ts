@@ -21,6 +21,6 @@ export const EventMixin = {
     if (!userId) {
       return false;
     }
-    return userHasFullAccessToReferencedOrganization(userId, this);
+    return userHasFullAccessToReferencedOrganization(userId as any as string, this);
   },
 } as IEventMixin;
