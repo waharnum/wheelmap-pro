@@ -7,7 +7,7 @@ import {OrganizationMemberVisibleForUserIdSelector} from '../../organization-mem
 import {EventParticipants} from '../../event-participants/event-participants';
 import {buildVisibleForUserSelector} from '../../event-participants/server/_fields';
 
-export const UserPrivateFields = {
+export const UserFieldsForOrganizationMembers = {
   'username': 1,
   'guest': 1,
   'emails.address': 1,

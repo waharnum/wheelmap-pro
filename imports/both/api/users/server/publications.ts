@@ -1,7 +1,7 @@
 import {OrganizationsPublicFields} from '../../organizations/server/fields';
 import {
   ActiveOrganizationForUserIdSelector,
-  UserPrivateFields,
+  UserFieldsForOrganizationMembers,
   UserVisibleSelectorForUserIdSelector,
 } from './fields';
 import {Meteor} from 'meteor/meteor';
@@ -28,14 +28,14 @@ publishAndLog('users.needApproval.admin', function () {
   });
 });
 
-publishFields('users.private', Users, UserPrivateFields, UserVisibleSelectorForUserIdSelector);
+publishFields('users.private', Users, UserFieldsForOrganizationMembers, UserVisibleSelectorForUserIdSelector);
 
 publishAndLog('users.my.private', function () {
   // do not convert into arrow function, otherwise this gets replaced
   if (!this.userId) {
     return [];
   }
-  return Users.find(this.userId, {fields: UserPrivateFields});
+  return Users.find(this.userId);
 });
 
 // publish my active organization
