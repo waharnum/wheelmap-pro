@@ -46,17 +46,19 @@ const PublicHeader = (props: IPublicHeaderProps & IStyledComponent) => {
   return (
     <div className={props.className} >
       <header className="main-header on-white">
-        <ol className="secondary-tools">
-          <PreviewToggle to={props.organizeLink} toOrganize={true} />
-          <UserMenu />
-        </ol>
-        <div className="main-area">
-          <div className="left-side">
-            {props.titleComponent ||
-              <HeaderTitle title="Please specificy title component" description="Pretty please?!" />}
-          </div>
-          <div className="right-side">
-            {props.action}
+        <div className="wrapper on-white">
+          <ol className="secondary-tools">
+            <PreviewToggle to={props.organizeLink} toOrganize={true} />
+            <UserMenu />
+          </ol>
+          <div className="main-area">
+            <div className="left-side">
+              {props.titleComponent ||
+                <HeaderTitle title="Please specificy title component" description="Pretty please?!" />}
+            </div>
+            <div className="right-side">
+              {props.action}
+            </div>
           </div>
         </div>
       </header>

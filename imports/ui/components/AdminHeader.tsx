@@ -42,17 +42,19 @@ const AdminHeader = (props: IAdminHeaderProps & IStyledComponent) => {
   return (
     <div className={props.className} >
       <header className="main-header on-dark">
-        <ol className="secondary-tools">
-          <PreviewToggle to={props.publicLink} />
-          <UserMenu />
-        </ol>      
-        <div className="main-area">
-          {props.titleComponent || <HeaderTitle title="Please specificy title component" />}
-          <div className="right-side" />
+        <div className="wrapper on-dark">
+          <ol className="secondary-tools">
+            <PreviewToggle to={props.publicLink} />
+            <UserMenu />
+          </ol>      
+          <div className="main-area">
+            {props.titleComponent || <HeaderTitle title="Please specificy title component" />}
+            <div className="right-side" />
+          </div>
+          <ol className="tabs-header">
+            {props.tabs}
+          </ol>
         </div>
-        <ol className="tabs-header">
-          {props.tabs}
-        </ol>
       </header>
     </div>
   );
@@ -89,6 +91,7 @@ header.main-header {
     justify-content: space-between;
     
     .title-bar {
+      height: 52px;
       display: flex;
       
       .organization-logo {
@@ -116,11 +119,14 @@ header.main-header {
 
 /* ----------------------------- dark admin version -----------------------*/
 
-header.main-header.on-dark {
-  min-height: 128px;
-  padding-bottom: 0;
+.on-dark {
   color: ${colors.bgAnthracite};
   background-color: #37404D;
+}
+
+header.main-header {
+  min-height: 128px;
+  padding-bottom: 0;
   display: flex;
 
   a,

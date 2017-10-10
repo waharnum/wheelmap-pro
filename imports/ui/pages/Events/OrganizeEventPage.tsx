@@ -5,9 +5,7 @@ import {IOrganization} from '../../../both/api/organizations/organizations';
 import * as moment from 'moment';
 import * as React from 'react';
 import styled from 'styled-components';
-
 import {colors} from '../../stylesheets/colors';
-
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 
 import AdminTab from '../../components/AdminTab';
@@ -364,6 +362,7 @@ export default styled(ReactiveOrganizeOrganizationsPage) `
     padding: 0px 20px 0 20px;
     text-align: center;
     display: flex;
+    
 
     span {
       position: relative;

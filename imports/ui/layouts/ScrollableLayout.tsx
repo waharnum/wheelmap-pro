@@ -20,24 +20,44 @@ export default styled(ScrollableLayout) `
   overflow: auto;
   width: 100%;
 
-  .content-area {
-    padding: 24px;
+  .main-header .wrapper {
+    max-width: 1260px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .content-area.scrollable {
+    max-width: 1260px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
   }  
   
   .hsplit {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-between;
 
     .content-left {
       margin-right: 24px;
     }
 
     .content-right {
-      max-width: 400px;
+      max-width: 600px;
     }
   }
 
-  .scrollable {
+  @media only screen and (max-width: 1285px) {
+    .hsplit {
+  
+      .content-left {
+        padding-left: 24px;
+      }
+  
+      .content-right {
+        padding-right: 24px;
+      }
+    }
   }
 `;

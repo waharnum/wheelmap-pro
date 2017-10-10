@@ -94,7 +94,7 @@ export default styled(HomePage) `
 
   header,
   section {
-    max-width: 960px;
+    max-width: 1260px;
     margin-left: auto;
     margin-right: auto;
   }
@@ -162,6 +162,7 @@ export default styled(HomePage) `
       }
 
       p {
+        max-width: 44em;
         font-weight: 400;
         font-size: 18px;
       }
@@ -186,6 +187,11 @@ export default styled(HomePage) `
       .explainStep {
         position: relative;
         padding: 0 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 24px;
 
         h2,
         p {
@@ -193,6 +199,7 @@ export default styled(HomePage) `
         }
         
         p { 
+          max-width: 20em;
           font-weight: 400;
         }
       }
@@ -213,18 +220,6 @@ export default styled(HomePage) `
         flex-basis: 33.33%;
         padding: 0 20px 20px 20px;
         position: relative;
-
-        &:after {
-          position: relative;
-          content: " ";
-          width: 256px;
-          height: 160px;
-          bottom: 0;
-          background-image: url(/images/image-placeholder.png); 
-          background-position: center center;
-          background-repeat: no-repeat;
-          background-size: 100% 100%;
-        }
       }
     }
   }
@@ -349,4 +344,10 @@ export default styled(HomePage) `
       padding: 0 20px;
     }
   }
+
+  @media only screen and (max-width: 1285px) {
+
+    
+  }
+
 `;

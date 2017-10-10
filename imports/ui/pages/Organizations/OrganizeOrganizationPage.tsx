@@ -188,9 +188,7 @@ const StyledReactiveOrganizeOrganizationsPage = styled(ReactiveOrganizeOrganizat
 
   .event-list-entry {
     position: relative;
-    height: 180px;
-    width: 100%;
-    max-width: 90vw;
+    height: 240px;
     margin: 20px;
     background: white;
     border: 1px solid #DEDEDE;
@@ -217,7 +215,8 @@ const StyledReactiveOrganizeOrganizationsPage = styled(ReactiveOrganizeOrganizat
     .event-body {
       padding: 20px;
       padding-bottom: 0;
-      flex-grow: 1;
+      flex-basis: 70%;
+      border-right: 1px solid rgba(0, 0, 0, 0.2);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -272,7 +271,8 @@ const StyledReactiveOrganizeOrganizationsPage = styled(ReactiveOrganizeOrganizat
       }
     }
 
-    .event-mini-map {
+    section.leaflet.container {
+      width: 180px;
       border-radius: 0 4px 4px 0;
       overflow: overlay;
     }
