@@ -122,6 +122,11 @@ export default styled(HomePage) `
       }
     }
 
+    .dropdown {
+      right: 10px;
+      top: 10px;
+    }
+
     li.login-menu, li.user-menu {
       padding-top: 10px;
 

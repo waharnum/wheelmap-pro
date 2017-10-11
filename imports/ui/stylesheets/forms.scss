@@ -13,7 +13,7 @@ label,
   cursor: pointer;
 }
 
-.btn {
+.btn { /* nornal green text-button */
   padding: 0 16px;
   font-size: 16px;
   line-height: 40px;
@@ -42,7 +42,7 @@ label,
 .btn-primary,
 .btn-primary.active,
 .btn-primary:active,
-.btn-primary:focus {
+.btn-primary:focus { /* filled green button */
   color: white;
   background-color: $cta-green;
   box-shadow: none;
@@ -65,9 +65,25 @@ label,
 
 .dropdown-toggle {
   color: $bg-anthracite;
+  padding-right: 8px;
 
   &:hover {
     color: $cta-green-lighter;
+  }
+
+  &:after {
+    right: 0;
+  }
+}
+
+a.btn-sm { /* e.g. forgot password */
+  font-size: 14px;
+  font-weight: 400;
+  color: $link-blue;
+  padding-left: 0;
+
+  &:hover {
+    color: $link-blue-lighter;
   }
 }
 
