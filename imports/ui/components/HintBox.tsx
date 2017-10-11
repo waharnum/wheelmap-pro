@@ -52,7 +52,7 @@ export const HintBox = styled(InternalHintBox) `
     position: relative;
     padding-left: 2em;
     padding-bottom: 1em;
-    font-size: 20px;
+    font-size: 24px;
     line-height: 24px;
     font-weight: 300;
 

@@ -20,11 +20,11 @@ const SignUpPage = (props: IStyledComponent) => {
           <Accounts.ui.LoginForm formState={STATES.SIGN_UP}/>
         </div>
         <div className="content-right">
-          <HintBox title={t`Join us at wheelmap.pro`}>
-            <Hint className="user">
+          <HintBox title={t`Join us at wheelmap.pro!`}>
+            <Hint className="done">
               {t`Signing up is free and without any hidden costs. `}
             </Hint>
-            <Hint className="info">
+            <Hint className="done">
               {t`We promise to never share you email address with a 3rd party or send you unwanted news or spam.`}
             </Hint>
           </HintBox>
@@ -38,12 +38,13 @@ const SignUpPage = (props: IStyledComponent) => {
 export default styled(SignUpPage) `
   a.logo {
     content: " ";
-    width: 309px;
-    height: 82px;
-    background-image: url(/images/logo-wheelmappro@2x.png); 
+    width: 269px;
+    min-width: 269px;
+    height: 51px;
+    background-image: url(/images/logo-wheelmappro-invert@2x.png); 
     background-position: center center;
     background-repeat: no-repeat;
-    background-size: 100% 100%;     
+    background-size: contain;     
 
     h1 {
       visibility: hidden;
