@@ -6,7 +6,7 @@ label,
 .noTextSelect {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -khtml-user-select: none; 
+  -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -33,7 +33,7 @@ label,
 }
 
 .btn-default {
-  
+
   &:hover {
     color: $cta-green-lighter;
   }
@@ -51,6 +51,13 @@ label,
     color: white;
     background-color: $cta-green;
   }
+}
+
+a.btn-primary,
+a.btn-primary.active,
+a.btn-primary:active,
+a.btn-primary:focus {
+  height: fit-content;
 }
 
 .btn-danger,
@@ -113,7 +120,7 @@ a.btn-sm { /* e.g. forgot password */
     .panel-body {
       position: relative !important;
     }
-    
+
     .panel-heading {
       position: relative;
 
@@ -143,7 +150,7 @@ a.btn-sm { /* e.g. forgot password */
     .badge {
       cursor: pointer;
       position: absolute;
-      left:0;
+      left: 0;
       padding: 0.5em !important;
       font-size: 18px !important;
       width: 2em;
@@ -159,7 +166,7 @@ a.btn-sm { /* e.g. forgot password */
       top: 0;
       color: $link-blue;
       background: white;
-    } 
+    }
   }
 }
 
@@ -176,23 +183,23 @@ form {
   .input {
     margin-top: 16px;
     width: 26em;
-    max-width: 90vv;
+    max-width: 90 vv;
 
     input,
     select,
     textarea {
-      width:100%;
+      width: 100%;
       border: 1px solid $shadow-grey;
       font-weight: 400;
-      font-size: 16px; 
+      font-size: 16px;
       padding: 8px;
       transition: 0.5s;
-    
+
       &:focus,
       &:hover {
         border: 1px solid $cta-green;
         box-shadow: none;
-        transition: 0.5s; 
+        transition: 0.5s;
       }
     }
 
@@ -200,7 +207,7 @@ form {
       padding: 4px 8px;
       min-height: 2.5em;
       border-radius: 6px;
-  
+
       &[type="checkbox"] {
         width: auto;
         min-height: auto;
@@ -227,25 +234,25 @@ form {
 
     label {
       color: $bg-anthracite;
-      font-size: 14px; 
+      font-size: 14px;
       font-weight: 400;
 
       &:focus {
         transition: 0.5s;
       }
     }
-    
+
     div.checkbox label {
       font-size: 16px;
     }
-    
+
     span.help-block {
       font-weight: 400;
       line-height: 32px;
       color: $text-muted;
       transition: 0.5s;
     }
-    
+
     i.glyphicon {
       top: 26px;
       right: -36px;
@@ -258,11 +265,11 @@ form {
 
     i.glyphicon-remove::before {
       content: "A";
-    }      
-    
+    }
+
     .panel-danger {
       transition: 0.5s;
-      
+
       label {
         color: $error-red;
       }
@@ -292,7 +299,7 @@ form {
   .has-danger .btn:hover {
     background-color: $cta-disabled-grey;
   }
-  
+
   .panel-danger { /* box with error feedback*/
     color: white;
     background-color: $bg-anthracite;
