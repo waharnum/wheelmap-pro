@@ -64,7 +64,7 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
     let content: JSX.Element | null = null;
     if (this.state.error) {
       content = (
-        <div className="content-area">
+        <div className="content-area scrollable">
           <h2>
             {t`Something went wrong`}
           </h2>
@@ -75,14 +75,14 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
       );
     } else if (this.state.busy) {
       content = (
-        <div className="content-area busy">
+        <div className="content-area scrollable busy">
           <div className="loading-area">{t`Accepting invitation`}</div>
         </div>
       );
     } else if (!user) {
       if (this.state.guestMode) {
         content = (
-          <div className="content-area">
+          <div className="content-area scrollable">
             <h2> {t`Great to have you here!`}</h2>
             <div className="alert alert-info">{t`Please sign up with ${organization.name} to join ${event.name}.`}</div>
 
@@ -97,7 +97,7 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
         );
       } else {
         content = (
-          <div className="content-area">
+          <div className="content-area scrollable">
             <h2>{t`Great to have you here!`}</h2>
             <div className="alert alert-info">{t`Please sign up with ${organization.name} to join ${event.name}.`}</div>
             <Accounts.ui.LoginForm formState={STATES.SIGN_UP}/>
@@ -107,7 +107,7 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
       }
     } else {
       content = (
-        <div className="content-area">
+        <div className="content-area scrollable">
           <h2>{t`Welcome to our community!`}</h2>
           <div
             className="alert alert-success">{t`Thanks for signing up with ${organization.name} to join ${event.name}!`}</div>
