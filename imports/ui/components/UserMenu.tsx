@@ -145,20 +145,17 @@ img {
   }
 }
 
-// .dropdown.open {
-//   position: relative;
-
   ul.dropdown-menu {
     position: absolute;
-    right:-8px;
-    top: 36px;
+    top: 36px;    
+    left: -100%;
     
     form {
       width: 24em;
       padding: 10px;
 
-      fieldset.form-group {
-        // width: 100%;
+      fieldset, fieldset .form-group {
+         width: 100%;
       }
     }
   }
