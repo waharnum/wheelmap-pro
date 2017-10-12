@@ -57,7 +57,7 @@ const removeMember = (id: Mongo.ObjectID | undefined, callback: CallbackFunction
   Meteor.call('organizationMembers.remove', id, (error: Meteor.Error, result) => {
     if (error) {
       // fetch translated error reason, the server is not aware of user language
-      callback(gettext(error.reason), null);
+      callback(gettext(error.reason) || error.reason, null);
     } else {
       callback(null, result);
     }
@@ -131,7 +131,7 @@ class OrganizationMembersPage extends React.Component<IAsyncDataByIdProps<IPageM
     }, callback);
   };
 
-  private onError = (error: string | null) => {
+  private onError = (error: string | null, result: any) => {
     this.setState({error});
   };
 }
