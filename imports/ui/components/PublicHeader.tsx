@@ -1,17 +1,17 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { IStyledComponent } from '../components/IStyledComponent';
+import {IStyledComponent} from './IStyledComponent';
 import PreviewToggle from './PreviewToggle';
 import UserMenu from './UserMenu';
 import {LocationDescriptor} from 'history';
 import {t} from 'c-3po';
-import { colors } from '../stylesheets/colors';
+import {colors} from '../stylesheets/colors';
 import {Link} from 'react-router';
 
 interface IPublicHeaderProps {
   titleComponent: JSX.Element | string;
-  organizeLink?: LocationDescriptor;
+  organizeLink?: LocationDescriptor | null;
   action?: JSX.Element | null;
 }
 
@@ -28,9 +28,9 @@ export const HeaderTitle = (props: IHeaderTitleProps) => {
   return (
     <div className="title-bar">
       {props.logo ? (
-        <Link to={props.prefixLink || ''}> 
-          <div className="organization-logo" style={{backgroundImage: `url(${props.logo})`}} />
-        </Link>)
+          <Link to={props.prefixLink || ''}>
+            <div className="organization-logo" style={{backgroundImage: `url(${props.logo})`}}/>
+          </Link>)
         : null}
       {props.prefixTitle && !props.logo ?
         <h1 className="organization-logo"><Link to={props.prefixLink || ''}>{props.prefixTitle}</Link></h1> : null}
@@ -44,17 +44,17 @@ export const HeaderTitle = (props: IHeaderTitleProps) => {
 
 const PublicHeader = (props: IPublicHeaderProps & IStyledComponent) => {
   return (
-    <div className={props.className} >
+    <div className={props.className}>
       <header className="main-header on-white">
         <div className="wrapper on-white">
           <ol className="secondary-tools">
-            <PreviewToggle to={props.organizeLink} toOrganize={true} />
-            <UserMenu />
+            <PreviewToggle to={props.organizeLink} toOrganize={true}/>
+            <UserMenu/>
           </ol>
           <div className="main-area">
             <div className="left-side">
               {props.titleComponent ||
-                <HeaderTitle title="Please specificy title component" description="Pretty please?!" />}
+              <HeaderTitle title="Please specificy title component" description="Pretty please?!"/>}
             </div>
             <div className="right-side">
               {props.action}

@@ -7,7 +7,7 @@ import {userHasFullAccessToReferencedOrganization} from '../organizations/privil
 export interface IEventMixin {
   getOrganization: () => IOrganization;
   getParticipants: () => IEventParticipant[];
-  editableBy: (userId: Mongo.ObjectID) => boolean;
+  editableBy: (userId: Mongo.ObjectID | string) => boolean;
 }
 
 export const EventMixin = {
@@ -17,7 +17,7 @@ export const EventMixin = {
   getParticipants(): IEventParticipant[] {
     return EventParticipants.find({eventId: {$in: [this._id]}}).fetch();
   },
-  editableBy(userId: Mongo.ObjectID): boolean {
+  editableBy(userId: Mongo.ObjectID | string): boolean {
     if (!userId) {
       return false;
     }

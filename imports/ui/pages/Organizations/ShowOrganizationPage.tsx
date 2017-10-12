@@ -2,6 +2,7 @@ import {t} from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
 import * as moment from 'moment';
+import {Meteor} from 'meteor/meteor';
 
 import MapLayout from '../../layouts/MapLayout';
 
@@ -15,7 +16,6 @@ import {IEvent} from '../../../both/api/events/events';
 import {IOrganization, Organizations} from '../../../both/api/organizations/organizations';
 import {colors} from '../../stylesheets/colors';
 import {default as PublicHeader, HeaderTitle} from '../../components/PublicHeader';
-import OrganizationStatistics from './OrganizationStatistics';
 import EventStatistics from '../Events/EventStatistics';
 
 interface IPageModel {
@@ -37,7 +37,7 @@ const ShowOrganizationPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledCo
             description={organization.description}
           />
         )}
-        organizeLink={`/organizations/${organization._id}/organize`}
+        organizeLink={organization.editableBy(Meteor.userId()) ? `/organizations/${organization._id}/organize` : undefined}
       />
       <div className="content-area">
         <Map/>
@@ -75,7 +75,7 @@ const ReactiveShowOrganizationPage = reactiveSubscriptionByParams(
     // fetch model with organization & events in one go
     return organization ? {organization, event: organization.getEvents()[0]} : null;
   },
-  'organizations.by_id.public', 'events.by_organizationId.public');
+  'organizations.by_id.public', 'events.by_organizationId.public', 'users.my.private');
 
 export default styled(ReactiveShowOrganizationPage) `
   .map {

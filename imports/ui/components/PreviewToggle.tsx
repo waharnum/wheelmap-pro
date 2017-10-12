@@ -8,7 +8,7 @@ import {LocationDescriptor} from 'history';
 
 // TODO: Needs binding for current user
 
-const PreviewToggle = (props: IStyledComponent & { to?: LocationDescriptor, toOrganize?: boolean }) => {
+const PreviewToggle = (props: IStyledComponent & { to?: LocationDescriptor | null, toOrganize?: boolean }) => {
   if (!props.to) {
     return null;
   }

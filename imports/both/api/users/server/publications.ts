@@ -12,6 +12,8 @@ import {Organizations} from '../../organizations/organizations';
 import {publishAndLog, publishFields} from '../../../../server/publish';
 
 import './publish-user-is-admin-flag.ts';
+import {EventParticipants} from '../../event-participants/event-participants';
+import {OrganizationMembers} from '../../organization-members/organization-members';
 
 const Users = Meteor.users as Mongo.Collection<Meteor.User>;
 
@@ -35,7 +37,12 @@ publishAndLog('users.my.private', function () {
   if (!this.userId) {
     return [];
   }
-  return Users.find(this.userId);
+
+  // publish all user/role related values
+  return [
+    Users.find(this.userId),
+    EventParticipants.find({userId: this.userId}),
+    OrganizationMembers.find({userId: this.userId})];
 });
 
 // publish my active organization

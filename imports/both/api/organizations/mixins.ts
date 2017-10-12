@@ -15,7 +15,7 @@ const ACCESS_REQUEST_APPROVING_ROLES = [
 ];
 
 export interface IOrganizationMixin {
-  editableBy: (userId: Mongo.ObjectID | null | undefined) => boolean;
+  editableBy: (userId: Mongo.ObjectID | string | null | undefined) => boolean;
   isFullyVisibleForUserId: (userId: Mongo.ObjectID) => boolean;
   getEvents: () => IEvent[];
   getMembers: () => IOrganizationMember[];

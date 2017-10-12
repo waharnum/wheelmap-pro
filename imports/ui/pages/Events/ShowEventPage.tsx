@@ -6,7 +6,6 @@ import {t} from 'c-3po';
 import MapLayout from '../../layouts/MapLayout';
 import Map from '../../components/Map';
 import Button from '../../components/Button';
-import {Countdown} from '../../components/Countdown';
 import {IEvent, Events} from '../../../both/api/events/events';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
@@ -33,7 +32,7 @@ const PublicEventHeader = (props: { event: IEvent, organization: IOrganization }
       />
     )}
     action={(<HeaderShareAction/>)}
-    organizeLink={`/events/${props.event._id}/organize`}
+    organizeLink={props.event.editableBy(Meteor.userId()) ? `/events/${props.event._id}/organize` : undefined}
   />
 );
 
@@ -118,7 +117,7 @@ const ReactiveShowEventPage = reactiveSubscriptionByParams(
     const organization = event ? event.getOrganization() : null;
     // fetch model with organization & events in one go
     return event && organization ? {organization, event} : null;
-  }, 'events.by_id.public', 'organizations.by_eventId.public');
+  }, 'events.by_id.public', 'organizations.by_eventId.public', 'users.my.private');
 
 export default styled(ReactiveShowEventPage) `
   .event-date {
