@@ -7,8 +7,6 @@ import {localeChanged} from '../imports/both/i18n/i18n';
 
 import '../imports/both/api/users/accounts';
 
-import '../imports/ui/stylesheets/colors.scss';
-import '../imports/ui/stylesheets/fonts.scss';
 import '../imports/ui/stylesheets/common.scss';
 import '../imports/ui/stylesheets/forms.scss';
 
