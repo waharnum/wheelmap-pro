@@ -31,7 +31,6 @@ export const EventSchema = new SimpleSchema({
     label: t`Region name`,
     type: String,
     max: 200,
-    optional: true,
     uniforms: {
       placeholder: t`e.g. Berlin Alexanderplatz`,
     },
