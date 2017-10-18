@@ -84,7 +84,9 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
           </AutoForm>
         </div>
         <div className="content-right">
-          <Map/>
+          <Map
+            accessibilityCloudTileUrlBuilder={() => false}
+          />
         </div>
       </div>);
   }

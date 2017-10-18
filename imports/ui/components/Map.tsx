@@ -11,7 +11,11 @@ import 'wheelmap-react/src/Map.css'
 import styled from 'styled-components';
 import {IStyledComponent} from './IStyledComponent';
 
-class Map extends React.Component<IStyledComponent> {
+interface IMapProps {
+  accessibilityCloudTileUrlBuilder?: () => string | false;
+};
+
+class Map extends React.Component<IStyledComponent & IMapProps> {
   public render(): JSX.Element {
     return (
       <ReactWheelmapMap
@@ -24,9 +28,9 @@ class Map extends React.Component<IStyledComponent> {
         lat={52.541017}
         lon={13.38609}
         wheelmapApiBaseUrl={false}
-        mapboxTileUrl={`https://api.mapbox.com/styles/v1/mapbox/streets-v9/tiles/256/{z}/{x}/{y}@2x?access_token=${Meteor.settings.public.mapbox}`}
+        mapboxTileUrl={`https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${Meteor.settings.public.mapbox}`}
         accessibilityCloudAppToken={Meteor.settings.public.accessibilityCloud}
-        accessibilityCloudTileUrl={`https://www.accessibility.cloud/place-infos?x={x}&y={y}&z={z}&appToken=${Meteor.settings.public.accessibilityCloud}`}
+        accessibilityCloudTileUrl={this.buildAccessibilityCloudTileUrl()}
         wheelmapApiKey={Meteor.settings.public.wheelmap}
         accessibilityFilter={[].concat(yesNoLimitedUnknownArray)}
         toiletFilter={[].concat(yesNoUnknownArray)}
@@ -34,6 +38,13 @@ class Map extends React.Component<IStyledComponent> {
         pointToLayer={this.createMarkerFromFeature}
       />
     );
+  }
+
+  private buildAccessibilityCloudTileUrl = () => {
+    if (this.props.accessibilityCloudTileUrlBuilder) {
+      return this.props.accessibilityCloudTileUrlBuilder();
+    }
+    return `https://www.accessibility.cloud/place-infos?x={x}&y={y}&z={z}&appToken=${Meteor.settings.public.accessibilityCloud}`
   }
 
   private onMarkerClick = (featureId: string) => {
