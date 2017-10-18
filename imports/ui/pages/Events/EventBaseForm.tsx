@@ -87,6 +87,7 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
           <Map
             accessibilityCloudTileUrlBuilder={() => false}
           />
+          <section className="map-border"/>
         </div>
       </div>);
   }
@@ -149,8 +150,33 @@ export const EventBaseForm = styled(InternalEventBaseForm) `
     overflow-x: hidden;
     min-width: 424px;
   }
+  
   .content-right {
     flex-grow: 1;
     display: flex;
+    position: relative;
+  }
+  
+  .map-border {
+    display: block;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 500;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  
+  .map-border:before {
+    content: '';
+    position: absolute;
+    left: 30px;
+    right: 30px;
+    bottom: 60px;
+    top: 30px;
+    border-radius: 30px;
+    box-shadow: 0px 0px 0px 120px rgba(0,0,0,0.5);
   }
 `;
