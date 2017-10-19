@@ -13,6 +13,12 @@ import {IStyledComponent} from './IStyledComponent';
 
 interface IMapProps {
   accessibilityCloudTileUrlBuilder?: () => string | false;
+  minZoom?: number;
+  maxZoom?: number;
+  zoom?: number;
+  lat?: number;
+  lon?: number;
+  onMoveEnd?: (options: { zoom: number, lat: number, lon: number }) => void;
 };
 
 class Map extends React.Component<IStyledComponent & IMapProps> {
@@ -21,12 +27,13 @@ class Map extends React.Component<IStyledComponent & IMapProps> {
       <ReactWheelmapMap
         className={`wheelmap-map ${this.props.className}`}
         data-component="Map"
-        minZoomWithSetCategory={13}
-        minZoomWithoutSetCategory={16}
-        zoom={10}
-        maxZoom={19}
-        lat={52.541017}
-        lon={13.38609}
+        minZoomWithSetCategory={this.props.minZoom || 13}
+        minZoomWithoutSetCategory={this.props.minZoom || 16}
+        zoom={this.props.zoom || 16}
+        maxZoom={this.props.maxZoom || 19}
+        lat={this.props.lat || 52.541017}
+        lon={this.props.lon || 13.38609}
+        onMoveEnd={this.props.onMoveEnd}
         wheelmapApiBaseUrl={false}
         mapboxTileUrl={`https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${Meteor.settings.public.mapbox}`}
         accessibilityCloudAppToken={Meteor.settings.public.accessibilityCloud}
