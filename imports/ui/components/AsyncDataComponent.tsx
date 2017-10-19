@@ -1,11 +1,12 @@
 import {t} from 'c-3po';
 import * as React from 'react';
+import {Dots} from 'react-activity';
+import {ComponentConstructor} from 'meteor/react-meteor-data';
 
-import { IAsyncDataProps } from './reactiveModelSubscription';
-import { ComponentConstructor } from 'meteor/react-meteor-data';
+import {IAsyncDataProps} from './reactiveModelSubscription';
 
 const Loading = (props: any) => {
-  return (<div className="loading-box">Loading</div>);
+  return (<div className="loading-box"><Dots/>Loading</div>);
 };
 
 const DataNotFound = (props: any) => {
@@ -28,19 +29,18 @@ type InputPropsComponent<T> = React.ComponentClass<T> | React.StatelessComponent
  * @param notReadyComponent If the data is loading this rendered instead.
  * @param dataNotFoundComponent If no data is available this rendered instead.
  */
-export function wrapDataComponent
-  <T, TBeforeProps extends IAsyncDataProps<T | null>, TAfterProps extends IAsyncDataProps<T>>(
-    WrappedComponent: InputPropsComponent<TBeforeProps>,
-    notReadyComponent?: JSX.Element,
-    dataNotFoundComponent?: JSX.Element): React.ComponentClass<TAfterProps> {
+export function wrapDataComponent<T, TBeforeProps extends IAsyncDataProps<T | null>,
+  TAfterProps extends IAsyncDataProps<T>>(WrappedComponent: InputPropsComponent<TBeforeProps>,
+                                          notReadyComponent?: JSX.Element,
+                                          dataNotFoundComponent?: JSX.Element): React.ComponentClass<TAfterProps> {
 
   return class extends React.Component<TAfterProps> {
     public render() {
       if (!this.props.ready) {
-        return notReadyComponent || <Loading />;
+        return notReadyComponent || <Loading/>;
       }
       if (!this.props.model) {
-        return dataNotFoundComponent || <DataNotFound />;
+        return dataNotFoundComponent || <DataNotFound/>;
       }
 
       return <WrappedComponent {...this.props}/>;
