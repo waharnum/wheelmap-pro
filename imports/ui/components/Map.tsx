@@ -67,7 +67,6 @@ class Map extends React.Component<IStyledComponent & IMapProps> {
 
   private onMarkerClick = (featureId) => {
     console.log('You clicked the marker', featureId);
-    // TODO why do I have to fetch the place from the cache, pass by param?
     accessibilityCloudFeatureCache.getFeature(featureId).then((feature: IFeature) => {
       this.setState({feature: feature});
     }, (reason) => {

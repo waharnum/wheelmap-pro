@@ -35,15 +35,11 @@ function fetchCategory(feature: IFeature | undefined | null,
     callback({category: null});
     return;
   }
-
-  // TODO too much internal knowledge of the feature required
-  const categoryId = (properties.node_type && properties.node_type.identifier) || properties.category;
-
+  const categoryId = properties.category;
   if (!categoryId) {
     callback({category: null});
     return;
   }
-
   Categories.getCategory(categoryId).then(
     (category) => {
       callback({category});
