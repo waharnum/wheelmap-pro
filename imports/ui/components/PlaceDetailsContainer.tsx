@@ -12,19 +12,15 @@ import NodeFooter from 'wheelmap-react/lib/components/NodeToolbar/NodeFooter';
 import LicenseHint from 'wheelmap-react/lib/components/NodeToolbar/LicenseHint';
 import Categories from 'wheelmap-react/lib/lib/Categories';
 import CloseIcon from 'wheelmap-react/lib/components/icons/actions/Close';
+import {IPlaceInfo} from '../../both/api/place-infos/place-infos';
 
-// TODO this should come from wheelmap-react
-export interface IFeature {
-  properties?: any;
-  category?: string;
-};
 
 interface IPlaceDetailsContainerProps {
-  feature?: IFeature | null
+  feature?: IPlaceInfo | null
   onClose: () => void
 };
 
-function fetchCategory(feature: IFeature | undefined | null,
+function fetchCategory(feature: IPlaceInfo | undefined | null,
                        callback: (result: { category?: any, parentCategory?: any }) => void) {
   if (!feature) {
     callback({category: null});

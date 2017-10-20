@@ -4,6 +4,7 @@ import {Mongo} from 'meteor/mongo';
 export interface IPlaceInfo {
   _id: Mongo.ObjectID;
   properties: {
+    _id: Mongo.ObjectID;
     infoPageUrl: string;
     originalId: string;
     category: string;
@@ -12,6 +13,7 @@ export interface IPlaceInfo {
     originalData: any;
     sourceId: Mongo.ObjectID;
     sourceImportId: Mongo.ObjectID;
+    accessibility?: any;
   };
   geometry: {
     type: string;

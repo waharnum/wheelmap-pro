@@ -12,6 +12,7 @@ import 'wheelmap-react/src/Map.css'
 import styled from 'styled-components';
 import {IStyledComponent} from './IStyledComponent';
 import PlaceDetailsContainer, {IFeature} from './PlaceDetailsContainer';
+import {IPlaceInfo} from '../../both/api/place-infos/place-infos';
 
 interface IMapProps {
   accessibilityCloudTileUrlBuilder?: () => string | false;
@@ -24,7 +25,7 @@ interface IMapProps {
 };
 
 class Map extends React.Component<IStyledComponent & IMapProps> {
-  state: { feature: IFeature | null | undefined } = {feature: null}
+  state: { feature: IPlaceInfo | null | undefined } = {feature: null}
 
   public render(): JSX.Element {
     return (
@@ -34,6 +35,7 @@ class Map extends React.Component<IStyledComponent & IMapProps> {
           data-component="Map"
           minZoomWithSetCategory={this.props.minZoom || 13}
           minZoomWithoutSetCategory={this.props.minZoom || 16}
+          featureId={this.state.feature && this.state.feature.properties && this.state.feature.properties._id}
           zoom={this.props.zoom || 16}
           maxZoom={this.props.maxZoom || 19}
           lat={this.props.lat || 52.541017}
@@ -67,14 +69,14 @@ class Map extends React.Component<IStyledComponent & IMapProps> {
 
   private onMarkerClick = (featureId) => {
     console.log('You clicked the marker', featureId);
-    accessibilityCloudFeatureCache.getFeature(featureId).then((feature: IFeature) => {
+    accessibilityCloudFeatureCache.getFeature(featureId).then((feature: IPlaceInfo) => {
       this.setState({feature: feature});
     }, (reason) => {
       console.log('Failed', reason);
     });
   };
 
-  private createMarkerFromFeature = (feature: IFeature, latlng: [number, number]) => {
+  private createMarkerFromFeature = (feature: IPlaceInfo, latlng: [number, number]) => {
     const properties = feature && feature.properties;
     if (!properties) {
       return null;
