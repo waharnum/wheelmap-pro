@@ -138,7 +138,7 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
     if (!this.formRef) {
       return;
     }
-    
+
     this.formRef.onChange('region', {
       topLeft: {latitude: params.lat, longitude: params.lon},
       bottomRight: {latitude: params.lat, longitude: params.lon},

@@ -3,6 +3,7 @@ import * as React from 'react';
 import ReactWheelmapMap from 'wheelmap-react/lib/components/Map/Map';
 import HighlightableMarker from 'wheelmap-react/lib/components/Map/HighlightableMarker';
 import {yesNoLimitedUnknownArray, yesNoUnknownArray} from 'wheelmap-react/lib/lib/Feature';
+import {accessibilityCloudFeatureCache} from 'wheelmap-react/lib/lib/cache/AccessibilityCloudFeatureCache';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.locatecontrol/src/L.Control.Locate.scss';
@@ -10,6 +11,7 @@ import 'wheelmap-react/src/Map.css'
 
 import styled from 'styled-components';
 import {IStyledComponent} from './IStyledComponent';
+import PlaceDetailsContainer, {IFeature} from './PlaceDetailsContainer';
 
 interface IMapProps {
   accessibilityCloudTileUrlBuilder?: () => string | false;
@@ -22,28 +24,37 @@ interface IMapProps {
 };
 
 class Map extends React.Component<IStyledComponent & IMapProps> {
+  state: { feature: IFeature | null | undefined } = {feature: null}
+
   public render(): JSX.Element {
     return (
-      <ReactWheelmapMap
-        className={`wheelmap-map ${this.props.className}`}
-        data-component="Map"
-        minZoomWithSetCategory={this.props.minZoom || 13}
-        minZoomWithoutSetCategory={this.props.minZoom || 16}
-        zoom={this.props.zoom || 16}
-        maxZoom={this.props.maxZoom || 19}
-        lat={this.props.lat || 52.541017}
-        lon={this.props.lon || 13.38609}
-        onMoveEnd={this.props.onMoveEnd}
-        wheelmapApiBaseUrl={false}
-        mapboxTileUrl={`https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${Meteor.settings.public.mapbox}`}
-        accessibilityCloudAppToken={Meteor.settings.public.accessibilityCloud}
-        accessibilityCloudTileUrl={this.buildAccessibilityCloudTileUrl()}
-        wheelmapApiKey={Meteor.settings.public.wheelmap}
-        accessibilityFilter={[].concat(yesNoLimitedUnknownArray)}
-        toiletFilter={[].concat(yesNoUnknownArray)}
-        locateTimeout={500}
-        pointToLayer={this.createMarkerFromFeature}
-      />
+      <section className={this.props.className}>
+        <ReactWheelmapMap
+          className={`wheelmap-map`}
+          data-component="Map"
+          minZoomWithSetCategory={this.props.minZoom || 13}
+          minZoomWithoutSetCategory={this.props.minZoom || 16}
+          zoom={this.props.zoom || 16}
+          maxZoom={this.props.maxZoom || 19}
+          lat={this.props.lat || 52.541017}
+          lon={this.props.lon || 13.38609}
+          onMoveEnd={this.props.onMoveEnd}
+          wheelmapApiBaseUrl={false}
+          mapboxTileUrl={`https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${Meteor.settings.public.mapbox}`}
+          accessibilityCloudAppToken={Meteor.settings.public.accessibilityCloud}
+          accessibilityCloudTileUrl={this.buildAccessibilityCloudTileUrl()}
+          wheelmapApiKey={Meteor.settings.public.wheelmap}
+          accessibilityFilter={[].concat(yesNoLimitedUnknownArray)}
+          toiletFilter={[].concat(yesNoUnknownArray)}
+          locateTimeout={500}
+          pointToLayer={this.createMarkerFromFeature}
+        />
+        <PlaceDetailsContainer
+          className="place-details-container"
+          feature={this.state.feature}
+          onClose={() => this.setState({feature: null})}
+        />
+      </section>
     );
   }
 
@@ -54,11 +65,17 @@ class Map extends React.Component<IStyledComponent & IMapProps> {
     return `https://www.accessibility.cloud/place-infos?x={x}&y={y}&z={z}&appToken=${Meteor.settings.public.accessibilityCloud}`
   }
 
-  private onMarkerClick = (featureId: string) => {
-    console.log('You clicked the marker', featureId)
+  private onMarkerClick = (featureId) => {
+    console.log('You clicked the marker', featureId);
+    // TODO why do I have to fetch the place from the cache, pass by param?
+    accessibilityCloudFeatureCache.getFeature(featureId).then((feature: IFeature) => {
+      this.setState({feature: feature});
+    }, (reason) => {
+      console.log('Failed', reason);
+    });
   };
 
-  private createMarkerFromFeature = (feature: any, latlng: [number, number]) => {
+  private createMarkerFromFeature = (feature: IFeature, latlng: [number, number]) => {
     const properties = feature && feature.properties;
     if (!properties) {
       return null;
@@ -67,7 +84,8 @@ class Map extends React.Component<IStyledComponent & IMapProps> {
     return new HighlightableMarker(latlng, {
       onClick: this.onMarkerClick,
       hrefForFeatureId: () => {
-        return ''
+        // TODO what is this used for?
+        return 'assas';
       },
       feature,
     });
@@ -75,8 +93,12 @@ class Map extends React.Component<IStyledComponent & IMapProps> {
 };
 
 export default styled(Map)`
-  .ac-marker {
-    display: flex !important;
+  display: flex;
+  position: relative;
+  width: 100%;
+  
+  .toolbar {
+    top: 145px;
   }
 `;
 
