@@ -97,7 +97,8 @@ export default styled(Map)`
   width: 100%;
   
   .toolbar {
-    top: 145px;
+    top: 0px;
+    position: absolute;
   }
 `;
 
