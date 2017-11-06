@@ -65,10 +65,10 @@ class PlaceDetailsContainer extends React.Component<IStyledComponent & IPlaceDet
   public render(): JSX.Element | null {
     const feature = this.props.feature;
     const featureId = 'my-id';
-    const properties = feature ? feature.properties : {};
+    const properties = feature ? feature.properties : null;
     const category = this.state.category;
     const parentCategory = this.state.parentCategory;
-    const accessibility = properties ? properties.accessibilty : {};
+    const accessibility = properties ? properties.accessibility : {};
 
     if (!feature) {
       return null;

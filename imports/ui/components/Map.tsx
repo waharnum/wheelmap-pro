@@ -11,7 +11,7 @@ import 'wheelmap-react/src/Map.css'
 
 import styled from 'styled-components';
 import {IStyledComponent} from './IStyledComponent';
-import PlaceDetailsContainer, {IFeature} from './PlaceDetailsContainer';
+import PlaceDetailsContainer from './PlaceDetailsContainer';
 import {IPlaceInfo} from '../../both/api/place-infos/place-infos';
 
 interface IMapProps {
