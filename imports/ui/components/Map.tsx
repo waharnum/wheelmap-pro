@@ -5,6 +5,7 @@ import HighlightableMarker from 'wheelmap-react/lib/components/Map/Highlightable
 import {yesNoLimitedUnknownArray, yesNoUnknownArray} from 'wheelmap-react/lib/lib/Feature';
 import {accessibilityCloudFeatureCache} from 'wheelmap-react/lib/lib/cache/AccessibilityCloudFeatureCache';
 
+import * as L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.locatecontrol/src/L.Control.Locate.scss';
 import 'wheelmap-react/src/Map.css'
@@ -21,8 +22,9 @@ interface IMapProps {
   zoom?: number;
   lat?: number;
   lon?: number;
-  onMoveEnd?: (options: { zoom: number, lat: number, lon: number }) => void;
-};
+  bbox?: L.LatLngBounds;
+  onMoveEnd?: (options: { zoom: number, lat: number, lon: number, bbox: L.LatLngBounds }) => void;
+}
 
 class Map extends React.Component<IStyledComponent & IMapProps> {
   state: { feature: IPlaceInfo | null | undefined } = {feature: null}
@@ -37,12 +39,13 @@ class Map extends React.Component<IStyledComponent & IMapProps> {
           minZoomWithSetCategory={this.props.minZoom || 13}
           minZoomWithoutSetCategory={this.props.minZoom || 16}
           featureId={this.state.feature && this.state.feature.properties && this.state.feature.properties._id}
-          zoom={this.props.zoom || 16}
+          zoom={this.props.bbox ? null : (this.props.zoom || 16)}
           maxZoom={this.props.maxZoom || 19}
           defaultStartCenter={[52.541017, 13.38609]}
           lat={this.props.lat || 52.541017}
           lon={this.props.lon || 13.38609}
           onMoveEnd={this.props.onMoveEnd}
+          onMapMounted={this.onMapMounted}
           wheelmapApiBaseUrl={false}
           mapboxTileUrl={`https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${Meteor.settings.public.mapbox}`}
           accessibilityCloudAppToken={Meteor.settings.public.accessibilityCloud}
@@ -67,6 +70,12 @@ class Map extends React.Component<IStyledComponent & IMapProps> {
       return this.props.accessibilityCloudTileUrlBuilder();
     }
     return `https://www.accessibility.cloud/place-infos?x={x}&y={y}&z={z}&appToken=${Meteor.settings.public.accessibilityCloud}`
+  }
+
+  private onMapMounted = (map: L.Map) => {
+    if (this.props.bbox) {
+      map.fitBounds(this.props.bbox);
+    }
   }
 
   private onMarkerClick = (featureId) => {

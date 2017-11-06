@@ -134,7 +134,7 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
     return null;
   }
 
-  private onMapMoved = (params: { lat: number, lon: number, zoom: number }) => {
+  private onMapMoved = (params: { lat: number, lon: number, zoom: number, bbox: leaflet.LatLngBounds }) => {
     if (!this.formRef) {
       return;
     }
