@@ -26,8 +26,22 @@ interface IMapProps {
   onMoveEnd?: (options: { zoom: number, lat: number, lon: number, bbox: L.LatLngBounds }) => void;
 }
 
-class Map extends React.Component<IStyledComponent & IMapProps> {
-  state: { feature: IPlaceInfo | null | undefined } = {feature: null}
+interface IMapState {
+  feature: IPlaceInfo | null | undefined;
+}
+
+class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
+  state: IMapState = {
+    feature: null,
+  }
+  private leafletMap: L.Map;
+
+  public componentWillReceiveProps(nextProps, nextContext) {
+    const applyBbox = nextProps.bbox && !nextProps.bbox.equals(this.leafletMap.getBounds());
+    if (applyBbox) {
+      this.repositionMap(nextProps);
+    }
+  }
 
   public render(): JSX.Element {
     return (
@@ -42,9 +56,9 @@ class Map extends React.Component<IStyledComponent & IMapProps> {
           zoom={this.props.bbox ? null : (this.props.zoom || 16)}
           maxZoom={this.props.maxZoom || 19}
           defaultStartCenter={[52.541017, 13.38609]}
-          lat={this.props.lat || 52.541017}
-          lon={this.props.lon || 13.38609}
-          onMoveEnd={this.props.onMoveEnd}
+          lat={this.props.bbox ? null : (this.props.lat || 52.541017)}
+          lon={this.props.bbox ? null : (this.props.lon || 13.38609)}
+          onMoveEnd={this.onMoveEnd}
           onMapMounted={this.onMapMounted}
           wheelmapApiBaseUrl={false}
           mapboxTileUrl={`https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${Meteor.settings.public.mapbox}`}
@@ -72,9 +86,20 @@ class Map extends React.Component<IStyledComponent & IMapProps> {
     return `https://www.accessibility.cloud/place-infos?x={x}&y={y}&z={z}&appToken=${Meteor.settings.public.accessibilityCloud}`
   }
 
+  private onMoveEnd = (options: { zoom: number, lat: number, lon: number, bbox: L.LatLngBounds }) => {
+    if (this.props.onMoveEnd) {
+      this.props.onMoveEnd(options);
+    }
+  };
+
   private onMapMounted = (map: L.Map) => {
-    if (this.props.bbox) {
-      map.fitBounds(this.props.bbox);
+    this.leafletMap = map;
+    this.repositionMap(this.props);
+  }
+
+  private repositionMap(props: IMapProps) {
+    if (props.bbox) {
+      this.leafletMap.fitBounds(props.bbox);
     }
   }
 
