@@ -24,6 +24,7 @@ interface IMapProps {
   lon?: number;
   bbox?: L.LatLngBounds;
   onMoveEnd?: (options: { zoom: number, lat: number, lon: number, bbox: L.LatLngBounds }) => void;
+  enablePlaceDetails?: boolean;
 }
 
 interface IMapState {
@@ -104,6 +105,10 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
   }
 
   private onMarkerClick = (featureId) => {
+    if (this.props.enablePlaceDetails === false) {
+      return;
+    }
+
     console.log('You clicked the marker', featureId);
     accessibilityCloudFeatureCache.getFeature(featureId).then((feature: IPlaceInfo) => {
       this.setState({feature: feature});
@@ -121,8 +126,7 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
     return new HighlightableMarker(latlng, {
       onClick: this.onMarkerClick,
       hrefForFeatureId: () => {
-        // TODO what is this used for?
-        return 'assas';
+        return this.props.enablePlaceDetails === false ? '' : '#';
       },
       feature,
     });
