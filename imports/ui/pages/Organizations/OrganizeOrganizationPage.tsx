@@ -52,7 +52,10 @@ const EventListEntry = (props: { model: IEvent }) => (
     <div className="event-status corner-ribbon">
       {props.model.status}
     </div>
-    <Map className="event-mini-map"/>
+    <Map
+      className="event-mini-map"
+      enablePlaceDetails={false}
+    />
   </div>
 );
 
@@ -192,13 +195,25 @@ const StyledReactiveOrganizeOrganizationsPage = styled(ReactiveOrganizeOrganizat
       }
     }
 
-    section.leaflet.container {
-      width: 180px;
-      border-radius: 0 4px 4px 0;
-      overflow: overlay;
+    .event-mini-map {
+      pointer-events: none;
+      touch-action: none;
+      
+      .leaflet-marker-icon.leaflet-interactive {
+        pointer-events: none;
+        touch-action: none;
+      }
+      
+      .leaflet-control-container {
+        display: none;
+      }
+      section.leaflet.container {
+        width: 180px;
+        border-radius: 0 4px 4px 0;
+        overflow: overlay;
+      }
     }
   }
-
 `;
 
 export default StyledReactiveOrganizeOrganizationsPage;
