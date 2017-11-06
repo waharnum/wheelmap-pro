@@ -1,11 +1,16 @@
-import { Meteor } from 'meteor/meteor';
-import { Mongo } from 'meteor/mongo';
+import {Meteor} from 'meteor/meteor';
+import {Mongo} from 'meteor/mongo';
 
-import { EventSchema } from './schema';
-import { EventMixin, IEventMixin } from './mixins';
+import {EventSchema} from './schema';
+import {EventMixin, IEventMixin} from './mixins';
 
 export type EventStatusEnum = 'draft' | 'planned' | 'ongoing' | 'completed' | 'canceled';
 export type EventOpenForEnum = 'inviteOnly' | 'everyone';
+export type EventRegion = {
+  topLeft: { latitude: number; longitude: number };
+  bottomRight: { latitude: number; longitude: number }
+};
+
 
 export interface IEvent extends IEventMixin {
   // mongo id
@@ -15,10 +20,7 @@ export interface IEvent extends IEventMixin {
   name: string;
   description?: string;
   regionName?: string;
-  region?: {
-    topLeft: { latitude: number, longitude: number },
-    bottomRight: { latitude: number, longitude: number },
-  };
+  region?: EventRegion;
   startTime?: Date;
   endTime?: Date;
   webSiteUrl?: string;
