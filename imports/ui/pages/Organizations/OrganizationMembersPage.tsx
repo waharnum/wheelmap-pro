@@ -195,12 +195,8 @@ export default styled(ReactiveOrganizationMembersPage) `
           .member-user.glyphicon,
           .member-state-description {
             display: inline-block;
-<<<<<<< HEAD
-            padding: 4px;
-=======
             padding: 3px 5px;
             border-radius: 16px;
->>>>>>> Tweaked organization members / event participants, fixed some header-related issues
             line-height: 18px;
             color: rgba(0,0,0,0.5);
             background: ${colors.bgGreyDarker};
@@ -209,7 +205,6 @@ export default styled(ReactiveOrganizationMembersPage) `
           .member-user.glyphicon {
             top: 0;
             margin-right: 4px;
-<<<<<<< HEAD
             padding: 6px;
             text-align: center;
             border-radius: 16px;
@@ -219,13 +214,7 @@ export default styled(ReactiveOrganizationMembersPage) `
             padding: 3px 6px;
             text-transform: uppercase;
             border-radius: 16px;
-=======
             text-align: center;
-          }
-
-          .member-state-description {
-            text-transform: uppercase;
->>>>>>> Tweaked organization members / event participants, fixed some header-related issues
           }
 
           .member-remove button.btn.btn-danger {
