@@ -78,7 +78,7 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
   }
 
   public render(): JSX.Element {
-    const center = this.getCenter(this.props.initialModel) || {lat: 52.5069, lon: 13.4248};
+    const center = this.getCenter(this.props.initialModel) || {lat: 52.5069, lon: 13.4248, zoom: 3};
 
     return (
       <div className={this.props.className + ' content-area hsplit'}>
@@ -106,7 +106,6 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
           <Map
             accessibilityCloudTileUrlBuilder={() => false}
             {...center}
-            zoom={3}
             maxZoom={18}
             minZoom={3}
             onMoveEnd={this.onMapMoved}
@@ -127,9 +126,7 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
       const bounds = leaflet.latLngBounds(corner1, corner2);
       const latLngCenter = bounds.getCenter();
 
-      //map.
-
-      return {lat: latLngCenter.lat, lon: latLngCenter.lng};
+      return {lat: latLngCenter.lat, lon: latLngCenter.lng, bbox: bounds};
     }
     return null;
   }
@@ -138,10 +135,12 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
     if (!this.formRef) {
       return;
     }
+    const tl = params.bbox.getNorthWest();
+    const br = params.bbox.getSouthEast();
 
     this.formRef.onChange('region', {
-      topLeft: {latitude: params.lat, longitude: params.lon},
-      bottomRight: {latitude: params.lat, longitude: params.lon},
+      topLeft: {latitude: tl.lat, longitude: tl.lng},
+      bottomRight: {latitude: br.lat, longitude: br.lng},
     });
   }
 
