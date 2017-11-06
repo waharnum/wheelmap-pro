@@ -8,7 +8,7 @@ import {browserHistory} from 'react-router';
 import {AutoForm, AutoFields, SubmitField, LongTextField, ErrorsField} from 'uniforms-bootstrap3';
 
 import MapLocationField from '../../components/MapLocationField';
-import {Events, IEvent} from '../../../both/api/events/events';
+import {Events, IEvent, EventRegion} from '../../../both/api/events/events';
 import ImageLinkUrlField from '../../components/ImageLinkUrlField';
 import {IStyledComponent} from '../../components/IStyledComponent';
 
@@ -24,7 +24,8 @@ type Partial<T> = {
   };
 
 interface IBaseFormState {
-  model?: Partial<IEvent>;
+  model: Partial<IEvent>;
+  mapState: 'init' | 'view' | 'move';
 }
 
 const schema = Events.schema;
@@ -49,27 +50,34 @@ schema.extend({
   },
 });
 
+const defaultRegion: EventRegion = {
+  topLeft: {latitude: 52.67551, longitude: 13.08835},
+  bottomRight: {latitude: 52.33826, longitude: 13.76116},
+};
 
 class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyledComponent, IBaseFormState> {
   public state = {
     model: {} as Partial<IEvent>,
-  };
+    mapState: 'init',
+  } as IBaseFormState;
   private formRef: AutoForm;
+  private resetRegion: EventRegion;
 
   constructor(props: IEventBaseFormProps & IStyledComponent) {
     super(props);
+
+    console.log('Constructed InternalEventBaseForm');
 
     // extract data from document class
     const initialModel = Object.assign({
       organizationId: Meteor.user().profile.activeOrganizationId,
       status: 'draft',
       openFor: 'inviteOnly',
-      region: {
-        topLeft: {latitude: 52.67551, longitude: 13.08835},
-        bottomRight: {latitude: 52.33826, longitude: 13.76116},
-      },
+      region: Object.assign({}, defaultRegion),
     }, this.props.initialModel || {}) as Partial<IEvent>;
-    this.state = {model: initialModel};
+
+    this.state = {model: initialModel, mapState: 'init'};
+    this.resetRegion = initialModel.region || defaultRegion;
 
     // convert the input time from utc to local
     this.state.model.startTime = this.props.initialModel ?
@@ -78,7 +86,7 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
   }
 
   public render(): JSX.Element {
-    const center = this.getCenter(this.props.initialModel) || {lat: 52.5069, lon: 13.4248, zoom: 3};
+    const center = InternalEventBaseForm.getCenter(this.state.model.region) || {lat: 52.5069, lon: 13.4248, zoom: 3};
 
     return (
       <div className={this.props.className + ' content-area hsplit'}>
@@ -113,35 +121,80 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
           <section className="map-border">
             <span>{t`zoom or pan to adjust region`}</span>
           </section>
+          {this.state.mapState == 'move' ?
+            (<section className="accept-map-changes">
+              <div>
+                {t`Set this region as the mapping area?`}
+                <button className="btn btn-default" onClick={this.onMapReset}>{t`Reset`}</button>
+                <button className="btn btn-primary" onClick={this.onMapAccept}>{t`Save`}</button>
+              </div>
+            </section>) : null
+          }
         </div>
       </div>);
   }
 
-  private getCenter(initialModel: IEvent | void) {
-    if (initialModel && initialModel.region && initialModel.region.topLeft && initialModel.region.bottomRight) {
-      const tl = initialModel.region.topLeft;
-      const br = initialModel.region.bottomRight;
-      const corner1 = leaflet.latLng(tl.latitude, tl.longitude);
-      const corner2 = leaflet.latLng(br.latitude, br.longitude);
-      const bounds = leaflet.latLngBounds(corner1, corner2);
-      const latLngCenter = bounds.getCenter();
+  public componentDidMount() {
+    this.setState({mapState: 'view'});
+  }
 
-      return {lat: latLngCenter.lat, lon: latLngCenter.lng, bbox: bounds};
+  private static regionToBbox(region: EventRegion) {
+    const tl = region.topLeft;
+    const br = region.bottomRight;
+    const corner1 = leaflet.latLng(tl.latitude, tl.longitude);
+    const corner2 = leaflet.latLng(br.latitude, br.longitude);
+    return leaflet.latLngBounds(corner1, corner2);
+  }
+
+  private static getCenter(region: EventRegion | null | undefined) {
+    if (region && region.topLeft && region.bottomRight) {
+      const bbox = InternalEventBaseForm.regionToBbox(region);
+      return {bbox};
     }
     return null;
   }
 
+  private onMapReset = () => {
+    const region = Object.assign({}, this.resetRegion)
+    this.formRef.onChange('region', region);
+    const model = Object.assign({}, this.state.model, {region});
+    this.setState({mapState: 'view', model});
+  }
+
+  private onMapAccept = () => {
+    this.resetRegion = this.state.model.region || defaultRegion;
+    this.setState({mapState: 'view'});
+  }
+
   private onMapMoved = (params: { lat: number, lon: number, zoom: number, bbox: leaflet.LatLngBounds }) => {
-    if (!this.formRef) {
+    if (!this.formRef || this.state.mapState == 'init') {
       return;
     }
-    const tl = params.bbox.getNorthWest();
-    const br = params.bbox.getSouthEast();
 
-    this.formRef.onChange('region', {
+    if (this.state.model.region) {
+      const prevBbox = InternalEventBaseForm.regionToBbox(this.state.model.region);
+      if (prevBbox.equals(params.bbox)) {
+        return;
+      }
+    }
+    const tl = params.bbox.getSouthWest();
+    const br = params.bbox.getNorthEast();
+    const region = {
       topLeft: {latitude: tl.lat, longitude: tl.lng},
       bottomRight: {latitude: br.lat, longitude: br.lng},
-    });
+    };
+
+    const resetBbox = InternalEventBaseForm.regionToBbox(this.resetRegion);
+    if (this.state.mapState == 'view' && !resetBbox.equals(params.bbox)) {
+      const model = Object.assign({}, this.state.model, {region});
+      this.setState({mapState: 'move', model});
+    }
+    else if (this.state.mapState == 'move' && resetBbox.equals(params.bbox)) {
+      const model = Object.assign({}, this.state.model, {region: this.resetRegion});
+      this.setState({mapState: 'view', model});
+    }
+
+    this.formRef.onChange('region', region);
   }
 
   private onChangeModel = (model) => {
@@ -153,6 +206,11 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
   }
 
   private onSubmit = (doc: IEvent) => {
+    // reset map state
+    if (this.state.mapState == 'move') {
+      this.onMapReset();
+    }
+
     return new Promise((resolve: (id: Mongo.ObjectID) => void, reject: (error: Error) => void) => {
       const id = this.state.model._id;
       // remove id
@@ -240,5 +298,28 @@ export const EventBaseForm = styled(InternalEventBaseForm) `
     top: 30px;
     border-radius: 30px;
     box-shadow: 0 0 0 120px rgba(0,0,0,0.25);
+  }
+  
+  .accept-map-changes {
+    display: flex;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    z-index: 1000;
+    justify-content: center;
+    
+    div {
+      background: white;
+      padding: 10px 15px;
+      border-radius: 2px;
+      border: 1px solid #ccc;
+      text-align: center;
+      margin: 30px 45px;
+      
+      button {
+        margin-left: 15px;
+      }
+    }
   }
 `;
