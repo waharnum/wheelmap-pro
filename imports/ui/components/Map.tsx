@@ -49,6 +49,7 @@ class Map extends React.Component<IStyledComponent & IMapProps> {
           accessibilityFilter={[].concat(yesNoLimitedUnknownArray)}
           toiletFilter={[].concat(yesNoUnknownArray)}
           locateTimeout={500}
+          locateOnStart={false}
           pointToLayer={this.createMarkerFromFeature}
         />
         <PlaceDetailsContainer
