@@ -33,11 +33,13 @@ class Map extends React.Component<IStyledComponent & IMapProps> {
         <ReactWheelmapMap
           className={`wheelmap-map`}
           data-component="Map"
+          category={null}
           minZoomWithSetCategory={this.props.minZoom || 13}
           minZoomWithoutSetCategory={this.props.minZoom || 16}
           featureId={this.state.feature && this.state.feature.properties && this.state.feature.properties._id}
           zoom={this.props.zoom || 16}
           maxZoom={this.props.maxZoom || 19}
+          defaultStartCenter={[52.541017, 13.38609]}
           lat={this.props.lat || 52.541017}
           lon={this.props.lon || 13.38609}
           onMoveEnd={this.props.onMoveEnd}
@@ -48,7 +50,6 @@ class Map extends React.Component<IStyledComponent & IMapProps> {
           wheelmapApiKey={Meteor.settings.public.wheelmap}
           accessibilityFilter={[].concat(yesNoLimitedUnknownArray)}
           toiletFilter={[].concat(yesNoUnknownArray)}
-          locateTimeout={500}
           locateOnStart={false}
           pointToLayer={this.createMarkerFromFeature}
         />
