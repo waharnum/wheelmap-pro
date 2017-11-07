@@ -16,7 +16,7 @@ export const insert = new ValidatedMethod({
     setActiveOrganization(this.userId, organizationId);
     OrganizationMembers.insert({
       organizationId,
-      userId: this.userId as Mongo.ObjectID,
+      userId: this.userId,
       role: 'manager',
       invitationState: 'accepted',
     } as IOrganizationMember);

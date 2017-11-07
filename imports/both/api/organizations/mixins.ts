@@ -24,7 +24,7 @@ export interface IOrganizationMixin {
 }
 
 export const OrganizationMixin = {
-  editableBy(userId: Mongo.ObjectID | null | undefined): boolean {
+  editableBy(userId: string | null | undefined): boolean {
     if (!userId) {
       return false;
     }

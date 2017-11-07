@@ -10,7 +10,7 @@ export interface IOrganizationMember extends IOrganizationMemberMixin {
   _id?: Mongo.ObjectID;
   // fields
   organizationId: Mongo.ObjectID;
-  userId: Mongo.ObjectID | null;
+  userId: string | null;
   gravatarHash?: string;
   invitationState?: InvitationStateType;
   invitationError?: string;

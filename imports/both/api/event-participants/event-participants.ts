@@ -9,7 +9,7 @@ export interface IEventParticipant extends IEventParticipantMixin {
   _id?: Mongo.ObjectID;
   // fields
   eventId: Mongo.ObjectID;
-  userId: Mongo.ObjectID | null;
+  userId: string | null;
   gravatarHash?: string;
   invitationState: InvitationStateType;
   invitationError?: string;

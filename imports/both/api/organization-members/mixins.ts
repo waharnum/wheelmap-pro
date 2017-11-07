@@ -8,7 +8,7 @@ export interface IOrganizationMemberMixin {
   getUser: () => Meteor.User;
   getUserName: () => string;
   getIconHTML: () => string;
-  editableBy: (userId: Mongo.ObjectID) => boolean;
+  editableBy: (userId: string) => boolean;
 }
 
 export const OrganizationMemberMixin = {
@@ -28,7 +28,7 @@ export const OrganizationMemberMixin = {
     }
     return `<img src="${getGravatarImageUrl(this.gravatarHash)}" class='user-icon'>`;
   },
-  editableBy(userId: Mongo.ObjectID | null | undefined) {
-    return userHasFullAccessToReferencedOrganization(userId as any as string, this);
+  editableBy(userId: string | null | undefined) {
+    return userHasFullAccessToReferencedOrganization(userId, this);
   },
 } as IOrganizationMemberMixin;

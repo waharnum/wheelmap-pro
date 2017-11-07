@@ -139,7 +139,7 @@ export function inviteUserToOrganization(emailAddress: string, organizationId: M
   );
 
   if (user && user._id) {
-    const userId = user._id as any as Mongo.ObjectID;
+    const userId = user._id;
 
     console.log(
       `${invitationEmailAddress} already registered (${userId}), adding a member if necessary…`,

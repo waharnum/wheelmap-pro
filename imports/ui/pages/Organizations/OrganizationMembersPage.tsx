@@ -3,6 +3,7 @@ import * as React from 'react';
 import {t, gettext} from 'c-3po';
 import {ErrorsField} from 'uniforms-bootstrap3';
 import {colors} from '../../stylesheets/colors';
+import {Mongo} from 'meteor/mongo';
 
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 import {IStyledComponent} from '../../components/IStyledComponent';
@@ -12,7 +13,7 @@ import {
   IAsyncDataByIdProps,
   reactiveSubscriptionByParams,
 } from '../../components/reactiveModelSubscription';
-import {IOrganizationMember, OrganizationMembers} from '../../../both/api/organization-members/organization-members';
+import {IOrganizationMember} from '../../../both/api/organization-members/organization-members';
 import {roles, getLabelForRole, RoleType} from '../../../both/api/organization-members/roles';
 import InviteByEmailForm from '../../components/InviteByEmailForm';
 import OrganizationAdminHeader from './OrganizationAdminHeader';
@@ -74,7 +75,7 @@ const OrganizationMemberEntry = (props: { model: IOrganizationMember, onError: C
     <section className="member-state">
       <div className="member-user glyphicon">{props.model.userId ? 'p' : ''}</div>
       <div className="member-state-description">{getLabelForInvitationState(props.model.invitationState)}</div>
-      {props.model.editableBy(Meteor.userId() as any as Mongo.ObjectID) ?
+      {props.model.editableBy(Meteor.userId()) ?
         (<div>
           {props.model.invitationState === 'error' ?
             <section className="member-error">{props.model.invitationError}</section> : null}

@@ -180,7 +180,7 @@ export function acceptEventInvitation(userId: Mongo.ObjectID, eventId: Mongo.Obj
   return pendingInvitation;
 }
 
-export function acceptPublicEventInvitation(userId: Mongo.ObjectID, eventId: Mongo.ObjectID, token: string) {
+export function acceptPublicEventInvitation(userId: string, eventId: Mongo.ObjectID, token: string) {
 
   console.log(userId, 'tries to accept event invitation to', eventId, 'with token', token, '…');
 
