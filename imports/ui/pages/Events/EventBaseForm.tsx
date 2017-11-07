@@ -11,6 +11,7 @@ import MapLocationField from '../../components/MapLocationField';
 import {Events, IEvent, EventRegion} from '../../../both/api/events/events';
 import ImageLinkUrlField from '../../components/ImageLinkUrlField';
 import {IStyledComponent} from '../../components/IStyledComponent';
+import {bboxToRegion, regionToBbox} from '../../../both/lib/geo-bounding-box';
 
 
 export interface IEventBaseFormProps {
@@ -65,8 +66,6 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
 
   constructor(props: IEventBaseFormProps & IStyledComponent) {
     super(props);
-
-    console.log('Constructed InternalEventBaseForm');
 
     // extract data from document class
     const initialModel = Object.assign({
@@ -138,17 +137,9 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
     this.setState({mapState: 'view'});
   }
 
-  private static regionToBbox(region: EventRegion) {
-    const tl = region.topLeft;
-    const br = region.bottomRight;
-    const corner1 = leaflet.latLng(tl.latitude, tl.longitude);
-    const corner2 = leaflet.latLng(br.latitude, br.longitude);
-    return leaflet.latLngBounds(corner1, corner2);
-  }
-
   private static getCenter(region: EventRegion | null | undefined) {
     if (region && region.topLeft && region.bottomRight) {
-      const bbox = InternalEventBaseForm.regionToBbox(region);
+      const bbox = regionToBbox(region);
       return {bbox};
     }
     return null;
@@ -172,19 +163,15 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
     }
 
     if (this.state.model.region) {
-      const prevBbox = InternalEventBaseForm.regionToBbox(this.state.model.region);
+      const prevBbox = regionToBbox(this.state.model.region);
       if (prevBbox.equals(params.bbox)) {
         return;
       }
     }
-    const tl = params.bbox.getSouthWest();
-    const br = params.bbox.getNorthEast();
-    const region = {
-      topLeft: {latitude: tl.lat, longitude: tl.lng},
-      bottomRight: {latitude: br.lat, longitude: br.lng},
-    };
 
-    const resetBbox = InternalEventBaseForm.regionToBbox(this.resetRegion);
+    const region = bboxToRegion(params.bbox);
+
+    const resetBbox = regionToBbox(this.resetRegion);
     if (this.state.mapState == 'view' && !resetBbox.equals(params.bbox)) {
       const model = Object.assign({}, this.state.model, {region});
       this.setState({mapState: 'move', model});
