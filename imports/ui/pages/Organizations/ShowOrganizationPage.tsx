@@ -18,6 +18,7 @@ import {IOrganization, Organizations} from '../../../both/api/organizations/orga
 import {colors} from '../../stylesheets/colors';
 import {default as PublicHeader, HeaderTitle} from '../../components/PublicHeader';
 import EventStatistics from '../Events/EventStatistics';
+import {regionToBbox} from '../../../both/lib/geo-bounding-box';
 
 interface IPageModel {
   organization: IOrganization;
@@ -68,7 +69,9 @@ class ShowOrganizationPage extends React.Component<PageProps> {
           organizeLink={organization.editableBy(Meteor.userId()) ? `/organizations/${organization._id}/organize` : undefined}
         />
         <div className="content-area">
-          <Map/>
+          <Map
+            bbox={event && event.region ? regionToBbox(event.region) : undefined}
+          />
           {event ? (
             <div className="map-overlay">
               <div className="box-area">
