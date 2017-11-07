@@ -23,7 +23,7 @@ interface IPageModel {
 };
 
 const EventListEntry = (props: { model: IEvent }) => (
-  <div className="event-list-entry">
+  <div className={`event-list-entry event-status-${props.model.status}`}>
     <div className="event-body">
       <div className="event-information">
         <div className="event-description">
