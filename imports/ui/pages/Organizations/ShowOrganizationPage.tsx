@@ -34,6 +34,7 @@ type PageParams = {
 type PageProps = PageParams & IAsyncDataByIdProps<IPageModel> & IStyledComponent;
 
 class ShowOrganizationPage extends React.Component<PageProps> {
+  state: { placeDetailsShown: boolean } = {placeDetailsShown: false}
 
   public componentWillMount() {
     this.redirectToCorrectRoute(this.props);
@@ -72,8 +73,11 @@ class ShowOrganizationPage extends React.Component<PageProps> {
         <div className="content-area">
           <Map
             bbox={event && event.region ? regionToBbox(event.region) : undefined}
+            onPlaceDetailsChanged={(options) => {
+              this.setState({placeDetailsShown: options.visible})
+            }}
           />
-          {event ? (
+          {event && !this.state.placeDetailsShown ? (
             <div className="map-overlay">
               <div className="box-area">
                 <div className="event-box">
