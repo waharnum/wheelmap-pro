@@ -24,6 +24,7 @@ interface IMapProps {
   lon?: number;
   bbox?: L.LatLngBounds;
   onMoveEnd?: (options: { zoom: number, lat: number, lon: number, bbox: L.LatLngBounds }) => void;
+  onPlaceDetailsChanged?: (options: { placeInfo: IPlaceInfo | null, visible: boolean }) => void;
   enablePlaceDetails?: boolean;
 }
 
@@ -74,7 +75,7 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
         <PlaceDetailsContainer
           className="place-details-container"
           feature={this.state.feature}
-          onClose={() => this.setState({feature: null})}
+          onClose={this.dismissPlaceDetails}
         />
       </section>
     );
@@ -112,10 +113,24 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
     console.log('You clicked the marker', featureId);
     accessibilityCloudFeatureCache.getFeature(featureId).then((feature: IPlaceInfo) => {
       this.setState({feature: feature});
+      if (this.props.onPlaceDetailsChanged) {
+        this.props.onPlaceDetailsChanged({
+          placeInfo: feature, visible: true,
+        });
+      }
     }, (reason) => {
       console.log('Failed', reason);
     });
   };
+
+  private dismissPlaceDetails = () => {
+    this.setState({feature: null});
+    if (this.props.onPlaceDetailsChanged) {
+      this.props.onPlaceDetailsChanged({
+        placeInfo: null, visible: false,
+      });
+    }
+  }
 
   private createMarkerFromFeature = (feature: IPlaceInfo, latlng: [number, number]) => {
     const properties = feature && feature.properties;
