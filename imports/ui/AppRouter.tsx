@@ -7,6 +7,7 @@ import App from './App';
 
 import HomePage from './pages/Home/HomePage';
 import SignUpPage from './pages/Users/SignUpPage';
+import ProfilePage from './pages/Users/ProfilePage';
 import NotFoundPage from './pages/NotFound/NotFoundPage';
 import EditEventPage from './pages/Events/EditEventPage';
 import ShowEventPage from './pages/Events/ShowEventPage';
@@ -28,13 +29,6 @@ import SignUpForOrganizationPage from './pages/Organizations/SignUpForOrganizati
 import OrganizationStatisticsPage from './pages/Organizations/OrganizationStatisticsPage';
 
 import EnsureUserLoggedIn from './components/EnsureUserLoggedIn';
-
-{/* Only as styling props – has to be removed later !*/
-}
-import AppLayoutScrollableAdmin from './_layouts/AppLayoutScrollableAdmin';
-import AppLayoutPublicOrganization from './_layouts/AppLayoutPublicOrganization';
-import AppLayoutPublicEvent from './_layouts/AppLayoutPublicEvent';
-import ProfilePage from './pages/Users/ProfilePage';
 
 const RedirectAccordingToUser = () => {
   const user = Meteor.user();
@@ -112,11 +106,6 @@ const AppRouter = (
       <Route path="/reset-password" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET}/>}/>
       <Route path="/reset-password/:id" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET}/>}/>
       <Route path="/#/reset-password/:id" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET}/>}/>
-
-      {/* only as styling props – has to be removed later !*/}
-      <Route path="/testlayoutadmin" component={AppLayoutScrollableAdmin}/>
-      <Route path="/testlayoutpublicorg" component={AppLayoutPublicOrganization}/>
-      <Route path="/testlayoutpublicevent" component={AppLayoutPublicEvent}/>
 
       {/* Not found pages */}
       <Route path="404" component={NotFoundPage}/>
