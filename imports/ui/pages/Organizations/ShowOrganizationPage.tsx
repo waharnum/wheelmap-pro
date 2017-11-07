@@ -23,7 +23,8 @@ import {regionToBbox} from '../../../both/lib/geo-bounding-box';
 interface IPageModel {
   organization: IOrganization;
   events: Array<IEvent>;
-};
+}
+
 type PageParams = {
   params: {
     _id: string,
@@ -121,11 +122,11 @@ class ShowOrganizationPage extends React.Component<PageProps> {
           browserHistory.replace(`/organizations/${organization._id}`);
         }
       }
-    }
-    else if (events.length > 0) {
+    } else if (events.length > 0) {
       // select first event url
       browserHistory.replace(`/organizations/${organization._id}/event/${events[0]._id}`);
     }
+
   }
 };
 
@@ -135,7 +136,7 @@ const ReactiveShowOrganizationPage = reactiveSubscriptionByParams(
     IAsyncDataByIdProps<IPageModel>>(ShowOrganizationPage),
   (id): IPageModel | null => {
     const organization = Organizations.findOne(id);
-    const events = organization && organization.getEvents();
+    const events = organization ? organization.getEvents() : null;
     // fetch model with organization & events in one go
     return organization && events ? {organization, events: events || []} : null;
   },
