@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import {Meteor} from 'meteor/meteor';
 
 import MapLayout from '../../layouts/MapLayout';
+import {browserHistory} from 'react-router';
 
 import Button from '../../components/Button';
 import Map from '../../components/Map';
@@ -20,50 +21,109 @@ import EventStatistics from '../Events/EventStatistics';
 
 interface IPageModel {
   organization: IOrganization;
-  event: IEvent;
+  events: Array<IEvent>;
 };
+type PageParams = {
+  params: {
+    _id: string,
+    event_id: string | undefined
+  }
+}
+type PageProps = PageParams & IAsyncDataByIdProps<IPageModel> & IStyledComponent;
 
-const ShowOrganizationPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent) => {
-  const organization = props.model.organization;
-  const event = props.model.event;
+class ShowOrganizationPage extends React.Component<PageProps> {
 
-  return (
-    <MapLayout className={props.className}>
-      <PublicHeader
-        titleComponent={(
-          <HeaderTitle
-            title={organization.name}
-            logo={organization.logo}
-            description={organization.description}
-          />
-        )}
-        organizeLink={organization.editableBy(Meteor.userId()) ? `/organizations/${organization._id}/organize` : undefined}
-      />
-      <div className="content-area">
-        <Map/>
-        {event ? (
-          <div className="map-overlay">
-            <div className="box-area">
-              <div className="event-box">
-                <div className="event-information">
-                  <div className="event-description">
-                    <h3>{event.name} ({event.status})</h3>
-                    <h4>{moment(event.startTime).format('LL')}</h4>
-                    <p className="event-region">{event.regionName}</p>
+  public componentWillMount() {
+    this.redirectToCorrectRoute(this.props);
+  }
+
+  public componentWillReceiveProps(nextProps) {
+    this.redirectToCorrectRoute(nextProps);
+  }
+
+  public render() {
+    const organization = this.props.model.organization;
+    const events = this.props.model.events;
+
+    let eventIndex = 0;
+    if (this.props.params.event_id) {
+      eventIndex = events.findIndex((e) => {
+        return e._id == this.props.params.event_id;
+      });
+    }
+    const event = events[eventIndex];
+    const nextEvent = events[(eventIndex + 1) % events.length];
+    const prevEvent = events[(eventIndex + events.length - 1) % events.length];
+
+    return (
+      <MapLayout className={this.props.className}>
+        <PublicHeader
+          titleComponent={(
+            <HeaderTitle
+              title={organization.name}
+              logo={organization.logo}
+              description={organization.description}
+            />
+          )}
+          organizeLink={organization.editableBy(Meteor.userId()) ? `/organizations/${organization._id}/organize` : undefined}
+        />
+        <div className="content-area">
+          <Map/>
+          {event ? (
+            <div className="map-overlay">
+              <div className="box-area">
+                <div className="event-box">
+                  <div className="event-information">
+                    <div className="event-description">
+                      <h3>{event.name} ({event.status})</h3>
+                      <h4>{moment(event.startTime).format('LL')}</h4>
+                      <p className="event-region">{event.regionName}</p>
+                    </div>
+                    <Button to={`/organizations/${organization._id}/event/${prevEvent._id}`}
+                            className='btn-primary'>{'<'}</Button>
+                    <Button to={`/events/${event._id}`} className='btn-primary'>{t`Join Us`}</Button>
+                    <Button to={`/organizations/${organization._id}/event/${nextEvent._id}`}
+                            className='btn-primary'>{'>'}</Button>
                   </div>
-                  <Button to={`/events/${event._id}`} className='btn-primary'>{t`Join Us`}</Button>
+                  <EventStatistics
+                    event={event}
+                    achieved={true}
+                    countdown={'short'}/>
                 </div>
-                <EventStatistics
-                  event={event}
-                  achieved={true}
-                  countdown={'short'}/>
               </div>
             </div>
-          </div>
-        ) : null}
-      </div>
-    </MapLayout>
-  );
+          ) : null}
+        </div>
+      </MapLayout>
+    );
+  }
+
+  private redirectToCorrectRoute(props: PageProps) {
+    // decide if the url is correct and matches our event
+    const organization = props.model.organization;
+    const events = props.model.events;
+
+    if (props.params.event_id) {
+      const eventIndex = events.findIndex((e) => {
+        return e._id == props.params.event_id;
+      });
+
+      // current url is pointing to a missing key
+      if (eventIndex == -1) {
+        if (events.length > 0) {
+          // take alternative first event
+          browserHistory.replace(`/organizations/${organization._id}/event/${events[0]._id}`);
+        } else {
+          // take no event organization page
+          browserHistory.replace(`/organizations/${organization._id}`);
+        }
+      }
+    }
+    else if (events.length > 0) {
+      // select first event url
+      browserHistory.replace(`/organizations/${organization._id}/event/${events[0]._id}`);
+    }
+  }
 };
 
 const ReactiveShowOrganizationPage = reactiveSubscriptionByParams(
@@ -72,8 +132,9 @@ const ReactiveShowOrganizationPage = reactiveSubscriptionByParams(
     IAsyncDataByIdProps<IPageModel>>(ShowOrganizationPage),
   (id): IPageModel | null => {
     const organization = Organizations.findOne(id);
+    const events = organization && organization.getEvents();
     // fetch model with organization & events in one go
-    return organization ? {organization, event: organization.getEvents()[0]} : null;
+    return organization && events ? {organization, events: events || []} : null;
   },
   'organizations.by_id.public', 'events.by_organizationId.public', 'users.my.private');
 
