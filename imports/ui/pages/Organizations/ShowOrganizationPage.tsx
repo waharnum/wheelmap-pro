@@ -7,7 +7,6 @@ import {Meteor} from 'meteor/meteor';
 import MapLayout from '../../layouts/MapLayout';
 import {browserHistory} from 'react-router';
 
-import Button from '../../components/Button';
 import Map from '../../components/Map';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
@@ -21,7 +20,6 @@ import EventStatistics from '../Events/EventStatistics';
 import {regionToBbox} from '../../../both/lib/geo-bounding-box';
 import {CustomMapIcon} from '../../components/MapIcon';
 import {defaultRegion} from '../Events/EventBaseForm';
-import browserHistory from 'react-router/lib/browserHistory';
 
 interface IMarkerProps {
   event: IEvent;
@@ -53,6 +51,7 @@ class EventMarker extends React.Component<IMarkerProps> {
             <h3>{event.name} ({event.status})</h3>
             <h4>{moment(event.startTime).format('LL')}</h4>
             <p className="event-region">{event.regionName}</p>
+            <p>{event.description}</p>
           </div>
           {this.props.primaryAction ?
             <button className='btn btn-primary'
