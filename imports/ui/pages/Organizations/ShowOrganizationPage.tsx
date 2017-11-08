@@ -21,6 +21,7 @@ import {regionToBbox} from '../../../both/lib/geo-bounding-box';
 import {CustomMapIcon} from '../../components/MapIcon';
 import {defaultRegion} from '../Events/EventBaseForm';
 import * as L from 'leaflet';
+import {CustomMapPopup} from '../../components/MapPopup';
 
 interface IMarkerProps {
   event: IEvent;
@@ -39,7 +40,7 @@ class EventMarker extends React.Component<IMarkerProps> {
     const mapPos = bbox.getCenter();
 
     return (
-      <CustomMapIcon
+      <CustomMapPopup
         className="event-marker"
         lat={mapPos.lat}
         lon={mapPos.lng}
@@ -69,7 +70,7 @@ class EventMarker extends React.Component<IMarkerProps> {
         {this.props.hasMore ?
           <button className='btn btn-primary btn-next-event'
                   onClick={this.props.onNextSelected}>{'>'}</button> : null}
-      </CustomMapIcon>);
+      </CustomMapPopup>);
   }
 }
 
@@ -147,7 +148,14 @@ class ShowOrganizationPage extends React.Component<PageProps> {
                                      hasMore={events.length > 1}/>);
               }
               else {
-
+                const bbox = regionToBbox(event.region || defaultRegion);
+                const mapPos = bbox.getCenter();
+                return (<CustomMapIcon key={String(event._id)}
+                                       className="event-mini-marker"
+                                       lat={mapPos.lat}
+                                       lon={mapPos.lng}>
+                  <section className="glyphicon">*</section>
+                </CustomMapIcon>);
               }
             })}
           </Map>
@@ -207,9 +215,43 @@ svg path.event-bounds-polygon {
   stroke-width: 1px;
 }
 
-.event-marker { 
+.event-mini-marker { 
 
   .marker-root:after {
+    content: "";
+    position: absolute;
+    box-shadow: 0px 0px 2px rgba(55,64,77,0.40);
+    -moz-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    bottom: -${BubbleNoseSize / 2}px;
+    left: calc(50% - ${BubbleNoseSize / 2}px);
+    border-width: ${BubbleNoseSize / 2}px;
+    border-style: solid;
+    border-color: transparent #FFF #FFF transparent;
+  }
+  
+  .marker-root {
+    padding: 8px 8px 0 8px;
+    background: white;
+    box-shadow: 0 0 2px 0 rgba(55,64,77,0.40);
+    transform: translate3d(-50%,calc(-100% - 10px), 0px);
+  }
+  
+  .glyphicon {
+    display: block;
+    background: white;
+    padding-bottom: 8px;
+    z-index: 100;
+    width: 15px;
+    text-align: center;
+    position: relative;
+  }
+}
+
+.event-marker { 
+  text-align: left;
+
+  .popup-root:after {
     content: "";
     position: absolute;
     box-shadow: 0px 0px 2px rgba(55,64,77,0.40);
@@ -222,11 +264,11 @@ svg path.event-bounds-polygon {
     border-color: transparent #FFF #FFF transparent;
   }
   
-  .marker-root {
+  .popup-root {
+    pointer-events: auto;
     padding: 16px 16px 0 16px;
     background: white;
     box-shadow: 0 0 2px 0 rgba(55,64,77,0.40);
-    transform: translate3d(-50%,calc(-100% - 10px), 0px);
     
     .btn-prev-event, .btn-next-event {
       position: absolute;
