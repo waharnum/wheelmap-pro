@@ -29,7 +29,6 @@ interface IPageModel {
 const EventListEntry = (props: { model: IEvent }) => {
   const event = props.model;
   const bbox = regionToBbox(event.region || defaultRegion);
-  const mapPos = bbox.getCenter();
 
   return (
     <div className={`event-list-entry event-status-${event.status}`}>
