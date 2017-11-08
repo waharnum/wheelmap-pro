@@ -14,8 +14,10 @@ import styled from 'styled-components';
 import {IStyledComponent} from './IStyledComponent';
 import PlaceDetailsContainer from './PlaceDetailsContainer';
 import {IPlaceInfo} from '../../both/api/place-infos/place-infos';
+import {PropTypes} from 'react';
 
 interface IMapProps {
+  children?: React.ReactNode;
   accessibilityCloudTileUrlBuilder?: () => string | false;
   minZoom?: number;
   maxZoom?: number;
@@ -30,11 +32,13 @@ interface IMapProps {
 
 interface IMapState {
   feature: IPlaceInfo | null | undefined;
+  leafletMap: L.Map | null;
 }
 
 class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
   state: IMapState = {
     feature: null,
+    leafletMap: null,
   }
   private leafletMap: L.Map;
 
@@ -72,6 +76,7 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
           locateOnStart={false}
           pointToLayer={this.createMarkerFromFeature}
         />
+        {this.props.children}
         <PlaceDetailsContainer
           className="place-details-container"
           feature={this.state.feature}
@@ -96,6 +101,7 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
 
   private onMapMounted = (map: L.Map) => {
     this.leafletMap = map;
+    this.setState({leafletMap: map});
     this.repositionMap(this.props);
   }
 
@@ -119,7 +125,7 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
         });
       }
     }, (reason) => {
-      console.log('Failed', reason);
+      console.error('Failed loading feature', reason);
     });
   };
 
@@ -145,6 +151,16 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
       },
       feature,
     });
+  }
+
+  public static childContextTypes = {
+    map: PropTypes.instanceOf(L.Map),
+  }
+
+  public getChildContext() {
+    return {
+      map: this.state.leafletMap,
+    }
   }
 };
 
