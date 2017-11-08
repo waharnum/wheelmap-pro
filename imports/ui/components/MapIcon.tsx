@@ -8,9 +8,10 @@ interface ICustomMapIconProps {
   lat: number;
   lon: number;
   interactive?: boolean;
+  zIndexOffset?: number;
   children?: React.ReactNode;
   // TODO: this is not yet updated after the marker has been mounted
-  additionalLeafletLayers?: Array<L.Layer>
+  additionalLeafletLayers?: Array<L.Layer>;
 }
 
 export class CustomMapIcon extends React.Component<IStyledComponent & ICustomMapIconProps> {
@@ -33,6 +34,7 @@ export class CustomMapIcon extends React.Component<IStyledComponent & ICustomMap
     const marker = L.marker([this.props.lat, this.props.lon], {
       icon,
       interactive: this.props.interactive !== false,
+      zIndexOffset: this.props.zIndexOffset,
     });
     marker.addTo(map);
 
@@ -71,7 +73,7 @@ export class CustomMapIcon extends React.Component<IStyledComponent & ICustomMap
   }
 
   public renderComponent() {
-    if (!this.state.marker) {
+    if (!this.state.marker || !this.props.children) {
       return null;
     }
 
