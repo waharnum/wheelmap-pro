@@ -1,4 +1,5 @@
 import {t} from 'c-3po';
+import * as L from 'leaflet';
 import styled from 'styled-components';
 import * as React from 'react';
 import * as moment from 'moment';
@@ -16,48 +17,65 @@ import {colors} from '../../stylesheets/colors';
 import OrganizationAdminHeader from './OrganizationAdminHeader';
 import OrganizationStatistics from './OrganizationStatistics';
 import EventStatistics from '../Events/EventStatistics';
+import {defaultRegion} from '../Events/EventBaseForm';
+import {regionToBbox} from '../../../both/lib/geo-bounding-box';
+import EventMiniMarker from '../Events/EventMiniMarker';
 
 interface IPageModel {
   organization: IOrganization;
   events: IEvent[];
 };
 
-const EventListEntry = (props: { model: IEvent }) => (
-  <div className={`event-list-entry event-status-${props.model.status}`}>
-    <div className="event-body">
-      <div className="event-information">
-        <div className="event-description">
-          <h3>{props.model.name}</h3>
-          <h4>{moment(props.model.startTime).format('LLLL')}</h4>
-          <p className="event-region">{props.model.regionName}</p>
+const EventListEntry = (props: { model: IEvent }) => {
+  const event = props.model;
+  const bbox = regionToBbox(event.region || defaultRegion);
+  const mapPos = bbox.getCenter();
+
+  return (
+    <div className={`event-list-entry event-status-${event.status}`}>
+      <div className="event-body">
+        <div className="event-information">
+          <div className="event-description">
+            <h3>{event.name}</h3>
+            <h4>{moment(event.startTime).format('LLLL')}</h4>
+            <p className="event-region">{event.regionName}</p>
+          </div>
+          {
+            (event.startTime && event.startTime > new Date()) ?
+              (<div className="time-until-event">
+                <p>{moment(event.startTime).diff(moment(), 'days')}</p>
+                <small>{t`Days Left`}</small>
+              </div>) :
+              (<div className="time-until-event">
+                <p>{moment().diff(moment(event.startTime), 'days')}</p>
+                <small>{t`Days Ago`}</small>
+              </div>)
+          }
         </div>
-        {
-          (props.model.startTime && props.model.startTime > new Date()) ?
-            (<div className="time-until-event">
-              <p>{moment(props.model.startTime).diff(moment(), 'days')}</p>
-              <small>{t`Days Left`}</small>
-            </div>) :
-            (<div className="time-until-event">
-              <p>{moment().diff(moment(props.model.startTime), 'days')}</p>
-              <small>{t`Days Ago`}</small>
-            </div>)
-        }
+        <EventStatistics className="event-footer"
+                         event={event}
+                         planned={true}
+                         achieved={true}
+                         action={<Button to={`/events/${event._id}/organize`}>{t`Show details`}</Button>}/>
       </div>
-      <EventStatistics className="event-footer"
-                       event={props.model}
-                       planned={true}
-                       achieved={true}
-                       action={<Button to={`/events/${props.model._id}/organize`}>{t`Show details`}</Button>}/>
+      <div className="event-status corner-ribbon">
+        {event.status}
+      </div>
+      <Map
+        className="event-mini-map"
+        enablePlaceDetails={false}
+        bbox={bbox}>
+        <EventMiniMarker
+          event={event}
+          additionalLeafletLayers={[L.rectangle(bbox, {
+            className: 'event-bounds-polygon',
+            interactive: false,
+          })]}
+        />
+      </Map>
     </div>
-    <div className="event-status corner-ribbon">
-      {props.model.status}
-    </div>
-    <Map
-      className="event-mini-map"
-      enablePlaceDetails={false}
-    />
-  </div>
-);
+  );
+}
 
 const EventList = (props: { model: IEvent[] }) => (
   <div>
