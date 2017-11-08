@@ -7,6 +7,7 @@ import {render, unmountComponentAtNode} from 'react-dom';
 interface ICustomMapIconProps {
   lat: number;
   lon: number;
+  onClick?: () => void;
   interactive?: boolean;
   zIndexOffset?: number;
   children?: React.ReactNode;
@@ -36,6 +37,7 @@ export class CustomMapIcon extends React.Component<IStyledComponent & ICustomMap
       interactive: this.props.interactive !== false,
       zIndexOffset: this.props.zIndexOffset,
     });
+    marker.on('click', this.markerOnClick)
     marker.addTo(map);
 
     // store the added layers so that the same layers will be removed at the end
@@ -44,6 +46,13 @@ export class CustomMapIcon extends React.Component<IStyledComponent & ICustomMap
 
     this.setState({marker});
   }
+
+
+  private markerOnClick = () => {
+    if (this.props.onClick) {
+      this.props.onClick();
+    }
+  };
 
   componentWillMount() {
     this.tryCreateMapComponents();

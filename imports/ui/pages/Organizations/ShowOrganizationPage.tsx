@@ -137,7 +137,7 @@ class ShowOrganizationPage extends React.Component<PageProps> {
                                      key={String(event._id)}
                                      primaryAction={t`Join Us!`}
                                      onPrimaryAction={() => {
-                                       browserHistory.replace(`/events/${event._id}`)
+                                       browserHistory.push(`/events/${event._id}`)
                                      }}
                                      onPrevSelected={() => {
                                        browserHistory.replace(`/organizations/${organization._id}/event/${prevEvent._id}`)
@@ -150,12 +150,17 @@ class ShowOrganizationPage extends React.Component<PageProps> {
               else {
                 const bbox = regionToBbox(event.region || defaultRegion);
                 const mapPos = bbox.getCenter();
-                return (<CustomMapIcon key={String(event._id)}
-                                       className="event-mini-marker"
-                                       lat={mapPos.lat}
-                                       lon={mapPos.lng}>
-                  <section className="glyphicon">*</section>
-                </CustomMapIcon>);
+                return (
+                  <CustomMapIcon key={String(event._id)}
+                                 className="event-mini-marker"
+                                 lat={mapPos.lat}
+                                 lon={mapPos.lng}
+                                 onClick={() => {
+                                   browserHistory.replace(`/organizations/${organization._id}/event/${event._id}`);
+                                 }}
+                  >
+                    <section className="glyphicon">*</section>
+                  </CustomMapIcon>);
               }
             })}
           </Map>
@@ -227,7 +232,7 @@ svg path.event-bounds-polygon {
     left: calc(50% - ${BubbleNoseSize / 2}px);
     border-width: ${BubbleNoseSize / 2}px;
     border-style: solid;
-    border-color: transparent #FFF #FFF transparent;
+    border-color: transparent white white transparent;
   }
   
   .marker-root {
@@ -245,6 +250,15 @@ svg path.event-bounds-polygon {
     width: 15px;
     text-align: center;
     position: relative;
+  }
+  
+  .marker-root:hover:after {
+    border-color: transparent #29A3CB #29A3CB transparent;
+  }
+  
+  .marker-root:hover, .marker-root:hover .glyphicon {
+    background: #29A3CB;
+    color: white;
   }
 }
 
