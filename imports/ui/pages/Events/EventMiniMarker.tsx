@@ -63,11 +63,12 @@ export default styled(EventMiniMarker) `
     position: relative;
   }
   
-  .marker-root:hover:after {
+  &.leaflet-interactive .marker-root:hover:after {
     border-color: transparent #29A3CB #29A3CB transparent;
   }
   
-  .marker-root:hover, .marker-root:hover .glyphicon {
+  &.leaflet-interactive .marker-root:hover, 
+  &.leaflet-interactive .marker-root:hover .glyphicon {
     background: #29A3CB;
     color: white;
   }

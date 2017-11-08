@@ -7,10 +7,13 @@ import {render, unmountComponentAtNode} from 'react-dom';
 interface ICustomMapIconProps {
   lat: number;
   lon: number;
-  onClick?: () => void;
-  interactive?: boolean;
-  zIndexOffset?: number;
   children?: React.ReactNode;
+  // TODO: this is not yet updated after the marker has been mounted
+  onClick?: () => void;
+  // TODO: this is not yet updated after the marker has been mounted
+  interactive?: boolean;
+  // TODO: this is not yet updated after the marker has been mounted
+  zIndexOffset?: number;
   // TODO: this is not yet updated after the marker has been mounted
   additionalLeafletLayers?: Array<L.Layer>;
 }
@@ -34,7 +37,7 @@ export class CustomMapIcon extends React.Component<IStyledComponent & ICustomMap
     });
     const marker = L.marker([this.props.lat, this.props.lon], {
       icon,
-      interactive: this.props.interactive !== false,
+      interactive: this.props.onClick && this.props.interactive !== false,
       zIndexOffset: this.props.zIndexOffset,
     });
     marker.on('click', this.markerOnClick)
