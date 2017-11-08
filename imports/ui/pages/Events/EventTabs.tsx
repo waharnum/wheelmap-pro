@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import * as React from 'react';
-import {LocationDescriptor} from 'history';
 
 import AdminTab from '../../components/AdminTab';
 import {IStyledComponent} from '../../components/IStyledComponent';
