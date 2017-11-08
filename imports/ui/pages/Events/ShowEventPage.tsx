@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as L from 'leaflet';
 import styled from 'styled-components';
 import * as moment from 'moment';
 import {t} from 'c-3po';
@@ -14,6 +15,9 @@ import {default as PublicHeader, HeaderTitle} from '../../components/PublicHeade
 import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
 import {colors} from '../../stylesheets/colors';
 import EventStatistics from './EventStatistics';
+import {regionToBbox} from '../../../both/lib/geo-bounding-box';
+import {defaultRegion} from './EventBaseForm';
+import EventMiniMarker from './EventMiniMarker';
 
 interface IPageModel {
   organization: IOrganization;
@@ -94,12 +98,23 @@ const ShowEventPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent
   const organization = props.model.organization;
   const showResultPage = event.startTime ? event.startTime < new Date() : false;
 
+  const bbox = regionToBbox(event.region || defaultRegion);
+
   return (
     <MapLayout className={props.className}>
       <PublicEventHeader event={event} organization={organization}/>
       {showResultPage ? null : <OngoingEventHeader event={event}/>}
       <div className="content-area">
-        <Map/>
+        <Map
+          bbox={bbox}>
+          <EventMiniMarker
+            event={event}
+            additionalLeafletLayers={[L.rectangle(bbox, {
+              className: 'event-bounds-polygon',
+              interactive: false,
+            })]}
+          />
+        </Map>
         <div className="map-overlay">
           {showResultPage ? <FinishedEventMapContent event={event}/> : <OngoingEventMapContent/>}
         </div>
