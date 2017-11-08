@@ -13,7 +13,7 @@ interface IOrganizationStatistics {
 class OrganizationStatistics extends React.Component<IOrganizationStatistics & IStyledComponent> {
   public render(): JSX.Element | null {
     return (
-      <div className={`${this.props.className} stats organization-stats`}>
+      <div className={`${this.props.className} organization-stats`}>
         <section className="participant-stats">
           <span className="participants-invited">70<small>{t`invited`}</small></span>
           <span className="participants-registered key-figure">69<small>{t`registered`}</small></span>

@@ -20,7 +20,7 @@ interface IEventStatistics {
 class EventStatistics extends React.Component<IEventStatistics & IStyledComponent> {
   public render(): JSX.Element | null {
     return (
-      <div className={`${this.props.className} stats event-stats`}>
+      <div className={`${this.props.className} event-statistics`}>
         {/* participants */}
         <section className="participant-stats">
           {this.props.planned ? <span className="participants-invited">99<small>{t`invited`}</small></span> : null}
