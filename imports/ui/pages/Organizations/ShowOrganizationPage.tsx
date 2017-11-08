@@ -20,6 +20,7 @@ import EventStatistics from '../Events/EventStatistics';
 import {regionToBbox} from '../../../both/lib/geo-bounding-box';
 import {CustomMapIcon} from '../../components/MapIcon';
 import {defaultRegion} from '../Events/EventBaseForm';
+import * as L from 'leaflet';
 
 interface IMarkerProps {
   event: IEvent;
@@ -42,6 +43,10 @@ class EventMarker extends React.Component<IMarkerProps> {
         className="event-marker"
         lat={mapPos.lat}
         lon={mapPos.lng}
+        additionalLeafletLayers={[L.rectangle(bbox, {
+          className: 'event-bounds-polygon',
+          interactive: false,
+        })]}
       >
         {this.props.hasMore ?
           <button className='btn btn-primary btn-prev-event'
@@ -194,6 +199,14 @@ const ReactiveShowOrganizationPage = reactiveSubscriptionByParams(
 const BubbleNoseSize = 10;
 
 export default styled(ReactiveShowOrganizationPage) `
+svg path.event-bounds-polygon {
+  stroke: forestgreen;
+  stroke-opacity: 0.3;
+  fill: forestgreen;
+  fill-opacity: 0.1;
+  stroke-width: 1px;
+}
+
 .event-marker { 
 
   .marker-root:after {
