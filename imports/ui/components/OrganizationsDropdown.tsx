@@ -1,6 +1,6 @@
 import {Link} from 'react-router';
 import styled from 'styled-components';
-import { colors } from '../stylesheets/colors';
+import {colors} from '../stylesheets/colors';
 import * as React from 'react';
 import {wrapDataComponent} from './AsyncDataComponent';
 
@@ -22,7 +22,7 @@ const OrganizationEntry = (props: IListEntryModelProps) => {
 };
 
 interface IOrganizationDropdownProps {
-  children: JSX.Element | JSX.Element[] | null;
+  children: React.ReactNode;
   current: IOrganization;
 }
 

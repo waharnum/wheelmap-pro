@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import {IStyledComponent} from '../components/IStyledComponent';
 
 interface IScrollLayoutProps {
-  children: JSX.Element | Array<JSX.Element | null> | null;
+  children: React.ReactNode;
   id?: string;
 }
 

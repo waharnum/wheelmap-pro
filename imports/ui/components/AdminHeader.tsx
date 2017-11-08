@@ -1,16 +1,16 @@
-import { Link } from 'react-router';
+import {Link} from 'react-router';
 import styled from 'styled-components';
 import * as React from 'react';
 import {LocationDescriptor} from 'history';
 
 import UserMenu from './UserMenu';
 import PreviewToggle from './PreviewToggle';
-import { IStyledComponent } from './IStyledComponent';
-import { colors } from '../stylesheets/colors';
+import {IStyledComponent} from './IStyledComponent';
+import {colors} from '../stylesheets/colors';
 
 interface IAdminHeaderProps {
   titleComponent: JSX.Element | string;
-  children?: JSX.Element | JSX.Element[];
+  children?: React.ReactNode;
   tabs?: JSX.Element;
   publicLink?: LocationDescriptor;
 }
@@ -27,9 +27,9 @@ export const HeaderTitle = (props: IHeaderTitleProps) => {
   return (
     <div className="title-bar">
       {props.logo ? (
-        <Link to={props.prefixLink || ''}> 
-          <div className="organization-logo" style={{backgroundImage: `url(${props.logo})`}} />
-        </Link>)
+          <Link to={props.prefixLink || ''}>
+            <div className="organization-logo" style={{backgroundImage: `url(${props.logo})`}}/>
+          </Link>)
         : null}
       {props.prefixTitle && !props.logo ?
         <h1 className="organization-logo"><Link to={props.prefixLink || ''}>{props.prefixTitle}</Link></h1> : null}
@@ -40,16 +40,16 @@ export const HeaderTitle = (props: IHeaderTitleProps) => {
 
 const AdminHeader = (props: IAdminHeaderProps & IStyledComponent) => {
   return (
-    <div className={props.className} >
+    <div className={props.className}>
       <header className="main-header on-dark">
         <div className="wrapper on-dark">
           <ol className="secondary-tools">
-            <PreviewToggle to={props.publicLink} />
-            <UserMenu />
-          </ol>      
+            <PreviewToggle to={props.publicLink}/>
+            <UserMenu/>
+          </ol>
           <div className="main-area">
-            {props.titleComponent || <HeaderTitle title="Please specificy title component" />}
-            <div className="right-side" />
+            {props.titleComponent || <HeaderTitle title="Please specificy title component"/>}
+            <div className="right-side"/>
           </div>
           <ol className="tabs-header">
             {props.tabs}

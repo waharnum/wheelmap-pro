@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-class App extends React.Component<{ children: JSX.Element | JSX.Element[] | null }> {
+class App extends React.Component<{ children: React.ReactNode }> {
   render() {
     return (
       <div className="app-root">

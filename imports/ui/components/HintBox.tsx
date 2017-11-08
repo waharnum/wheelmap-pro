@@ -2,9 +2,10 @@ import styled from 'styled-components';
 import * as React from 'react';
 import {colors} from '../stylesheets/colors';
 
-import { IStyledComponent } from '../components/IStyledComponent';
+import {IStyledComponent} from '../components/IStyledComponent';
+
 interface IHintHeader {
-  children: JSX.Element | string | Array<JSX.Element | string | null> | null | undefined;
+  children: React.ReactNode;
 }
 
 const HintHeader = (props: IStyledComponent & IHintHeader) => {
@@ -14,7 +15,7 @@ const HintHeader = (props: IStyledComponent & IHintHeader) => {
 };
 
 interface IHintProps {
-  children: JSX.Element | string | Array<JSX.Element | string | null> | null | undefined;
+  children: React.ReactNode;
 }
 
 export const Hint = (props: IStyledComponent & IHintProps) => {
@@ -26,12 +27,12 @@ export const Hint = (props: IStyledComponent & IHintProps) => {
 interface IHintBoxProps {
   title?: string;
   headerClassName?: string;
-  children: JSX.Element | string | Array<JSX.Element | string | null> | null | undefined;
+  children: React.ReactNode;
 }
 
 const InternalHintBox = (props: IStyledComponent & IHintBoxProps) => {
   return (
-    <div className={props.className + ' hint-box'} >
+    <div className={props.className + ' hint-box'}>
       <HintHeader className={props.headerClassName}>{props.title}</HintHeader>
       <ol className="hints">
         {props.children}
