@@ -5,9 +5,12 @@ import * as L from 'leaflet';
 import {render, unmountComponentAtNode} from 'react-dom';
 
 interface ICustomMapIconProps {
-  children?: React.ReactNode;
   lat: number;
   lon: number;
+  interactive?: boolean;
+  children?: React.ReactNode;
+  // TODO: this is not yet updated after the marker has been mounted
+  additionalLeafletLayers?: Array<L.Layer>
 }
 
 export class CustomMapIcon extends React.Component<IStyledComponent & ICustomMapIconProps> {
@@ -16,15 +19,27 @@ export class CustomMapIcon extends React.Component<IStyledComponent & ICustomMap
   }
 
   state: { marker: L.Marker | null } = {marker: null};
+  private layers: Array<L.Layer>;
 
   private tryCreateMapComponents() {
     const map = this.context.map;
     if (!map || this.state.marker) {
       return null;
     }
-    const icon = L.divIcon({className: `custom-map-icon ${this.props.className || ''}`, iconSize: undefined});
-    const marker = L.marker([this.props.lat, this.props.lon], {icon})
-    marker.addTo(map)
+    const icon = L.divIcon({
+      className: `custom-map-icon ${this.props.className || ''}`,
+      iconSize: undefined,
+    });
+    const marker = L.marker([this.props.lat, this.props.lon], {
+      icon,
+      interactive: this.props.interactive !== false,
+    });
+    marker.addTo(map);
+
+    // store the added layers so that the same layers will be removed at the end
+    this.layers = this.props.additionalLeafletLayers || [];
+    this.layers.forEach((layer) => layer.addTo(map));
+
     this.setState({marker});
   }
 
@@ -45,7 +60,12 @@ export class CustomMapIcon extends React.Component<IStyledComponent & ICustomMap
   componentWillUnmount() {
     if (this.state.marker) {
       unmountComponentAtNode(this.state.marker.getElement() as Element);
+      this.state.marker.removeFrom(this.context.map);
       this.state.marker.remove();
+      this.layers.forEach((layer) => {
+        layer.removeFrom(this.context.map);
+        layer.remove();
+      });
       this.setState({marker: null});
     }
   }
