@@ -207,14 +207,6 @@ const ReactiveShowOrganizationPage = reactiveSubscriptionByParams(
 const BubbleNoseSize = 10;
 
 export default styled(ReactiveShowOrganizationPage) `
-svg path.event-bounds-polygon {
-  stroke: forestgreen;
-  stroke-opacity: 0.3;
-  fill: forestgreen;
-  fill-opacity: 0.1;
-  stroke-width: 1px;
-}
-
 .event-marker { 
   text-align: left;
 
