@@ -18,10 +18,10 @@ import {colors} from '../../stylesheets/colors';
 import {default as PublicHeader, HeaderTitle} from '../../components/PublicHeader';
 import EventStatistics from '../Events/EventStatistics';
 import {regionToBbox} from '../../../both/lib/geo-bounding-box';
-import {CustomMapIcon} from '../../components/MapIcon';
 import {defaultRegion} from '../Events/EventBaseForm';
 import * as L from 'leaflet';
 import {CustomMapPopup} from '../../components/MapPopup';
+import EventMiniMarker from '../Events/EventMiniMarker';
 
 interface IMarkerProps {
   event: IEvent;
@@ -148,19 +148,14 @@ class ShowOrganizationPage extends React.Component<PageProps> {
                                      hasMore={events.length > 1}/>);
               }
               else {
-                const bbox = regionToBbox(event.region || defaultRegion);
-                const mapPos = bbox.getCenter();
                 return (
-                  <CustomMapIcon key={String(event._id)}
-                                 className="event-mini-marker"
-                                 lat={mapPos.lat}
-                                 lon={mapPos.lng}
-                                 onClick={() => {
-                                   browserHistory.replace(`/organizations/${organization._id}/event/${event._id}`);
-                                 }}
-                  >
-                    <section className="glyphicon">*</section>
-                  </CustomMapIcon>);
+                  <EventMiniMarker
+                    event={event}
+                    key={String(event._id)}
+                    onClick={() => {
+                      browserHistory.replace(`/organizations/${organization._id}/event/${event._id}`);
+                    }}
+                  />);
               }
             })}
           </Map>
@@ -218,48 +213,6 @@ svg path.event-bounds-polygon {
   fill: forestgreen;
   fill-opacity: 0.1;
   stroke-width: 1px;
-}
-
-.event-mini-marker { 
-
-  .marker-root:after {
-    content: "";
-    position: absolute;
-    box-shadow: 0px 0px 2px rgba(55,64,77,0.40);
-    -moz-transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-    bottom: -${BubbleNoseSize / 2}px;
-    left: calc(50% - ${BubbleNoseSize / 2}px);
-    border-width: ${BubbleNoseSize / 2}px;
-    border-style: solid;
-    border-color: transparent white white transparent;
-  }
-  
-  .marker-root {
-    padding: 8px 8px 0 8px;
-    background: white;
-    box-shadow: 0 0 2px 0 rgba(55,64,77,0.40);
-    transform: translate3d(-50%,calc(-100% - 10px), 0px);
-  }
-  
-  .glyphicon {
-    display: block;
-    background: white;
-    padding-bottom: 8px;
-    z-index: 100;
-    width: 15px;
-    text-align: center;
-    position: relative;
-  }
-  
-  .marker-root:hover:after {
-    border-color: transparent #29A3CB #29A3CB transparent;
-  }
-  
-  .marker-root:hover, .marker-root:hover .glyphicon {
-    background: #29A3CB;
-    color: white;
-  }
 }
 
 .event-marker { 
