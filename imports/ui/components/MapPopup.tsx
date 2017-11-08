@@ -43,9 +43,12 @@ export class CustomMapPopup extends React.Component<IStyledComponent & ICustomMa
     this.layers.forEach((layer) => layer.addTo(map));
 
     // disable interaction on the popup content
-    L.DomEvent.disableClickPropagation(popup.getElement());
-    L.DomEvent.disableScrollPropagation(popup.getElement());
-    L.DomEvent.on(popup.getElement(), 'contextmenu', L.DomEvent.stopPropagation);
+    const element = popup.getElement();
+    if (element) {
+      L.DomEvent.disableClickPropagation(element);
+      L.DomEvent.disableScrollPropagation(element);
+      L.DomEvent.on(element, 'contextmenu', L.DomEvent.stopPropagation);
+    }
 
     this.setState({popup});
   }
@@ -88,8 +91,8 @@ export class CustomMapPopup extends React.Component<IStyledComponent & ICustomMa
       </div>
     ), this.state.popup.getElement() as Element);
 
-    // update the size of the popup
-    this.state.popup.update();
+    // update the size of the popup, definition missing in @types
+    (this.state.popup as any).update();
   }
 
   render() {
