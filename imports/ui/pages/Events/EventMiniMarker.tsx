@@ -1,5 +1,6 @@
-import * as React from 'react';
+import * as L from 'leaflet';
 import styled from 'styled-components';
+import * as React from 'react';
 
 import {regionToBbox} from '../../../both/lib/geo-bounding-box';
 import {defaultRegion} from './EventBaseForm';
