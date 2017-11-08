@@ -51,7 +51,7 @@ schema.extend({
   },
 });
 
-const defaultRegion: EventRegion = {
+export const defaultRegion: EventRegion = {
   topLeft: {latitude: 52.67551, longitude: 13.08835},
   bottomRight: {latitude: 52.33826, longitude: 13.76116},
 };
