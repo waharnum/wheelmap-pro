@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import * as React from 'react';
 import { browserHistory } from 'react-router';
 
+import AdminTab from '../../components/AdminTab';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 import Button from '../../components/Button';
 import AdminHeader, { HeaderTitle } from '../../components/AdminHeader';
@@ -13,7 +14,15 @@ import { Link } from 'react-router';
 const NoOrganizationsPage = (props: IStyledComponent) => {
   return (
     <ScrollableLayout className={props.className} id="NoOrganizationsPage">
-      <AdminHeader titleComponent={<Link to="/" className="logo"><h1>{t`wheelmap.pro`}</h1></Link>} />
+      <AdminHeader
+        titleComponent={<Link to="/" className="logo"><h1>{t`wheelmap.pro`}</h1></Link>}
+        tabs={(
+          <section>
+            <AdminTab to="/" title={t`Dashboard`} active={true} />
+            <AdminTab to="" title={t`Create`} />
+          </section>
+        )}
+      />
       <div className="content-area scrollable hsplit">
         <div className="content-left">
           <h2>{t`Welcome on board!`}</h2>

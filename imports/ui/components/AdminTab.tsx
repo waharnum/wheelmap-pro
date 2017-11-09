@@ -18,9 +18,9 @@ const AdminTab = (props: IAdminTabProps & LinkProps & IStyledComponent) => {
   return (
     <li className={props.className}>
       <Link to={props.to} onlyActiveOnIndex={props.onlyActiveOnIndex}
-            activeClassName={props.activeClassName}
-            activeStyle={props.activeStyle}
-            className={active === true ? 'active' : ''} >
+        activeClassName={props.activeClassName}
+        activeStyle={props.activeStyle}
+        className={active === true ? 'active' : ''} >
         {props.title}
       </Link>
     </li>);
@@ -36,7 +36,8 @@ export default styled(AdminTab) `
       font-size: 14px;
       line-height: 36px;
       text-transform: uppercase;
-      border-bottom: 2px solid transparent;   
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
       
       &.active,
       &:hover {
