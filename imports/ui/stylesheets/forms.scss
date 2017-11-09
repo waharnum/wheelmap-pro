@@ -271,6 +271,7 @@ form {
       content: "A";
     }
 
+    &.has-feedback.has-error,
     .panel-danger {
       transition: 0.5s;
 
@@ -278,14 +279,33 @@ form {
         color: $error-red;
       }
 
+      input.form-control.form-control-danger,
       input,
       input:focus {
-        border: 1px solid $error-red;
+        border: 1px solid $error-red !important;
         box-shadow: none;
       }
 
+      span.help-block,
+      i.glyphicon-remove::before,
       i.glyphicon::before {
         color: $error-red;
+      }
+
+      i.glyphicon-remove {
+        left: -9px;
+        top: 43px;
+        color: $error-red;      
+        
+        &:before {
+          content: 'D';
+          font-size: 14px;
+        }
+      }
+    
+      span.help-block {
+        padding-left: 20px;
+        font-weight: 300;
       }
     }
 
