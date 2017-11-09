@@ -12,12 +12,13 @@ label,
   cursor: pointer;
 }
 
-.btn { /* nornal green text-button */
+.btn { /* nornal blue text-button */
   padding: 0 16px;
   font-size: 16px;
   line-height: 40px;
   text-transform: uppercase;
-  color: $dark-green;
+  // color: $dark-green;
+  color: $link-blue-darker;
   background-color: transparent;
   border-radius: 0;
   border: none;
@@ -25,7 +26,8 @@ label,
   outline: 0;
 
   &:hover {
-    color: $cta-green;
+    // color: $cta-green;
+    color: $link-blue;
     background-color: transparent;
     box-shadow: none;
   }
@@ -34,21 +36,24 @@ label,
 .btn-default {
 
   &:hover {
-    color: $cta-green-lighter;
+    // color: $cta-green-lighter;
+    color: $link-blue-lighter;
   }
 }
 
 .btn-primary,
 .btn-primary.active,
 .btn-primary:active,
-.btn-primary:focus { /* filled green button */
+.btn-primary:focus { /* filled blue button */
   color: white;
-  background-color: $cta-green;
+  // background-color: $cta-green;
+  background-color: $link-blue;
   box-shadow: none;
 
   &:hover {
     color: white;
-    background-color: $cta-green;
+    background-color: $link-blue;
+    // background-color: $cta-green;
   }
 }
 
@@ -74,7 +79,8 @@ a.btn-primary:focus {
   padding-right: 8px;
 
   &:hover {
-    color: $cta-green-lighter;
+    // color: $cta-green-lighter;
+    color: $link-blue-lighter;
   }
 
   &:after {
@@ -196,7 +202,7 @@ form {
 
       &:focus,
       &:hover {
-        border: 1px solid $cta-green;
+        border: 1px solid $link-blue;
         box-shadow: none;
         transition: 0.5s;
       }
@@ -217,7 +223,6 @@ form {
     input,
     textarea {
       &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-        // color:green !important;
         font-style: italic;
       }
       &::-moz-placeholder { /* Firefox 19+ */
