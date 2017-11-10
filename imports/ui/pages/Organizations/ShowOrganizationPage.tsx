@@ -207,27 +207,30 @@ const ReactiveShowOrganizationPage = reactiveSubscriptionByParams(
 const BubbleNoseSize = 10;
 
 export default styled(ReactiveShowOrganizationPage) `
+
 .event-marker { 
   text-align: left;
 
   .popup-root:after {
     content: "";
     position: absolute;
-    box-shadow: 0px 0px 2px rgba(55,64,77,0.40);
-    -moz-transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
+    //box-shadow: 0px 0px 2px rgba(55,64,77,0.40);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    transform: rotate(45deg);
     bottom: -${BubbleNoseSize}px;
     left: calc(50% - ${BubbleNoseSize}px);
     border-width: ${BubbleNoseSize}px;
     border-style: solid;
-    border-color: transparent #FFF #FFF transparent;
+    border-color: transparent #fbfaf9 #fbfaf9 transparent;
   }
   
   .popup-root {
     pointer-events: auto;
     padding: 16px 16px 0 16px;
-    background: white;
-    box-shadow: 0 0 2px 0 rgba(55,64,77,0.40);
+    background: #fbfaf9;    
+    border-radius: 5px;
+    // box-shadow: 0 0 2px 0 rgba(55,64,77,0.40);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
     
     .btn-prev-event, .btn-next-event {
       position: absolute;
@@ -296,7 +299,7 @@ export default styled(ReactiveShowOrganizationPage) `
 
     .event-statistics {
       padding-top: 20px;
-      background-color: white;
+      background-color: #fbfaf9;
       display: flex;
       justify-content: flex-start;
       z-index: 100;
