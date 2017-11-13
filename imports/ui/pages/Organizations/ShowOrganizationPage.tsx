@@ -131,7 +131,7 @@ class ShowOrganizationPage extends React.Component<PageProps> {
         <PublicHeader
           titleComponent={(
             <HeaderTitle
-              title={organization.name + (this.state.mapWasMovedManually ? 'MM' : 'XX')}
+              title={organization.name}
               logo={organization.logo}
               description={organization.description}
             />
