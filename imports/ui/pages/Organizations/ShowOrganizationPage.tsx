@@ -88,14 +88,27 @@ type PageParams = {
 type PageProps = PageParams & IAsyncDataByIdProps<IPageModel> & IStyledComponent;
 
 class ShowOrganizationPage extends React.Component<PageProps> {
-  state: { placeDetailsShown: boolean } = {placeDetailsShown: false}
+  ignoreMapMovement: boolean;
+  state: {
+    placeDetailsShown: boolean,
+    mapWasMovedManually: false,
+  } = {
+    placeDetailsShown: false,
+    mapWasMovedManually: false,
+  }
 
   public componentWillMount() {
     this.redirectToCorrectRoute(this.props);
   }
 
   public componentWillReceiveProps(nextProps) {
-    this.redirectToCorrectRoute(nextProps);
+    if (this.props.params.event_id != nextProps.params.event_id) {
+      this.ignoreMapMovement = true;
+      this.redirectToCorrectRoute(nextProps);
+      this.setState({mapWasMovedManually: false}, () => {
+        this.ignoreMapMovement = false;
+      });
+    }
   }
 
   public render() {
@@ -118,7 +131,7 @@ class ShowOrganizationPage extends React.Component<PageProps> {
         <PublicHeader
           titleComponent={(
             <HeaderTitle
-              title={organization.name}
+              title={organization.name + (this.state.mapWasMovedManually ? 'MM' : 'XX')}
               logo={organization.logo}
               description={organization.description}
             />
@@ -127,7 +140,9 @@ class ShowOrganizationPage extends React.Component<PageProps> {
         />
         <div className="content-area">
           <Map
-            bbox={selectedEvent ? regionToBbox(selectedEvent.region || defaultRegion) : undefined}
+            {...this.determineMapPosition(selectedEvent)}
+            onBboxApplied={this.onMapBboxApplied}
+            onMoveEnd={this.onMapMoveEnd}
             onPlaceDetailsChanged={(options) => {
               this.setState({placeDetailsShown: options.visible})
             }}>
@@ -162,6 +177,23 @@ class ShowOrganizationPage extends React.Component<PageProps> {
         </div>
       </MapLayout>
     );
+  }
+
+  private determineMapPosition(selectedEvent: IEvent) {
+    if (!selectedEvent || this.state.mapWasMovedManually) {
+      return {};
+    }
+
+    return {bbox: regionToBbox(selectedEvent.region || defaultRegion)};
+  }
+
+  private onMapMoveEnd = () => {
+    if (!this.ignoreMapMovement) {
+      this.setState({mapWasMovedManually: true});
+    }
+  }
+
+  private onMapBboxApplied = () => {
   }
 
   private redirectToCorrectRoute(props: PageProps) {
