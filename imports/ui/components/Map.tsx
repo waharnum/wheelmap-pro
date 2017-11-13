@@ -26,6 +26,7 @@ interface IMapProps {
   lon?: number;
   bbox?: L.LatLngBounds;
   onMoveEnd?: (options: { zoom: number, lat: number, lon: number, bbox: L.LatLngBounds }) => void;
+  onBboxApplied?: () => void;
   onPlaceDetailsChanged?: (options: { placeInfo: IPlaceInfo | null, visible: boolean }) => void;
   enablePlaceDetails?: boolean;
 }
@@ -43,7 +44,11 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
   private leafletMap: L.Map;
 
   public componentWillReceiveProps(nextProps, nextContext) {
-    const applyBbox = nextProps.bbox && !nextProps.bbox.equals(this.leafletMap.getBounds());
+    const applyBbox =
+      nextProps.bbox &&
+      !nextProps.bbox.equals(this.leafletMap.getBounds()) &&
+      !nextProps.bbox.equals(this.props.bbox);
+
     if (applyBbox) {
       this.repositionMap(nextProps);
     }
@@ -59,11 +64,11 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
           minZoomWithSetCategory={this.props.minZoom || 13}
           minZoomWithoutSetCategory={this.props.minZoom || 16}
           featureId={this.state.feature && this.state.feature.properties && this.state.feature.properties._id}
-          zoom={this.props.bbox ? null : (this.props.zoom || 16)}
+          zoom={this.props.bbox ? null : (this.props.zoom)}
           maxZoom={this.props.maxZoom || 19}
           defaultStartCenter={[52.541017, 13.38609]}
-          lat={this.props.bbox ? null : (this.props.lat || 52.541017)}
-          lon={this.props.bbox ? null : (this.props.lon || 13.38609)}
+          lat={this.props.bbox ? null : this.props.lat}
+          lon={this.props.bbox ? null : this.props.lon}
           onMoveEnd={this.onMoveEnd}
           onMapMounted={this.onMapMounted}
           wheelmapApiBaseUrl={false}
@@ -107,7 +112,10 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
 
   private repositionMap(props: IMapProps) {
     if (props.bbox) {
-      this.leafletMap.fitBounds(props.bbox);
+      this.leafletMap.fitBounds(props.bbox, {animate: false});
+      if (props.onBboxApplied) {
+        props.onBboxApplied();
+      }
     }
   }
 
