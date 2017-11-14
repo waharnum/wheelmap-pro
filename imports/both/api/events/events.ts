@@ -11,7 +11,6 @@ export type EventRegion = {
   bottomRight: { latitude: number; longitude: number }
 };
 
-
 export interface IEvent extends IEventMixin {
   // mongo id
   _id?: Mongo.ObjectID;
@@ -38,3 +37,15 @@ export const Events = new Mongo.Collection<IEvent & IEventMixin>('Events');
 Events.schema = EventSchema;
 Events.attachSchema(Events.schema);
 Events.helpers(EventMixin);
+
+export interface IEventStatistics {
+  // mongo id
+  _id?: Mongo.ObjectID;
+  // fields
+  eventId: Mongo.ObjectID;
+  fullParticipantCount: number;
+  acceptedParticipantCount: number;
+  mappedPlacesCount: number;
+}
+
+export const EventStatistics = new Mongo.Collection<IEventStatistics>('EventStatistics');

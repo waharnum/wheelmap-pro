@@ -75,5 +75,17 @@ export function buildVisibleForPublicByEventIdSelector(userId: Mongo.ObjectID, e
   // always sanitize to ensure no injection is possible from params (e.g. sending {$ne: -1} as an object)
   check(eventId, String);
 
+  // TODO hide drafts
+
   return {_id: eventId};
+};
+
+export function buildStatisticsVisibleForPublicByEventIdSelector(userId: Mongo.ObjectID, eventId: Mongo.ObjectID): Mongo.Selector | null {
+
+  // always sanitize to ensure no injection is possible from params (e.g. sending {$ne: -1} as an object)
+  check(eventId, String);
+
+  // TODO hide drafts
+
+  return {eventId: eventId};
 };

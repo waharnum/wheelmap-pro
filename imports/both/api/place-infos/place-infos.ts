@@ -12,8 +12,10 @@ export interface IPlaceInfo {
     address: string;
     originalData: any;
     sourceId: Mongo.ObjectID;
-    sourceImportId: Mongo.ObjectID;
+    sourceImportId?: Mongo.ObjectID;
     accessibility?: any;
+    eventId?: Mongo.ObjectID;
+    creatorId?: Mongo.ObjectID;
   };
   geometry: {
     type: string;

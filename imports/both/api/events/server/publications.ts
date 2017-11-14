@@ -6,8 +6,9 @@ import {
   buildVisibleForPublicByEventIdSelector,
   buildVisibleForUserByEventIdSelector,
   buildVisibleForUserByOrganizationIdSelector,
-  buildVisibleForPublicByOrganizationIdSelector,
+  buildVisibleForPublicByOrganizationIdSelector, buildStatisticsVisibleForPublicByEventIdSelector,
 } from './_fields';
+import {EventStatistics} from '../events';
 
 publishFields('events.by_id.private',
   Events,
@@ -31,4 +32,10 @@ publishFields('events.by_id.public',
   Events,
   EventsPublicFields,
   buildVisibleForPublicByEventIdSelector,
+);
+
+publishFields('eventStatistics.by_eventId.public',
+  EventStatistics,
+  {},
+  buildStatisticsVisibleForPublicByEventIdSelector,
 );

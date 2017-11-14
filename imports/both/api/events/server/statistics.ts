@@ -1,53 +1,80 @@
-import {throttle} from 'lodash';
-
-import {Events} from '../events';
-import {EventParticipants} from '../../event-participants/event-participants';
-import {PlaceInfos} from '../../place-infos/place-infos';
+import {Events, EventStatistics, IEvent} from '../events';
+import {EventParticipants, IEventParticipant} from '../../event-participants/event-participants';
+import {IPlaceInfo, PlaceInfos} from '../../place-infos/place-infos';
 
 
-export interface IEventStatistics {
-  // mongo id
-  _id?: Mongo.ObjectID;
-  // fields
-  eventId: Mongo.ObjectID;
-};
-
-export const EventStatistics = new Mongo.Collection<IEventStatistics>('EventStatistics');
-
-const buildStatistics = () => {
-  console.log('building event statistics');
-
+function isParticipant(document: IEvent | IEventParticipant | IPlaceInfo): document is IEventParticipant {
+  return (document as IEventParticipant).eventId !== undefined;
 }
-const throttledStatistics = throttle(buildStatistics, 1000);
 
-let isStartup = true;
-Events.find({}, {fields: {_id: 1}}).observe({
-  added: () => {
-    if (!isStartup) {
-      throttledStatistics()
-    }
-  },
-  changed: throttledStatistics,
-  removed: throttledStatistics,
-});
+function isPlaceInfo(document: IEvent | IEventParticipant | IPlaceInfo): document is IPlaceInfo {
+  return !!((document as IPlaceInfo).properties && (document as IPlaceInfo).properties.eventId !== undefined);
+}
 
-EventParticipants.find({}, {fields: {_id: 1}}).observe({
-  added: () => {
-    if (!isStartup) {
-      throttledStatistics()
-    }
-  },
-  changed: throttledStatistics,
-  removed: throttledStatistics,
-});
+const buildStatistics = (document?: IEvent | IEventParticipant | IPlaceInfo | null) => {
+  console.log('building event statistics', document);
 
-PlaceInfos.find({}, {fields: {_id: 1}}).observe({
-  added: () => {
-    if (!isStartup) {
-      throttledStatistics()
+  if (document && document._id) {
+    let id: Mongo.ObjectID = document._id;
+    if (isParticipant(document) && document.eventId) {
+      id = document.eventId;
+    } else if (isPlaceInfo(document) && document.properties.eventId) {
+      id = document.properties.eventId;
     }
-  },
-  changed: throttledStatistics,
-  removed: throttledStatistics,
+
+    // const start = Date.now();
+    const fullParticipantCount = EventParticipants.find({eventId: id}).count();
+    // const afterParticipants = Date.now();
+    const acceptedParticipantCount = EventParticipants.find({eventId: id, invitationState: 'accepted'}).count();
+    // const afterAcceptedParticipants = Date.now();
+    const mappedPlacesCount = PlaceInfos.find({'properties.eventId': id}).count();
+    // const afterEvents = Date.now();
+    // console.log('times', afterParticipants - start, afterAcceptedParticipants - afterParticipants, afterEvents - afterAcceptedParticipants);
+
+    EventStatistics.upsert({eventId: id}, {
+      eventId: id,
+      fullParticipantCount,
+      acceptedParticipantCount,
+      mappedPlacesCount,
+    });
+  }
+}
+
+Meteor.startup(() => {
+  EventStatistics._ensureIndex({eventId: 1});
+
+  let isStartup = true;
+  Events.find({}, {fields: {_id: 1}}).observe({
+    added: (...args) => {
+      if (!isStartup) {
+        buildStatistics(...args)
+      }
+    },
+    changed: buildStatistics,
+    removed: buildStatistics,
+  });
+
+  EventParticipants.find({}, {fields: {_id: 1, 'eventId': 1}}).observe({
+    added: (...args) => {
+      if (!isStartup) {
+        buildStatistics(...args)
+      }
+    },
+    changed: buildStatistics,
+    removed: buildStatistics,
+  });
+
+  PlaceInfos.find({
+    'properties.eventId': {$exists: true},
+    'properties.creatorId': {$exists: true},
+  }, {fields: {_id: 1, 'properties.eventId': 1}}).observe({
+    added: (...args) => {
+      if (!isStartup) {
+        buildStatistics(...args)
+      }
+    },
+    changed: buildStatistics,
+    removed: buildStatistics,
+  });
+  isStartup = false;
 });
-isStartup = false;
