@@ -168,10 +168,7 @@ export default styled(ReactiveEventParticipantsPage) `
           }
           
           .participant-name {
-<<<<<<< HEAD
-=======
             min-width: 24em;
->>>>>>> Tweaked organization members / event participants, fixed some header-related issues
             padding: 0 6px;
             font-size: 16px;
           }
@@ -190,12 +187,9 @@ export default styled(ReactiveEventParticipantsPage) `
           .participant-user.glyphicon,
           .participant-state-description {
             display: inline-block;
-<<<<<<< HEAD
             padding: 4px;
-=======
             padding: 3px 5px;
             border-radius: 16px;
->>>>>>> Tweaked organization members / event participants, fixed some header-related issues
             line-height: 18px;
             color: rgba(0,0,0,0.5);
             background: ${colors.bgGreyDarker};
@@ -204,7 +198,6 @@ export default styled(ReactiveEventParticipantsPage) `
           .participant-user.glyphicon {
             top: 0;
             margin-right: 4px;
-<<<<<<< HEAD
             padding: 6px;
             text-align: center;
             border-radius: 16px;
@@ -214,13 +207,11 @@ export default styled(ReactiveEventParticipantsPage) `
             padding: 3px 6px;
             text-transform: uppercase;
             border-radius: 16px;
-=======
             text-align: center;
           }
 
           .participant-state-description {
             text-transform: uppercase;
->>>>>>> Tweaked organization members / event participants, fixed some header-related issues
           }
 
           .participant-remove.glyphicon {
@@ -232,14 +223,10 @@ export default styled(ReactiveEventParticipantsPage) `
               font-family: "iconfield-v03";
               color: ${colors.bgAnthracite};
               opacity: 0.5;
-<<<<<<< HEAD
-=======
-
               &:hover {
                 color: ${colors.errorRed};
                 opacity: 1;
               }
->>>>>>> Tweaked organization members / event participants, fixed some header-related issues
             }
           }
         }
