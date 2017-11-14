@@ -11,6 +11,11 @@ export type EventRegion = {
   bottomRight: { latitude: number; longitude: number }
 };
 
+export interface IEventStatistics {
+  fullParticipantCount: number;
+  acceptedParticipantCount: number;
+  mappedPlacesCount: number;
+}
 
 export interface IEvent extends IEventMixin {
   // mongo id
@@ -32,6 +37,7 @@ export interface IEvent extends IEventMixin {
   };
   status: EventStatusEnum;
   openFor: EventOpenForEnum;
+  statistics?: IEventStatistics;
 };
 
 export const Events = new Mongo.Collection<IEvent & IEventMixin>('Events');

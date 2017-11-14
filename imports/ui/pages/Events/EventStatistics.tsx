@@ -17,32 +17,51 @@ interface IEventStatistics {
 };
 
 class EventStatistics extends React.Component<IEventStatistics & IStyledComponent> {
+
   public render(): JSX.Element | null {
+    const event: IEvent = this.props.event;
+
     return (
       <div className={`${this.props.className} event-statistics`}>
         {/* participants */}
         <section className="participant-stats">
-          {this.props.planned ? <span className="participants-invited">99<small>{t`invited`}</small></span> : null}
-          {this.props.achieved ? <span className="participants-registered key-figure">98<small>{t`registered`}</small></span> : null}
+          {this.props.planned ?
+            <span className="participants-invited">
+              {event.statistics ? event.statistics.fullParticipantCount : 0}
+              <small>{t`invited`}</small>
+            </span> : null}
+          {this.props.achieved ?
+            <span className="participants-registered key-figure">
+              {event.statistics ? event.statistics.acceptedParticipantCount : 0}
+              <small>{t`registered`}</small>
+            </span> : null}
         </section>
         {/* long countdown */}
-        {this.props.countdown == 'full' && this.props.event ?
-          <Countdown start={moment(this.props.event.startTime)}/> : null}
+        {this.props.countdown == 'full' && event ?
+          <Countdown start={moment(event.startTime)}/> : null}
         {/* locations added */}
         <section className="location-stats">
-          {this.props.planned ? <span className="locations-planned">99<small>{t`planned`}</small></span> : null}
-          {this.props.achieved ? <span className="locations-mapped key-figure">98<small>{t`mapped`}</small></span> : null}
+          {this.props.planned ?
+            <span className="locations-planned">
+              {event.targets ? event.targets.mappedPlacesCount : 0}
+              <small>{t`planned`}</small>
+            </span> : null}
+          {this.props.achieved ?
+            <span className="locations-mapped key-figure">
+              {event.statistics ? event.statistics.mappedPlacesCount : 0}
+              <small>{t`mapped`}</small>
+            </span> : null}
         </section>
         {/* days ago / days until */}
-        {this.props.countdown == 'short' && this.props.event ?
+        {this.props.countdown == 'short' && event ?
           <section className="event-stats">
-            {(this.props.event.startTime && this.props.event.startTime > new Date()) ?
+            {(event.startTime && event.startTime > new Date()) ?
               (<span className="time-until-event key-figure">
-                          {moment(this.props.event.startTime).diff(moment(), 'days')}
+                          {moment(event.startTime).diff(moment(), 'days')}
                 <small>{t`Days Left`}</small>
                </span>) :
               (<span className="time-until-event key-figure">
-                            {moment().diff(moment(this.props.event.startTime), 'days')}
+                            {moment().diff(moment(event.startTime), 'days')}
                 <small>{t`Days Ago`}</small>
                </span>)
             }

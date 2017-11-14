@@ -11,6 +11,13 @@ Meteor.startup(() => {
   PlaceInfos._ensureIndex({'properties.originalId': 1});
   PlaceInfos._ensureIndex({'properties.sourceId': 1, 'properties.originalId': 1});
 
-  console.log('Ensuring geospatial index for PlaceInfos...');
+  // by event
+  PlaceInfos._ensureIndex({'properties.eventId': 1});
+  // by creator
+  PlaceInfos._ensureIndex({'properties.creatorId': 1});
+  // contributions for a certain event
+  PlaceInfos._ensureIndex({'properties.eventId': 1, 'properties.creatorId': 1});
+
+  // Ensuring geospatial index for PlaceInfos...
   PlaceInfos._ensureIndex({geometry: '2dsphere'});
 });

@@ -19,6 +19,7 @@ export const EventsPrivateFields = {
   targets: 1,
   status: 1,
   openFor: 1,
+  statistics: 1,
 };
 
 export const EventsPublicFields = EventsPrivateFields;
@@ -74,6 +75,8 @@ export function buildVisibleForPublicByEventIdSelector(userId: Mongo.ObjectID, e
 
   // always sanitize to ensure no injection is possible from params (e.g. sending {$ne: -1} as an object)
   check(eventId, String);
+
+  // TODO hide drafts
 
   return {_id: eventId};
 };
