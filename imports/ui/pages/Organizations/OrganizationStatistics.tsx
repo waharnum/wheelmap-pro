@@ -1,7 +1,6 @@
 import {t} from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
-import {createContainer} from 'meteor/react-meteor-data';
 
 import {colors} from '../../stylesheets/colors';
 import {IStyledComponent} from '../../components/IStyledComponent';
@@ -31,10 +30,6 @@ class OrganizationStatistics extends React.Component<IOrganizationStatistics & I
     );
   }
 }
-
-// const OrganizationStatisticsContainer = createContainer(() => {
-//   return {};
-// }, OrganizationStatistics);
 
 export default styled<IOrganizationStatistics & IStyledComponent>(OrganizationStatistics) `
 

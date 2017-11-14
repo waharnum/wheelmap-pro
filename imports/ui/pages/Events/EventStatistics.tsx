@@ -1,7 +1,6 @@
 import {t} from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
-import {createContainer} from 'meteor/react-meteor-data';
 
 import {colors} from '../../stylesheets/colors';
 import {IStyledComponent} from '../../components/IStyledComponent';
@@ -54,10 +53,6 @@ class EventStatistics extends React.Component<IEventStatistics & IStyledComponen
     );
   }
 }
-
-// const EventStatisticsContainer = createContainer(() => {
-//   return {};
-// }, EventStatistics);
 
 export default styled<IEventStatistics & IStyledComponent>(EventStatistics) `
 

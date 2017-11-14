@@ -5,7 +5,7 @@ import * as React from 'react';
 import { IStyledComponent } from './IStyledComponent';
 import { getGravatarImageUrl } from '../../both/lib/user-icon';
 import { getDisplayedNameForUser } from '../../both/lib/user-name';
-import { createContainer } from 'meteor/react-meteor-data';
+import { withTracker } from 'meteor/react-meteor-data';
 import { Accounts, STATES } from 'meteor/std:accounts-ui';
 import { T9n } from 'meteor/softwarerero:accounts-t9n';
 import { Meteor } from 'meteor/meteor';
@@ -107,14 +107,14 @@ class UserMenu extends React.Component<IUserProps & IStyledComponent, IState> {
   }
 }
 
-const UserMenuContainer = createContainer(() => {
+const UserMenuContainer = withTracker(() => {
   const handle = Meteor.subscribe('users.my.private');
   const ready = handle.ready();
   return {
     ready,
     user: ready ? Meteor.user() : null,
   };
-}, UserMenu);
+})(UserMenu);
 
 export default styled(UserMenuContainer) `
 position: relative;
