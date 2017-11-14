@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import * as React from 'react';
 import {t} from 'c-3po';
-import * as ClipboardButton from 'react-clipboard.js';
+import ClipboardButton from 'react-clipboard.js';
 import {colors} from '../../stylesheets/colors';
 
 import EventTabs from './EventTabs';
@@ -84,7 +84,8 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
             <InviteByEmailForm onSubmit={this.onInvite}/>
             {hasPublicInvitation ? this.renderPublicInvitation(link) : null}
             <h3 className="hint-important">{event.status === 'draft' ?
-              t`The event is not published yet. Invitations will be send when published.` : t`You made this event public. Invitations will be send immediatly.`}
+              t`The event is not published yet. Invitations will be send when published.` :
+              t`You made this event public. Invitations will be send immediately.`}
             </h3>
           </div>
           <div className="content-right">
