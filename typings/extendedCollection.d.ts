@@ -10,13 +10,14 @@ declare module 'meteor/mongo' {
       attachJSONSchema(schema: any): void;
 
       helpers(methods: object): void;
+
+      _name: string;
     }
   }
 }
 
 // extend existing meteor type
 declare module 'meteor/meteor' {
-  import SimpleSchema from 'simpl-schema';
   module Meteor {
     export interface User {
       roles?: string[];
