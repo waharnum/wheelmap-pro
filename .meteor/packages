@@ -4,22 +4,22 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-meteor-base@1.1.0             # Packages every Meteor app needs to have
-mobile-experience@1.0.4       # Packages for a great mobile UX
-mongo@1.2.0                  # The database Meteor supports right now
+meteor-base@1.2.0             # Packages every Meteor app needs to have
+mobile-experience@1.0.5       # Packages for a great mobile UX
+mongo@1.3.0                  # The database Meteor supports right now
 reactive-var@1.0.11           # Reactive variable for tracker
 tracker@1.1.3                 # Meteor's client-side reactive programming library
 
-standard-minifier-css@1.3.4   # CSS minifier run for production mode
-standard-minifier-js@2.1.1    # JS minifier run for production mode
+standard-minifier-css@1.3.5   # CSS minifier run for production mode
+standard-minifier-js@2.2.0    # JS minifier run for production mode
 es5-shim@4.6.15               # ECMAScript 5 compatibility for older browsers
-shell-server@0.2.4            # Server-side component of the `meteor shell` command
+shell-server@0.3.0            # Server-side component of the `meteor shell` command
 
 barbatus:typescript
 static-html
-accounts-base@1.3.2
+accounts-base@1.4.0
 alanning:roles
-accounts-password
+accounts-password@1.5.0
 reactrouter:react-router-ssr
 # orionsoft:react-meteor-data
 std:accounts-ui
@@ -37,8 +37,8 @@ xolvio:cleaner
 xolvio:backdoor
 tmeasday:acceptance-test-driver
 xolvio:email-stub
-babel-compiler
-ecmascript
-babel-runtime
+babel-compiler@6.24.7
+ecmascript@0.9.0
+babel-runtime@1.1.1
 ff:po-compiler
 softwarerero:accounts-t9n
