@@ -45,3 +45,6 @@ import '../imports/both/api/users/accounts';
 
 // general security
 import '../imports/server/security';
+
+// statistic building hooks
+import '../imports/both/api/events/server/statistics';
