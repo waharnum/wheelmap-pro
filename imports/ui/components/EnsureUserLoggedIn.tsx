@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Meteor} from 'meteor/meteor';
 import {t} from 'c-3po';
 import {browserHistory} from 'react-router';
-import {createContainer} from 'meteor/react-meteor-data';
+import {withTracker} from 'meteor/react-meteor-data';
 import {LocationDescriptor} from 'history';
 
 import {setLoginRedirect} from '../../both/api/users/accounts';
@@ -79,11 +79,11 @@ class EnsureUserLoggedIn extends React.Component<IUserProps & IEnsureUserLoggedI
   }
 }
 
-export default createContainer((props: IEnsureUserLoggedInProps) => {
+export default withTracker(() => {
   const handle = Meteor.subscribe('users.my.private');
   const ready = handle.ready();
   return {
     ready,
     user: ready ? Meteor.user() : null,
   };
-}, EnsureUserLoggedIn);
+})(EnsureUserLoggedIn);

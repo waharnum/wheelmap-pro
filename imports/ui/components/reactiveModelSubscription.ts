@@ -1,7 +1,7 @@
 import {Mongo} from 'meteor/mongo';
 import * as React from 'react';
-import {createContainer} from 'meteor/react-meteor-data';
-import {read} from 'fs';
+import {withTracker} from 'meteor/react-meteor-data';
+import {StatelessComponent} from 'react';
 
 // base type for all data fetched by subscriptions
 export interface IAsyncDataProps<T> {
@@ -29,19 +29,19 @@ type ComponentConstructor<P> = React.ComponentClass<P> | React.StatelessComponen
  */
 export function reactiveModelSubscriptionByParams<T, InP extends IAsyncDataByIdProps<T>>(reactComponent: ComponentConstructor<InP>,
                                                                                          collection: Mongo.Collection<T>,
-                                                                                         ...byIdSubscriptions: string[]): ComponentConstructor<InP> {
+                                                                                         ...byIdSubscriptions: string[]): StatelessComponent<InP> {
   return reactiveSubscriptionByParams(reactComponent, (id) => collection.findOne({_id: id}), ...byIdSubscriptions);
 };
 
 export function reactiveSubscriptionByParams<T, InP extends IAsyncDataByIdProps<T>>(reactComponent: ComponentConstructor<InP>,
                                                                                     fetchFunction: (id: Mongo.ObjectID, ...params: any[]) => T | null,
-                                                                                    ...byIdSubscriptions: string[]): ComponentConstructor<InP> {
+                                                                                    ...byIdSubscriptions: string[]): StatelessComponent<InP> {
   if (byIdSubscriptions.length === 0) {
     throw new Meteor.Error(400, 'No subscriptions specified!');
   }
 
   let firstFetchSucceeded = false;
-  return createContainer((props: InP) => {
+  return withTracker((props: InP) => {
     const {_id, ...restParams} = props.params;
     const ready = byIdSubscriptions.reduce((prev, subscription) => {
       const handle = Meteor.subscribe(subscription, _id, restParams);
@@ -53,7 +53,7 @@ export function reactiveSubscriptionByParams<T, InP extends IAsyncDataByIdProps<
     }
     const model = fetchFunction(_id, restParams);
     return {ready: firstFetchSucceeded && (ready || model), model};
-  }, reactComponent);
+  })(reactComponent);
 };
 
 /**
@@ -66,7 +66,7 @@ export function reactiveSubscriptionByParams<T, InP extends IAsyncDataByIdProps<
  */
 export function reactiveModelSubscription<T, InP extends IAsyncDataProps<T[]>>(reactComponent: ComponentConstructor<InP>,
                                                                                collection: Mongo.Collection<T>,
-                                                                               ...subscriptions: string[]): ComponentConstructor<InP> {
+                                                                               ...subscriptions: string[]): StatelessComponent<InP> {
   return reactiveSubscription(reactComponent, () => collection.find().fetch(), ...subscriptions);
 };
 
@@ -80,13 +80,13 @@ export function reactiveModelSubscription<T, InP extends IAsyncDataProps<T[]>>(r
  */
 export function reactiveSubscription<T, InP extends IAsyncDataProps<T>>(reactComponent: ComponentConstructor<InP>,
                                                                         fetchFunction: () => T,
-                                                                        ...subscriptions: string[]): ComponentConstructor<InP> {
+                                                                        ...subscriptions: string[]): StatelessComponent<InP> {
   if (subscriptions.length === 0) {
     throw new Meteor.Error(400, 'No subscriptions specified!');
   }
   let firstFetchSucceeded = false;
 
-  return createContainer((props: InP) => {
+  return withTracker((props: InP) => {
     const ready = subscriptions.reduce((prev, subscription) => {
       const handle = Meteor.subscribe(subscription);
       return handle.ready();
@@ -98,5 +98,5 @@ export function reactiveSubscription<T, InP extends IAsyncDataProps<T>>(reactCom
 
     const model = fetchFunction();
     return {ready: firstFetchSucceeded && (ready || model), model};
-  }, reactComponent);
+  })(reactComponent);
 };
