@@ -89,6 +89,7 @@ const OrganizeOrganizationsPage = (props: IStyledComponent & IAsyncDataByIdProps
     <OrganizationAdminHeader organization={props.model.organization}/>
     <div className="content-area scrollable">
       <OrganizationStatistics
+        events={props.model.events}
         action={(
           <section className="new-event">
             <Button to="/events/create" className="btn-primary">{t`Create event`}</Button>
