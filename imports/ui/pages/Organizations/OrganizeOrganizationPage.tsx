@@ -144,6 +144,7 @@ const StyledReactiveOrganizeOrganizationsPage = styled(ReactiveOrganizeOrganizat
       bottom: 0;
       right: 0px;
       z-index: 5000;
+      pointer-events: none;
         
       section {
         transform: rotate(-45deg);
