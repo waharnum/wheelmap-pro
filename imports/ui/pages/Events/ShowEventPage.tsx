@@ -1,23 +1,26 @@
-import * as React from 'react';
+import {t} from 'c-3po';
 import * as L from 'leaflet';
 import styled from 'styled-components';
+import {toast} from 'react-toastify';
+import * as React from 'react';
 import * as moment from 'moment';
-import {t} from 'c-3po';
+import ClipboardButton from 'react-clipboard.js';
+import {browserHistory} from 'react-router';
 
-import MapLayout from '../../layouts/MapLayout';
 import Map from '../../components/Map';
 import Button from '../../components/Button';
+import {colors} from '../../stylesheets/colors';
+import MapLayout from '../../layouts/MapLayout';
+import {regionToBbox} from '../../../both/lib/geo-bounding-box';
+import {defaultRegion} from './EventBaseForm';
+import EventStatistics from './EventStatistics';
+import EventMiniMarker from './EventMiniMarker';
+import {IOrganization} from '../../../both/api/organizations/organizations';
 import {IEvent, Events} from '../../../both/api/events/events';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
-import {IOrganization} from '../../../both/api/organizations/organizations';
 import {default as PublicHeader, HeaderTitle} from '../../components/PublicHeader';
 import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
-import {colors} from '../../stylesheets/colors';
-import EventStatistics from './EventStatistics';
-import {regionToBbox} from '../../../both/lib/geo-bounding-box';
-import {defaultRegion} from './EventBaseForm';
-import EventMiniMarker from './EventMiniMarker';
 
 interface IPageModel {
   organization: IOrganization;
@@ -57,7 +60,13 @@ const OngoingEventMapContent = () => (
 );
 
 const HeaderShareAction = () => (
-  <Button className="btn-primary" to="">{t`Share…`}</Button>
+  <ClipboardButton className="btn btn-dark"
+                   data-clipboard-text={window.location.href}
+                   onSuccess={() => {
+                     toast.success(t`Link copied to clipboard`);
+                   }}>
+    {t`Share…`}
+  </ClipboardButton>
 );
 
 const FinishedEventMapContent = (props: { event: IEvent }) => {
@@ -109,35 +118,36 @@ const FinishedEventMapContent = (props: { event: IEvent }) => {
 }
 
 const ShowEventPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent) => {
-  const event = props.model.event;
-  const organization = props.model.organization;
-  const bbox = regionToBbox(event.region || defaultRegion);
+    const event = props.model.event;
+    const organization = props.model.organization;
+    const bbox = regionToBbox(event.region || defaultRegion);
 
-  return (
-    <MapLayout className={props.className}>
-      <PublicEventHeader event={event} organization={organization}/>
-      {event.status == 'ongoing' ? <OngoingEventHeader event={event}/> : null}
-      {event.status == 'planned' ? <OngoingEventHeader event={event}/> : null}
-      <div className="content-area">
-        <Map
-          bbox={bbox}>
-          <EventMiniMarker
-            event={event}
-            additionalLeafletLayers={[L.rectangle(bbox, {
-              className: 'event-bounds-polygon',
-              interactive: false,
-            })]}
-          />
-        </Map>
-        <div className="map-overlay">
-          {event.status == 'completed' ? <FinishedEventMapContent event={event}/> : null}
-          {event.status == 'ongoing' ? <OngoingEventMapContent/> : null}
-          {event.status == 'planned' ? <OngoingEventMapContent/> : null}
+    return (
+      <MapLayout className={props.className}>
+        <PublicEventHeader event={event} organization={organization}/>
+        {event.status == 'ongoing' ? <OngoingEventHeader event={event}/> : null}
+        {event.status == 'planned' ? <OngoingEventHeader event={event}/> : null}
+        <div className="content-area">
+          <Map
+            bbox={bbox}>
+            <EventMiniMarker
+              event={event}
+              additionalLeafletLayers={[L.rectangle(bbox, {
+                className: 'event-bounds-polygon',
+                interactive: false,
+              })]}
+            />
+          </Map>
+          <div className="map-overlay">
+            {event.status == 'completed' ? <FinishedEventMapContent event={event}/> : null}
+            {event.status == 'ongoing' ? <OngoingEventMapContent/> : null}
+            {event.status == 'planned' ? <OngoingEventMapContent/> : null}
+          </div>
         </div>
-      </div>
-    </MapLayout>
-  );
-};
+      </MapLayout>
+    );
+  }
+;
 
 const ReactiveShowEventPage = reactiveSubscriptionByParams(
   wrapDataComponent<IPageModel,
