@@ -57,8 +57,8 @@ const EventListEntry = (props: { model: IEvent }) => {
                          achieved={true}
                          action={<Button to={`/events/${event._id}/organize`}>{t`Show details`}</Button>}/>
       </div>
-      <div className="event-status corner-ribbon">
-        {event.status}
+      <div className="corner-ribbon">
+        <section>{event.status}</section>
       </div>
       <Map
         className="event-mini-map"
@@ -124,8 +124,6 @@ const StyledReactiveOrganizeOrganizationsPage = styled(ReactiveOrganizeOrganizat
     padding-right: 0; /* to have a marginless stats bar */
   }
 
-  
-
   /* -------------------------- event list styling -----------------------------------*/
 
   .event-list-entry {
@@ -138,20 +136,47 @@ const StyledReactiveOrganizeOrganizationsPage = styled(ReactiveOrganizeOrganizat
     display: flex;    
     box-sizing: content-box;
 
-    .event-status {
-      font-size: 16px;
-      font-weight: 400;
-      text-transform: uppercase;
-      color: white;
-      background-color: ${colors.activeOrange};
-      
-      &.corner-ribbon {
+    .corner-ribbon {
+      position: absolute;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      bottom: 0;
+      right: 0px;
+      z-index: 5000;
+        
+      section {
+        transform: rotate(-45deg);
+        background-color: #CCC;
+        padding: 5px 5px;
+        bottom: 140px;
+        right: -70px;
         position: absolute;
-        padding: 2px 20px;
-        bottom: 20px;
-        right: 0px;
-        z-index: 5;
+        transform-origin: 100% 100%;
+        font-size: 16px;
+        font-weight: 400;
+        text-transform: uppercase;
+        color: white;
+        text-align: center;
+        width: 300px;
+        box-shadow: 0 0 2px 0 ${colors.boxShadow};
       }
+    }
+    
+    &.event-status-planned .corner-ribbon section {
+      background-color: ${colors.ctaGreen} 
+    }
+    &.event-status-ongoing .corner-ribbon section {
+      background-color: ${colors.activeOrange} 
+    }
+    &.event-status-completed .corner-ribbon section {
+      background-color: ${colors.linkBlueDarker} 
+    }
+    &.event-status-draft .corner-ribbon section {
+      background-color: ${colors.ctaDisabledGrey} 
+    }
+    &.event-status-cancelled .corner-ribbon section {
+      background-color: ${colors.errorRed}     
     }
 
     .event-body {
