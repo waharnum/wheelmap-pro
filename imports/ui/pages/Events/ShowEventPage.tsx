@@ -61,6 +61,11 @@ const HeaderShareAction = () => (
 );
 
 const FinishedEventMapContent = (props: { event: IEvent }) => {
+  const barGraphAchieved =
+    props.event.statistics && props.event.targets &&
+    props.event.targets.mappedPlacesCount && props.event.targets.mappedPlacesCount > 0 ?
+      Math.floor(100 * props.event.statistics.mappedPlacesCount / props.event.targets.mappedPlacesCount) : null;
+
   return (
     <div className="event-stats">
       <div className="event-picture-container">
@@ -91,11 +96,13 @@ const FinishedEventMapContent = (props: { event: IEvent }) => {
             <small>{t`Achieved`}</small>
           </section>
         </div>
-        <div className="places-graph">
-          <section style={{width: '60%'}} className="line-graph-achieved">{60}%</section>
-          <section style={{width: '20%'}} className="line-graph-failed">{20}%</section>
-          <section style={{width: '20%'}} className="line-graph-remaining">{20}%</section>
-        </div>
+        {barGraphAchieved !== null ?
+          <div className="places-graph">
+            <section style={{width: t`${barGraphAchieved}%`}} className="bar-graph-achieved"/>
+            <section style={{width: t`${100 - barGraphAchieved}%`}} className="bar-graph-planned"/>
+          </div>
+          : null
+        }
       </div>
     </div>
   );
@@ -205,6 +212,8 @@ export default styled(ReactiveShowEventPage) `
  
       .places-graph {
         margin-top: 4px;
+        border: 1px black solid;
+        line-height: 0;
         
         section {
           width: 30%;
@@ -216,17 +225,15 @@ export default styled(ReactiveShowEventPage) `
           font-weight: 400;
         }
         
-        .line-graph-achieved {
+        .bar-graph-achieved {
           background-color: ${colors.ctaGreen};
           color: white;
+          padding: 0;
         }
-        .line-graph-failed {
+        .bar-graph-remaining {
           background-color: ${colors.errorRed};
           color: white;
-        }
-        .line-graph-remaining {
-          background-color: lightgrey;
-          color: black;
+          padding: 0;
         }
       }
       
