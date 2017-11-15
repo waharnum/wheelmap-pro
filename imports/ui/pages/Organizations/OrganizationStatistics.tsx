@@ -66,7 +66,7 @@ class OrganizationStatistics extends React.Component<IOrganizationStatistics & I
         previousValue.totalRegisteredParticipantsCount += event.statistics.acceptedParticipantCount;
         previousValue.totalMappedPlacesCount += event.statistics.mappedPlacesCount;
       }
-      if (event.targets) {
+      if (event.targets && event.targets.mappedPlacesCount) {
         previousValue.totalPlannedPlacesCount += event.targets.mappedPlacesCount;
       }
       return previousValue;
