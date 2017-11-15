@@ -324,6 +324,12 @@ form {
     background-color: $cta-disabled-grey;
   }
 
+  .panel-heading.has-error::before,
+  .panel-danger .panel-body div::before,
+  .panel-heading.has-error .badge.pull-right:before { 
+    display: none !important; /*remove arrows in error state */
+  }
+
   .panel-danger { /* box with error feedback*/
     color: white;
     background-color: $bg-anthracite;
@@ -332,7 +338,6 @@ form {
 
     .panel-body div {
       position: relative;
-      padding-left: 20px;
 
       &:before {
         position: absolute;
@@ -343,5 +348,20 @@ form {
         font-size: 14px;
       }
     }
+
+    .panel-heading.has-error {
+      label {
+        color: $error-red !important;
+      }
+
+      span.help-block {
+        display: none;
+      }
+    }
   }
+}
+
+.error-box.alert.alert-danger {
+  color: $error-red !important;
+  font-weight: 400;
 }

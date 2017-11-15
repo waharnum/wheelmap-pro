@@ -42,6 +42,10 @@ export default styled(ScrollableLayout) `
 
     .content-left {
       margin-right: 24px;
+
+      .alert{
+        margin-top: 10px;
+      }
     }
   
     .content-right {
