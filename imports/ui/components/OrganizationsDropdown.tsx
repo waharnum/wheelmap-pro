@@ -1,12 +1,13 @@
-import { Link } from 'react-router';
+import {Link} from 'react-router';
 import styled from 'styled-components';
-import { colors } from '../stylesheets/colors';
+import {colors} from '../stylesheets/colors';
 import * as React from 'react';
-import { wrapDataComponent } from './AsyncDataComponent';
+import {t} from 'c-3po';
+import {wrapDataComponent} from './AsyncDataComponent';
 
-import { IStyledComponent } from './IStyledComponent';
-import { IOrganization, Organizations } from '../../both/api/organizations/organizations';
-import { IAsyncDataProps, reactiveSubscription } from './reactiveModelSubscription';
+import {IStyledComponent} from './IStyledComponent';
+import {IOrganization, Organizations} from '../../both/api/organizations/organizations';
+import {IAsyncDataProps, reactiveSubscription} from './reactiveModelSubscription';
 
 interface IListEntryModelProps {
   model: IOrganization;
@@ -23,7 +24,7 @@ const OrganizationEntry = (props: IListEntryModelProps) => {
 
 interface IOrganizationDropdownProps {
   children: React.ReactNode;
-  current: IOrganization;
+  current?: IOrganization;
 }
 
 type OrganizationDropdownInternalType = IStyledComponent & IAsyncDataProps<IOrganization[]>;
@@ -32,15 +33,25 @@ type OrganizationDropdownInternalType = IStyledComponent & IAsyncDataProps<IOrga
 const OrganizationDropdown = (props: OrganizationDropdownInternalType & IOrganizationDropdownProps) => {
   return (
     <div className={props.className + ' dropdown'}>
-      <div className="dropdown-toggle title-bar" id="OrganizationDropdown" data-toggle="dropdown"
-        aria-haspopup="true" aria-expanded="true">
-        {props.current.logo ?
-          <div className="organization-logo" style={{ backgroundImage: `url(${props.current.logo})` }} /> : null}
-        <h1>{props.current.name}</h1>
-      </div>
+      {props.current ?
+        (<div className="dropdown-toggle title-bar" id="OrganizationDropdown" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="true">
+          {props.current.logo ?
+            <div className="organization-logo" style={{backgroundImage: `url(${props.current.logo})`}}/> : null}
+          <h1>{props.current.name}</h1>
+        </div>)
+        :
+        (<div className="dropdown-toggle title-bar" id="OrganizationDropdown" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="true">
+          <a className="logo">
+            <h1>{t`wheelmap.pro`}</h1>
+          </a>
+        </div>)
+      }
       <ul className="dropdown-menu" aria-labelledby="OrganizationDropdown">
         {props.model.map((m) =>
-          <OrganizationEntry key={String(m._id)} model={m} active={props.current._id === m._id} />)}
+          <OrganizationEntry key={String(m._id)} model={m}
+                             active={props.current ? props.current._id === m._id : false}/>)}
         {props.children}
       </ul>
     </div>
@@ -51,7 +62,7 @@ const ReactiveOrganizationDropdown = reactiveSubscription(
   wrapDataComponent<IOrganization[], IOrganizationDropdownProps & IAsyncDataProps<IOrganization[] | null>,
     IOrganizationDropdownProps & IAsyncDataProps<IOrganization[]>>(OrganizationDropdown),
   // TODO: align this filter to only display my organizations
-  () => Organizations.find({}, { sort: { name: 1 } }).fetch(),
+  () => Organizations.find({}, {sort: {name: 1}}).fetch(),
   'organizations.my.private');
 
 // hide all unneeded internal props
