@@ -164,13 +164,13 @@ const StyledReactiveOrganizeOrganizationsPage = styled(ReactiveOrganizeOrganizat
     }
     
     &.event-status-planned .corner-ribbon section {
-      background-color: ${colors.ctaGreen} 
+      background-color: ${colors.linkBlue} 
     }
     &.event-status-ongoing .corner-ribbon section {
       background-color: ${colors.activeOrange} 
     }
     &.event-status-completed .corner-ribbon section {
-      background-color: ${colors.linkBlueDarker} 
+      background-color: ${colors.ctaGreen} 
     }
     &.event-status-draft .corner-ribbon section {
       background-color: ${colors.ctaDisabledGrey} 
