@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {Link} from 'react-router';
+import { Link } from 'react-router';
 import styled from 'styled-components';
-import {t} from 'c-3po';
+import { t } from 'c-3po';
 
-import {IStyledComponent} from './IStyledComponent';
-import {LocationDescriptor} from 'history';
+import { IStyledComponent } from './IStyledComponent';
+import { LocationDescriptor } from 'history';
 
 // TODO: Needs binding for current user
 
@@ -41,7 +41,7 @@ export default styled(PreviewToggle) `
     content: " ";
     width: 24px;
     height: 24px;
-    top: 6px;
+    top: 8px;
     left: -18px;
     background-image: url(/images/icon-public-view@2x.png); /* FIXME: to be moved to admin-area */
     background-position: center center;
