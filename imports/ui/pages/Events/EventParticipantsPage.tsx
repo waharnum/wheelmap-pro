@@ -1,21 +1,21 @@
 import styled from 'styled-components';
 import * as React from 'react';
-import {t} from 'c-3po';
+import { t } from 'c-3po';
 import ClipboardButton from 'react-clipboard.js';
-import {colors} from '../../stylesheets/colors';
+import { colors } from '../../stylesheets/colors';
 
 import EventTabs from './EventTabs';
-import {IOrganization} from '../../../both/api/organizations/organizations';
+import { IOrganization } from '../../../both/api/organizations/organizations';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
-import {Hint, HintBox} from '../../components/HintBox';
-import {IEvent, Events} from '../../../both/api/events/events';
-import {IStyledComponent} from '../../components/IStyledComponent';
-import {wrapDataComponent} from '../../components/AsyncDataComponent';
-import AdminHeader, {HeaderTitle} from '../../components/AdminHeader';
-import {IEventParticipant} from '../../../both/api/event-participants/event-participants';
-import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
+import { Hint, HintBox } from '../../components/HintBox';
+import { IEvent, Events } from '../../../both/api/events/events';
+import { IStyledComponent } from '../../components/IStyledComponent';
+import { wrapDataComponent } from '../../components/AsyncDataComponent';
+import AdminHeader, { HeaderTitle } from '../../components/AdminHeader';
+import { IEventParticipant } from '../../../both/api/event-participants/event-participants';
+import { reactiveSubscriptionByParams, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
 import InviteByEmailForm from '../../components/InviteByEmailForm';
-import {getLabelForInvitationState} from '../../../both/api/event-participants/invitationStates';
+import { getLabelForInvitationState } from '../../../both/api/event-participants/invitationStates';
 
 
 interface IPageModel {
@@ -34,7 +34,7 @@ const removeParticipant = (id: Mongo.ObjectID | undefined) => {
 const EventParticipantEntry = (props: { model: IEventParticipant }) => (
   <li className="participant-entry">
     <section className="participant-info">
-      <div className="participant-icon" dangerouslySetInnerHTML={{__html: props.model.getIconHTML()}}/>
+      <div className="participant-icon" dangerouslySetInnerHTML={{ __html: props.model.getIconHTML() }} />
       <div className="participant-name">{props.model.getUserName()}</div>
     </section>
     <section className="participant-state">
@@ -71,22 +71,22 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
               prefixLink={`/organizations/${organization._id}/organize`}
             />
           )}
-          tabs={<EventTabs id={event._id}/>}
+          tabs={<EventTabs id={event._id} />}
           publicLink={`/events/${event._id}`}
         />
         <div className="content-area scrollable hsplit">
           <div className="content-left">
-            <h2>{t`Invite Participants to event`}</h2>
+            <h2>{t`Invite single participants to event`}</h2>
             <ol>
               {participants.length === 0 ? <section>{t`No one invited yet.`}</section> : null}
-              {participants.map((p) => (<EventParticipantEntry key={String(p._id)} model={p}/>))}
+              {participants.map((p) => (<EventParticipantEntry key={String(p._id)} model={p} />))}
             </ol>
-            <InviteByEmailForm onSubmit={this.onInvite}/>
-            {hasPublicInvitation ? this.renderPublicInvitation(link) : null}
+            <InviteByEmailForm onSubmit={this.onInvite} />
             <h3 className="hint-important">{event.status === 'draft' ?
               t`The event is not published yet. Invitations will be send when published.` :
               t`You made this event public. Invitations will be send immediately.`}
             </h3>
+            {hasPublicInvitation ? this.renderPublicInvitation(link) : null}
           </div>
           <div className="content-right">
             <HintBox>
@@ -105,12 +105,12 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
 
   private renderPublicInvitation = (link: string): JSX.Element => {
     return (
-      <section><h2>{t`Share a link`}</h2>
+      <section className='share-link'><h2>{t`Share an invitation link`}</h2>
         <div>
           {t`You can also share the following link to invite people, e.g. via Social Media or handouts.`}
           <form>
             <div className="field form-group copy-to-clipboard">
-              <input className="form-group" type="text" id="public-link" value={link} disabled={true}/>
+              <input className="form-group" type="text" id="public-link" value={link} disabled={true} />
               <ClipboardButton className="btn btn-dark" data-clipboard-text={link}>
                 {t`Copy to clipboard`}
               </ClipboardButton>
@@ -122,7 +122,7 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
   }
 
   private onInvite = (emails: string[],
-                      callback: (error: Meteor.Error | null, result: any) => void) => {
+    callback: (error: Meteor.Error | null, result: any) => void) => {
     Meteor.call('eventParticipants.invite', {
       invitationEmailAddresses: emails,
       eventId: this.props.model.event._id,
@@ -138,7 +138,7 @@ const ReactiveEventParticipantsPage = reactiveSubscriptionByParams(
     const event = Events.findOne(id);
     const participants = event ? event.getParticipants() : [];
     const organization = event ? event.getOrganization() : null;
-    return event && organization ? {event, participants, organization} : null;
+    return event && organization ? { event, participants, organization } : null;
   },
   'events.by_id.private', 'eventParticipants.by_eventId.private', 'organizations.by_eventId.private', 'users.private');
 
@@ -187,27 +187,24 @@ export default styled(ReactiveEventParticipantsPage) `
           .participant-user.glyphicon,
           .participant-state-description {
             display: inline-block;
-            padding: 4px;
             padding: 3px 5px;
             border-radius: 16px;
             line-height: 18px;
+            text-align: center;
             color: rgba(0,0,0,0.5);
             background: ${colors.bgGreyDarker};
+            border-radius: 16px;
           }
 
           .participant-user.glyphicon {
             top: 0;
             margin-right: 4px;
-            padding: 6px;
-            text-align: center;
-            border-radius: 16px;
+            padding: 6px 8px;
           }
 
           .participant-state-description {
-            padding: 3px 6px;
+            padding: 6px 8px;
             text-transform: uppercase;
-            border-radius: 16px;
-            text-align: center;
           }
 
           .participant-state-description {
@@ -240,29 +237,52 @@ export default styled(ReactiveEventParticipantsPage) `
   }
 
   h3.hint-important {
+    color: ${colors.darkGreen};
     font-size: 16px;
-    font-weight: 300;
-  }
+    font-weight: 400;
+    padding-left: 8px;
 
-  .copy-to-clipboard {
-    display: flex;
-
-    button {    
-      padding-left: 30px;
-      padding-right: 10px;
+    &:before {
       position: relative;
-
-      &::before {
-        position: absolute;
-        left: 12px;
-        top: 14px;
-        color: #767e8a;
-        font-family: "iconfield-v03", serif;
-        content: '';
-      }
+      left: 0;
+      top: 1px;
+      padding-right: 8px;
+      content: '';
+      color: ${colors.ctaGreen};
+      font-family: 'iconfield-v03';
+      font-size: 21px;
     }
   }
 
+  section.share-link {
+    margin-top: 40px;
+
+    .copy-to-clipboard {
+      display: flex;
+      width: 100%;
+
+      input {
+        margin: 0;
+      }
+
+      button {
+        margin-left: 8px;
+        padding-left: 8px;
+        position: relative;
+        color: ${colors.linkBlue};
+        background-color: white;
+
+        &::before {
+          left: 0px;
+          top: 0px;
+          padding-right: 10px;
+          content: '';
+          font-family: "iconfield-v03", serif;
+        }
+      }
+    }
+  }
+}
   
 
 `;
