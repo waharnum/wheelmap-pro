@@ -91,11 +91,12 @@ class ShowOrganizationPage extends React.Component<PageProps> {
             onPlaceDetailsChanged={(options) => {
               this.setState({placeDetailsShown: options.visible})
             }}>
-            {events.map((event) => {
+            {events.map((event: IEvent) => {
               if (event._id == selectedEvent._id) {
                 return (<EventMapPopup event={event}
                                        key={String(event._id)}
-                                       primaryAction={t`Join Us!`}
+                                       primaryAction={event.status == 'ongoing' || event.status == 'planned' ?
+                                         t`Join Event` : t`View Event`}
                                        onPrimaryAction={() => {
                                          browserHistory.push(`/events/${event._id}`)
                                        }}
