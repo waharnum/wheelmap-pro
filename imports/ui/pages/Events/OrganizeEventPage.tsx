@@ -59,7 +59,7 @@ const determineCssClassesFromState = (state: IOrganizeEventPageState) => {
           createEvent: 'finished',
           inviteParticipants: 'finished',
           organizerTips: 'finished',
-          startEvent: 'finished-last',
+          startEvent: 'active',
           setEventPicture: 'disabled',
           shareResults: 'disabled',
         };
@@ -156,6 +156,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
         return sum;
       },
       {invited: 0, registered: 0});
+
     this.setState({
       event: props.model.event,
       organization: props.model.organization,
@@ -262,7 +263,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
                   <div className="step-status step-active">
                     <div className="step-information">
                       <h3>{t`Mapping event published`}</h3>
-                      <p>{t`Your event is now online. It will be closed the day after. Be careful when canceling your event:
+                      <p>{t`Your event is now online. It will be closed the day after it finishes. Be careful when cancelling your event:
                       you can not undo this.`}</p>
                     </div>
                     <div className="publishing-actions">
@@ -467,6 +468,7 @@ ol.event-timeline {
   /* ---------- display logic for steps with multiple sub-states  --------------*/
 
   li.todo,
+  li.active,
   li.disabled {
     .step-completed,
     .step-active {
@@ -479,19 +481,29 @@ ol.event-timeline {
 
   li.todo {
     .step-active,
-      .step-completed {
-        display: none;
-      }
-     .step-todo {
+    .step-completed {
+      display: none;
+    }
+   .step-todo {
+      display: flex;
+    }
+  }
+  
+  li.active {
+    .step-todo,
+    .step-completed {
+      display: none;
+    }
+   .step-active {
       display: flex;
     }
   }
 
   li.finished, li.finished-last {
     .step-todo,
-      .step-active {
-        display: none;
-      }
+    .step-active {
+      display: none;
+    }
     .step-completed {
       display: flex;
     }
@@ -523,6 +535,7 @@ ol.event-timeline {
 
   li.disabled,
   li.todo,
+  li.active,
   li.finished {
     .notification-completed {
       display: none;
@@ -530,6 +543,7 @@ ol.event-timeline {
   }
 
   li.todo,
+  li.active,
   li.finished-last,
   li.finished {
     background-color: white;
@@ -554,9 +568,22 @@ ol.event-timeline {
       display: none;
     }
   }
+  
+  li.enabled {
+    border: 1px solid ${colors.shadowGrey};
+    background-color: ${colors.bgGrey};
+    
+    &:before {
+      border: 1px solid ${colors.shadowGrey};
+      background-color: ${colors.bgGrey};
+    }
 
-  li.todo {
+    .notification-completed {
+      display: none;
+    }
+  }
 
+  li.todo, li.active {
     &:before,
     .step-status:before,
     h3 {
@@ -576,28 +603,24 @@ ol.event-timeline {
 
   li.finished,
   li.finished-last {
-
     &:before { /* checkmark */
       content: "";
     }
   }
 
   li.finished {
-    
     &:before { /* checkmark */
       color: ${colors.doneGreen};
     }
   }
 
   li.finished-last {
-  
-    &: before { /* checkmark */
-            color: white;
+    &:before { /* checkmark */
+      color: white;
       background-color: ${colors.doneGreen};
     }
 
     .notification-completed {
-            display: block;
       margin: 0;
       padding: 13px 20px 13px 20px;
       border-radius: 4px 4px 0 0;
