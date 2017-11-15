@@ -1,25 +1,20 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Language: en_DEV\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: imports/both/api/categories/server/csv-methods.js:11
 #: imports/both/api/event-participants/server/methods.js:19
 #: imports/both/api/event-participants/server/methods.js:54
 #: imports/both/api/event-participants/server/methods.js:70
 #: imports/both/api/event-participants/server/methods.js:83
-#: imports/both/api/organization-members/server/methods.js:14
-#: imports/both/api/organization-members/server/methods.js:31
-#: imports/both/api/organization-members/server/methods.js:43
-#: imports/both/api/sources/server/privileges.js:83
-#: imports/both/api/sources/server/privileges.js:98
+#: imports/both/api/organization-members/server/methods.js:16
+#: imports/both/api/organization-members/server/methods.js:35
+#: imports/both/api/organization-members/server/methods.js:66
+#: imports/both/api/organization-members/server/methods.js:80
+#: imports/both/api/sources/server/privileges.js:55
+#: imports/both/api/sources/server/privileges.js:70
 #: imports/both/api/users/server/methods.js:49
 #: imports/both/api/users/server/methods.js:60
 #: imports/both/api/users/server/methods.js:68
@@ -29,16 +24,41 @@ msgid "Please log in first."
 msgstr "Please log in first."
 
 #: imports/both/api/event-participants/server/methods.js:96
-#: imports/both/api/organization-members/server/methods.js:58
-#: imports/both/api/sources/server/privileges.js:90
+#: imports/both/api/organization-members/server/methods.js:50
+#: imports/both/api/organization-members/server/methods.js:95
+#: imports/both/api/sources/server/privileges.js:62
 #: imports/server/stub-data.js:290
 msgid "Not authorized."
 msgstr "Not authorized."
+
+#: imports/both/lib/invite-schema.js:11
+msgid "Email Addresses"
+msgstr "Email Addresses"
+
+#: imports/both/lib/invite-schema.js:16
+msgid "Email Address"
+msgstr "Email Address"
+
+#: imports/both/lib/invite-schema.js:18
+msgid "e.g. lisa@example.com"
+msgstr "e.g. lisa@example.com"
 
 #: imports/both/api/categories/server/csv-methods.js:14
 #: imports/server/i18n/rpc-method.js:45
 msgid "You are not authorized to import categories."
 msgstr "You are not authorized to import categories."
+
+#: imports/ui/components/AsyncDataComponent.js:7
+msgid "Missing data"
+msgstr "Missing data"
+
+#: imports/ui/components/EnsureUserLoggedIn.js:22
+msgid "Loading..."
+msgstr "Loading..."
+
+#: imports/ui/components/InviteByEmailForm.js:41
+msgid "Send invites"
+msgstr "Send invites"
 
 #: imports/ui/components/PreviewToggle.js:16
 msgid "Edit view"
@@ -48,37 +68,644 @@ msgstr "Edit view"
 msgid "Public View"
 msgstr "Public View"
 
+#: imports/ui/components/UserMenu.js:24
+msgid "Claim your Account"
+msgstr "Claim your Account"
+
+#: imports/ui/components/UserMenu.js:25
+msgid "Claim Account"
+msgstr "Claim Account"
+
+#: imports/both/api/event-participants/invitationStates.js:3
+msgid "Draft"
+msgstr "Draft"
+
+#: imports/both/api/event-participants/invitationStates.js:4
+#: imports/both/api/organization-members/invitationStates.js:3
+msgid "Queued for sending"
+msgstr "Queued for sending"
+
+#: imports/both/api/event-participants/invitationStates.js:5
+#: imports/both/api/organization-members/invitationStates.js:4
+msgid "Sent"
+msgstr "Sent"
+
+#: imports/both/api/event-participants/invitationStates.js:6
+#: imports/both/api/organization-members/invitationStates.js:5
+msgid "Accepted"
+msgstr "Accepted"
+
+#: imports/both/api/event-participants/invitationStates.js:7
+#: imports/both/api/organization-members/invitationStates.js:6
+msgid "Error Occurred"
+msgstr "Error Occurred"
+
+#: imports/both/api/event-participants/invitationStates.js:8
+msgid "Old guest"
+msgstr "Old guest"
+
+#: imports/both/api/event-participants/invitationStates.js:14
+#: imports/both/api/organization-members/invitationStates.js:12
+msgid "Unknown State"
+msgstr "Unknown State"
+
+#: imports/both/api/events/schema.js:12
+#: imports/both/api/organizations/schema.js:8
+#: imports/both/api/sources/schema.js:11
+msgid "Name"
+msgstr "Name"
+
+#: imports/both/api/events/schema.js:16
+msgid "e.g. Event title"
+msgstr "e.g. Event title"
+
+#: imports/both/api/events/schema.js:20
+#: imports/both/api/organizations/schema.js:16
+msgid "Description (optional)"
+msgstr "Description (optional)"
+
+#: imports/both/api/events/schema.js:25
+msgid "e.g. Healthcare places in…"
+msgstr "e.g. Healthcare places in…"
+
+#: imports/both/api/events/schema.js:29
+msgid "Region name"
+msgstr "Region name"
+
+#: imports/both/api/events/schema.js:34
+msgid "e.g. Berlin Alexanderplatz"
+msgstr "e.g. Berlin Alexanderplatz"
+
+#: imports/both/api/events/schema.js:57
+msgid "Start Date and Time"
+msgstr "Start Date and Time"
+
+#: imports/both/api/events/schema.js:62
+msgid "End Date and Time"
+msgstr "End Date and Time"
+
+#: imports/both/api/events/schema.js:67
+msgid "Website URL"
+msgstr "Website URL"
+
+#: imports/both/api/events/schema.js:73
+#: imports/both/api/organizations/schema.js:67
+msgid "e.g. http://www.example.com"
+msgstr "e.g. http://www.example.com"
+
+#: imports/both/api/events/schema.js:77
+msgid "URL to a picture of the event"
+msgstr "URL to a picture of the event"
+
+#: imports/both/api/events/schema.js:83
+msgid "e.g. http://www.example.com/photo.jpg"
+msgstr "e.g. http://www.example.com/photo.jpg"
+
+#: imports/both/api/events/schema.js:87
+msgid "Invitation token"
+msgstr "Invitation token"
+
+#: imports/both/api/events/schema.js:93
+msgid "Verify GPS position of edits"
+msgstr "Verify GPS position of edits"
+
+#: imports/both/api/events/schema.js:102
+msgid "Goal for mapped places"
+msgstr "Goal for mapped places"
+
+#: imports/both/api/events/schema.js:111
+msgid "Open for…"
+msgstr "Open for…"
+
+#: imports/both/api/events/schema.js:116
+msgid "Invite Only"
+msgstr "Invite Only"
+
+#: imports/both/api/events/schema.js:117
+msgid "Everybody"
+msgstr "Everybody"
+
+#: imports/both/api/licenses/licenses.js:16
+msgid "Official english title"
+msgstr "Official english title"
+
+#: imports/both/api/licenses/licenses.js:21
+msgid "Short name (optional)"
+msgstr "Short name (optional)"
+
+#: imports/both/api/licenses/licenses.js:27
+msgid "Link to descriptive website (optional)"
+msgstr "Link to descriptive website (optional)"
+
+#: imports/both/api/licenses/licenses.js:34
+msgid "Link to full legal text (optional)"
+msgstr "Link to full legal text (optional)"
+
+#: imports/both/api/licenses/licenses.js:41
+msgid "Plaintext summary (optional)"
+msgstr "Plaintext summary (optional)"
+
+#: imports/both/api/licenses/licenses.js:47
+msgid "Considered as..."
+msgstr "Considered as..."
+
+#: imports/both/api/licenses/licenses.js:50
+msgid "Public Domain (CC0)"
+msgstr "Public Domain (CC0)"
+
+#: imports/both/api/licenses/licenses.js:51
+msgid "Free, with Attribution required (CCBY)"
+msgstr "Free, with Attribution required (CCBY)"
+
+#: imports/both/api/licenses/licenses.js:52
+msgid "Share Alike (CCSA)"
+msgstr "Share Alike (CCSA)"
+
+#: imports/both/api/licenses/licenses.js:53
+msgid "Restricted / Proprietary (©)"
+msgstr "Restricted / Proprietary (©)"
+
+#: imports/both/api/organization-members/roles.js:3
+msgid "Manager"
+msgstr "Manager"
+
+#: imports/both/api/organization-members/roles.js:4
+msgid "Developer"
+msgstr "Developer"
+
+#: imports/both/api/organization-members/roles.js:5
+msgid "Founder'"
+msgstr "Founder'"
+
+#: imports/both/api/organization-members/roles.js:6
+msgid "Volunteer"
+msgstr "Volunteer"
+
+#: imports/both/api/organization-members/roles.js:7
+msgid "Member"
+msgstr "Member"
+
+#: imports/both/api/organization-members/roles.js:14
+msgid "Unknown Role"
+msgstr "Unknown Role"
+
+#: imports/both/api/organizations/schema.js:12
+msgid "e.g. Organization Name"
+msgstr "e.g. Organization Name"
+
+#: imports/both/api/organizations/schema.js:21
+msgid "e.g. Our organization is…"
+msgstr "e.g. Our organization is…"
+
+#: imports/both/api/organizations/schema.js:25
+msgid "Address"
+msgstr "Address"
+
+#: imports/both/api/organizations/schema.js:31
+msgid "Address (Additional)"
+msgstr "Address (Additional)"
+
+#: imports/both/api/organizations/schema.js:37
+msgid "ZIP-Code"
+msgstr "ZIP-Code"
+
+#: imports/both/api/organizations/schema.js:43
+msgid "City"
+msgstr "City"
+
+#: imports/both/api/organizations/schema.js:49
+msgid "Country"
+msgstr "Country"
+
+#: imports/both/api/organizations/schema.js:55
+msgid "Phone number"
+msgstr "Phone number"
+
+#: imports/both/api/organizations/schema.js:61
+msgid "Organization Link"
+msgstr "Organization Link"
+
+#: imports/both/api/organizations/schema.js:71
+msgid "URL to Organization Logo"
+msgstr "URL to Organization Logo"
+
+#: imports/both/api/organizations/schema.js:77
+msgid "e.g. http://www.example.com/logo.png"
+msgstr "e.g. http://www.example.com/logo.png"
+
+#: imports/both/api/organizations/schema.js:81
+msgid "Accept Terms & Conditions"
+msgstr "Accept Terms & Conditions"
+
+#: imports/both/api/sources/schema.js:15
+msgid "Short name for backlinks (should include your Organization)"
+msgstr "Short name for backlinks (should include your Organization)"
+
+#: imports/both/api/sources/schema.js:20
+msgid "License"
+msgstr "License"
+
+#: imports/both/api/sources/schema.js:25
+msgid "Description"
+msgstr "Description"
+
+#: imports/both/api/sources/schema.js:30
+msgid "Web-site (optional)"
+msgstr "Web-site (optional)"
+
+#: imports/both/api/sources/schema.js:36
+msgid "Additional accessibility information (English)"
+msgstr "Additional accessibility information (English)"
+
+#: imports/both/api/sources/schema.js:42
+msgid ""
+"Only a draft (content not available to people outside your organization)"
+msgstr ""
+"Only a draft (content not available to people outside your organization)"
+
+#: imports/both/api/sources/schema.js:48
+msgid "Stream chain setup"
+msgstr "Stream chain setup"
+
+#: imports/both/api/sources/schema.js:60 imports/both/api/sources/schema.js:70
+msgid "Data is available to everybody"
+msgstr "Data is available to everybody"
+
+#: imports/both/api/sources/schema.js:65
+msgid "Access to this data source can be requested"
+msgstr "Access to this data source can be requested"
+
+#: imports/both/api/users/accounts.js:87
+msgid "What is your name (or nickname)?"
+msgstr "What is your name (or nickname)?"
+
+#: imports/both/api/users/accounts.js:91
+msgid "e.g. Petra"
+msgstr "e.g. Petra"
+
+#: imports/both/api/users/accounts.js:95
+msgid "Terms and Conditions"
+msgstr "Terms and Conditions"
+
+#: imports/both/api/users/accounts.js:98
+msgid "Provide link to t&c here"
+msgstr "Provide link to t&c here"
+
+#: imports/both/api/users/accounts.js:106
+msgid "email"
+msgstr "email"
+
+#: imports/both/api/users/accounts.js:110
+msgid "e.g. petra@example.com"
+msgstr "e.g. petra@example.com"
+
 #: imports/ui/pages/Events/CreateEventPage.js:15
 #: imports/ui/pages/Organizations/CreateOrganizationPage.js:15
+#: imports/ui/pages/Organizations/OrganizationAdminHeader.js:11
 msgid "Dashboard"
 msgstr "Dashboard"
 
 #: imports/ui/pages/Events/CreateEventPage.js:16
+#: imports/ui/pages/Events/EventBaseForm.js:107
 #: imports/ui/pages/Organizations/CreateOrganizationPage.js:16
+#: imports/ui/pages/Organizations/OrganizationBaseForm.js:102
 msgid "Create"
 msgstr "Create"
 
-#: imports/ui/pages/Home/HomePage.js:10
+#: imports/ui/pages/Events/EventBaseForm.js:31
+msgid "Optimal a 640 x 400 PNG-file."
+msgstr "Optimal a 640 x 400 PNG-file."
+
+#: imports/ui/pages/Events/EventBaseForm.js:106
+#: imports/ui/pages/Organizations/OrganizationBaseForm.js:101
+msgid "Update"
+msgstr "Update"
+
+#: imports/ui/pages/Events/EventBaseForm.js:108
+#: imports/ui/pages/Organizations/OrganizationBaseForm.js:103
+msgid "Cancel"
+msgstr "Cancel"
+
+#: imports/ui/pages/Events/EventParticipantsPage.js:37
+msgid "Share a link"
+msgstr "Share a link"
+
+#: imports/ui/pages/Events/EventParticipantsPage.js:39
+msgid ""
+"You can also share the following link to invite people, e.g. via Social "
+"Media or handouts."
+msgstr ""
+"You can also share the following link to invite people, e.g. via Social "
+"Media or handouts."
+
+#: imports/ui/pages/Events/EventParticipantsPage.js:43
+msgid "Copy to clipboard"
+msgstr "Copy to clipboard"
+
+#: imports/ui/pages/Events/EventParticipantsPage.js:64
+msgid "Invite Participants to event"
+msgstr "Invite Participants to event"
+
+#: imports/ui/pages/Events/EventParticipantsPage.js:66
+msgid "No one invited yet."
+msgstr "No one invited yet."
+
+#: imports/ui/pages/Events/EventParticipantsPage.js:71
+msgid ""
+"The event is not published yet. Invitations will be send when published."
+msgstr ""
+"The event is not published yet. Invitations will be send when published."
+
+#: imports/ui/pages/Events/EventParticipantsPage.js:71
+msgid "You made this event public. Invitations will be send immediatly."
+msgstr "You made this event public. Invitations will be send immediatly."
+
+#: imports/ui/pages/Events/EventParticipantsPage.js:74
+msgid ""
+"Invited people will receive a personal invitation which is only valid for "
+"them."
+msgstr ""
+"Invited people will receive a personal invitation which is only valid for "
+"them."
+
+#: imports/ui/pages/Events/EventParticipantsPage.js:75
+msgid "Everybody with the share-link below can join."
+msgstr "Everybody with the share-link below can join."
+
+#: imports/ui/pages/Events/EventStatistics.js:14
+#: imports/ui/pages/Organizations/OrganizationStatistics.js:12
+msgid "invited"
+msgstr "invited"
+
+#: imports/ui/pages/Events/EventStatistics.js:17
+#: imports/ui/pages/Organizations/OrganizationStatistics.js:15
+msgid "registered"
+msgstr "registered"
+
+#: imports/ui/pages/Events/EventStatistics.js:23
+#: imports/ui/pages/Organizations/OrganizationStatistics.js:19
+msgid "planned"
+msgstr "planned"
+
+#: imports/ui/pages/Events/EventStatistics.js:26
+#: imports/ui/pages/Organizations/OrganizationStatistics.js:22
+msgid "mapped"
+msgstr "mapped"
+
+#: imports/ui/pages/Events/EventStatistics.js:31
+#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:26
+msgid "Days Left"
+msgstr "Days Left"
+
+#: imports/ui/pages/Events/EventStatistics.js:34
+#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:29
+msgid "Days Ago"
+msgstr "Days Ago"
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:163
+msgid "Event created successfully."
+msgstr "Event created successfully."
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:167
+#: imports/ui/pages/Events/OrganizeEventPage.js:227
+msgid "Edit"
+msgstr "Edit"
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:172
+msgid "${ stats.invited } Invitations sent."
+msgstr "${ stats.invited } Invitations sent."
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:175
+msgid "No participants invited."
+msgstr "No participants invited."
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:176
+#: imports/ui/pages/Events/OrganizeEventPage.js:183
+msgid "Emails will be send when you publish."
+msgstr "Emails will be send when you publish."
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:177
+msgid "Invite participants"
+msgstr "Invite participants"
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:181
+msgid "${ stats.invited } participants invited"
+msgstr "${ stats.invited } participants invited"
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:184
+msgid "Invite more"
+msgstr "Invite more"
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:186
+msgid "Some documents to read."
+msgstr "Some documents to read."
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:188
+msgid "Tips for event organizers"
+msgstr "Tips for event organizers"
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:189
+msgid "Learn more"
+msgstr "Learn more"
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:191
+#: imports/ui/pages/Events/OrganizeEventPage.js:198
+msgid "Publish event"
+msgstr "Publish event"
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:195
+msgid "Mapping event still a draft"
+msgstr "Mapping event still a draft"
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:196
+msgid ""
+"Please make sure all details are correct. When you publish, invitation "
+"emails will be sent."
+msgstr ""
+"Please make sure all details are correct. When you publish, invitation "
+"emails will be sent."
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:199
+msgid "Congratulations! Your event has been published"
+msgstr "Congratulations! Your event has been published"
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:202
+msgid "Mapping event published"
+msgstr "Mapping event published"
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:203
+msgid ""
+"Your event is now online. It will be closed the day after. Be careful when canceling your event:\n"
+"you can not undo this."
+msgstr ""
+"Your event is now online. It will be closed the day after. Be careful when canceling your event:\n"
+"you can not undo this."
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:206
+#: imports/ui/pages/Events/OrganizeEventPage.js:214
+msgid "View event"
+msgstr "View event"
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:207
+msgid "Cancel event"
+msgstr "Cancel event"
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:208
+msgid "Your event has been completed"
+msgstr "Your event has been completed"
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:211
+msgid "Mapping event finished"
+msgstr "Mapping event finished"
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:212
+msgid "Your event is over now."
+msgstr "Your event is over now."
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:216
+msgid "After the event"
+msgstr "After the event"
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:218
+msgid "Event picture has been set."
+msgstr "Event picture has been set."
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:220
+#: imports/ui/pages/Events/OrganizeEventPage.js:222
+msgid "Set event picture"
+msgstr "Set event picture"
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:226
+msgid "Event picture was set"
+msgstr "Event picture was set"
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:230
+msgid "Great. You may share the link now."
+msgstr "Great. You may share the link now."
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:232
+#: imports/ui/pages/Events/OrganizeEventPage.js:234
+msgid "Share results"
+msgstr "Share results"
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:235
+msgid "Share"
+msgstr "Share"
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:237
+msgid "Results have been shared"
+msgstr "Results have been shared"
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:238
+msgid "View"
+msgstr "View"
+
+#: imports/ui/pages/Events/PublicSignUpForEventPage.js:42
+#: imports/ui/pages/Events/SignUpForEventPage.js:43
+#: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:50
+msgid "Accepting invitation failed."
+msgstr "Accepting invitation failed."
+
+#: imports/ui/pages/Events/PublicSignUpForEventPage.js:63
+#: imports/ui/pages/Events/SignUpForEventPage.js:64
+#: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:70
+msgid "Something went wrong"
+msgstr "Something went wrong"
+
+#: imports/ui/pages/Events/PublicSignUpForEventPage.js:68
+#: imports/ui/pages/Events/SignUpForEventPage.js:69
+#: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:75
+msgid "Accepting invitation"
+msgstr "Accepting invitation"
+
+#: imports/ui/pages/Events/PublicSignUpForEventPage.js:75
+#: imports/ui/pages/Events/PublicSignUpForEventPage.js:82
+#: imports/ui/pages/Events/SignUpForEventPage.js:73
+#: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:79
+msgid "Great to have you here!"
+msgstr "Great to have you here!"
+
+#: imports/ui/pages/Events/PublicSignUpForEventPage.js:76
+#: imports/ui/pages/Events/PublicSignUpForEventPage.js:83
+#: imports/ui/pages/Events/SignUpForEventPage.js:74
+msgid "Please sign up with ${ organization.name } to join ${ event.name }."
+msgstr "Please sign up with ${ organization.name } to join ${ event.name }."
+
+#: imports/ui/pages/Events/PublicSignUpForEventPage.js:77
+msgid "Sign up as a guest"
+msgstr "Sign up as a guest"
+
+#: imports/ui/pages/Events/PublicSignUpForEventPage.js:78
+msgid "Sign-in/Sign-up with email"
+msgstr "Sign-in/Sign-up with email"
+
+#: imports/ui/pages/Events/PublicSignUpForEventPage.js:85
+msgid "Sign-up as a guest"
+msgstr "Sign-up as a guest"
+
+#: imports/ui/pages/Events/PublicSignUpForEventPage.js:90
+#: imports/ui/pages/Events/SignUpForEventPage.js:79
+#: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:85
+msgid "Welcome to our community!"
+msgstr "Welcome to our community!"
+
+#: imports/ui/pages/Events/PublicSignUpForEventPage.js:91
+#: imports/ui/pages/Events/SignUpForEventPage.js:80
+msgid ""
+"Thanks for signing up with ${ organization.name } to join ${ event.name }!"
+msgstr ""
+"Thanks for signing up with ${ organization.name } to join ${ event.name }!"
+
+#: imports/ui/pages/Events/PublicSignUpForEventPage.js:92
+#: imports/ui/pages/Events/SignUpForEventPage.js:81
+msgid "Start mapping now!"
+msgstr "Start mapping now!"
+
+#: imports/ui/pages/Events/ShowEventPage.js:20
+#: imports/ui/pages/Organizations/ShowOrganizationPage.js:34
+msgid "Join Us"
+msgstr "Join Us"
+
+#: imports/ui/pages/Events/ShowEventPage.js:21
+msgid "Share…"
+msgstr "Share…"
+
+#: imports/ui/pages/Events/ShowEventPage.js:24
+msgid "Event picture"
+msgstr "Event picture"
+
+#: imports/ui/pages/Events/ShowEventPage.js:28
+msgid "Participants"
+msgstr "Participants"
+
+#: imports/ui/pages/Events/ShowEventPage.js:35
+msgid "Planned"
+msgstr "Planned"
+
+#: imports/ui/pages/Events/ShowEventPage.js:38
+msgid "Achieved"
+msgstr "Achieved"
+
+#: imports/ui/pages/Events/SignUpForEventPage.js:24
+#: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:25
+msgid ""
+"No invitation found. Maybe you already used this token or joined this "
+"organization in another way?"
+msgstr ""
+"No invitation found. Maybe you already used this token or joined this "
+"organization in another way?"
+
+#: imports/ui/pages/Home/HomePage.js:11
+#: imports/ui/pages/Users/ProfilePage.js:13
+#: imports/ui/pages/Users/SignUpPage.js:12
 msgid "wheelmap.pro"
 msgstr "wheelmap.pro"
 
-#: imports/ui/pages/Home/HomePage.js:12
-msgid "Sign-Up"
-msgstr "Sign-Up"
-
-#: imports/ui/pages/Home/HomePage.js:13
-msgid "Login"
-msgstr "Login"
-
-#: imports/ui/pages/Home/HomePage.js:14
-msgid "Profile"
-msgstr "Profile"
-
-#: imports/ui/pages/Home/HomePage.js:19
+#: imports/ui/pages/Home/HomePage.js:17
 msgid "Like Wheelmap but customized to fit your own community."
 msgstr "Like Wheelmap but customized to fit your own community."
 
-#: imports/ui/pages/Home/HomePage.js:20
+#: imports/ui/pages/Home/HomePage.js:18
 msgid ""
 "Which public places are accessible for people with disabilities? Create your"
 " own mapping community and empower your volunteers to go out and mark the "
@@ -90,15 +717,15 @@ msgstr ""
 "accessibility of places! Wheelmap Pro is a powerful tool with your own "
 "brand, your specific accessibility criteria and step-by-step action plans."
 
-#: imports/ui/pages/Home/HomePage.js:21
+#: imports/ui/pages/Home/HomePage.js:19
 msgid "Create your community"
 msgstr "Create your community"
 
-#: imports/ui/pages/Home/HomePage.js:25
+#: imports/ui/pages/Home/HomePage.js:23
 msgid "Step 1."
 msgstr "Step 1."
 
-#: imports/ui/pages/Home/HomePage.js:26
+#: imports/ui/pages/Home/HomePage.js:24
 msgid ""
 "Start a new mapping community or join a community as a volunteer. We help "
 "you plan and organize successful mapping events for collecting accessibility"
@@ -108,11 +735,11 @@ msgstr ""
 "you plan and organize successful mapping events for collecting accessibility"
 " data."
 
-#: imports/ui/pages/Home/HomePage.js:29
+#: imports/ui/pages/Home/HomePage.js:27
 msgid "Step 2."
 msgstr "Step 2."
 
-#: imports/ui/pages/Home/HomePage.js:30
+#: imports/ui/pages/Home/HomePage.js:28
 msgid ""
 "Invite volunteers to mapping events during which groups evaluate the "
 "accessibility of local public places."
@@ -120,11 +747,11 @@ msgstr ""
 "Invite volunteers to mapping events during which groups evaluate the "
 "accessibility of local public places."
 
-#: imports/ui/pages/Home/HomePage.js:33
+#: imports/ui/pages/Home/HomePage.js:31
 msgid "Step 3."
 msgstr "Step 3."
 
-#: imports/ui/pages/Home/HomePage.js:34
+#: imports/ui/pages/Home/HomePage.js:32
 msgid ""
 "The accessibility information which your community gathers can then be "
 "shared publicly to help people with and without disabilities to navigate the"
@@ -134,17 +761,43 @@ msgstr ""
 "shared publicly to help people with and without disabilities to navigate the"
 " world."
 
-#: imports/ui/pages/Home/HomePage.js:38
+#: imports/ui/pages/Home/HomePage.js:36
 msgid "Watch a short video introduction."
 msgstr "Watch a short video introduction."
 
-#: imports/ui/pages/Home/HomePage.js:50
+#: imports/ui/pages/Home/HomePage.js:48
 msgid "About us"
 msgstr "About us"
 
-#: imports/ui/pages/Home/HomePage.js:51
+#: imports/ui/pages/Home/HomePage.js:49
 msgid "Imprint"
 msgstr "Imprint"
+
+#: imports/ui/pages/NotFound/AccessForbiddenPage.js:3
+msgid ""
+"Sorry, this should not have happened. You are not authorized for this page."
+msgstr ""
+"Sorry, this should not have happened. You are not authorized for this page."
+
+#: imports/ui/pages/NotFound/NotFoundPage.js:3
+msgid "Sorry, this should not have happened. Page not found."
+msgstr "Sorry, this should not have happened. Page not found."
+
+#: imports/ui/pages/Organizations/ListOrganizationsPage.js:21
+msgid "Loading…"
+msgstr "Loading…"
+
+#: imports/ui/pages/Organizations/ListOrganizationsPage.js:24
+msgid "All Organizations"
+msgstr "All Organizations"
+
+#: imports/ui/pages/Organizations/ListOrganizationsPage.js:26
+msgid "Create new organization"
+msgstr "Create new organization"
+
+#: imports/ui/pages/Organizations/NoOrganizationsPage.js:9
+msgid "Welcome to $pageName"
+msgstr "Welcome to $pageName"
 
 #: imports/ui/pages/Organizations/NoOrganizationsPage.js:11
 msgid ""
@@ -155,8 +808,124 @@ msgstr ""
 "invite, or create your own organization."
 
 #: imports/ui/pages/Organizations/NoOrganizationsPage.js:13
+#: imports/ui/pages/Organizations/OrganizationAdminHeader.js:17
 msgid "Create Organization"
 msgstr "Create Organization"
+
+#: imports/ui/pages/Organizations/OrganizationAdminHeader.js:12
+msgid "Members"
+msgstr "Members"
+
+#: imports/ui/pages/Organizations/OrganizationAdminHeader.js:13
+msgid "Customize"
+msgstr "Customize"
+
+#: imports/ui/pages/Organizations/OrganizationBaseForm.js:33
+msgid "Optimal a 640 x 400 PNG-file with transparency."
+msgstr "Optimal a 640 x 400 PNG-file with transparency."
+
+#: imports/ui/pages/Organizations/OrganizationBaseForm.js:39
+msgid ""
+"Wheelmap Pro helps you to plan and organize mapping events for accessibility"
+" data."
+msgstr ""
+"Wheelmap Pro helps you to plan and organize mapping events for accessibility"
+" data."
+
+#: imports/ui/pages/Organizations/OrganizationBaseForm.js:40
+msgid ""
+"This gathered information can then be shared publicly to help people with with and\n"
+"without disabilities to navigate the world."
+msgstr ""
+"This gathered information can then be shared publicly to help people with with and\n"
+"without disabilities to navigate the world."
+
+#: imports/ui/pages/Organizations/OrganizationBaseForm.js:42
+msgid ""
+"The app for your Organization will be setup and you’ll be ready to create "
+"your first mapping event."
+msgstr ""
+"The app for your Organization will be setup and you’ll be ready to create "
+"your first mapping event."
+
+#: imports/ui/pages/Organizations/OrganizationMembersPage.js:58
+msgid "Remove"
+msgstr "Remove"
+
+#: imports/ui/pages/Organizations/OrganizationMembersPage.js:85
+msgid "Invite to Organization"
+msgstr "Invite to Organization"
+
+#: imports/ui/pages/Organizations/OrganizationStatistics.js:26
+msgid "created"
+msgstr "created"
+
+#: imports/ui/pages/Organizations/OrganizationStatistics.js:29
+msgid "completed"
+msgstr "completed"
+
+#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:30
+msgid "Show details"
+msgstr "Show details"
+
+#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:38
+msgid "Create event"
+msgstr "Create event"
+
+#: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:80
+msgid "Please sign up to join \"${ organization.name }\"."
+msgstr "Please sign up to join \"${ organization.name }\"."
+
+#: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:86
+msgid "Thanks for signing up with ${ organization.name }!"
+msgstr "Thanks for signing up with ${ organization.name }!"
+
+#: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:87
+msgid "Organize events now!"
+msgstr "Organize events now!"
+
+#: imports/ui/pages/Users/SignUpPage.js:15
+msgid "Create an account"
+msgstr "Create an account"
+
+#: imports/ui/pages/Users/SignUpPage.js:18
+msgid "Join us at wheelmap.pro!"
+msgstr "Join us at wheelmap.pro!"
+
+#: imports/ui/pages/Users/SignUpPage.js:19
+msgid "Signing up is free and without any hidden costs. "
+msgstr "Signing up is free and without any hidden costs. "
+
+#: imports/ui/pages/Users/SignUpPage.js:20
+msgid ""
+"We promise to never share you email address with a 3rd party or send you "
+"unwanted news or spam."
+msgstr ""
+"We promise to never share you email address with a 3rd party or send you "
+"unwanted news or spam."
+
+#: imports/both/api/event-participants/server/_invitations.js:71
+#: imports/both/api/event-participants/server/_invitations.js:111
+msgid "Email address in invitation is invalid"
+msgstr "Email address in invitation is invalid"
+
+#: imports/both/api/event-participants/server/_invitations.js:77
+msgid "User ${ userId } has no assigned emails."
+msgstr "User ${ userId } has no assigned emails."
+
+#: imports/both/api/event-participants/server/_invitations.js:108
+msgid "No unaccepted invitation to ${ eventId } found with token ${ token }."
+msgstr "No unaccepted invitation to ${ eventId } found with token ${ token }."
+
+#: imports/both/api/event-participants/server/_invitations.js:117
+msgid ""
+"Email is already used by another user. Please sign with that email address."
+msgstr ""
+"Email is already used by another user. Please sign with that email address."
+
+#: imports/both/api/event-participants/server/_invitations.js:144
+msgid "No invitation in ${ eventId } found with token ${ token }."
+msgstr "No invitation in ${ eventId } found with token ${ token }."
 
 #: imports/both/api/event-participants/server/methods.js:23
 #: imports/both/api/event-participants/server/methods.js:58
@@ -166,14 +935,15 @@ msgid "Event not found"
 msgstr "Event not found"
 
 #: imports/both/api/event-participants/server/methods.js:26
-#: imports/both/api/organization-members/server/methods.js:21
+#: imports/both/api/organization-members/server/methods.js:23
 msgid "You are not authorized to invite users to this organization."
 msgstr "You are not authorized to invite users to this organization."
 
 #: imports/both/api/event-participants/server/methods.js:30
-#: imports/both/api/organization-members/server/methods.js:18
-#: imports/both/api/organization-members/server/methods.js:35
-#: imports/both/api/organization-members/server/methods.js:52
+#: imports/both/api/organization-members/server/methods.js:20
+#: imports/both/api/organization-members/server/methods.js:44
+#: imports/both/api/organization-members/server/methods.js:70
+#: imports/both/api/organization-members/server/methods.js:89
 msgid "Organization not found"
 msgstr "Organization not found"
 
@@ -181,19 +951,25 @@ msgstr "Organization not found"
 msgid "Event participants not found"
 msgstr "Event participants not found"
 
-#: imports/both/api/organization-members/server/methods.js:47
+#: imports/both/api/organization-members/server/methods.js:39
+#: imports/both/api/organization-members/server/methods.js:84
 msgid "Organization member not found"
 msgstr "Organization member not found"
 
-#: imports/both/api/organization-members/server/methods.js:62
-msgid "Cannot revoke last organization membership."
-msgstr "Cannot revoke last organization membership."
+#: imports/both/api/organization-members/server/methods.js:56
+#: imports/both/api/organization-members/server/methods.js:100
+msgid "Cannot revoke the membership of the last admin of an organization."
+msgstr "Cannot revoke the membership of the last admin of an organization."
 
-#: imports/both/api/sources/server/privileges.js:87
+#: imports/both/api/organizations/server/methods.js:34
+msgid "You don\\'t have permission to remove this organization."
+msgstr "You don\\'t have permission to remove this organization."
+
+#: imports/both/api/sources/server/privileges.js:59
 msgid "Source not found."
 msgstr "Source not found."
 
-#: imports/both/api/sources/server/privileges.js:107
+#: imports/both/api/sources/server/privileges.js:79
 msgid "Source not found or not visible."
 msgstr "Source not found or not visible."
 

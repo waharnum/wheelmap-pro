@@ -1,8 +1,10 @@
 # 
 msgid ""
 msgstr ""
+"Language-Team: German (Germany) (https://www.transifex.com/sozialhelden/teams/54219/de_DE/)\n"
 "Content-Type: text/plain; charset=utf-8\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Language: de_DE\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: imports/both/api/categories/server/csv-methods.js:11
 #: imports/both/api/event-participants/server/methods.js:19
@@ -21,7 +23,7 @@ msgstr ""
 #: imports/both/api/users/server/methods.js:82
 #: imports/server/i18n/rpc-method.js:42 imports/server/stub-data.js:287
 msgid "Please log in first."
-msgstr "[Ƥŀḗȧşḗ ŀǿɠ īƞ ƒīřşŧ. ǋΰſǈϱſ ǋϖǋ ϵ]"
+msgstr ""
 
 #: imports/both/api/event-participants/server/methods.js:96
 #: imports/both/api/organization-members/server/methods.js:50
@@ -29,682 +31,651 @@ msgstr "[Ƥŀḗȧşḗ ŀǿɠ īƞ ƒīřşŧ. ǋΰſǈϱſ ǋϖǋ ϵ]"
 #: imports/both/api/sources/server/privileges.js:62
 #: imports/server/stub-data.js:290
 msgid "Not authorized."
-msgstr "[Ƞǿŧ ȧŭŧħǿřīzḗḓ. ϱςϰ ϰǋϱϱΰϕ]"
+msgstr ""
 
 #: imports/both/lib/invite-schema.js:11
 msgid "Email Addresses"
-msgstr "[Ḗḿȧīŀ Ȧḓḓřḗşşḗş ςǅςϐǲ ıẛǈ鶱]"
+msgstr ""
 
 #: imports/both/lib/invite-schema.js:16
 msgid "Email Address"
-msgstr "[Ḗḿȧīŀ Ȧḓḓřḗşş ϰΰϑǲϐ ΐΐϵ衋ǲ]"
+msgstr ""
 
 #: imports/both/lib/invite-schema.js:18
 msgid "e.g. lisa@example.com"
-msgstr "[ḗ.ɠ. ŀīşȧ@ḗẋȧḿƥŀḗ.ƈǿḿ ϑſǲϵ ſı靐靐鶱]"
-
-#: imports/ui/components/AsyncDataComponent.js:7
-msgid "Missing data"
-msgstr "[Ḿīşşīƞɠ ḓȧŧȧ ς衋靐ΰǅǲǋ 衋衋]"
-
-#: imports/ui/components/Countdown.js:7
-#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:22
-msgid "days"
-msgstr "[ḓȧẏş 靐ſϱϖ]"
-
-#: imports/ui/components/Countdown.js:10
-msgid "hours"
-msgstr "[ħǿŭřş ϖΰǈſ衋]"
-
-#: imports/ui/components/Countdown.js:13
-msgid "minutes"
-msgstr "[ḿīƞŭŧḗş ϐϕǲϱǲϕẛ]"
-
-#: imports/ui/components/Countdown.js:16
-msgid "seconds"
-msgstr "[şḗƈǿƞḓş 鶱ϕǅΰϖǋϐ]"
-
-#: imports/ui/components/EnsureUserLoggedIn.js:22
-msgid "Loading..."
-msgstr "[Ŀǿȧḓīƞɠ... ẛϕϑϵϱςϵϕϕΰ]"
-
-#: imports/ui/components/InviteByEmailForm.js:41
-msgid "Send invites"
-msgstr "[Şḗƞḓ īƞṽīŧḗş ςǋǋϕ ǋϐǈϱϕ]"
-
-#: imports/ui/components/PreviewToggle.js:16
-msgid "Edit view"
-msgstr "[Ḗḓīŧ ṽīḗẇ 鶱衋ſς ΐϵΰϕ]"
-
-#: imports/ui/components/PreviewToggle.js:16
-msgid "Public View"
-msgstr "[Ƥŭƀŀīƈ Ṽīḗẇ ϵϑſǲϑϐ ϐϵϰϱ]"
-
-#: imports/ui/components/UserMenu.js:24
-msgid "Claim your Account"
-msgstr "[Ƈŀȧīḿ ẏǿŭř Ȧƈƈǿŭƞŧ ıϕΐϑς ϰǲ靐衋]"
-
-#: imports/ui/components/UserMenu.js:25
-msgid "Claim Account"
-msgstr "[Ƈŀȧīḿ Ȧƈƈǿŭƞŧ ǈϰϐ鶱ϐ ςςǅϕ衋]"
+msgstr ""
 
 #: imports/both/api/categories/server/csv-methods.js:14
 #: imports/server/i18n/rpc-method.js:45
 msgid "You are not authorized to import categories."
-msgstr "[Ẏǿŭ ȧřḗ ƞǿŧ ȧŭŧħǿřīzḗḓ ŧǿ īḿƥǿřŧ ƈȧŧḗɠǿřīḗş. ΰϕς 靐ǈſ ΰ衋ς]"
+msgstr ""
+
+#: imports/ui/components/AsyncDataComponent.js:7
+msgid "Missing data"
+msgstr ""
+
+#: imports/ui/components/EnsureUserLoggedIn.js:22
+msgid "Loading..."
+msgstr ""
+
+#: imports/ui/components/InviteByEmailForm.js:41
+msgid "Send invites"
+msgstr ""
+
+#: imports/ui/components/PreviewToggle.js:16
+msgid "Edit view"
+msgstr ""
+
+#: imports/ui/components/PreviewToggle.js:16
+msgid "Public View"
+msgstr ""
+
+#: imports/ui/components/UserMenu.js:24
+msgid "Claim your Account"
+msgstr ""
+
+#: imports/ui/components/UserMenu.js:25
+msgid "Claim Account"
+msgstr ""
+
+#: imports/both/api/event-participants/invitationStates.js:3
+msgid "Draft"
+msgstr ""
+
+#: imports/both/api/event-participants/invitationStates.js:4
+#: imports/both/api/organization-members/invitationStates.js:3
+msgid "Queued for sending"
+msgstr ""
+
+#: imports/both/api/event-participants/invitationStates.js:5
+#: imports/both/api/organization-members/invitationStates.js:4
+msgid "Sent"
+msgstr ""
+
+#: imports/both/api/event-participants/invitationStates.js:6
+#: imports/both/api/organization-members/invitationStates.js:5
+msgid "Accepted"
+msgstr ""
+
+#: imports/both/api/event-participants/invitationStates.js:7
+#: imports/both/api/organization-members/invitationStates.js:6
+msgid "Error Occurred"
+msgstr ""
+
+#: imports/both/api/event-participants/invitationStates.js:8
+msgid "Old guest"
+msgstr ""
+
+#: imports/both/api/event-participants/invitationStates.js:14
+#: imports/both/api/organization-members/invitationStates.js:12
+msgid "Unknown State"
+msgstr ""
 
 #: imports/both/api/events/schema.js:12
 #: imports/both/api/organizations/schema.js:8
 #: imports/both/api/sources/schema.js:11
 msgid "Name"
-msgstr "[Ƞȧḿḗ ϰΰſϑ]"
+msgstr ""
 
 #: imports/both/api/events/schema.js:16
 msgid "e.g. Event title"
-msgstr "[ḗ.ɠ. Ḗṽḗƞŧ ŧīŧŀḗ ςǈẛϖ 鶱ϱΐϖϰ]"
+msgstr ""
 
 #: imports/both/api/events/schema.js:20
 #: imports/both/api/organizations/schema.js:16
 msgid "Description (optional)"
-msgstr "[Ḓḗşƈřīƥŧīǿƞ (ǿƥŧīǿƞȧŀ) ϖϕϰẛϰǈǋ衋ϱϵǲ]"
+msgstr ""
 
 #: imports/both/api/events/schema.js:25
 msgid "e.g. Healthcare places in…"
-msgstr "[ḗ.ɠ. Ħḗȧŀŧħƈȧřḗ ƥŀȧƈḗş īƞ… ϰ靐ϑϵ ΰϵǈϐςſ]"
+msgstr ""
 
 #: imports/both/api/events/schema.js:29
 msgid "Region name"
-msgstr "[Řḗɠīǿƞ ƞȧḿḗ 衋ςϑϕ靐衋 ǲςϖ靐]"
+msgstr ""
 
 #: imports/both/api/events/schema.js:34
 msgid "e.g. Berlin Alexanderplatz"
-msgstr "[ḗ.ɠ. Ɓḗřŀīƞ Ȧŀḗẋȧƞḓḗřƥŀȧŧz ǅıϕϐ ϑϱϕẛẛǲ]"
+msgstr ""
 
 #: imports/both/api/events/schema.js:57
 msgid "Start Date and Time"
-msgstr "[Şŧȧřŧ Ḓȧŧḗ ȧƞḓ Ŧīḿḗ ϵǅϰſǅ ǋςϑẛ]"
+msgstr ""
 
 #: imports/both/api/events/schema.js:62
 msgid "End Date and Time"
-msgstr "[Ḗƞḓ Ḓȧŧḗ ȧƞḓ Ŧīḿḗ ǋǲϑ ǲ鶱ıϕ ǲſϕ]"
+msgstr ""
 
 #: imports/both/api/events/schema.js:67
 msgid "Website URL"
-msgstr "[Ẇḗƀşīŧḗ ŬŘĿ 鶱ϕ衋ϖǲϑ衋 ǲǲ鶱]"
+msgstr ""
 
 #: imports/both/api/events/schema.js:73
 #: imports/both/api/organizations/schema.js:67
 msgid "e.g. http://www.example.com"
-msgstr "[ḗ.ɠ. ħŧŧƥ://ẇẇẇ.ḗẋȧḿƥŀḗ.ƈǿḿ ǅϵẛ鶱 ıǈ鶱ΰϖ]"
+msgstr ""
 
 #: imports/both/api/events/schema.js:77
 msgid "URL to a picture of the event"
-msgstr "[ŬŘĿ ŧǿ ȧ ƥīƈŧŭřḗ ǿƒ ŧħḗ ḗṽḗƞŧ ΰϐǈ 鶱ΰ ǅ ǈϱ]"
+msgstr ""
 
 #: imports/both/api/events/schema.js:83
 msgid "e.g. http://www.example.com/photo.jpg"
-msgstr "[ḗ.ɠ. ħŧŧƥ://ẇẇẇ.ḗẋȧḿƥŀḗ.ƈǿḿ/ƥħǿŧǿ.ĵƥɠ 衋鶱ςϑ ǲΐςǅ鶱]"
+msgstr ""
 
 #: imports/both/api/events/schema.js:87
 msgid "Invitation token"
-msgstr "[Īƞṽīŧȧŧīǿƞ ŧǿķḗƞ ϑıϑǅǋϵΰ鶱ǲΐ]"
+msgstr ""
 
 #: imports/both/api/events/schema.js:93
 msgid "Verify GPS position of edits"
-msgstr "[Ṽḗřīƒẏ ƓƤŞ ƥǿşīŧīǿƞ ǿƒ ḗḓīŧş ς靐ϐ靐ϕı ſςſ]"
+msgstr ""
 
 #: imports/both/api/events/schema.js:102
 msgid "Goal for mapped places"
-msgstr "[Ɠǿȧŀ ƒǿř ḿȧƥƥḗḓ ƥŀȧƈḗş ϕ衋ϕϰ 鶱ǅϰ ΰǋ]"
+msgstr ""
 
 #: imports/both/api/events/schema.js:111
 msgid "Open for…"
-msgstr "[Ǿƥḗƞ ƒǿř… ΰϕϕ靐 ϑΰϑς]"
+msgstr ""
 
 #: imports/both/api/events/schema.js:116
 msgid "Invite Only"
-msgstr "[Īƞṽīŧḗ Ǿƞŀẏ ϑςϑ鶱ϕϵ ϐϰϱǋ]"
+msgstr ""
 
 #: imports/both/api/events/schema.js:117
 msgid "Everybody"
-msgstr "[Ḗṽḗřẏƀǿḓẏ ǲſϰǋϱςςϰǋ]"
-
-#: imports/both/api/event-participants/invitationStates.js:3
-msgid "Draft"
-msgstr "[Ḓřȧƒŧ ΐ鶱ſϕẛ]"
-
-#: imports/both/api/event-participants/invitationStates.js:4
-#: imports/both/api/organization-members/invitationStates.js:3
-msgid "Queued for sending"
-msgstr "[Ɋŭḗŭḗḓ ƒǿř şḗƞḓīƞɠ 鶱ϑϵϖ鶱ǲ ıϑı]"
-
-#: imports/both/api/event-participants/invitationStates.js:5
-#: imports/both/api/organization-members/invitationStates.js:4
-msgid "Sent"
-msgstr "[Şḗƞŧ ϰǈſϐ]"
-
-#: imports/both/api/event-participants/invitationStates.js:6
-#: imports/both/api/organization-members/invitationStates.js:5
-msgid "Accepted"
-msgstr "[Ȧƈƈḗƥŧḗḓ ǋϵẛıϱıſ鶱]"
-
-#: imports/both/api/event-participants/invitationStates.js:7
-#: imports/both/api/organization-members/invitationStates.js:6
-msgid "Error Occurred"
-msgstr "[Ḗřřǿř Ǿƈƈŭřřḗḓ ϵ靐ϖϖϑ ΐıςẛ鶱ς]"
-
-#: imports/both/api/event-participants/invitationStates.js:8
-msgid "Old guest"
-msgstr "[Ǿŀḓ ɠŭḗşŧ ΰϑΰ ǅǈϑΐǈ]"
-
-#: imports/both/api/event-participants/invitationStates.js:14
-#: imports/both/api/organization-members/invitationStates.js:12
-msgid "Unknown State"
-msgstr "[Ŭƞķƞǿẇƞ Şŧȧŧḗ ǋǅſ靐ΐΐϐ 鶱ϑϑ]"
+msgstr ""
 
 #: imports/both/api/licenses/licenses.js:16
 msgid "Official english title"
-msgstr "[Ǿƒƒīƈīȧŀ ḗƞɠŀīşħ ŧīŧŀḗ ϕϕϐ靐ǲ靐ϰ鶱 ϱǋ]"
+msgstr ""
 
 #: imports/both/api/licenses/licenses.js:21
 msgid "Short name (optional)"
-msgstr "[Şħǿřŧ ƞȧḿḗ (ǿƥŧīǿƞȧŀ) ΰ靐ϱẛϖ ΰ衋ϖǈ]"
+msgstr ""
 
 #: imports/both/api/licenses/licenses.js:27
 msgid "Link to descriptive website (optional)"
-msgstr "[Ŀīƞķ ŧǿ ḓḗşƈřīƥŧīṽḗ ẇḗƀşīŧḗ (ǿƥŧīǿƞȧŀ) ϵǲıϑ ϕı ϖẛϱ]"
+msgstr ""
 
 #: imports/both/api/licenses/licenses.js:34
 msgid "Link to full legal text (optional)"
-msgstr "[Ŀīƞķ ŧǿ ƒŭŀŀ ŀḗɠȧŀ ŧḗẋŧ (ǿƥŧīǿƞȧŀ) ϱǲϖϰ ϵΰ 靐鶱]"
+msgstr ""
 
 #: imports/both/api/licenses/licenses.js:41
 msgid "Plaintext summary (optional)"
-msgstr "[Ƥŀȧīƞŧḗẋŧ şŭḿḿȧřẏ (ǿƥŧīǿƞȧŀ) 靐ϵẛϱſϕςǅΰ ϕ]"
+msgstr ""
 
 #: imports/both/api/licenses/licenses.js:47
 msgid "Considered as..."
-msgstr "[Ƈǿƞşīḓḗřḗḓ ȧş... ıǅ衋ϵϱΐǅϰẛſ]"
+msgstr ""
 
 #: imports/both/api/licenses/licenses.js:50
 msgid "Public Domain (CC0)"
-msgstr "[Ƥŭƀŀīƈ Ḓǿḿȧīƞ (ƇƇ0) ϐϱϑẛςſ ǋẛϐϐ]"
+msgstr ""
 
 #: imports/both/api/licenses/licenses.js:51
 msgid "Free, with Attribution required (CCBY)"
-msgstr "[Ƒřḗḗ, ẇīŧħ Ȧŧŧřīƀŭŧīǿƞ řḗɋŭīřḗḓ (ƇƇƁẎ) ẛϰϕ鶱ǲ ΰſϱǅ]"
+msgstr ""
 
 #: imports/both/api/licenses/licenses.js:52
 msgid "Share Alike (CCSA)"
-msgstr "[Şħȧřḗ Ȧŀīķḗ (ƇƇŞȦ) ϱϑϖſſ ǈǋſǋ]"
+msgstr ""
 
 #: imports/both/api/licenses/licenses.js:53
 msgid "Restricted / Proprietary (©)"
-msgstr "[Řḗşŧřīƈŧḗḓ / Ƥřǿƥřīḗŧȧřẏ (©) ϰ靐鶱ΰıϑǲıǈϱ]"
+msgstr ""
 
 #: imports/both/api/organization-members/roles.js:3
 msgid "Manager"
-msgstr "[Ḿȧƞȧɠḗř ϰǋ衋ϱϕΐ鶱]"
+msgstr ""
 
 #: imports/both/api/organization-members/roles.js:4
 msgid "Developer"
-msgstr "[Ḓḗṽḗŀǿƥḗř ϰςſǲ衋ϱſϕς]"
+msgstr ""
 
 #: imports/both/api/organization-members/roles.js:5
 msgid "Founder'"
-msgstr "[Ƒǿŭƞḓḗř' ϖΰΐΐǈϕϱǈ]"
+msgstr ""
 
 #: imports/both/api/organization-members/roles.js:6
 msgid "Volunteer"
-msgstr "[Ṽǿŀŭƞŧḗḗř ǈẛϰ鶱ΰǅϕǋſ]"
+msgstr ""
 
 #: imports/both/api/organization-members/roles.js:7
 msgid "Member"
-msgstr "[Ḿḗḿƀḗř ıǲϖϰẛς]"
+msgstr ""
 
 #: imports/both/api/organization-members/roles.js:14
 msgid "Unknown Role"
-msgstr "[Ŭƞķƞǿẇƞ Řǿŀḗ 靐ǋǈϰϱϐ靐 ϕς]"
+msgstr ""
 
 #: imports/both/api/organizations/schema.js:12
 msgid "e.g. Organization Name"
-msgstr "[ḗ.ɠ. Ǿřɠȧƞīzȧŧīǿƞ Ƞȧḿḗ ǅıǲ衋 ẛϵẛϑ靐ΰ]"
+msgstr ""
 
 #: imports/both/api/organizations/schema.js:21
 msgid "e.g. Our organization is…"
-msgstr "[ḗ.ɠ. Ǿŭř ǿřɠȧƞīzȧŧīǿƞ īş… ΰ衋ϖϐ ϵϱϰ ϐϐ]"
+msgstr ""
 
 #: imports/both/api/organizations/schema.js:25
 msgid "Address"
-msgstr "[Ȧḓḓřḗşş ϰǅſ鶱ǋǋ衋]"
+msgstr ""
 
 #: imports/both/api/organizations/schema.js:31
 msgid "Address (Additional)"
-msgstr "[Ȧḓḓřḗşş (Ȧḓḓīŧīǿƞȧŀ) ςı鶱ı衋ǲϵ ẛ衋衋ϱ]"
+msgstr ""
 
 #: imports/both/api/organizations/schema.js:37
 msgid "ZIP-Code"
-msgstr "[ẐĪƤ-Ƈǿḓḗ 鶱ϖẛϖϕϑǋı]"
+msgstr ""
 
 #: imports/both/api/organizations/schema.js:43
 msgid "City"
-msgstr "[Ƈīŧẏ ǈΰΰΰ]"
+msgstr ""
 
 #: imports/both/api/organizations/schema.js:49
 msgid "Country"
-msgstr "[Ƈǿŭƞŧřẏ ǈǅǈẛϐϱς]"
+msgstr ""
 
 #: imports/both/api/organizations/schema.js:55
 msgid "Phone number"
-msgstr "[Ƥħǿƞḗ ƞŭḿƀḗř ςǅǅǋϐ ǅΰẛǈ]"
+msgstr ""
 
 #: imports/both/api/organizations/schema.js:61
 msgid "Organization Link"
-msgstr "[Ǿřɠȧƞīzȧŧīǿƞ Ŀīƞķ ẛ鶱衋ϱϑǲΐǈϱΰϖϖ]"
+msgstr ""
 
 #: imports/both/api/organizations/schema.js:71
 msgid "URL to Organization Logo"
-msgstr "[ŬŘĿ ŧǿ Ǿřɠȧƞīzȧŧīǿƞ Ŀǿɠǿ ǅϰς ǲſ ϐϱſ]"
+msgstr ""
 
 #: imports/both/api/organizations/schema.js:77
 msgid "e.g. http://www.example.com/logo.png"
-msgstr "[ḗ.ɠ. ħŧŧƥ://ẇẇẇ.ḗẋȧḿƥŀḗ.ƈǿḿ/ŀǿɠǿ.ƥƞɠ 鶱ǅǲΰ 鶱靐ΐϑǅ]"
+msgstr ""
 
 #: imports/both/api/organizations/schema.js:81
 msgid "Accept Terms & Conditions"
-msgstr "[Ȧƈƈḗƥŧ Ŧḗřḿş & Ƈǿƞḓīŧīǿƞş ϕϵǋϵǈǈ ςϐϑϐ]"
+msgstr ""
 
 #: imports/both/api/sources/schema.js:15
 msgid "Short name for backlinks (should include your Organization)"
 msgstr ""
-"[Şħǿřŧ ƞȧḿḗ ƒǿř ƀȧƈķŀīƞķş (şħǿŭŀḓ īƞƈŀŭḓḗ ẏǿŭř Ǿřɠȧƞīzȧŧīǿƞ) 鶱ǈΐſı 靐ẛ]"
 
 #: imports/both/api/sources/schema.js:20
 msgid "License"
-msgstr "[Ŀīƈḗƞşḗ 靐衋衋衋鶱ϑϐ]"
+msgstr ""
 
 #: imports/both/api/sources/schema.js:25
 msgid "Description"
-msgstr "[Ḓḗşƈřīƥŧīǿƞ ϕſϵ鶱靐ϵΐϑſϖ衋]"
+msgstr ""
 
 #: imports/both/api/sources/schema.js:30
 msgid "Web-site (optional)"
-msgstr "[Ẇḗƀ-şīŧḗ (ǿƥŧīǿƞȧŀ) ſ鶱ϵϰΰΐϐϰ 靐ϰ]"
+msgstr ""
 
 #: imports/both/api/sources/schema.js:36
 msgid "Additional accessibility information (English)"
-msgstr "[Ȧḓḓīŧīǿƞȧŀ ȧƈƈḗşşīƀīŀīŧẏ īƞƒǿřḿȧŧīǿƞ (Ḗƞɠŀīşħ) ϵǲẛϖı衋ſϑϕǋ]"
+msgstr ""
 
 #: imports/both/api/sources/schema.js:42
 msgid ""
 "Only a draft (content not available to people outside your organization)"
 msgstr ""
-"[Ǿƞŀẏ ȧ ḓřȧƒŧ (ƈǿƞŧḗƞŧ ƞǿŧ ȧṽȧīŀȧƀŀḗ ŧǿ ƥḗǿƥŀḗ ǿŭŧşīḓḗ ẏǿŭř ǿřɠȧƞīzȧŧīǿƞ) "
-"ǋΰς靐 ǋ ϕϐΰ靐]"
 
 #: imports/both/api/sources/schema.js:48
 msgid "Stream chain setup"
-msgstr "[Şŧřḗȧḿ ƈħȧīƞ şḗŧŭƥ ϖϖǈſϰ衋 ϐΐϵ]"
+msgstr ""
 
 #: imports/both/api/sources/schema.js:60 imports/both/api/sources/schema.js:70
 msgid "Data is available to everybody"
-msgstr "[Ḓȧŧȧ īş ȧṽȧīŀȧƀŀḗ ŧǿ ḗṽḗřẏƀǿḓẏ ϑϰǈ衋 ϵ鶱 ϑϑ]"
+msgstr ""
 
 #: imports/both/api/sources/schema.js:65
 msgid "Access to this data source can be requested"
-msgstr "[Ȧƈƈḗşş ŧǿ ŧħīş ḓȧŧȧ şǿŭřƈḗ ƈȧƞ ƀḗ řḗɋŭḗşŧḗḓ ıſϰϖϕς ẛ鶱]"
+msgstr ""
 
 #: imports/both/api/users/accounts.js:87
 msgid "What is your name (or nickname)?"
-msgstr "[Ẇħȧŧ īş ẏǿŭř ƞȧḿḗ (ǿř ƞīƈķƞȧḿḗ)? ſϵǲǈ ϑǋ ſǈς]"
+msgstr ""
 
 #: imports/both/api/users/accounts.js:91
 msgid "e.g. Petra"
-msgstr "[ḗ.ɠ. Ƥḗŧřȧ ς靐ϖϵ ϱϰ鶱ϑ衋]"
+msgstr ""
 
 #: imports/both/api/users/accounts.js:95
 msgid "Terms and Conditions"
-msgstr "[Ŧḗřḿş ȧƞḓ Ƈǿƞḓīŧīǿƞş ϵıǈϰ靐 ǈǅǋ ſǲ]"
+msgstr ""
 
 #: imports/both/api/users/accounts.js:98
 msgid "Provide link to t&c here"
-msgstr "[Ƥřǿṽīḓḗ ŀīƞķ ŧǿ ŧ&ƈ ħḗřḗ 衋ϕıϰſϰẛ ϵϵ]"
+msgstr ""
 
 #: imports/both/api/users/accounts.js:106
 msgid "email"
-msgstr "[ḗḿȧīŀ ǋ鶱ςẛſ]"
+msgstr ""
 
 #: imports/both/api/users/accounts.js:110
 msgid "e.g. petra@example.com"
-msgstr "[ḗ.ɠ. ƥḗŧřȧ@ḗẋȧḿƥŀḗ.ƈǿḿ ϖ鶱ϰı ΰϕſΐẛı]"
+msgstr ""
 
 #: imports/ui/pages/Events/CreateEventPage.js:15
 #: imports/ui/pages/Organizations/CreateOrganizationPage.js:15
 #: imports/ui/pages/Organizations/OrganizationAdminHeader.js:11
 msgid "Dashboard"
-msgstr "[Ḓȧşħƀǿȧřḓ 鶱ϰǲẛϐϰϑΰς]"
+msgstr ""
 
 #: imports/ui/pages/Events/CreateEventPage.js:16
 #: imports/ui/pages/Events/EventBaseForm.js:107
 #: imports/ui/pages/Organizations/CreateOrganizationPage.js:16
 #: imports/ui/pages/Organizations/OrganizationBaseForm.js:102
 msgid "Create"
-msgstr "[Ƈřḗȧŧḗ ϕ靐靐ϰẛϰ]"
+msgstr ""
 
 #: imports/ui/pages/Events/EventBaseForm.js:31
 msgid "Optimal a 640 x 400 PNG-file."
-msgstr "[Ǿƥŧīḿȧŀ ȧ 640 ẋ 400 ƤȠƓ-ƒīŀḗ. ǋϖΰǈΐǈϱ 鶱 ϖ]"
+msgstr ""
 
 #: imports/ui/pages/Events/EventBaseForm.js:106
 #: imports/ui/pages/Organizations/OrganizationBaseForm.js:101
 msgid "Update"
-msgstr "[Ŭƥḓȧŧḗ ϰϑϖẛǲϐ]"
+msgstr ""
 
 #: imports/ui/pages/Events/EventBaseForm.js:108
 #: imports/ui/pages/Organizations/OrganizationBaseForm.js:103
 msgid "Cancel"
-msgstr "[Ƈȧƞƈḗŀ ǈϕϐıΐẛ]"
+msgstr ""
 
 #: imports/ui/pages/Events/EventParticipantsPage.js:37
 msgid "Share a link"
-msgstr "[Şħȧřḗ ȧ ŀīƞķ ǋΐϵςϰ ϖ ǋǈ]"
+msgstr ""
 
 #: imports/ui/pages/Events/EventParticipantsPage.js:39
 msgid ""
 "You can also share the following link to invite people, e.g. via Social "
 "Media or handouts."
 msgstr ""
-"[Ẏǿŭ ƈȧƞ ȧŀşǿ şħȧřḗ ŧħḗ ƒǿŀŀǿẇīƞɠ ŀīƞķ ŧǿ īƞṽīŧḗ ƥḗǿƥŀḗ, ḗ.ɠ. ṽīȧ Şǿƈīȧŀ "
-"Ḿḗḓīȧ ǿř ħȧƞḓǿŭŧş. ϰ鶱靐 ǲ衋ΰ ΐǅǲǋ ϕϱ]"
 
 #: imports/ui/pages/Events/EventParticipantsPage.js:43
 msgid "Copy to clipboard"
-msgstr "[Ƈǿƥẏ ŧǿ ƈŀīƥƀǿȧřḓ 靐ΰΰϱ ǋΐ ǲςẛϑ]"
+msgstr ""
 
 #: imports/ui/pages/Events/EventParticipantsPage.js:64
 msgid "Invite Participants to event"
-msgstr "[Īƞṽīŧḗ Ƥȧřŧīƈīƥȧƞŧş ŧǿ ḗṽḗƞŧ 衋鶱ϱſǋϱ ϰΐϖς]"
+msgstr ""
 
 #: imports/ui/pages/Events/EventParticipantsPage.js:66
 msgid "No one invited yet."
-msgstr "[Ƞǿ ǿƞḗ īƞṽīŧḗḓ ẏḗŧ. ϖϑ ϑϐϱ ϰΐ衋ǅ]"
+msgstr ""
 
 #: imports/ui/pages/Events/EventParticipantsPage.js:71
 msgid ""
 "The event is not published yet. Invitations will be send when published."
 msgstr ""
-"[Ŧħḗ ḗṽḗƞŧ īş ƞǿŧ ƥŭƀŀīşħḗḓ ẏḗŧ. Īƞṽīŧȧŧīǿƞş ẇīŀŀ ƀḗ şḗƞḓ ẇħḗƞ ƥŭƀŀīşħḗḓ. "
-"衋ſϰ ǋſǋςı ϰ]"
 
 #: imports/ui/pages/Events/EventParticipantsPage.js:71
 msgid "You made this event public. Invitations will be send immediatly."
 msgstr ""
-"[Ẏǿŭ ḿȧḓḗ ŧħīş ḗṽḗƞŧ ƥŭƀŀīƈ. Īƞṽīŧȧŧīǿƞş ẇīŀŀ ƀḗ şḗƞḓ īḿḿḗḓīȧŧŀẏ. ςǅϰ ςǋ鶱ǲ]"
 
 #: imports/ui/pages/Events/EventParticipantsPage.js:74
 msgid ""
 "Invited people will receive a personal invitation which is only valid for "
 "them."
 msgstr ""
-"[Īƞṽīŧḗḓ ƥḗǿƥŀḗ ẇīŀŀ řḗƈḗīṽḗ ȧ ƥḗřşǿƞȧŀ īƞṽīŧȧŧīǿƞ ẇħīƈħ īş ǿƞŀẏ ṽȧŀīḓ ƒǿř "
-"ŧħḗḿ. ſϱϖǲǅſϰ ΐϑǅϖ]"
 
 #: imports/ui/pages/Events/EventParticipantsPage.js:75
 msgid "Everybody with the share-link below can join."
-msgstr "[Ḗṽḗřẏƀǿḓẏ ẇīŧħ ŧħḗ şħȧřḗ-ŀīƞķ ƀḗŀǿẇ ƈȧƞ ĵǿīƞ. ſϱǲıΐϑϑǋΐ]"
+msgstr ""
 
-#: imports/ui/pages/Events/OrganizeEventPage.js:164
-#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:29
-#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:51
+#: imports/ui/pages/Events/EventStatistics.js:14
+#: imports/ui/pages/Organizations/OrganizationStatistics.js:12
 msgid "invited"
-msgstr "[īƞṽīŧḗḓ ǋǲẛΰǅǅǈ]"
+msgstr ""
+
+#: imports/ui/pages/Events/EventStatistics.js:17
+#: imports/ui/pages/Organizations/OrganizationStatistics.js:15
+msgid "registered"
+msgstr ""
+
+#: imports/ui/pages/Events/EventStatistics.js:23
+#: imports/ui/pages/Organizations/OrganizationStatistics.js:19
+msgid "planned"
+msgstr ""
+
+#: imports/ui/pages/Events/EventStatistics.js:26
+#: imports/ui/pages/Organizations/OrganizationStatistics.js:22
+msgid "mapped"
+msgstr ""
+
+#: imports/ui/pages/Events/EventStatistics.js:31
+#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:26
+msgid "Days Left"
+msgstr ""
+
+#: imports/ui/pages/Events/EventStatistics.js:34
+#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:29
+msgid "Days Ago"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:163
+msgid "Event created successfully."
+msgstr ""
 
 #: imports/ui/pages/Events/OrganizeEventPage.js:167
-#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:32
-#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:54
-#: imports/ui/pages/Organizations/ShowOrganizationPage.js:39
-msgid "registered"
-msgstr "[řḗɠīşŧḗřḗḓ ϰ鶱鶱靐ϕǲǈΐǲ靐]"
+#: imports/ui/pages/Events/OrganizeEventPage.js:227
+msgid "Edit"
+msgstr ""
 
 #: imports/ui/pages/Events/OrganizeEventPage.js:172
-#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:36
-#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:58
-msgid "planned"
-msgstr "[ƥŀȧƞƞḗḓ 鶱ΰϵ靐ǋſǲ]"
+msgid "${ stats.invited } Invitations sent."
+msgstr ""
 
 #: imports/ui/pages/Events/OrganizeEventPage.js:175
-#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:39
-#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:61
-#: imports/ui/pages/Organizations/ShowOrganizationPage.js:43
-msgid "mapped"
-msgstr "[ḿȧƥƥḗḓ ϱϰϖ靐ſǲ]"
-
-#: imports/ui/pages/Events/OrganizeEventPage.js:178
-msgid "Event created successfully."
-msgstr "[Ḗṽḗƞŧ ƈřḗȧŧḗḓ şŭƈƈḗşşƒŭŀŀẏ. ΐϵΐϐϰ ǈϑϖϐ]"
-
-#: imports/ui/pages/Events/OrganizeEventPage.js:182
-#: imports/ui/pages/Events/OrganizeEventPage.js:242
-msgid "Edit"
-msgstr "[Ḗḓīŧ ǲǅ靐ϕ]"
-
-#: imports/ui/pages/Events/OrganizeEventPage.js:187
-msgid "${ stats.invited } Invitations sent."
-msgstr "[${ şŧȧŧş.īƞṽīŧḗḓ } Īƞṽīŧȧŧīǿƞş şḗƞŧ. ϐϑ 鶱ϐǲǲϖΰΰ]"
-
-#: imports/ui/pages/Events/OrganizeEventPage.js:190
 msgid "No participants invited."
-msgstr "[Ƞǿ ƥȧřŧīƈīƥȧƞŧş īƞṽīŧḗḓ. ϕϑ ΐǅςẛẛ鶱ϑ]"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:176
+#: imports/ui/pages/Events/OrganizeEventPage.js:183
+msgid "Emails will be send when you publish."
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:177
+msgid "Invite participants"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:181
+msgid "${ stats.invited } participants invited"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:184
+msgid "Invite more"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:186
+msgid "Some documents to read."
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:188
+msgid "Tips for event organizers"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:189
+msgid "Learn more"
+msgstr ""
 
 #: imports/ui/pages/Events/OrganizeEventPage.js:191
 #: imports/ui/pages/Events/OrganizeEventPage.js:198
-msgid "Emails will be send when you publish."
-msgstr "[Ḗḿȧīŀş ẇīŀŀ ƀḗ şḗƞḓ ẇħḗƞ ẏǿŭ ƥŭƀŀīşħ. ıǲϰǲ衋ς ϰ靐ϐ]"
+msgid "Publish event"
+msgstr ""
 
-#: imports/ui/pages/Events/OrganizeEventPage.js:192
-msgid "Invite participants"
-msgstr "[Īƞṽīŧḗ ƥȧřŧīƈīƥȧƞŧş ıǈϰΐϵϐ ϱſǅΰ]"
+#: imports/ui/pages/Events/OrganizeEventPage.js:195
+msgid "Mapping event still a draft"
+msgstr ""
 
 #: imports/ui/pages/Events/OrganizeEventPage.js:196
-msgid "${ stats.invited } participants invited"
-msgstr "[${ şŧȧŧş.īƞṽīŧḗḓ } ƥȧřŧīƈīƥȧƞŧş īƞṽīŧḗḓ 靐ΐ ǅϖǋϰΰϐϰ]"
-
-#: imports/ui/pages/Events/OrganizeEventPage.js:199
-msgid "Invite more"
-msgstr "[Īƞṽīŧḗ ḿǿřḗ ǈſẛϐΐſ ΰϰϐς]"
-
-#: imports/ui/pages/Events/OrganizeEventPage.js:201
-msgid "Some documents to read."
-msgstr "[Şǿḿḗ ḓǿƈŭḿḗƞŧş ŧǿ řḗȧḓ. ẛ靐ǋϑ ϑςϐǅǅǋ]"
-
-#: imports/ui/pages/Events/OrganizeEventPage.js:203
-msgid "Tips for event organizers"
-msgstr "[Ŧīƥş ƒǿř ḗṽḗƞŧ ǿřɠȧƞīzḗřş ẛϐẛẛ ſϖẛ ſǈ]"
-
-#: imports/ui/pages/Events/OrganizeEventPage.js:204
-msgid "Learn more"
-msgstr "[Ŀḗȧřƞ ḿǿřḗ ſϖǈϑǋ ϰϵΐϵ]"
-
-#: imports/ui/pages/Events/OrganizeEventPage.js:206
-#: imports/ui/pages/Events/OrganizeEventPage.js:213
-msgid "Publish event"
-msgstr "[Ƥŭƀŀīşħ ḗṽḗƞŧ ẛǈǋ靐ϖ鶱ǋ ϐϕǲ]"
-
-#: imports/ui/pages/Events/OrganizeEventPage.js:210
-msgid "Mapping event still a draft"
-msgstr "[Ḿȧƥƥīƞɠ ḗṽḗƞŧ şŧīŀŀ ȧ ḓřȧƒŧ 靐ǈΰϖϕ衋ϐ ϑ靐]"
-
-#: imports/ui/pages/Events/OrganizeEventPage.js:211
 msgid ""
 "Please make sure all details are correct. When you publish, invitation "
 "emails will be sent."
 msgstr ""
-"[Ƥŀḗȧşḗ ḿȧķḗ şŭřḗ ȧŀŀ ḓḗŧȧīŀş ȧřḗ ƈǿřřḗƈŧ. Ẇħḗƞ ẏǿŭ ƥŭƀŀīşħ, īƞṽīŧȧŧīǿƞ "
-"ḗḿȧīŀş ẇīŀŀ ƀḗ şḗƞŧ. ςΰϖϐϰſ ǅϑϵϰ ǅǅΰ]"
 
-#: imports/ui/pages/Events/OrganizeEventPage.js:214
+#: imports/ui/pages/Events/OrganizeEventPage.js:199
 msgid "Congratulations! Your event has been published"
-msgstr "[Ƈǿƞɠřȧŧŭŀȧŧīǿƞş! Ẏǿŭř ḗṽḗƞŧ ħȧş ƀḗḗƞ ƥŭƀŀīşħḗḓ ϐ衋ǋϑϐǋϕϰǲς]"
+msgstr ""
 
-#: imports/ui/pages/Events/OrganizeEventPage.js:217
+#: imports/ui/pages/Events/OrganizeEventPage.js:202
 msgid "Mapping event published"
-msgstr "[Ḿȧƥƥīƞɠ ḗṽḗƞŧ ƥŭƀŀīşħḗḓ 靐ϖΰǅϖǈς ϱςϑ]"
+msgstr ""
 
-#: imports/ui/pages/Events/OrganizeEventPage.js:218
+#: imports/ui/pages/Events/OrganizeEventPage.js:203
 msgid ""
 "Your event is now online. It will be closed the day after. Be careful when canceling your event:\n"
 "you can not undo this."
 msgstr ""
-"[Ẏǿŭř ḗṽḗƞŧ īş ƞǿẇ ǿƞŀīƞḗ. Īŧ ẇīŀŀ ƀḗ ƈŀǿşḗḓ ŧħḗ ḓȧẏ ȧƒŧḗř. Ɓḗ ƈȧřḗƒŭŀ ẇħḗƞ ƈȧƞƈḗŀīƞɠ ẏǿŭř ḗṽḗƞŧ:\n"
-"ẏǿŭ ƈȧƞ ƞǿŧ ŭƞḓǿ ŧħīş. ϑẛϱ鶱 ǲϵΰςǲ ǲΐ ΐϐϖ ϑſ]"
 
-#: imports/ui/pages/Events/OrganizeEventPage.js:221
-#: imports/ui/pages/Events/OrganizeEventPage.js:229
+#: imports/ui/pages/Events/OrganizeEventPage.js:206
+#: imports/ui/pages/Events/OrganizeEventPage.js:214
 msgid "View event"
-msgstr "[Ṽīḗẇ ḗṽḗƞŧ ǅſΰϐ ǋſıϵϵ]"
+msgstr ""
 
-#: imports/ui/pages/Events/OrganizeEventPage.js:222
+#: imports/ui/pages/Events/OrganizeEventPage.js:207
 msgid "Cancel event"
-msgstr "[Ƈȧƞƈḗŀ ḗṽḗƞŧ ϵϐϵϵǈ鶱 ϰϵϑ]"
+msgstr ""
 
-#: imports/ui/pages/Events/OrganizeEventPage.js:223
+#: imports/ui/pages/Events/OrganizeEventPage.js:208
 msgid "Your event has been completed"
-msgstr "[Ẏǿŭř ḗṽḗƞŧ ħȧş ƀḗḗƞ ƈǿḿƥŀḗŧḗḓ 靐ϑΐΐ ϑǈẛıϖ]"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:211
+msgid "Mapping event finished"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:212
+msgid "Your event is over now."
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:216
+msgid "After the event"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:218
+msgid "Event picture has been set."
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:220
+#: imports/ui/pages/Events/OrganizeEventPage.js:222
+msgid "Set event picture"
+msgstr ""
 
 #: imports/ui/pages/Events/OrganizeEventPage.js:226
-msgid "Mapping event finished"
-msgstr "[Ḿȧƥƥīƞɠ ḗṽḗƞŧ ƒīƞīşħḗḓ ϵϐϵǋǅǋǋ ẛςϑ]"
+msgid "Event picture was set"
+msgstr ""
 
-#: imports/ui/pages/Events/OrganizeEventPage.js:227
-msgid "Your event is over now."
-msgstr "[Ẏǿŭř ḗṽḗƞŧ īş ǿṽḗř ƞǿẇ. 鶱ΰΐϕ ϱϰ衋ϵẛ]"
+#: imports/ui/pages/Events/OrganizeEventPage.js:230
+msgid "Great. You may share the link now."
+msgstr ""
 
-#: imports/ui/pages/Events/OrganizeEventPage.js:231
-msgid "After the event"
-msgstr "[Ȧƒŧḗř ŧħḗ ḗṽḗƞŧ ϖıϖϐ靐 ΰẛϰ]"
-
-#: imports/ui/pages/Events/OrganizeEventPage.js:233
-msgid "Event picture has been set."
-msgstr "[Ḗṽḗƞŧ ƥīƈŧŭřḗ ħȧş ƀḗḗƞ şḗŧ. ϰϕςǲǲ ϖǈϕı]"
+#: imports/ui/pages/Events/OrganizeEventPage.js:232
+#: imports/ui/pages/Events/OrganizeEventPage.js:234
+msgid "Share results"
+msgstr ""
 
 #: imports/ui/pages/Events/OrganizeEventPage.js:235
-#: imports/ui/pages/Events/OrganizeEventPage.js:237
-msgid "Set event picture"
-msgstr "[Şḗŧ ḗṽḗƞŧ ƥīƈŧŭřḗ ϱϑϕ ǈϖſϕϵ 靐ϐ]"
-
-#: imports/ui/pages/Events/OrganizeEventPage.js:241
-msgid "Event picture was set"
-msgstr "[Ḗṽḗƞŧ ƥīƈŧŭřḗ ẇȧş şḗŧ 鶱ıΰϖǋ ϑ鶱ϰſ]"
-
-#: imports/ui/pages/Events/OrganizeEventPage.js:245
-msgid "Great. You may share the link now."
-msgstr "[Ɠřḗȧŧ. Ẏǿŭ ḿȧẏ şħȧřḗ ŧħḗ ŀīƞķ ƞǿẇ. ı衋ǈ靐ςϑ ǈϖ衋]"
-
-#: imports/ui/pages/Events/OrganizeEventPage.js:247
-#: imports/ui/pages/Events/OrganizeEventPage.js:249
-msgid "Share results"
-msgstr "[Şħȧřḗ řḗşŭŀŧş ǋΐ鶱ϱϵ ǅϐẛ衋ΐ]"
-
-#: imports/ui/pages/Events/OrganizeEventPage.js:250
 msgid "Share"
-msgstr "[Şħȧřḗ 衋ǅǲϱϱ]"
+msgstr ""
 
-#: imports/ui/pages/Events/OrganizeEventPage.js:252
+#: imports/ui/pages/Events/OrganizeEventPage.js:237
 msgid "Results have been shared"
-msgstr "[Řḗşŭŀŧş ħȧṽḗ ƀḗḗƞ şħȧřḗḓ ǈϰıϐϖǲ靐 ſẛ]"
+msgstr ""
 
-#: imports/ui/pages/Events/OrganizeEventPage.js:253
+#: imports/ui/pages/Events/OrganizeEventPage.js:238
 msgid "View"
-msgstr "[Ṽīḗẇ 靐ϖΐϕ]"
+msgstr ""
 
 #: imports/ui/pages/Events/PublicSignUpForEventPage.js:42
 #: imports/ui/pages/Events/SignUpForEventPage.js:43
 #: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:50
 msgid "Accepting invitation failed."
-msgstr "[Ȧƈƈḗƥŧīƞɠ īƞṽīŧȧŧīǿƞ ƒȧīŀḗḓ. ΰϐϵϕϱςΰϱϑ 鶱]"
+msgstr ""
 
 #: imports/ui/pages/Events/PublicSignUpForEventPage.js:63
 #: imports/ui/pages/Events/SignUpForEventPage.js:64
 #: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:70
 msgid "Something went wrong"
-msgstr "[Şǿḿḗŧħīƞɠ ẇḗƞŧ ẇřǿƞɠ ǈ衋靐ϑϱıϐΰϐ ǲϰ]"
+msgstr ""
 
 #: imports/ui/pages/Events/PublicSignUpForEventPage.js:68
 #: imports/ui/pages/Events/SignUpForEventPage.js:69
 #: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:75
 msgid "Accepting invitation"
-msgstr "[Ȧƈƈḗƥŧīƞɠ īƞṽīŧȧŧīǿƞ ſıςϰϑǲǅẛϐ ϱϕ]"
+msgstr ""
 
 #: imports/ui/pages/Events/PublicSignUpForEventPage.js:75
 #: imports/ui/pages/Events/PublicSignUpForEventPage.js:82
 #: imports/ui/pages/Events/SignUpForEventPage.js:73
 #: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:79
 msgid "Great to have you here!"
-msgstr "[Ɠřḗȧŧ ŧǿ ħȧṽḗ ẏǿŭ ħḗřḗ! ϐϵΰǋı ϵς ϐϰ]"
+msgstr ""
 
 #: imports/ui/pages/Events/PublicSignUpForEventPage.js:76
 #: imports/ui/pages/Events/PublicSignUpForEventPage.js:83
 #: imports/ui/pages/Events/SignUpForEventPage.js:74
 msgid "Please sign up with ${ organization.name } to join ${ event.name }."
 msgstr ""
-"[Ƥŀḗȧşḗ şīɠƞ ŭƥ ẇīŧħ ${ ǿřɠȧƞīzȧŧīǿƞ.ƞȧḿḗ } ŧǿ ĵǿīƞ ${ ḗṽḗƞŧ.ƞȧḿḗ }. ϵϐ鶱ϐϰϖ "
-"ϖϱẛ]"
 
 #: imports/ui/pages/Events/PublicSignUpForEventPage.js:77
 msgid "Sign up as a guest"
-msgstr "[Şīɠƞ ŭƥ ȧş ȧ ɠŭḗşŧ ϱǋϑϰ 靐衋 ϑǅ]"
+msgstr ""
 
 #: imports/ui/pages/Events/PublicSignUpForEventPage.js:78
 msgid "Sign-in/Sign-up with email"
-msgstr "[Şīɠƞ-īƞ/Şīɠƞ-ŭƥ ẇīŧħ ḗḿȧīŀ 衋ıϕϑǲ鶱ſẛϖẛϕ]"
+msgstr ""
 
 #: imports/ui/pages/Events/PublicSignUpForEventPage.js:85
 msgid "Sign-up as a guest"
-msgstr "[Şīɠƞ-ŭƥ ȧş ȧ ɠŭḗşŧ ǋǈϱϰϕǈſ ǲı]"
+msgstr ""
 
 #: imports/ui/pages/Events/PublicSignUpForEventPage.js:90
 #: imports/ui/pages/Events/SignUpForEventPage.js:79
 #: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:85
 msgid "Welcome to our community!"
-msgstr "[Ẇḗŀƈǿḿḗ ŧǿ ǿŭř ƈǿḿḿŭƞīŧẏ! ǋǋϐϱϕϖς ϵǈ]"
+msgstr ""
 
 #: imports/ui/pages/Events/PublicSignUpForEventPage.js:91
 #: imports/ui/pages/Events/SignUpForEventPage.js:80
 msgid ""
 "Thanks for signing up with ${ organization.name } to join ${ event.name }!"
 msgstr ""
-"[Ŧħȧƞķş ƒǿř şīɠƞīƞɠ ŭƥ ẇīŧħ ${ ǿřɠȧƞīzȧŧīǿƞ.ƞȧḿḗ } ŧǿ ĵǿīƞ ${ ḗṽḗƞŧ.ƞȧḿḗ }! "
-"ẛǈςΐϰ衋 靐ςı]"
 
 #: imports/ui/pages/Events/PublicSignUpForEventPage.js:92
 #: imports/ui/pages/Events/SignUpForEventPage.js:81
 msgid "Start mapping now!"
-msgstr "[Şŧȧřŧ ḿȧƥƥīƞɠ ƞǿẇ! ǲǋıςϰ ϰϰϵϱ]"
+msgstr ""
 
 #: imports/ui/pages/Events/ShowEventPage.js:20
-#: imports/ui/pages/Organizations/ShowOrganizationPage.js:33
+#: imports/ui/pages/Organizations/ShowOrganizationPage.js:34
 msgid "Join Us"
-msgstr "[Ĵǿīƞ Ŭş ǋϕǈϐ ı衋]"
+msgstr ""
 
 #: imports/ui/pages/Events/ShowEventPage.js:21
 msgid "Share…"
-msgstr "[Şħȧřḗ… ϰǋǲǈǲϵ]"
+msgstr ""
 
 #: imports/ui/pages/Events/ShowEventPage.js:24
 msgid "Event picture"
-msgstr "[Ḗṽḗƞŧ ƥīƈŧŭřḗ ϖıẛϵς ϵ鶱ǈǈı]"
+msgstr ""
 
 #: imports/ui/pages/Events/ShowEventPage.js:28
 msgid "Participants"
-msgstr "[Ƥȧřŧīƈīƥȧƞŧş 鶱ς衋ϵϱſϵǈϱǋ]"
+msgstr ""
 
 #: imports/ui/pages/Events/ShowEventPage.js:35
 msgid "Planned"
-msgstr "[Ƥŀȧƞƞḗḓ 鶱ıǋϑϵϑς]"
+msgstr ""
 
 #: imports/ui/pages/Events/ShowEventPage.js:38
 msgid "Achieved"
-msgstr "[Ȧƈħīḗṽḗḓ ϐǲϱϐΐẛıǅ]"
+msgstr ""
 
 #: imports/ui/pages/Events/SignUpForEventPage.js:24
 #: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:25
@@ -712,18 +683,16 @@ msgid ""
 "No invitation found. Maybe you already used this token or joined this "
 "organization in another way?"
 msgstr ""
-"[Ƞǿ īƞṽīŧȧŧīǿƞ ƒǿŭƞḓ. Ḿȧẏƀḗ ẏǿŭ ȧŀřḗȧḓẏ ŭşḗḓ ŧħīş ŧǿķḗƞ ǿř ĵǿīƞḗḓ ŧħīş "
-"ǿřɠȧƞīzȧŧīǿƞ īƞ ȧƞǿŧħḗř ẇȧẏ? ϑ靐 靐ııϕϕϕǲ衋ϵϕ ϰϑ]"
 
 #: imports/ui/pages/Home/HomePage.js:11
 #: imports/ui/pages/Users/ProfilePage.js:13
 #: imports/ui/pages/Users/SignUpPage.js:12
 msgid "wheelmap.pro"
-msgstr "[ẇħḗḗŀḿȧƥ.ƥřǿ ϱ鶱ıǈϖ衋鶱ǅẛ靐]"
+msgstr ""
 
 #: imports/ui/pages/Home/HomePage.js:17
 msgid "Like Wheelmap but customized to fit your own community."
-msgstr "[Ŀīķḗ Ẇħḗḗŀḿȧƥ ƀŭŧ ƈŭşŧǿḿīzḗḓ ŧǿ ƒīŧ ẏǿŭř ǿẇƞ ƈǿḿḿŭƞīŧẏ. ǲǅǈϰ ſϖ靐]"
+msgstr ""
 
 #: imports/ui/pages/Home/HomePage.js:18
 msgid ""
@@ -732,19 +701,14 @@ msgid ""
 "accessibility of places! Wheelmap Pro is a powerful tool with your own "
 "brand, your specific accessibility criteria and step-by-step action plans."
 msgstr ""
-"[Ẇħīƈħ ƥŭƀŀīƈ ƥŀȧƈḗş ȧřḗ ȧƈƈḗşşīƀŀḗ ƒǿř ƥḗǿƥŀḗ ẇīŧħ ḓīşȧƀīŀīŧīḗş? Ƈřḗȧŧḗ "
-"ẏǿŭř ǿẇƞ ḿȧƥƥīƞɠ ƈǿḿḿŭƞīŧẏ ȧƞḓ ḗḿƥǿẇḗř ẏǿŭř ṽǿŀŭƞŧḗḗřş ŧǿ ɠǿ ǿŭŧ ȧƞḓ ḿȧřķ "
-"ŧħḗ ȧƈƈḗşşīƀīŀīŧẏ ǿƒ ƥŀȧƈḗş! Ẇħḗḗŀḿȧƥ Ƥřǿ īş ȧ ƥǿẇḗřƒŭŀ ŧǿǿŀ ẇīŧħ ẏǿŭř ǿẇƞ "
-"ƀřȧƞḓ, ẏǿŭř şƥḗƈīƒīƈ ȧƈƈḗşşīƀīŀīŧẏ ƈřīŧḗřīȧ ȧƞḓ şŧḗƥ-ƀẏ-şŧḗƥ ȧƈŧīǿƞ ƥŀȧƞş. "
-"ςϱı衋ϰ 衋ſϑΰΰϐ ϰ靐ϵϵΐΰ ǲϑǋ ϰςǲ鶱ẛ鶱ςϱǲ靐 鶱ΐ鶱 ıΐϰΐΰẛ ϰϰ靐ϵ ϑϕΐǈΐ]"
 
 #: imports/ui/pages/Home/HomePage.js:19
 msgid "Create your community"
-msgstr "[Ƈřḗȧŧḗ ẏǿŭř ƈǿḿḿŭƞīŧẏ ϱςϰǅǲϖ ΐϑϑ]"
+msgstr ""
 
 #: imports/ui/pages/Home/HomePage.js:23
 msgid "Step 1."
-msgstr "[Şŧḗƥ 1. ΐẛϖϑ ẛǅ]"
+msgstr ""
 
 #: imports/ui/pages/Home/HomePage.js:24
 msgid ""
@@ -752,25 +716,20 @@ msgid ""
 "you plan and organize successful mapping events for collecting accessibility"
 " data."
 msgstr ""
-"[Şŧȧřŧ ȧ ƞḗẇ ḿȧƥƥīƞɠ ƈǿḿḿŭƞīŧẏ ǿř ĵǿīƞ ȧ ƈǿḿḿŭƞīŧẏ ȧş ȧ ṽǿŀŭƞŧḗḗř. Ẇḗ ħḗŀƥ "
-"ẏǿŭ ƥŀȧƞ ȧƞḓ ǿřɠȧƞīzḗ şŭƈƈḗşşƒŭŀ ḿȧƥƥīƞɠ ḗṽḗƞŧş ƒǿř ƈǿŀŀḗƈŧīƞɠ ȧƈƈḗşşīƀīŀīŧẏ"
-" ḓȧŧȧ. 衋ΰǅ靐衋 ϖ ϑıẛ ſǈϕϐǋΐı ẛǋΐǈſ靐ǈǅ]"
 
 #: imports/ui/pages/Home/HomePage.js:27
 msgid "Step 2."
-msgstr "[Şŧḗƥ 2. ϰϰϱϑ 衋ǲ]"
+msgstr ""
 
 #: imports/ui/pages/Home/HomePage.js:28
 msgid ""
 "Invite volunteers to mapping events during which groups evaluate the "
 "accessibility of local public places."
 msgstr ""
-"[Īƞṽīŧḗ ṽǿŀŭƞŧḗḗřş ŧǿ ḿȧƥƥīƞɠ ḗṽḗƞŧş ḓŭřīƞɠ ẇħīƈħ ɠřǿŭƥş ḗṽȧŀŭȧŧḗ ŧħḗ "
-"ȧƈƈḗşşīƀīŀīŧẏ ǿƒ ŀǿƈȧŀ ƥŭƀŀīƈ ƥŀȧƈḗş. ϑϖẛẛΰϐ 靐ςϕϱǲ鶱靐ǋıϰ]"
 
 #: imports/ui/pages/Home/HomePage.js:31
 msgid "Step 3."
-msgstr "[Şŧḗƥ 3. ςϰϑǲ ſς]"
+msgstr ""
 
 #: imports/ui/pages/Home/HomePage.js:32
 msgid ""
@@ -778,201 +737,172 @@ msgid ""
 "shared publicly to help people with and without disabilities to navigate the"
 " world."
 msgstr ""
-"[Ŧħḗ ȧƈƈḗşşīƀīŀīŧẏ īƞƒǿřḿȧŧīǿƞ ẇħīƈħ ẏǿŭř ƈǿḿḿŭƞīŧẏ ɠȧŧħḗřş ƈȧƞ ŧħḗƞ ƀḗ "
-"şħȧřḗḓ ƥŭƀŀīƈŀẏ ŧǿ ħḗŀƥ ƥḗǿƥŀḗ ẇīŧħ ȧƞḓ ẇīŧħǿŭŧ ḓīşȧƀīŀīŧīḗş ŧǿ ƞȧṽīɠȧŧḗ ŧħḗ"
-" ẇǿřŀḓ. 鶱ϖẛ ΐϐ鶱ϕϰςϑ衋ςẛ衋ẛϱ ǋΰ鶱ϰϖıϵıς]"
 
 #: imports/ui/pages/Home/HomePage.js:36
 msgid "Watch a short video introduction."
-msgstr "[Ẇȧŧƈħ ȧ şħǿřŧ ṽīḓḗǿ īƞŧřǿḓŭƈŧīǿƞ. ıϐǈϐϰ ϰ ϕ衋]"
+msgstr ""
 
 #: imports/ui/pages/Home/HomePage.js:48
 msgid "About us"
-msgstr "[Ȧƀǿŭŧ ŭş ςſϐϵǅ ǲϱ]"
+msgstr ""
 
 #: imports/ui/pages/Home/HomePage.js:49
 msgid "Imprint"
-msgstr "[Īḿƥřīƞŧ ſ靐ſΰǅϰſ]"
+msgstr ""
 
 #: imports/ui/pages/NotFound/AccessForbiddenPage.js:3
 msgid ""
 "Sorry, this should not have happened. You are not authorized for this page."
 msgstr ""
-"[Şǿřřẏ, ŧħīş şħǿŭŀḓ ƞǿŧ ħȧṽḗ ħȧƥƥḗƞḗḓ. Ẏǿŭ ȧřḗ ƞǿŧ ȧŭŧħǿřīzḗḓ ƒǿř ŧħīş ƥȧɠḗ."
-" ΐϑıΐϑϵ ϵ衋ϖǋ]"
 
 #: imports/ui/pages/NotFound/NotFoundPage.js:3
 msgid "Sorry, this should not have happened. Page not found."
-msgstr "[Şǿřřẏ, ŧħīş şħǿŭŀḓ ƞǿŧ ħȧṽḗ ħȧƥƥḗƞḗḓ. Ƥȧɠḗ ƞǿŧ ƒǿŭƞḓ. ϑıϵΐı靐]"
+msgstr ""
 
 #: imports/ui/pages/Organizations/ListOrganizationsPage.js:21
 msgid "Loading…"
-msgstr "[Ŀǿȧḓīƞɠ… ΐϑϰϑ衋鶱ς鶱]"
+msgstr ""
 
 #: imports/ui/pages/Organizations/ListOrganizationsPage.js:24
 msgid "All Organizations"
-msgstr "[Ȧŀŀ Ǿřɠȧƞīzȧŧīǿƞş ϰǲı ẛıςϱǈ鶱ΰϐ]"
+msgstr ""
 
 #: imports/ui/pages/Organizations/ListOrganizationsPage.js:26
 msgid "Create new organization"
-msgstr "[Ƈřḗȧŧḗ ƞḗẇ ǿřɠȧƞīzȧŧīǿƞ ΐϖǲ衋ϑẛ 靐ΐς]"
+msgstr ""
 
 #: imports/ui/pages/Organizations/NoOrganizationsPage.js:9
 msgid "Welcome to $pageName"
-msgstr "[Ẇḗŀƈǿḿḗ ŧǿ $ƥȧɠḗȠȧḿḗ ǅ靐ΰϰΰ鶱ϐ ϖϕ ſ]"
+msgstr ""
 
 #: imports/ui/pages/Organizations/NoOrganizationsPage.js:11
 msgid ""
 "It seems you are not part of any organization yet. Please wait for your "
 "invite, or create your own organization."
 msgstr ""
-"[Īŧ şḗḗḿş ẏǿŭ ȧřḗ ƞǿŧ ƥȧřŧ ǿƒ ȧƞẏ ǿřɠȧƞīzȧŧīǿƞ ẏḗŧ. Ƥŀḗȧşḗ ẇȧīŧ ƒǿř ẏǿŭř "
-"īƞṽīŧḗ, ǿř ƈřḗȧŧḗ ẏǿŭř ǿẇƞ ǿřɠȧƞīzȧŧīǿƞ. ϕϱ ΐı鶱ϰ靐 ϐ鶱ϖ ΐẛ衋 ǅǈ]"
 
 #: imports/ui/pages/Organizations/NoOrganizationsPage.js:13
-#: imports/ui/pages/Organizations/OrganizationAdminHeader.js:18
+#: imports/ui/pages/Organizations/OrganizationAdminHeader.js:17
 msgid "Create Organization"
-msgstr "[Ƈřḗȧŧḗ Ǿřɠȧƞīzȧŧīǿƞ ϑ靐ΐıẛǲ ǋ鶱ǈς]"
+msgstr ""
 
 #: imports/ui/pages/Organizations/OrganizationAdminHeader.js:12
 msgid "Members"
-msgstr "[Ḿḗḿƀḗřş ſ鶱ςϖϕϐ靐]"
+msgstr ""
 
 #: imports/ui/pages/Organizations/OrganizationAdminHeader.js:13
-msgid "Statistics"
-msgstr "[Şŧȧŧīşŧīƈş ϕǲ靐鶱ſǈΐǲ靐ϐ]"
-
-#: imports/ui/pages/Organizations/OrganizationAdminHeader.js:14
 msgid "Customize"
-msgstr "[Ƈŭşŧǿḿīzḗ ΐϰǋ鶱ΰϖǲıǅ]"
+msgstr ""
 
 #: imports/ui/pages/Organizations/OrganizationBaseForm.js:33
 msgid "Optimal a 640 x 400 PNG-file with transparency."
-msgstr "[Ǿƥŧīḿȧŀ ȧ 640 ẋ 400 ƤȠƓ-ƒīŀḗ ẇīŧħ ŧřȧƞşƥȧřḗƞƈẏ. ϵςǋǋẛΐẛ ǲ]"
+msgstr ""
 
 #: imports/ui/pages/Organizations/OrganizationBaseForm.js:39
 msgid ""
 "Wheelmap Pro helps you to plan and organize mapping events for accessibility"
 " data."
 msgstr ""
-"[Ẇħḗḗŀḿȧƥ Ƥřǿ ħḗŀƥş ẏǿŭ ŧǿ ƥŀȧƞ ȧƞḓ ǿřɠȧƞīzḗ ḿȧƥƥīƞɠ ḗṽḗƞŧş ƒǿř "
-"ȧƈƈḗşşīƀīŀīŧẏ ḓȧŧȧ. ẛϱςǅϕϖ靐靐 ǋ鶱ϖ]"
 
 #: imports/ui/pages/Organizations/OrganizationBaseForm.js:40
 msgid ""
 "This gathered information can then be shared publicly to help people with with and\n"
 "without disabilities to navigate the world."
 msgstr ""
-"[Ŧħīş ɠȧŧħḗřḗḓ īƞƒǿřḿȧŧīǿƞ ƈȧƞ ŧħḗƞ ƀḗ şħȧřḗḓ ƥŭƀŀīƈŀẏ ŧǿ ħḗŀƥ ƥḗǿƥŀḗ ẇīŧħ ẇīŧħ ȧƞḓ\n"
-"ẇīŧħǿŭŧ ḓīşȧƀīŀīŧīḗş ŧǿ ƞȧṽīɠȧŧḗ ŧħḗ ẇǿřŀḓ. ϰϐΰϕ ǅϕ靐ϱẛ鶱ϱΰ 鶱ςıϰ衋ϱǅı]"
 
 #: imports/ui/pages/Organizations/OrganizationBaseForm.js:42
 msgid ""
 "The app for your Organization will be setup and you’ll be ready to create "
 "your first mapping event."
 msgstr ""
-"[Ŧħḗ ȧƥƥ ƒǿř ẏǿŭř Ǿřɠȧƞīzȧŧīǿƞ ẇīŀŀ ƀḗ şḗŧŭƥ ȧƞḓ ẏǿŭ’ŀŀ ƀḗ řḗȧḓẏ ŧǿ ƈřḗȧŧḗ "
-"ẏǿŭř ƒīřşŧ ḿȧƥƥīƞɠ ḗṽḗƞŧ. 靐ıı ϰϵΰ ſ鶱ΰ ǲϕϐϰ]"
 
 #: imports/ui/pages/Organizations/OrganizationMembersPage.js:58
 msgid "Remove"
-msgstr "[Řḗḿǿṽḗ ẛǈẛϕΐ衋]"
+msgstr ""
 
 #: imports/ui/pages/Organizations/OrganizationMembersPage.js:85
 msgid "Invite to Organization"
-msgstr "[Īƞṽīŧḗ ŧǿ Ǿřɠȧƞīzȧŧīǿƞ ϱǅϖẛǈẛ ς鶱 鶱]"
+msgstr ""
 
-#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:23
-#: imports/ui/pages/Organizations/ShowOrganizationPage.js:47
-msgid "Days Left"
-msgstr "[Ḓȧẏş Ŀḗƒŧ ϱϕϕǈ ſǈςǈ]"
-
-#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:40
-msgid "Show details"
-msgstr "[Şħǿẇ ḓḗŧȧīŀş ΰẛǅǲ 鶱ϱϖϐẛ]"
-
-#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:65
+#: imports/ui/pages/Organizations/OrganizationStatistics.js:26
 msgid "created"
-msgstr "[ƈřḗȧŧḗḓ 鶱ϱϕϖΐǲΰ]"
+msgstr ""
 
-#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:68
+#: imports/ui/pages/Organizations/OrganizationStatistics.js:29
 msgid "completed"
-msgstr "[ƈǿḿƥŀḗŧḗḓ ǈϑϕ靐ǲϵϑϖǈ]"
+msgstr ""
 
-#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:70
+#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:30
+msgid "Show details"
+msgstr ""
+
+#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:38
 msgid "Create event"
-msgstr "[Ƈřḗȧŧḗ ḗṽḗƞŧ ϰſ鶱ǋϑϱ 鶱ǋı]"
+msgstr ""
 
 #: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:80
 msgid "Please sign up to join \"${ organization.name }\"."
-msgstr "[Ƥŀḗȧşḗ şīɠƞ ŭƥ ŧǿ ĵǿīƞ \"${ ǿřɠȧƞīzȧŧīǿƞ.ƞȧḿḗ }\". ϵΰϵΐǋϱ ϐϰı]"
+msgstr ""
 
 #: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:86
 msgid "Thanks for signing up with ${ organization.name }!"
-msgstr "[Ŧħȧƞķş ƒǿř şīɠƞīƞɠ ŭƥ ẇīŧħ ${ ǿřɠȧƞīzȧŧīǿƞ.ƞȧḿḗ }! ΐẛǋẛς鶱]"
+msgstr ""
 
 #: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:87
 msgid "Organize events now!"
-msgstr "[Ǿřɠȧƞīzḗ ḗṽḗƞŧş ƞǿẇ! ǈϖ靐ẛ鶱ΐϖΐ ςϵϱ]"
+msgstr ""
 
 #: imports/ui/pages/Users/SignUpPage.js:15
 msgid "Create an account"
-msgstr "[Ƈřḗȧŧḗ ȧƞ ȧƈƈǿŭƞŧ ϐϵǲϕſǅ ϰ衋 ϱǅ]"
+msgstr ""
 
 #: imports/ui/pages/Users/SignUpPage.js:18
-msgid "Join us at wheelmap.pro"
-msgstr "[Ĵǿīƞ ŭş ȧŧ ẇħḗḗŀḿȧƥ.ƥřǿ ϵϖǲǋ ϐı ϰǲ]"
+msgid "Join us at wheelmap.pro!"
+msgstr ""
 
 #: imports/ui/pages/Users/SignUpPage.js:19
 msgid "Signing up is free and without any hidden costs. "
-msgstr "[Şīɠƞīƞɠ ŭƥ īş ƒřḗḗ ȧƞḓ ẇīŧħǿŭŧ ȧƞẏ ħīḓḓḗƞ ƈǿşŧş.  ΰϵϰ衋ϱϱϵ ΰϑ]"
+msgstr ""
 
 #: imports/ui/pages/Users/SignUpPage.js:20
 msgid ""
 "We promise to never share you email address with a 3rd party or send you "
 "unwanted news or spam."
 msgstr ""
-"[Ẇḗ ƥřǿḿīşḗ ŧǿ ƞḗṽḗř şħȧřḗ ẏǿŭ ḗḿȧīŀ ȧḓḓřḗşş ẇīŧħ ȧ 3řḓ ƥȧřŧẏ ǿř şḗƞḓ ẏǿŭ "
-"ŭƞẇȧƞŧḗḓ ƞḗẇş ǿř şƥȧḿ. ſΰ ǈϐϐϰ靐ǅΰ ς鶱 ẛſ]"
 
 #: imports/both/api/event-participants/server/_invitations.js:71
 #: imports/both/api/event-participants/server/_invitations.js:111
 msgid "Email address in invitation is invalid"
-msgstr "[Ḗḿȧīŀ ȧḓḓřḗşş īƞ īƞṽīŧȧŧīǿƞ īş īƞṽȧŀīḓ ǈϖǅϵ衋 ǅǅǈẛı]"
+msgstr ""
 
 #: imports/both/api/event-participants/server/_invitations.js:77
 msgid "User ${ userId } has no assigned emails."
-msgstr "[Ŭşḗř ${ ŭşḗřĪḓ } ħȧş ƞǿ ȧşşīɠƞḗḓ ḗḿȧīŀş. 鶱ΰẛϱ ǲẛ ıϰ]"
+msgstr ""
 
 #: imports/both/api/event-participants/server/_invitations.js:108
 msgid "No unaccepted invitation to ${ eventId } found with token ${ token }."
 msgstr ""
-"[Ƞǿ ŭƞȧƈƈḗƥŧḗḓ īƞṽīŧȧŧīǿƞ ŧǿ ${ ḗṽḗƞŧĪḓ } ƒǿŭƞḓ ẇīŧħ ŧǿķḗƞ ${ ŧǿķḗƞ }. ſǋ "
-"ǈǅϱϐıςς]"
 
 #: imports/both/api/event-participants/server/_invitations.js:117
 msgid ""
 "Email is already used by another user. Please sign with that email address."
 msgstr ""
-"[Ḗḿȧīŀ īş ȧŀřḗȧḓẏ ŭşḗḓ ƀẏ ȧƞǿŧħḗř ŭşḗř. Ƥŀḗȧşḗ şīɠƞ ẇīŧħ ŧħȧŧ ḗḿȧīŀ ȧḓḓřḗşş."
-" ςẛ衋ϰΐ ΰſ ςϰς]"
 
 #: imports/both/api/event-participants/server/_invitations.js:144
 msgid "No invitation in ${ eventId } found with token ${ token }."
-msgstr "[Ƞǿ īƞṽīŧȧŧīǿƞ īƞ ${ ḗṽḗƞŧĪḓ } ƒǿŭƞḓ ẇīŧħ ŧǿķḗƞ ${ ŧǿķḗƞ }. ǅẛ ıϑıΐϐ]"
+msgstr ""
 
 #: imports/both/api/event-participants/server/methods.js:23
 #: imports/both/api/event-participants/server/methods.js:58
 #: imports/both/api/event-participants/server/methods.js:74
 #: imports/both/api/event-participants/server/methods.js:91
 msgid "Event not found"
-msgstr "[Ḗṽḗƞŧ ƞǿŧ ƒǿŭƞḓ ΰϕı靐ς ǲςϵ]"
+msgstr ""
 
 #: imports/both/api/event-participants/server/methods.js:26
 #: imports/both/api/organization-members/server/methods.js:23
 msgid "You are not authorized to invite users to this organization."
 msgstr ""
-"[Ẏǿŭ ȧřḗ ƞǿŧ ȧŭŧħǿřīzḗḓ ŧǿ īƞṽīŧḗ ŭşḗřş ŧǿ ŧħīş ǿřɠȧƞīzȧŧīǿƞ. ǅ衋ΐ ǈϰǲ ϑ]"
 
 #: imports/both/api/event-participants/server/methods.js:30
 #: imports/both/api/organization-members/server/methods.js:20
@@ -980,46 +910,43 @@ msgstr ""
 #: imports/both/api/organization-members/server/methods.js:70
 #: imports/both/api/organization-members/server/methods.js:89
 msgid "Organization not found"
-msgstr "[Ǿřɠȧƞīzȧŧīǿƞ ƞǿŧ ƒǿŭƞḓ ſϰϐςΐΐςΰΐıϱ]"
+msgstr ""
 
 #: imports/both/api/event-participants/server/methods.js:87
 msgid "Event participants not found"
-msgstr "[Ḗṽḗƞŧ ƥȧřŧīƈīƥȧƞŧş ƞǿŧ ƒǿŭƞḓ 靐ΐ衋ſǅ ϵǋϵſẛ]"
+msgstr ""
 
 #: imports/both/api/organization-members/server/methods.js:39
 #: imports/both/api/organization-members/server/methods.js:84
 msgid "Organization member not found"
-msgstr "[Ǿřɠȧƞīzȧŧīǿƞ ḿḗḿƀḗř ƞǿŧ ƒǿŭƞḓ 衋ǋΐ靐ϖǲϵǋǅ靐ǈ]"
+msgstr ""
 
 #: imports/both/api/organization-members/server/methods.js:56
 #: imports/both/api/organization-members/server/methods.js:100
 msgid "Cannot revoke the membership of the last admin of an organization."
 msgstr ""
-"[Ƈȧƞƞǿŧ řḗṽǿķḗ ŧħḗ ḿḗḿƀḗřşħīƥ ǿƒ ŧħḗ ŀȧşŧ ȧḓḿīƞ ǿƒ ȧƞ ǿřɠȧƞīzȧŧīǿƞ. ẛϵΐǈϱſ "
-"ΰΰẛ]"
 
 #: imports/both/api/organizations/server/methods.js:34
 msgid "You don\\'t have permission to remove this organization."
-msgstr "[Ẏǿŭ ḓǿƞ\\'ŧ ħȧṽḗ ƥḗřḿīşşīǿƞ ŧǿ řḗḿǿṽḗ ŧħīş ǿřɠȧƞīzȧŧīǿƞ. ǈǲϱ 衋ϑΐς]"
+msgstr ""
 
 #: imports/both/api/sources/server/privileges.js:59
 msgid "Source not found."
-msgstr "[Şǿŭřƈḗ ƞǿŧ ƒǿŭƞḓ. ıǈϐϕǅſ ſϖ衋 ΰ]"
+msgstr ""
 
 #: imports/both/api/sources/server/privileges.js:79
 msgid "Source not found or not visible."
-msgstr "[Şǿŭřƈḗ ƞǿŧ ƒǿŭƞḓ ǿř ƞǿŧ ṽīşīƀŀḗ. ϐϕ鶱ϑ鶱ẛ ǈΐı]"
+msgstr ""
 
 #: imports/both/api/users/server/methods.js:71
 msgid "You are not authorized to approve users."
-msgstr "[Ẏǿŭ ȧřḗ ƞǿŧ ȧŭŧħǿřīzḗḓ ŧǿ ȧƥƥřǿṽḗ ŭşḗřş. 鶱ẛı 衋ϐı ϕϱ]"
+msgstr ""
 
 #: imports/both/api/users/server/methods.js:75
 #: imports/both/api/users/server/methods.js:89
 msgid "Can not find user with this id."
-msgstr "[Ƈȧƞ ƞǿŧ ƒīƞḓ ŭşḗř ẇīŧħ ŧħīş īḓ. ǅΰς ϕςΰ 鶱ǋΰ]"
+msgstr ""
 
 #: imports/both/api/users/server/methods.js:85
 msgid "You are not authorized to remove users."
-msgstr "[Ẏǿŭ ȧřḗ ƞǿŧ ȧŭŧħǿřīzḗḓ ŧǿ řḗḿǿṽḗ ŭşḗřş. ΐǅϵ ϕſſ ϑϵ]"
-
+msgstr ""
