@@ -19,6 +19,7 @@ import { withTime } from '../../components/Timed';
 import EventTabs from './EventTabs';
 import { wrapDataComponent } from '../../components/AsyncDataComponent';
 import EventStatistics from './EventStatistics';
+import { Hint, HintBox } from '../../components/HintBox';
 
 interface IPageModel {
   event: IEvent;
@@ -199,123 +200,137 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
           tabs={(<EventTabs id={event._id} />)}
           publicLink={`/events/${event._id}`}
         />
-        <div className="content-area scrollable">
+        <div className="content-area scrollable hsplitWithStats">
           <EventStatistics
             event={event}
             planned={true}
             achieved={true}
             countdown="full" />
-          <ol className="event-timeline before-event">
-            <li className={'event-timeline-step event-details ' + stepStates.createEvent}>
-              <div className="notification-completed">{t`Event created successfully.`}</div>
-              <div className="step-details">
-                <div className="event-name">
-                  {event.name}
-                  <Button to={`/events/${event._id}/edit`}>{t`Edit`}</Button>
-                </div>
-                <div className="event-description">{event.description}</div>
-                <div className="event-date">{moment(event.startTime).format('LLLL')}</div>
-                <div className="event-location">{event.regionName}</div>
-              </div>
-            </li>
-            <li className={'event-timeline-step invite-participants ' + stepStates.inviteParticipants}>
-              <div className="notification-completed">{t`${stats.invited} Invitations sent.`}</div>
-              <div className="step-status step-todo">
-                <div className="step-information">
-                  <h3>{t`No participants invited.`}</h3>
-                  <p>{t`Emails will be send when you publish.`}</p>
-                </div>
-                <Button className="btn-primary"
-                  to={`/events/${event._id}/participants`}>{t`Invite participants`}</Button>
-              </div>
-              <div className="step-status step-completed">
-                <div className="step-information">
-                  <h3>{t`${stats.invited} participants invited`}.</h3>
-                  <p>{t`Emails will be send when you publish.`}</p>
-                </div>
-                <Button to={`/events/${event._id}/participants`}>{t`Invite more`}</Button>
-              </div>
-            </li>
-            <li className={'event-timeline-step organizer-tips ' + stepStates.organizerTips}>
-              <div className="notification-completed">{t`Some documents to read.`}</div>
-              <div className="step-status">
-                <h3>{t`Tips for event organizers`}</h3>
-                <a className="btn" target="_blank"
-                  href="https://developmentseed.org/blog/2015/06/07/organizing-mapathons/">{t`Learn more`}</a>
-              </div>
-            </li>
-          </ol>
-          <ol className="event-timeline during-event">
-            <h2>{t`Publish event`}</h2>
-            <li className={'event-timeline-step publish-event ' + stepStates.startEvent}>
-              <div className="step-status step-todo">
-                <div className="step-information">
-                  <h3>{t`Mapping event still a draft`}</h3>
-                  <p>{t`Please make sure all details are correct. When you publish, invitation emails will be sent.`}</p>
-                </div>
-                <div className="publishing-actions">
-                  <button className="btn btn-primary" onClick={this.publishEvent}>{t`Publish event`}</button>
-                </div>
-              </div>
-              <div
-                className="notification-completed step-active">{t`Congratulations! Your event has been published`}</div>
-              <div className="step-status step-active">
-                <div className="step-information">
-                  <h3>{t`Mapping event published`}</h3>
-                  <p>{t`Your event is now online. It will be closed the day after. Be careful when canceling your event:
-                    you can not undo this.`}</p>
-                </div>
-                <div className="publishing-actions">
-                  <Button to={`/events/${event._id}`}>{t`View event`}</Button>
-                  <Button className="btn-primary" to='.'>{t`Cancel event`}</Button>
-                </div>
-              </div>
-              <div className="notification-completed step-completed">{t`Your event has been completed`}</div>
-              <div className="step-status step-completed">
-                <div className="step-information">
-                  <h3>{t`Mapping event finished`}</h3>
-                  <p>{t`Your event is over now.`}</p>
-                </div>
-                <div className="publishing-actions">
-                  <Button to={`/events/${event._id}`}>{t`View event`}</Button>
-                </div>
-              </div>
-            </li>
-          </ol>
-          <ol className="event-timeline after-event">
-            <h2>{t`After the event`}</h2>
-            <li className={'event-timeline-step set-event-picture ' + stepStates.setEventPicture}>
-              <div className="notification-completed">{t`Event picture has been set.`}</div>
-              <div className="step-status step-todo">
-                <h3>{t`Set event picture`}</h3>
-              </div>
-              <div className="step-status step-active">
-                <h3>{t`Set event picture`}</h3>
-                <Button to={`/events/${event._id}/edit`}>Set</Button>
-              </div>
-              <div className="step-status step-completed">
-                <section>
-                  <h3>{t`Event picture was set`}</h3>
-                  <Button to={`/events/${event._id}/edit`}>{t`Edit`}</Button>
-                </section>
-                <img src={event.photoUrl} />
-              </div>
-            </li>
-            <li className={'event-timeline-step share-results ' + stepStates.shareResults}>
-              <div className="notification-completed">{t`Great. You may share the link now.`}</div>
-              <div className="step-status step-todo">
-                <h3>{t`Share results`}</h3>
-              </div>
-              <div className="step-status step-active">
-                <h3>{t`Share results`}</h3>
-                <Button to={`/events/${event._id}`}>{t`Share`}</Button>
-              </div>
-              <div className="step-status step-completed">
-                <h3>{t`Results have been shared`}</h3>
-                <Button to={`/events/${event._id}`}>{t`View`}</Button>
-              </div>
-            </li>
-          </ol>
+          <div className='content-hsplit'>
+            <div className="content-left">
+              <ol className="event-timeline before-event">
+                <li className={'event-timeline-step event-details ' + stepStates.createEvent}>
+                  <div className="notification-completed">{t`Event created successfully.`}</div>
+                  <div className="step-details">
+                    <div className="event-name">
+                      {event.name}
+                      <Button to={`/events/${event._id}/edit`}>{t`Edit`}</Button>
+                    </div>
+                    <div className="event-description">{event.description}</div>
+                    <div className="event-date">{moment(event.startTime).format('LLLL')}</div>
+                    <div className="event-location">{event.regionName}</div>
+                  </div>
+                </li>
+                <li className={'event-timeline-step invite-participants ' + stepStates.inviteParticipants}>
+                  <div className="notification-completed">{t`${stats.invited} Invitations sent.`}</div>
+                  <div className="step-status step-todo">
+                    <div className="step-information">
+                      <h3>{t`No participants invited.`}</h3>
+                      <p>{t`Emails will be send when you publish.`}</p>
+                    </div>
+                    <Button className="btn-primary"
+                      to={`/events/${event._id}/participants`}>{t`Invite participants`}</Button>
+                  </div>
+                  <div className="step-status step-completed">
+                    <div className="step-information">
+                      <h3>{t`${stats.invited} participants invited`}.</h3>
+                      <p>{t`Emails will be send when you publish.`}</p>
+                    </div>
+                    <Button to={`/events/${event._id}/participants`}>{t`Invite more`}</Button>
+                  </div>
+                </li>
+                <li className={'event-timeline-step organizer-tips ' + stepStates.organizerTips}>
+                  <div className="notification-completed">{t`Some documents to read.`}</div>
+                  <div className="step-status">
+                    <h3>{t`Tips for event organizers`}</h3>
+                    <a className="btn" target="_blank"
+                      href="https://developmentseed.org/blog/2015/06/07/organizing-mapathons/">{t`Learn more`}</a>
+                  </div>
+                </li>
+              </ol>
+              <ol className="event-timeline during-event">
+                <h2>{t`Publish event`}</h2>
+                <li className={'event-timeline-step publish-event ' + stepStates.startEvent}>
+                  <div className="step-status step-todo">
+                    <div className="step-information">
+                      <h3>{t`Mapping event still a draft`}</h3>
+                      <p>{t`Please make sure all details are correct. When you publish, invitation emails will be sent.`}</p>
+                    </div>
+                    <div className="publishing-actions">
+                      <button className="btn btn-primary" onClick={this.publishEvent}>{t`Publish event`}</button>
+                    </div>
+                  </div>
+                  <div
+                    className="notification-completed step-active">{t`Congratulations! Your event has been published`}</div>
+                  <div className="step-status step-active">
+                    <div className="step-information">
+                      <h3>{t`Mapping event published`}</h3>
+                      <p>{t`Your event is now online. It will be closed the day after. Be careful when canceling your event:
+                      you can not undo this.`}</p>
+                    </div>
+                    <div className="publishing-actions">
+                      <Button to={`/events/${event._id}`}>{t`View event`}</Button>
+                      <Button className="btn-primary" to='.'>{t`Cancel event`}</Button>
+                    </div>
+                  </div>
+                  <div className="notification-completed step-completed">{t`Your event has been completed`}</div>
+                  <div className="step-status step-completed">
+                    <div className="step-information">
+                      <h3>{t`Mapping event finished`}</h3>
+                      <p>{t`Your event is over now.`}</p>
+                    </div>
+                    <div className="publishing-actions">
+                      <Button to={`/events/${event._id}`}>{t`View event`}</Button>
+                    </div>
+                  </div>
+                </li>
+              </ol>
+              <ol className="event-timeline after-event">
+                <h2>{t`After the event`}</h2>
+                <li className={'event-timeline-step set-event-picture ' + stepStates.setEventPicture}>
+                  <div className="notification-completed">{t`Event picture has been set.`}</div>
+                  <div className="step-status step-todo">
+                    <h3>{t`Set event picture`}</h3>
+                  </div>
+                  <div className="step-status step-active">
+                    <h3>{t`Set event picture`}</h3>
+                    <Button to={`/events/${event._id}/edit`}>Set</Button>
+                  </div>
+                  <div className="step-status step-completed">
+                    <section>
+                      <h3>{t`Event picture was set`}</h3>
+                      <Button to={`/events/${event._id}/edit`}>{t`Edit`}</Button>
+                    </section>
+                    <img src={event.photoUrl} />
+                  </div>
+                </li>
+                <li className={'event-timeline-step share-results ' + stepStates.shareResults}>
+                  <div className="notification-completed">{t`Great. You may share the link now.`}</div>
+                  <div className="step-status step-todo">
+                    <h3>{t`Share results`}</h3>
+                  </div>
+                  <div className="step-status step-active">
+                    <h3>{t`Share results`}</h3>
+                    <Button to={`/events/${event._id}`}>{t`Share`}</Button>
+                  </div>
+                  <div className="step-status step-completed">
+                    <h3>{t`Results have been shared`}</h3>
+                    <Button to={`/events/${event._id}`}>{t`View`}</Button>
+                  </div>
+                </li>
+              </ol>
+            </div>
+            <div className="content-right">
+              <HintBox title={t`Join or create an organization to contribute`}>
+                <Hint className="done">
+                  {t`If you want to contribute to wheelmap.pro you need an organization.`}
+                </Hint>
+                <Hint className="done">
+                  {t`Creating an organization is free and without any hidden costs. `}
+                </Hint>
+              </HintBox>
+            </div>
+          </div>
         </div>
       </ScrollableLayout>
     );
@@ -338,13 +353,29 @@ export default styled(ReactiveOrganizeOrganizationsPage) `
 
 /* -------------------------- event stats styling --------------------------------*/
 
-.content-area {
+/* .content-area {
   padding-top: 0;
-  padding-left: 0; /* to have a marginless stats bar */
-  padding-right: 0; /* to have a marginless stats bar */
-}
+  padding-left: 0; 
+  /* to have a marginless stats bar */
+  /* padding-right: 0;  */
+  /* to have a marginless stats bar */
+/* } */
 
 /* -------------------------- event timeline styling -----------------------------------*/
+
+.content-left {
+  margin-right:0;
+}
+
+.content-right {
+  .hint-box {
+    margin-left: 0;
+
+    h3 {
+      margin-top: 32px;
+    }
+  }
+}
 
 ol.event-timeline.before-event {
   padding-top: 20px;
@@ -363,7 +394,7 @@ ol.event-timeline {
 
   h2,
   h3 {
-    margin:0;
+    margin: 0;
   }
 
   h2 {
@@ -380,11 +411,11 @@ ol.event-timeline {
 
   li.event-timeline-step {
     position: relative;
-    width: 44em;
+    width: 34em;
     max-width: 90vw;
     margin: 14px 0 14px 23px;
 
-    border-radius: 4px;   
+    border-radius: 4px;
     display: flex;
     flex-direction: column;
 
@@ -427,7 +458,7 @@ ol.event-timeline {
         display: flex;
         flex-direction: column;
       }
-      
+
       .publishing-actions {
         margin-left: 20px;
         display: flex;
@@ -437,34 +468,34 @@ ol.event-timeline {
   }
 
   /* ---------- display logic for steps with multiple sub-states  --------------*/
- 
-  li.todo, 
+
+  li.todo,
   li.disabled {
-    .step-completed, 
-    .step-active { 
-      display: none; 
+    .step-completed,
+    .step-active {
+      display: none;
     }
-    .step-todo { 
-      display: flex; 
+    .step-todo {
+      display: flex;
     }
   }
-  
+
   li.todo {
-    .step-active, 
-    .step-completed { 
-      display: none; 
-    }
-    .step-todo { 
-      display: flex; 
+    .step-active,
+      .step-completed {
+        display: none;
+      }
+     .step-todo {
+      display: flex;
     }
   }
-  
+
   li.finished, li.finished-last {
-    .step-todo, 
-    .step-active { 
-      display: none; 
-    }
-    .step-completed { 
+    .step-todo,
+      .step-active {
+        display: none;
+      }
+    .step-completed {
       display: flex;
     }
   }
@@ -472,16 +503,16 @@ ol.event-timeline {
   /* -------------------------- step stylings -----------------------------------*/
 
   /* step-icons */
-  li.event-details .step-status:before { content: " "; }
-  li.invite-participants .step-status:before { content: "∏"; } 
-  li.organizer-tips .step-status:before { content: ""; } 
-  li.publish-event .step-todo:before { content: ""; }
-  li.publish-event .step-active:before { content: ""; }
-  li.publish-event .step-completed:before { content: ""; }  
-  li.set-event-picture .step-status:before{ content: "π"; }
-  li.share-results .step-todo:before  { content: ""; }
-  li.share-results .step-active:before  { content: ""; }
-  li.share-results .step-completed:before  { content: ""; }
+  li.event-details .step-status:before {content: " "; }
+  li.invite-participants .step-status:before {content: "∏"; }
+  li.organizer-tips .step-status:before {content: ""; }
+  li.publish-event .step-todo:before {content: ""; }
+  li.publish-event .step-active:before {content: ""; }
+  li.publish-event .step-completed:before {content: ""; }
+  li.set-event-picture .step-status:before{content: "π"; }
+  li.share-results .step-todo:before  {content: ""; }
+  li.share-results .step-active:before  {content: ""; }
+  li.share-results .step-completed:before  {content: ""; }
 
   li.enabled,
   li.finished-last,
@@ -509,20 +540,20 @@ ol.event-timeline {
 
     &:before {
       background-color: white;
-      box-shadow: 0 0 2px 0 ${colors.boxShadow};  
+      box-shadow: 0 0 2px 0 ${colors.boxShadow};
     }
   }
 
   li.disabled {
     border: 1px solid ${colors.shadowGrey};
     background-color: ${colors.bgGrey};
-  
+
     &:before {
       border: 1px solid ${colors.shadowGrey};
       background-color: ${colors.bgGrey};
     }
 
-    a.btn { 
+    a.btn {
       display: none;
     }
   }
@@ -550,7 +581,7 @@ ol.event-timeline {
   li.finished-last {
 
     &:before { /* checkmark */
-      content: ""; 
+      content: "";
     }
   }
 
@@ -563,13 +594,13 @@ ol.event-timeline {
 
   li.finished-last {
   
-    &:before { /* checkmark */
-      color: white;
+    &: before { /* checkmark */
+            color: white;
       background-color: ${colors.doneGreen};
     }
 
     .notification-completed {
-      display: block;
+            display: block;
       margin: 0;
       padding: 13px 20px 13px 20px;
       border-radius: 4px 4px 0 0;
@@ -579,7 +610,7 @@ ol.event-timeline {
       background-color: ${colors.bgLightGreen};
 
       &:before {
-        content: '';
+            content: '';
         display: inline-block;
         padding-right: 10px;
         font-family: 'iconfield-v03';
@@ -590,7 +621,7 @@ ol.event-timeline {
   /* ---------------------- specific step stylings ---------------------- */
 
   li.event-details {
-    padding: 0;
+            padding: 0;
     color: initial;
     background-color: white;
     display: flex;
@@ -603,7 +634,7 @@ ol.event-timeline {
     div {
       padding: 20px;
     }
-    
+
     .step-details {
       padding: 0;
 
@@ -613,14 +644,14 @@ ol.event-timeline {
         border-bottom: 1px solid ${colors.shadowGrey};
         font-size: 21px;
         font-weight: 300;
-        
+
         &:first-child,
         &:last-child {
-          border-bottom: none;
+            border-bottom: none;
         }
 
         &:before {
-          position: absolute;
+            position: absolute;
           left: 16px;
           width: 20px;
           height: 20px;
@@ -634,28 +665,28 @@ ol.event-timeline {
       }
 
       .event-name {
-        padding-bottom: 0;
+            padding-bottom: 0;
         display: flex;
         justify-content: space-between;
 
         &:before {
-          content: "I";
+            content: "I";
         }
       }
 
       .event-description {
-        padding-top: 0;
+            padding-top: 0;
         padding-left: 50px;
         padding-right: 60px;
         font-size: 14px;
 
         &:before {
-          content: "";
+            content: "";
         }
       }
 
-      .event-date:before { content: "˙"; }
-      .event-location:before { content: "y"; }
+      .event-date:before {content: "˙"; }
+      .event-location:before {content: "y"; }
     }
   }
 
@@ -667,9 +698,9 @@ ol.event-timeline {
       color: ${colors.bgAnthracite} !important;
       background: transparent;
       border: 1px solid ${colors.shadowGrey};
-    
+
       &:hover {
-        background: rgba(0, 0, 0, 0.05);
+            background: rgba(0, 0, 0, 0.05);
       }
     }
   }
@@ -677,17 +708,17 @@ ol.event-timeline {
   /* wrap differently with event image */
   li.set-event-picture {
     .step-completed {
-      flex-direction: column;
+          flex-direction: column;
     }
 
     section {
-      display: flex;
-      flex-direction: row;    
+            display: flex;
+      flex-direction: row;
       justify-content: space-between;
     }
 
     img {
-      max-width: 100%;
+            max-width: 100%;
       margin-top: 20px;
     }
   }

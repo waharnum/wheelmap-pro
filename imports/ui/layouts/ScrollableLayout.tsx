@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import {IStyledComponent} from '../components/IStyledComponent';
+import { IStyledComponent } from '../components/IStyledComponent';
 
 interface IScrollLayoutProps {
   children: React.ReactNode;
@@ -34,7 +34,8 @@ export default styled(ScrollableLayout) `
     margin-right: auto;
   }  
   
-  .hsplit {
+  .hsplit,
+  .hsplitWithStats .content-hsplit {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -42,9 +43,17 @@ export default styled(ScrollableLayout) `
     .content-left {
       margin-right: 24px;
     }
-
+  
     .content-right {
       max-width: 540px;
+    }
+  }
+
+  .hsplitWithStats {
+    flex-direction: column;
+
+    .content-top {
+
     }
   }
 
