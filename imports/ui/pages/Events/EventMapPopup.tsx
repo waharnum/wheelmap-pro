@@ -10,6 +10,7 @@ import {regionToBbox} from '../../../both/lib/geo-bounding-box';
 import {defaultRegion} from './EventBaseForm';
 import {colors} from '../../stylesheets/colors';
 import {IStyledComponent} from '../../components/IStyledComponent';
+import {getLabelForEventStatus} from '../../../both/api/events/eventStatus';
 
 interface IEventMapPopupProps {
   event: IEvent;
@@ -42,7 +43,7 @@ class EventMapPopup extends React.Component<IEventMapPopupProps & IStyledCompone
                   onClick={this.props.onPrevSelected}>{'<'}</button> : null}
         <div className="event-information">
           <div className="event-description">
-            <h3>{event.name} ({event.status})</h3>
+            <h3>{event.name} ({getLabelForEventStatus(event.status)})</h3>
             <h4>{moment(event.startTime).format('LL')}</h4>
             <p className="event-region">{event.regionName}</p>
             <p>{event.description}</p>

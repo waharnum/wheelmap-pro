@@ -1,6 +1,8 @@
 import SimpleSchema from 'simpl-schema';
 import {t} from 'c-3po';
 import {registerSchemaForI18n} from '../../i18n/i18n';
+import {openForLabels} from './eventOpenFor';
+import {eventStatusLabels} from './eventStatus';
 
 // allow custom uniforms fields
 SimpleSchema.extendOptions(['uniforms']);
@@ -106,17 +108,14 @@ export const EventSchema = new SimpleSchema({
   },
   'status': {
     type: String,
-    allowedValues: ['draft', 'planned', 'ongoing', 'completed', 'canceled'],
+    allowedValues: eventStatusLabels.map((v) => v.value),
   },
   'openFor': {
     label: t`Open for…`,
     type: String,
-    allowedValues: ['inviteOnly', 'everybody'],
+    allowedValues: openForLabels.map((v) => v.value),
     uniforms: {
-      options: [
-        {label: t`Invite Only`, value: 'inviteOnly'},
-        {label: t`Everybody`, value: 'everybody'},
-      ],
+      options: openForLabels,
     },
   },
   'statistics': {

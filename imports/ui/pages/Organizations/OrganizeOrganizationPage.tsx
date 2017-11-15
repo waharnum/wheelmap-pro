@@ -20,6 +20,7 @@ import EventStatistics from '../Events/EventStatistics';
 import {defaultRegion} from '../Events/EventBaseForm';
 import {regionToBbox} from '../../../both/lib/geo-bounding-box';
 import EventMiniMarker from '../Events/EventMiniMarker';
+import {getLabelForEventStatus} from '../../../both/api/events/eventStatus';
 
 interface IPageModel {
   organization: IOrganization;
@@ -27,7 +28,7 @@ interface IPageModel {
 };
 
 const EventListEntry = (props: { model: IEvent }) => {
-  const event = props.model;
+  const event: IEvent = props.model;
   const bbox = regionToBbox(event.region || defaultRegion);
 
   return (
@@ -58,7 +59,7 @@ const EventListEntry = (props: { model: IEvent }) => {
                          action={<Button to={`/events/${event._id}/organize`}>{t`Show details`}</Button>}/>
       </div>
       <div className="corner-ribbon">
-        <section>{event.status}</section>
+        <section>{getLabelForEventStatus(event.status)}</section>
       </div>
       <Map
         className="event-mini-map"
