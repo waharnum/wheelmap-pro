@@ -37,8 +37,7 @@ export default styled(EventMiniMarker) `
     content: "";
     position: absolute;
     box-shadow: 0px 0px 2px rgba(55,64,77,0.40);
-    -moz-transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
     bottom: -${BubbleNoseSize}px;
     left: calc(50% - ${BubbleNoseSize}px);
     border-width: ${BubbleNoseSize}px;
