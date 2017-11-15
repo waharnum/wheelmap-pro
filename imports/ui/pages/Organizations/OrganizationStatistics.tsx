@@ -81,10 +81,6 @@ background-color: white;
 display: flex;
 justify-content: space-between;
 
-&.organization-stats {
-  border-bottom: 1px solid ${colors.shadowGrey};
-}
-
 section {
   padding: 0px 20px 0 20px;
   text-align: center;

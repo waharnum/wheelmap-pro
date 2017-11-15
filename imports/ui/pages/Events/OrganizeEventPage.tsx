@@ -200,6 +200,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
         />
         <div className="content-area scrollable hsplitWithStats">
           <EventStatistics
+            className="fill-header-bar"
             event={event}
             planned={true}
             achieved={true}

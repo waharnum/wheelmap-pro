@@ -52,6 +52,35 @@ a {
   border-radius: 12px;
 }
 
+.fill-header-bar {
+  position: relative;
+  border-bottom: 1px solid $shadow-grey;
+}
+
+.fill-header-bar:before {
+  content: "";
+  position: absolute;
+  left: -100%;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  border-bottom: 1px solid $shadow-grey;
+  box-sizing: content-box;
+}
+
+.fill-header-bar:after {
+  content: "";
+  position: absolute;
+  left: 100%;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  border-bottom: 1px solid $shadow-grey;
+  box-sizing: content-box;
+}
+
 svg path.event-bounds-polygon {
   stroke: forestgreen;
   stroke-opacity: 0.3;
