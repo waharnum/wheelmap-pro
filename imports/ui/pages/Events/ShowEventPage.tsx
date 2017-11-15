@@ -52,7 +52,7 @@ const OngoingEventHeader = (props: { event: IEvent }) => (
 
 const OngoingEventMapContent = () => (
   <div className="map-overlay">
-    <Button className="join-button btn-primary" to="">{t`Join Us`}</Button>
+    <Button className="join-button btn-primary" to="">{t`Join Event`}</Button>
   </div>
 );
 
@@ -60,50 +60,57 @@ const HeaderShareAction = () => (
   <Button className="btn-primary" to="">{t`Share…`}</Button>
 );
 
-const FinishedEventMapContent = (props: { event: IEvent }) => (
-  <div className="event-stats">
-    <div className="event-picture-container">
-      {props.event.photoUrl ? <img src={props.event.photoUrl} alt={t`Event picture`}/> : null}
-      <section className="image-overlay">
-        <div className="participant-count">18</div>
-        <div className="participants-block">
-          <section className="participants-label">{t`Participants`}</section>
-          <section className="participants-icons">{Array(18).join('p ­')}</section>
+const FinishedEventMapContent = (props: { event: IEvent }) => {
+  return (
+    <div className="event-stats">
+      <div className="event-picture-container">
+        {props.event.photoUrl ? <img src={props.event.photoUrl} alt={t`Event picture`}/> : null}
+        <section className="image-overlay">
+          <div className="participant-count">
+            {props.event.statistics ? props.event.statistics.acceptedParticipantCount : 0}
+          </div>
+          <div className="participants-block">
+            <section className="participants-label">
+              {t`Participants`}
+            </section>
+            <section className="participants-icons">
+              {Array(props.event.statistics ? (props.event.statistics.acceptedParticipantCount + 1) : 0).join('p ­')}
+            </section>
+          </div>
+        </section>
+      </div>
+      <div className="stats-box">
+        <div className="places-block">
+          <section className="poi-icon"/>
+          <section className="planned-label">
+            <p>{props.event.targets ? props.event.targets.mappedPlacesCount : 0}</p>
+            <small>{t`Planned`}</small>
+          </section>
+          <section className="achieved-label">
+            <p>{props.event.statistics ? props.event.statistics.mappedPlacesCount : 0}</p>
+            <small>{t`Achieved`}</small>
+          </section>
         </div>
-      </section>
-    </div>
-    <div className="stats-box">
-      <div className="places-block">
-        <section className="poi-icon"></section>
-        <section className="planned-label">
-          <p>{40}</p>
-          <small>{t`Planned`}</small>
-        </section>
-        <section className="achieved-label">
-          <p>{96}</p>
-          <small>{t`Achieved`}</small>
-        </section>
-      </div>
-      <div className="places-graph">
-        <section style={{width: '60%'}} className="line-graph-achieved">{60}%</section>
-        <section style={{width: '20%'}} className="line-graph-failed">{20}%</section>
-        <section style={{width: '20%'}} className="line-graph-remaining">{20}%</section>
+        <div className="places-graph">
+          <section style={{width: '60%'}} className="line-graph-achieved">{60}%</section>
+          <section style={{width: '20%'}} className="line-graph-failed">{20}%</section>
+          <section style={{width: '20%'}} className="line-graph-remaining">{20}%</section>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+}
 
 const ShowEventPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent) => {
   const event = props.model.event;
   const organization = props.model.organization;
-  const showResultPage = event.startTime ? event.startTime < new Date() : false;
-
   const bbox = regionToBbox(event.region || defaultRegion);
 
   return (
     <MapLayout className={props.className}>
       <PublicEventHeader event={event} organization={organization}/>
-      {showResultPage ? null : <OngoingEventHeader event={event}/>}
+      {event.status == 'ongoing' ? <OngoingEventHeader event={event}/> : null}
+      {event.status == 'planned' ? <OngoingEventHeader event={event}/> : null}
       <div className="content-area">
         <Map
           bbox={bbox}>
@@ -116,7 +123,9 @@ const ShowEventPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent
           />
         </Map>
         <div className="map-overlay">
-          {showResultPage ? <FinishedEventMapContent event={event}/> : <OngoingEventMapContent/>}
+          {event.status == 'completed' ? <FinishedEventMapContent event={event}/> : null}
+          {event.status == 'ongoing' ? <OngoingEventMapContent/> : null}
+          {event.status == 'planned' ? <OngoingEventMapContent/> : null}
         </div>
       </div>
     </MapLayout>
