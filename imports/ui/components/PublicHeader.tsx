@@ -32,7 +32,7 @@ export const HeaderTitle = (props: IHeaderTitleProps) => {
             <div className="organization-logo" style={{backgroundImage: `url(${props.logo})`}}/>
           </Link>)
         : null}
-      {props.prefixTitle && !props.logo ?
+      {props.prefixTitle ?
         <h1 className="organization-logo"><Link to={props.prefixLink || ''}>{props.prefixTitle}</Link></h1> : null}
       <div className="header-information">
         <h1><Link to={props.titleLink || ''}>{props.title}</Link></h1>
