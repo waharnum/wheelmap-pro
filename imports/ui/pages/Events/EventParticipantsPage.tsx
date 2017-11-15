@@ -1,21 +1,22 @@
 import styled from 'styled-components';
 import * as React from 'react';
-import { t } from 'c-3po';
+import {t} from 'c-3po';
 import ClipboardButton from 'react-clipboard.js';
-import { colors } from '../../stylesheets/colors';
+import {colors} from '../../stylesheets/colors';
+import {toast} from 'react-toastify';
 
 import EventTabs from './EventTabs';
-import { IOrganization } from '../../../both/api/organizations/organizations';
+import {IOrganization} from '../../../both/api/organizations/organizations';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
-import { Hint, HintBox } from '../../components/HintBox';
-import { IEvent, Events } from '../../../both/api/events/events';
-import { IStyledComponent } from '../../components/IStyledComponent';
-import { wrapDataComponent } from '../../components/AsyncDataComponent';
-import AdminHeader, { HeaderTitle } from '../../components/AdminHeader';
-import { IEventParticipant } from '../../../both/api/event-participants/event-participants';
-import { reactiveSubscriptionByParams, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
+import {Hint, HintBox} from '../../components/HintBox';
+import {IEvent, Events} from '../../../both/api/events/events';
+import {IStyledComponent} from '../../components/IStyledComponent';
+import {wrapDataComponent} from '../../components/AsyncDataComponent';
+import AdminHeader, {HeaderTitle} from '../../components/AdminHeader';
+import {IEventParticipant} from '../../../both/api/event-participants/event-participants';
+import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
 import InviteByEmailForm from '../../components/InviteByEmailForm';
-import { getLabelForInvitationState } from '../../../both/api/event-participants/invitationStates';
+import {getLabelForInvitationState} from '../../../both/api/event-participants/invitationStates';
 
 
 interface IPageModel {
@@ -34,7 +35,7 @@ const removeParticipant = (id: Mongo.ObjectID | undefined) => {
 const EventParticipantEntry = (props: { model: IEventParticipant }) => (
   <li className="participant-entry">
     <section className="participant-info">
-      <div className="participant-icon" dangerouslySetInnerHTML={{ __html: props.model.getIconHTML() }} />
+      <div className="participant-icon" dangerouslySetInnerHTML={{__html: props.model.getIconHTML()}}/>
       <div className="participant-name">{props.model.getUserName()}</div>
     </section>
     <section className="participant-state">
@@ -71,7 +72,7 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
               prefixLink={`/organizations/${organization._id}/organize`}
             />
           )}
-          tabs={<EventTabs id={event._id} />}
+          tabs={<EventTabs id={event._id}/>}
           publicLink={`/events/${event._id}`}
         />
         <div className="content-area scrollable hsplit">
@@ -79,9 +80,9 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
             <h2>{t`Invite single participants to event`}</h2>
             <ol>
               {participants.length === 0 ? <section>{t`No one invited yet.`}</section> : null}
-              {participants.map((p) => (<EventParticipantEntry key={String(p._id)} model={p} />))}
+              {participants.map((p) => (<EventParticipantEntry key={String(p._id)} model={p}/>))}
             </ol>
-            <InviteByEmailForm onSubmit={this.onInvite} />
+            <InviteByEmailForm onSubmit={this.onInvite}/>
             <h3 className="hint-important">{event.status === 'draft' ?
               t`The event is not published yet. Invitations will be send when published.` :
               t`You made this event public. Invitations will be send immediately.`}
@@ -110,8 +111,12 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
           {t`You can also share the following link to invite people, e.g. via Social Media or handouts.`}
           <form>
             <div className="field form-group copy-to-clipboard">
-              <input className="form-group" type="text" id="public-link" value={link} disabled={true} />
-              <ClipboardButton className="btn btn-dark" data-clipboard-text={link}>
+              <input className="form-group" type="text" id="public-link" value={link} disabled={true}/>
+              <ClipboardButton className="btn btn-dark"
+                               data-clipboard-text={link}
+                               onSuccess={() => {
+                                 toast.success(t`Link copied to clipboard`);
+                               }}>
                 {t`Copy to clipboard`}
               </ClipboardButton>
             </div>
@@ -122,7 +127,7 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
   }
 
   private onInvite = (emails: string[],
-    callback: (error: Meteor.Error | null, result: any) => void) => {
+                      callback: (error: Meteor.Error | null, result: any) => void) => {
     Meteor.call('eventParticipants.invite', {
       invitationEmailAddresses: emails,
       eventId: this.props.model.event._id,
@@ -138,7 +143,7 @@ const ReactiveEventParticipantsPage = reactiveSubscriptionByParams(
     const event = Events.findOne(id);
     const participants = event ? event.getParticipants() : [];
     const organization = event ? event.getOrganization() : null;
-    return event && organization ? { event, participants, organization } : null;
+    return event && organization ? {event, participants, organization} : null;
   },
   'events.by_id.private', 'eventParticipants.by_eventId.private', 'organizations.by_eventId.private', 'users.private');
 
