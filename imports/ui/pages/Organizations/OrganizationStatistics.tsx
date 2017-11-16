@@ -1,11 +1,11 @@
-import {t} from 'c-3po';
+import { t } from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
 
-import {colors} from '../../stylesheets/colors';
-import {IStyledComponent} from '../../components/IStyledComponent';
-import {IEvent} from '../../../both/api/events/events';
-import {stat} from 'fs';
+import { colors } from '../../stylesheets/colors';
+import { IStyledComponent } from '../../components/IStyledComponent';
+import { IEvent } from '../../../both/api/events/events';
+import { stat } from 'fs';
 
 interface IOrganizationStatistics {
   action?: JSX.Element | null;
@@ -35,10 +35,10 @@ class OrganizationStatistics extends React.Component<IOrganizationStatistics & I
             <small>{t`mapped`}</small></span>
         </section>
         <section className="event-stats">
-          <span className="events-planned key-figure">
+          <span className="events-planned">
             {organizationStatistics.totalEventsCount}
             <small>{t`created`}</small></span>
-          <span className="events-completed">
+          <span className="events-completed key-figure">
             {organizationStatistics.totalCompletedEventsCount}
             <small>{t`completed`}</small></span>
         </section>
