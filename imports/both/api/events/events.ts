@@ -12,6 +12,8 @@ export type EventRegion = {
 
 export interface IEventStatistics {
   fullParticipantCount: number;
+  invitedParticipantCount: number;
+  draftParticipantCount: number;
   acceptedParticipantCount: number;
   mappedPlacesCount: number;
 }
@@ -36,7 +38,7 @@ export interface IEvent extends IEventMixin {
   };
   status: EventStatusEnum;
   openFor: EventOpenForEnum;
-  statistics?: IEventStatistics;
+  statistics: IEventStatistics;
 };
 
 export const Events = new Mongo.Collection<IEvent & IEventMixin>('Events');

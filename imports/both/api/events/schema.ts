@@ -123,8 +123,11 @@ export const EventSchema = new SimpleSchema({
     type: Object,
   },
   'statistics.fullParticipantCount': Number,
+  'statistics.invitedParticipantCount': Number,
+  'statistics.draftParticipantCount': Number,
   'statistics.acceptedParticipantCount': Number,
   'statistics.mappedPlacesCount': Number,
+
 });
 
 registerSchemaForI18n(EventSchema);

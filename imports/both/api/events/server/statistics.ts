@@ -20,21 +20,23 @@ const buildStatistics = (document?: IEvent | IEventParticipant | IPlaceInfo | nu
       id = document.properties.eventId;
     }
 
-    // const start = Date.now();
     const fullParticipantCount = EventParticipants.find({eventId: id}).count();
-    // const afterParticipants = Date.now();
+    const invitedParticipantCount = EventParticipants.find({
+      eventId: id,
+      invitationState: {$in: ['sent', 'accepted']},
+    }).count();
+    const draftParticipantCount = EventParticipants.find({eventId: id, invitationState: 'draft'}).count();
     const acceptedParticipantCount = EventParticipants.find({eventId: id, invitationState: 'accepted'}).count();
-    // const afterAcceptedParticipants = Date.now();
     const mappedPlacesCount = PlaceInfos.find({'properties.eventId': id}).count();
-    // const afterEvents = Date.now();
-    // console.log('times', afterParticipants - start, afterAcceptedParticipants - afterParticipants, afterEvents - afterAcceptedParticipants);
 
-    // console.log('building event statistics', id);
+    console.log('Update event statistics', id)
 
     Events.update(id, {
       $set: {
         statistics: {
           fullParticipantCount,
+          invitedParticipantCount,
+          draftParticipantCount,
           acceptedParticipantCount,
           mappedPlacesCount,
         },
