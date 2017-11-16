@@ -54,7 +54,7 @@ const OngoingEventHeader = (props: { event: IEvent }) => (
 );
 
 const OngoingEventMapContent = () => (
-  <div className="map-overlay">
+  <div>
   </div>
 );
 
