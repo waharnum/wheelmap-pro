@@ -9,13 +9,13 @@ import ScrollableLayout from '../../layouts/ScrollableLayout';
 
 import {default as AdminHeader, HeaderTitle} from '../../components/AdminHeader';
 
-import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
+import {IAsyncDataByIdProps, reactiveSubscriptionByParams} from '../../components/reactiveModelSubscription';
 import {Events, IEvent} from '../../../both/api/events/events';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import Button from '../../components/Button';
 import EventTabs from './EventTabs';
-import {wrapDataComponent} from '../../components/AsyncDataComponent';
 import EventStatistics from './EventStatistics';
+import {wrapDataComponent} from '../../components/AsyncDataComponent';
 import {Hint, HintBox} from '../../components/HintBox';
 
 interface IPageModel {
@@ -29,7 +29,6 @@ interface IOrganizeEventPageState extends IPageModel {
   hasInvitees: boolean;
   hasPicture: boolean;
   resultsShared: boolean;
-  stats: { invited: number, registered: number };
 }
 
 const determineCssClassesFromState = (state: IOrganizeEventPageState) => {
@@ -132,7 +131,6 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
     hasInvitees: false,
     hasPicture: false,
     resultsShared: false,
-    stats: {invited: 0, registered: 0},
     event: {} as IEvent,
     organization: {} as IOrganization,
     participants: [],
@@ -147,23 +145,12 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
   }
 
   public updateState(props: IAsyncDataByIdProps<IPageModel>) {
-    const stats = props.model.participants.reduce(
-      (sum, value) => {
-        sum.invited += 1;
-        if (value.invitationState === 'accepted') {
-          sum.registered += 1;
-        }
-        return sum;
-      },
-      {invited: 0, registered: 0});
-
     this.setState({
       event: props.model.event,
       organization: props.model.organization,
       participants: props.model.participants,
-      stats,
       status: props.model.event.status,
-      hasInvitees: stats.invited > 0,
+      hasInvitees: props.model.event.statistics.fullParticipantCount > 0,
       hasPicture: !!props.model.event.photoUrl,
       resultsShared: false,
     });
@@ -179,7 +166,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
   public render(): JSX.Element {
     const event = this.state.event;
     const organization = this.state.organization;
-    const stats = this.state.stats;
+    const stats = this.state.event.statistics;
 
     const stepStates = determineCssClassesFromState(this.state);
 
@@ -221,10 +208,10 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
                   </div>
                 </li>
                 <li className={'event-timeline-step invite-participants ' + stepStates.inviteParticipants}>
-                  <div className="notification-completed">{t`${stats.invited} Invitations sent.`}</div>
+                  <div className="notification-completed">{t`${stats.fullParticipantCount} invitations prepared.`}</div>
                   <div className="step-status step-todo">
                     <div className="step-information">
-                      <h3>{t`No participant invites prepare.`}</h3>
+                      <h3>{t`No participant invites prepared.`}</h3>
                       <p>{t`Emails will be send when you publish.`}</p>
                     </div>
                     <Button className="btn-primary"
@@ -233,14 +220,14 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
                   {event.status == 'draft' ?
                     <div className="step-status step-completed">
                       <div className="step-information">
-                        <h3>{t`${stats.invited} participant invites prepared`}.</h3>
+                        <h3>{t`${stats.fullParticipantCount} participant invites prepared`}.</h3>
                         <p>{t`Emails will be send when you publish.`}</p>
                       </div>
                       <Button to={`/events/${event._id}/participants`}>{t`Add more`}</Button>
                     </div> :
                     <div className="step-status step-completed">
                       <div className="step-information">
-                        <h3>{t`${stats.invited} participants invited`}.</h3>
+                        <h3>{t`${stats.invitedParticipantCount} participants invited`}.</h3>
                       </div>
                       <Button to={`/events/${event._id}/participants`}>{t`Invite more`}</Button>
                     </div>
@@ -336,7 +323,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
                   {t`Decide to have a public or invite only event.`}
                 </Hint>
                 <Hint className="rocket">
-                  {t`Publish your event to send invitations and see who is onboard.`}
+                  {t`Publish your event to send invitations and see who is on board.`}
                 </Hint>
               </HintBox>
             </div>

@@ -1,12 +1,12 @@
-import { t } from 'c-3po';
+import {t} from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
 
-import { colors } from '../../stylesheets/colors';
-import { IStyledComponent } from '../../components/IStyledComponent';
+import {colors} from '../../stylesheets/colors';
+import {IStyledComponent} from '../../components/IStyledComponent';
 import * as moment from 'moment';
-import { Countdown } from '../../components/Countdown';
-import { IEvent } from '../../../both/api/events/events';
+import {Countdown} from '../../components/Countdown';
+import {IEvent} from '../../../both/api/events/events';
 
 interface IEventStatistics {
   event: IEvent;
@@ -27,18 +27,18 @@ class EventStatistics extends React.Component<IEventStatistics & IStyledComponen
         <section className="participant-stats">
           {this.props.planned ?
             <span className="participants-invited">
-              {event.statistics ? event.statistics.fullParticipantCount : 0}
+              {event.statistics ? event.statistics.invitedParticipantCount : 0}
               <small>{t`invited`}</small>
             </span> : null}
           {this.props.achieved ?
             <span className="participants-registered key-figure">
               {event.statistics ? event.statistics.acceptedParticipantCount : 0}
-              <small>{t`registered`}</small>
+              <small>{t`accepted`}</small>
             </span> : null}
         </section>
         {/* long countdown */}
         {this.props.countdown == 'full' && event ?
-          <Countdown start={moment(event.startTime)} /> : null}
+          <Countdown start={moment(event.startTime)}/> : null}
         {/* locations added */}
         <section className="location-stats">
           {this.props.planned ?

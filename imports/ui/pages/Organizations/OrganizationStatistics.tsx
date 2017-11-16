@@ -1,11 +1,11 @@
-import { t } from 'c-3po';
+import {t} from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
 
-import { colors } from '../../stylesheets/colors';
-import { IStyledComponent } from '../../components/IStyledComponent';
-import { IEvent } from '../../../both/api/events/events';
-import { stat } from 'fs';
+import {colors} from '../../stylesheets/colors';
+import {IStyledComponent} from '../../components/IStyledComponent';
+import {IEvent} from '../../../both/api/events/events';
+import {stat} from 'fs';
 
 interface IOrganizationStatistics {
   action?: JSX.Element | null;
@@ -23,8 +23,8 @@ class OrganizationStatistics extends React.Component<IOrganizationStatistics & I
             {organizationStatistics.totalInvitedParticipantsCount}
             <small>{t`invited`}</small></span>
           <span className="participants-registered key-figure">
-            {organizationStatistics.totalRegisteredParticipantsCount}
-            <small>{t`registered`}</small></span>
+            {organizationStatistics.totalAcceptedParticipantsCount}
+            <small>{t`accepted`}</small></span>
         </section>
         <section className="location-stats">
           <span className="locations-planned">
@@ -50,7 +50,9 @@ class OrganizationStatistics extends React.Component<IOrganizationStatistics & I
   static calculateStatisticsFromEvents = (events: Array<IEvent>) => {
     const statistics = {
       totalInvitedParticipantsCount: 0,
-      totalRegisteredParticipantsCount: 0,
+      totalFullParticipantsCount: 0,
+      totalDraftParticipantsCount: 0,
+      totalAcceptedParticipantsCount: 0,
       totalPlannedPlacesCount: 0,
       totalMappedPlacesCount: 0,
       totalEventsCount: 0,
@@ -62,8 +64,10 @@ class OrganizationStatistics extends React.Component<IOrganizationStatistics & I
       if (event.status == 'completed')
         previousValue.totalCompletedEventsCount += 1;
       if (event.statistics) {
-        previousValue.totalInvitedParticipantsCount += event.statistics.fullParticipantCount;
-        previousValue.totalRegisteredParticipantsCount += event.statistics.acceptedParticipantCount;
+        previousValue.totalFullParticipantsCount += event.statistics.fullParticipantCount;
+        previousValue.totalDraftParticipantsCount += event.statistics.draftParticipantCount;
+        previousValue.totalInvitedParticipantsCount += event.statistics.invitedParticipantCount;
+        previousValue.totalAcceptedParticipantsCount += event.statistics.acceptedParticipantCount;
         previousValue.totalMappedPlacesCount += event.statistics.mappedPlacesCount;
       }
       if (event.targets && event.targets.mappedPlacesCount) {
