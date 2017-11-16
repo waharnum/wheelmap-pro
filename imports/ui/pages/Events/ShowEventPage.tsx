@@ -109,8 +109,8 @@ const FinishedEventMapContent = (props: { event: IEvent }) => {
         </div>
         {barGraphAchieved !== null ?
           <div className="places-graph">
-            <section style={{ width: t`${barGraphAchieved}%` }} className="bar-graph-achieved" />
-            <section style={{ width: t`${100 - barGraphAchieved}%` }} className="bar-graph-planned" />
+            <section style={{ width: `${barGraphAchieved}%` }} className="bar-graph-achieved" />
+            <section style={{ width: `${100 - barGraphAchieved}%` }} className="bar-graph-planned" />
           </div>
           : null
         }
