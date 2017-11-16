@@ -1,12 +1,12 @@
-import {Link} from 'react-router';
+import { Link } from 'react-router';
 import styled from 'styled-components';
 import * as React from 'react';
-import {LocationDescriptor} from 'history';
+import { LocationDescriptor } from 'history';
 
 import UserMenu from './UserMenu';
 import PreviewToggle from './PreviewToggle';
-import {IStyledComponent} from './IStyledComponent';
-import {colors} from '../stylesheets/colors';
+import { IStyledComponent } from './IStyledComponent';
+import { colors } from '../stylesheets/colors';
 
 interface IAdminHeaderProps {
   titleComponent: JSX.Element | string;
@@ -27,13 +27,13 @@ export const HeaderTitle = (props: IHeaderTitleProps) => {
   return (
     <div className="title-bar">
       {props.logo ? (
-          <Link to={props.prefixLink || ''}>
-            <div className="organization-logo" style={{backgroundImage: `url(${props.logo})`}}/>
-          </Link>)
+        <Link to={props.prefixLink || ''}>
+          <div className="organization-logo" style={{ backgroundImage: `url(${props.logo})` }} />
+        </Link>)
         : null}
       {props.prefixTitle ?
-        <h1 className="organization-logo"><Link to={props.prefixLink || ''}>{props.prefixTitle}</Link></h1> : null}
-      <h1><Link to={props.titleLink || ''}>{props.title}</Link></h1>
+        <h1><Link to={props.prefixLink || ''}>{props.prefixTitle}</Link></h1> : null}
+      <h1 className="with-chevron-before"><Link to={props.titleLink || ''}>{props.title}</Link></h1>
     </div>
   );
 };
@@ -44,12 +44,12 @@ const AdminHeader = (props: IAdminHeaderProps & IStyledComponent) => {
       <header className="main-header on-dark">
         <div className="wrapper on-dark">
           <ol className="secondary-tools">
-            <PreviewToggle to={props.publicLink}/>
-            <UserMenu/>
+            <PreviewToggle to={props.publicLink} />
+            <UserMenu />
           </ol>
           <div className="main-area">
-            {props.titleComponent || <HeaderTitle title="Please specificy title component"/>}
-            <div className="right-side"/>
+            {props.titleComponent || <HeaderTitle title="Please specificy title component" />}
+            <div className="right-side" />
           </div>
           <ol className="tabs-header">
             {props.tabs}
@@ -100,8 +100,8 @@ header.main-header {
         background-position: center center;
         background-repeat: no-repeat;
         background-size: contain;
-        background-color: rgba(255, 255, 255, 0.2);
-        border-radius: 4px;
+        background-color:  white;
+
 
         a {
           text-overflow: ellipsis;
@@ -156,16 +156,13 @@ header.main-header {
     .title-bar {
       flex-grow: 2;
 
-      .organization-logo {
-        position: relative;
-        width: 95px; /* FIXME: width should be dynamic */
-        height: 52px;
-        margin-right: 30px;
-        
+      h1.with-chevron-before {
+        padding-left: 30px;
+
         &::after {
           position: absolute;
           content: " ";
-          right: -19px;
+          left: 10px;
           top: 8px;
           width: 8px;
           height: 32px;
@@ -175,12 +172,33 @@ header.main-header {
           background-size: 100% 100%;
         }
       }
+
+      .organization-logo {
+        position: relative;
+        width: 42px;
+        height: 42px;
+        margin-top: 5px;
+        margin-right: 10px;
+        border-radius: 26px;
+      }
       
       h1 {
+        position: relative;
         margin: 0;
         padding-top: 9px;
+        padding-right: 8px;
         font-size: 30px;
         font-weight: 800;
+
+        &::after { /* chevron indicating organization dropdown */
+          position: relative;
+          right: -4px;
+          top: -5px;
+          content: 'Í';
+          color: rgba(255, 255, 255, 0.3);
+          font-family: 'iconfield-v03';
+          font-size: 14px;
+        }
       }
     }
   }
