@@ -57,7 +57,7 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
     const organization = this.props.model.organization;
     const participants = this.props.model.participants;
 
-    const hasPublicInvitation = event.invitationToken && event.status !== 'draft';
+    const allowPublicInvitation = !!event.invitationToken && event.status !== 'draft';
     const link = Meteor.absoluteUrl(`events/${event._id}/public-invitation/${event.invitationToken}`);
 
     return (
@@ -87,7 +87,7 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
               t`The event is not published yet. Invitations will be send when published.` :
               t`You made this event public. Invitations will be send immediately.`}
             </h3>
-            {hasPublicInvitation ? this.renderPublicInvitation(link) : null}
+            {this.renderPublicInvitation(link, allowPublicInvitation)}
           </div>
           <div className="content-right">
             <HintBox>
@@ -104,16 +104,24 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
     );
   }
 
-  private renderPublicInvitation = (link: string): JSX.Element => {
+  private renderPublicInvitation = (link: string, enabled: boolean): JSX.Element => {
+    const disabledClass = enabled ? '' : 'disabled';
     return (
-      <section className='share-link'><h2>{t`Share an invitation link`}</h2>
+      <section className={`share-link ${disabledClass}`}>
+        <h2>{t`Share an invitation link`}</h2>
         <div>
-          {t`You can also share the following link to invite people, e.g. via Social Media or handouts.`}
+          {enabled ?
+            t`You can also share the following link to invite people, e.g. via Social Media or handouts.` :
+            t`Once the event is not a draft and not set to private, you will be able to share a public invite link here.`
+          }
           <form>
             <div className="field form-group copy-to-clipboard">
-              <input className="form-group" type="text" id="public-link" value={link} disabled={true}/>
-              <ClipboardButton className="btn btn-dark"
+              <input className={`form-control ${disabledClass}`}
+                     type="text" id="public-link" value={link}
+                     disabled={true}/>
+              <ClipboardButton className={`btn btn-dark ${disabledClass}`}
                                data-clipboard-text={link}
+                               button-disabled={!enabled}
                                onSuccess={() => {
                                  toast.success(t`Link copied to clipboard`);
                                }}>
@@ -232,11 +240,6 @@ export default styled(ReactiveEventParticipantsPage) `
             }
           }
         }
-
-        section.participant-error {
-          
-        }
-
       }
     }
   }
@@ -262,12 +265,20 @@ export default styled(ReactiveEventParticipantsPage) `
   section.share-link {
     margin-top: 40px;
 
+    &.disabled {
+      color: ${colors.textMuted}
+    }
+    
     .copy-to-clipboard {
       display: flex;
       width: 100%;
 
       input {
         margin: 0;
+        &.disabled {
+          pointer-events: none;
+          color: ${colors.ctaDisabledGrey};
+        }
       }
 
       button {
@@ -276,6 +287,10 @@ export default styled(ReactiveEventParticipantsPage) `
         position: relative;
         color: ${colors.linkBlue};
         background-color: white;
+                
+        &.disabled {
+          color: ${colors.ctaDisabledGrey};
+        }
 
         &::before {
           left: 0px;
