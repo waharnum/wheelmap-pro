@@ -44,7 +44,7 @@ export function setActiveOrganization(userId: Mongo.ObjectID,
   return Meteor.users.update(userId, {$set: {'profile.activeOrganizationId': activeOrganizationId}}, {}, callback);
 };
 
-export function getActiveOrganizationId(userId: Mongo.ObjectID): Mongo.ObjectID | null {
+export function getActiveOrganizationId(userId: Mongo.ObjectID | null): Mongo.ObjectID | null {
   const user = Meteor.users.findOne(userId);
   return user ? user.profile.activeOrganizationId : null;
 };
