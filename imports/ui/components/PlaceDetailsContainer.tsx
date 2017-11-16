@@ -68,7 +68,7 @@ class PlaceDetailsContainer extends React.Component<IStyledComponent & IPlaceDet
     const properties = feature ? feature.properties : null;
     const category = this.state.category;
     const parentCategory = this.state.parentCategory;
-    const accessibility = properties ? properties.accessibility : {};
+    const accessibility = properties ? properties.accessibility : null;
 
     if (!feature) {
       return null;
@@ -80,6 +80,7 @@ class PlaceDetailsContainer extends React.Component<IStyledComponent & IPlaceDet
           feature={feature}
           category={category}
           parentCategory={parentCategory}
+
         />
         <a className="close-icon" onClick={() => this.props.onClose()}>
           <CloseIcon/>

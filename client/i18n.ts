@@ -1,6 +1,7 @@
 import {useLocale, addLocale} from 'c-3po';
 import * as moment from 'moment';
 import {T9n} from 'meteor/softwarerero:accounts-t9n';
+import {currentLocale as mapLocale} from 'wheelmap-react/lib/lib/i18n';
 
 // Returns an expanded list of preferred locales.
 export function readUserLanguages() {
@@ -16,14 +17,21 @@ export function preparei18n(callback: Function) {
       addLocale(result.language, result.data);
       useLocale(result.language);
       moment.updateLocale(result.momentData.abbr, result.momentData);
+
+      mapLocale = result.language || 'en';
+
+      const momentLocale = result.language || 'en-us';
+      moment.locale(momentLocale);
+
+      T9n.setLanguage(result.language || 'en');
+      callback(result.language);
+    } else {
+      console.error('Failed loading i18n!', error);
+      moment.locale('en-us');
+      T9n.setLanguage('en');
+      mapLocale = 'en';
+      callback('en');
     }
-
-    const momentLocale = result.language || 'en-us';
-    moment.locale(momentLocale);
-
-    T9n.setLanguage(result.language || 'en');
-    callback(result.language);
-
   });
 }
 
