@@ -15,7 +15,7 @@ export function preparei18n(callback: Function) {
     if (!error) {
       addLocale(result.language, result.data);
       useLocale(result.language);
-      moment.defineLocale(result.momentData.abbr, result.momentData);
+      moment.updateLocale(result.momentData.abbr, result.momentData);
     }
 
     const momentLocale = result.language || 'en-us';
