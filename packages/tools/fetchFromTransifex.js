@@ -26,7 +26,7 @@ fetch(availableLanguagesUrl, defaultOptions)
     .then((response) => response.json())
     .then((result) => {
       const fileName = code.replace('_', '-');
-      fs.writeFile(`${baseDir}/${fileName}.po`, result.content, 'utf8');
+      fs.writeFileSync(`${baseDir}/${fileName}.po`, result.content, 'utf8');
     });
   });
 });
