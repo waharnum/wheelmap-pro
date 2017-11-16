@@ -225,7 +225,9 @@ export default styled(PublicHeader) `
       }
 
       .right-side {
-
+        button.btn {
+          margin-top: 11px;
+        }
       }
     }
   }

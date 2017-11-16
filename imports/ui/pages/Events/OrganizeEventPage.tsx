@@ -330,7 +330,6 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
                 <Hint className="rocket">
                   {t`Publish your event to send invitations and see who is onboard.`}
                 </Hint>
-
               </HintBox>
             </div>
           </div>

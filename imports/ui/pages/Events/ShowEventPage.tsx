@@ -55,18 +55,20 @@ const OngoingEventHeader = (props: { event: IEvent }) => (
 
 const OngoingEventMapContent = () => (
   <div className="map-overlay">
-    <Button className="join-button btn-primary" to="">{t`Join Event`}</Button>
   </div>
 );
 
 const HeaderShareAction = () => (
-  <ClipboardButton className="btn btn-dark"
-    data-clipboard-text={window.location.href}
-    onSuccess={() => {
-      toast.success(t`Link copied to clipboard`);
-    }}>
-    {t`Share…`}
-  </ClipboardButton>
+  <div>
+    <ClipboardButton className="btn btn-dark"
+      data-clipboard-text={window.location.href}
+      onSuccess={() => {
+        toast.success(t`Link copied to clipboard`);
+      }}>
+      {t`Share Link`}
+    </ClipboardButton>
+    <Button className="join-button btn-primary" to="">{t`Join Event`}</Button>
+  </div>
 );
 
 const FinishedEventMapContent = (props: { event: IEvent }) => {

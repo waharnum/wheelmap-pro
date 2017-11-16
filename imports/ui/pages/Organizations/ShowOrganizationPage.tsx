@@ -1,21 +1,21 @@
-import {t} from 'c-3po';
+import { t } from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
-import {Meteor} from 'meteor/meteor';
+import { Meteor } from 'meteor/meteor';
 
 import MapLayout from '../../layouts/MapLayout';
-import {browserHistory} from 'react-router';
+import { browserHistory } from 'react-router';
 
 import Map from '../../components/Map';
-import {IStyledComponent} from '../../components/IStyledComponent';
-import {wrapDataComponent} from '../../components/AsyncDataComponent';
-import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
+import { IStyledComponent } from '../../components/IStyledComponent';
+import { wrapDataComponent } from '../../components/AsyncDataComponent';
+import { reactiveSubscriptionByParams, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
 
-import {IEvent} from '../../../both/api/events/events';
-import {IOrganization, Organizations} from '../../../both/api/organizations/organizations';
-import {default as PublicHeader, HeaderTitle} from '../../components/PublicHeader';
-import {regionToBbox} from '../../../both/lib/geo-bounding-box';
-import {defaultRegion} from '../Events/EventBaseForm';
+import { IEvent } from '../../../both/api/events/events';
+import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
+import { default as PublicHeader, HeaderTitle } from '../../components/PublicHeader';
+import { regionToBbox } from '../../../both/lib/geo-bounding-box';
+import { defaultRegion } from '../Events/EventBaseForm';
 import EventMiniMarker from '../Events/EventMiniMarker';
 import EventMapPopup from '../Events/EventMapPopup';
 
@@ -38,9 +38,9 @@ class ShowOrganizationPage extends React.Component<PageProps> {
     placeDetailsShown: boolean,
     mapWasMovedManually: false,
   } = {
-    placeDetailsShown: false,
-    mapWasMovedManually: false,
-  }
+      placeDetailsShown: false,
+      mapWasMovedManually: false,
+    }
 
   public componentWillMount() {
     this.redirectToCorrectRoute(this.props);
@@ -50,7 +50,7 @@ class ShowOrganizationPage extends React.Component<PageProps> {
     if (this.props.params.event_id != nextProps.params.event_id) {
       this.ignoreMapMovement = true;
       this.redirectToCorrectRoute(nextProps);
-      this.setState({mapWasMovedManually: false}, () => {
+      this.setState({ mapWasMovedManually: false }, () => {
         this.ignoreMapMovement = false;
       });
     }
@@ -85,28 +85,28 @@ class ShowOrganizationPage extends React.Component<PageProps> {
         />
         <div className="content-area">
           <Map
-            {...this.determineMapPosition(selectedEvent)}
+            {...this.determineMapPosition(selectedEvent) }
             onBboxApplied={this.onMapBboxApplied}
             onMoveEnd={this.onMapMoveEnd}
             onPlaceDetailsChanged={(options) => {
-              this.setState({placeDetailsShown: options.visible})
+              this.setState({ placeDetailsShown: options.visible })
             }}>
             {events.map((event: IEvent) => {
               if (event._id == selectedEvent._id) {
                 return (<EventMapPopup event={event}
-                                       key={String(event._id)}
-                                       primaryAction={event.status == 'ongoing' || event.status == 'planned' ?
-                                         t`Join Event` : t`View Event`}
-                                       onPrimaryAction={() => {
-                                         browserHistory.push(`/events/${event._id}`)
-                                       }}
-                                       onPrevSelected={() => {
-                                         browserHistory.replace(`/organizations/${organization._id}/event/${prevEvent._id}`)
-                                       }}
-                                       onNextSelected={() => {
-                                         browserHistory.replace(`/organizations/${organization._id}/event/${nextEvent._id}`)
-                                       }}
-                                       hasMore={events.length > 1}/>);
+                  key={String(event._id)}
+                  primaryAction={event.status == 'ongoing' || event.status == 'planned' ?
+                    t`View Event` : t`View Event`}
+                  onPrimaryAction={() => {
+                    browserHistory.push(`/events/${event._id}`)
+                  }}
+                  onPrevSelected={() => {
+                    browserHistory.replace(`/organizations/${organization._id}/event/${prevEvent._id}`)
+                  }}
+                  onNextSelected={() => {
+                    browserHistory.replace(`/organizations/${organization._id}/event/${nextEvent._id}`)
+                  }}
+                  hasMore={events.length > 1} />);
               }
               else {
                 return (
@@ -130,12 +130,12 @@ class ShowOrganizationPage extends React.Component<PageProps> {
       return {};
     }
 
-    return {bbox: regionToBbox(selectedEvent.region || defaultRegion)};
+    return { bbox: regionToBbox(selectedEvent.region || defaultRegion) };
   }
 
   private onMapMoveEnd = () => {
     if (!this.ignoreMapMovement) {
-      this.setState({mapWasMovedManually: true});
+      this.setState({ mapWasMovedManually: true });
     }
   }
 
@@ -178,7 +178,7 @@ const ReactiveShowOrganizationPage = reactiveSubscriptionByParams(
     const organization = Organizations.findOne(id);
     const events = organization ? organization.getEvents() : null;
     // fetch model with organization & events in one go
-    return organization && events ? {organization, events: events || []} : null;
+    return organization && events ? { organization, events: events || [] } : null;
   },
   'organizations.by_id.public', 'events.by_organizationId.public', 'users.my.private');
 
