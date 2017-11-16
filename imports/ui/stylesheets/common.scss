@@ -89,6 +89,26 @@ a {
   }
 }
 
+/** logo */
+a.logo {
+  content: " ";
+  width: 285px;
+  min-width: 285px;
+  height: 51px;
+  background-image: url(/images/logo-wheelmappro-invert@2x.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+
+  h1 {
+    visibility: hidden;
+    font-size: 24px;
+    line-height: 24px !important;
+    font-weight: 800 !important;
+    letter-spacing: -1px;
+  }
+}
+
 svg path.event-bounds-polygon {
   stroke: forestgreen;
   stroke-opacity: 0.3;

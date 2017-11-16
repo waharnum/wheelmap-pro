@@ -34,24 +34,5 @@ const SignUpPage = (props: IStyledComponent) => {
   );
 };
 
-
 export default styled(SignUpPage) `
-  a.logo {
-    content: " ";
-    width: 269px;
-    min-width: 269px;
-    height: 51px;
-    background-image: url(/images/logo-wheelmappro-invert@2x.png); 
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: contain;     
-
-    h1 {
-      visibility: hidden;
-      font-size: 24px;
-      line-height: 24px !important;
-      font-weight: 800 !important;
-      letter-spacing: -1px;
-    }
-  }
 `;
