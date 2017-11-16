@@ -10,3 +10,4 @@ tests/chimp.js
 packages/ff_po-compiler/.npm/
 translate.sh
 used-strings.pot
+combined-strings.pot

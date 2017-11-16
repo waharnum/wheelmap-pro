@@ -5,7 +5,7 @@
     "start": "meteor run",
     "test": "meteor test --once --driver-package dispatch:mocha-phantomjs",
     "test:dev": "meteor test --driver-package dispatch:mocha-phantomjs",
-    "collectTranslations": "meteor node packages/tools/collectTranslations.js",
+    "collectTranslations": "meteor node packages/tools/collectTranslations.js && msgcat used-strings.pot node_modules/wheelmap-react/public/i18n/translations.pot > combined-strings.pot",
     "importStrings": "msginit -i used-strings.pot -o client/i18n/en_DEV.po -l en_DEV --no-translator",
     "fetchFromTransifex": "meteor node packages/tools/fetchFromTransifex.js",
     "uploadToTransifex": "packages/tools/uploadToTransifex.sh"
@@ -63,6 +63,7 @@
     "babel-runtime": "^6.26.0",
     "base-64": "^0.1.0",
     "enzyme": "^2.7.1",
+    "escape-string-regexp": "^1.0.5",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.0",
     "gulp-debug": "^3.1.0",

@@ -1,30 +1,43 @@
-const gulp = require("gulp");
-const ts = require("gulp-typescript");
-const babel = require("gulp-babel");
+const gulp = require('gulp');
+const ts = require('gulp-typescript');
+const babel = require('gulp-babel');
 const debug = require('gulp-debug');
+const escapeStringRegexp = require('escape-string-regexp');
 
-gulp.task("ts-babel", function () {
-  const tsProject = ts.createProject(__dirname + "/../../tsconfig.json", {
-    "module": "es2015",
-    "target": "es2015",
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+const baseDir = __dirname + '/../..';
+const importFolders = ['imports', 'server', 'client'].map(escapeStringRegexp);
+const fileExtensions = ['js', 'ts', 'tsx', 'jsx'].map(escapeStringRegexp);
+const output = baseDir + '/used-strings.pot';
+
+process.env['NODE_ENV'] = 'production';
+process.env['BABEL_ENV'] = 'production';
+
+gulp.task('ts-babel', function () {
+  const tsProject = ts.createProject(baseDir + '/tsconfig.json', {
+    'module': 'es2015',
+    'target': 'es2015',
+    'jsx': 'react',
+    'experimentalDecorators': true,
+    'emitDecoratorMetadata': true,
+    'suppressImplicitAnyIndexErrors': true,
   });
-  return gulp.src([
-    "+(imports|server|client)/**/*.+(js|ts|tsx|jsx)",], {base: __dirname + "/../.."})
-  .pipe(tsProject())
+  return gulp.src(
+    [
+      `+(${importFolders.join('|')})/**/*.+(${fileExtensions.join('|')})`,
+    ], {base: baseDir}
+  )
+  .pipe(tsProject(ts.reporter.nullReporter()))
   .pipe(babel({
-    "plugins": [
+    'plugins': [
       [
-        "c-3po",
+        'c-3po',
         {
-          "extract": {
-            "output": __dirname + "/../../used-strings.pot",
+          'extract': {
+            'output': output,
           },
-          "extractors": {
-            "gettext": {
-              "invalidFormat": 'skip',
+          'extractors': {
+            'gettext': {
+              'invalidFormat': 'skip',
             },
           }
         }
@@ -35,3 +48,5 @@ gulp.task("ts-babel", function () {
 });
 
 gulp.start('ts-babel');
+
+
