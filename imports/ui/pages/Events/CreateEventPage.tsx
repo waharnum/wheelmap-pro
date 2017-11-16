@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import * as React from 'react';
-import { t } from 'c-3po';
+import {t} from 'c-3po';
 import {browserHistory} from 'react-router';
 
 import AdminTab from '../../components/AdminTab';
@@ -27,7 +27,7 @@ const CreateEventPage = (props: ICreateEventFormProps & IStyledComponent) => {
         tabs={(
           <section>
             <AdminTab to="/" title={t`Dashboard`}/>
-            <AdminTab to="" title={t`Create`} active={true}/>
+            <AdminTab to="" title={t`Create Event`} active={true}/>
           </section>
         )}
       />
