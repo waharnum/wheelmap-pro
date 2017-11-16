@@ -69,7 +69,7 @@ class InternalOrganizationBaseForm
 
   public render(): JSX.Element {
     return (
-      <div className={this.props.className + ' content-left'}>
+      <div className={this.props.className}>
         <AutoForm
           placeholder={true}
           showInlineError={true}

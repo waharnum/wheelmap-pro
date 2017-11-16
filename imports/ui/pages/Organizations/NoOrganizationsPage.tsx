@@ -2,41 +2,23 @@ import {t} from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
 
-import AdminTab from '../../components/AdminTab';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 import Button from '../../components/Button';
 import AdminHeader from '../../components/AdminHeader';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import {Hint, HintBox} from '../../components/HintBox';
-import {Link} from 'react-router';
 import {
   IAsyncDataProps, reactiveSubscription,
 } from '../../components/reactiveModelSubscription';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
 import {IOrganization, Organizations} from '../../../both/api/organizations/organizations';
-import OrganizationsDropdown from '../../components/OrganizationsDropdown';
-
-const NoOrganizationsHeader = (props: IAsyncDataProps<IOrganization[]>) => {
-  if (props.model.length > 0) {
-    return (
-      <OrganizationsDropdown>
-        <Button to="/organizations/create">{t`Create Organization`}</Button>
-      </OrganizationsDropdown>)
-  }
-  return (<Link to="/" className="logo"><h1>{t`wheelmap.pro`}</h1></Link>);
-}
+import NoSelectedOrganizationHeader from './NoSelectedOrganizationHeader';
 
 const NoOrganizationsPage = (props: IStyledComponent & IAsyncDataProps<IOrganization[]>) => {
   return (
     <ScrollableLayout className={props.className} id="NoOrganizationsPage">
       <AdminHeader
-        titleComponent={<NoOrganizationsHeader model={props.model} ready={props.ready}/>}
-        tabs={(
-          <section>
-            <AdminTab to="/" title={t`Dashboard`} active={true}/>
-            <AdminTab to="/organizations/create" title={t`Create`}/>
-          </section>
-        )}
+        titleComponent={<NoSelectedOrganizationHeader/>}
       />
       <div className="content-area scrollable hsplit">
         <div className="content-left">

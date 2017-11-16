@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import * as React from 'react';
 import {browserHistory} from 'react-router';
 
-import AdminTab from '../../components/AdminTab';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 import {IStyledComponent} from '../../components/IStyledComponent';
-import AdminHeader, {HeaderTitle} from '../../components/AdminHeader';
+import AdminHeader from '../../components/AdminHeader';
 import {IOrganizationBaseFormProps, OrganizationBaseForm, OrganizationFormHintBox} from './OrganizationBaseForm';
+import NoSelectedOrganizationHeader from './NoSelectedOrganizationHeader';
 
 interface ICreateOrganizationFormProps {
   afterSubmit?: (id: Mongo.ObjectID) => void;
@@ -21,16 +21,13 @@ const CreateOrganizationPage = (props: ICreateOrganizationFormProps & IStyledCom
   return (
     <ScrollableLayout id="CreateOrganizationPage" className={props.className}>
       <AdminHeader
-        titleComponent={<HeaderTitle title="Create Organization"/>}
-        tabs={(
-          <section>
-            <AdminTab to="/" title={t`Dashboard`}/>
-            <AdminTab to="" title={t`Create`} active={true}/>
-          </section>
-        )}
+        titleComponent={<NoSelectedOrganizationHeader/>}
       />
       <div className="content-area scrollable hsplit">
-        <OrganizationBaseForm afterSubmit={GoToOrganizationPage} mode="create"/>
+        <div className="content-left">
+          <h2>{t`Create Organization`}</h2>
+          <OrganizationBaseForm afterSubmit={GoToOrganizationPage} mode="create"/>
+        </div>
         <OrganizationFormHintBox/>
       </div>
     </ScrollableLayout>

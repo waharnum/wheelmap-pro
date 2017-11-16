@@ -23,6 +23,7 @@ class EditOrganizationForm extends React.Component<IAsyncDataByIdProps<IOrganiza
         <OrganizationAdminHeader organization={this.props.model}/>
         <div className="content-area scrollable hsplit">
           <OrganizationBaseForm
+            className="content-left"
             initialModel={this.props.model}
             afterSubmit={this.goToDashboard}
             mode="edit"/>
