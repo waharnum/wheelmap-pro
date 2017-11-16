@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import * as React from 'react';
 import * as moment from 'moment';
 
-import {CustomMapPopup} from '../../components/MapPopup';
-import {IEvent} from '../../../both/api/events/events';
+import { CustomMapPopup } from '../../components/MapPopup';
+import { IEvent } from '../../../both/api/events/events';
 import EventStatistics from '../Events/EventStatistics';
-import {regionToBbox} from '../../../both/lib/geo-bounding-box';
-import {defaultRegion} from './EventBaseForm';
-import {colors} from '../../stylesheets/colors';
-import {IStyledComponent} from '../../components/IStyledComponent';
-import {getLabelForEventStatus} from '../../../both/api/events/eventStatus';
+import { regionToBbox } from '../../../both/lib/geo-bounding-box';
+import { defaultRegion } from './EventBaseForm';
+import { colors } from '../../stylesheets/colors';
+import { IStyledComponent } from '../../components/IStyledComponent';
+import { getLabelForEventStatus } from '../../../both/api/events/eventStatus';
 
 interface IEventMapPopupProps {
   event: IEvent;
@@ -40,7 +40,7 @@ class EventMapPopup extends React.Component<IEventMapPopupProps & IStyledCompone
       >
         {this.props.hasMore ?
           <button className='btn btn-primary btn-prev-event'
-                  onClick={this.props.onPrevSelected}>{'<'}</button> : null}
+            onClick={this.props.onPrevSelected}>{' '}</button> : null}
         <div className="event-information">
           <div className="event-description">
             <h3>{event.name} ({getLabelForEventStatus(event.status)})</h3>
@@ -50,15 +50,15 @@ class EventMapPopup extends React.Component<IEventMapPopupProps & IStyledCompone
           </div>
           {this.props.primaryAction ?
             <button className='btn btn-primary'
-                    onClick={this.props.onPrimaryAction}>{this.props.primaryAction}</button> : null}
+              onClick={this.props.onPrimaryAction}>{this.props.primaryAction}</button> : null}
         </div>
         <EventStatistics
           event={event}
           achieved={true}
-          countdown={'short'}/>
+          countdown={'short'} />
         {this.props.hasMore ?
           <button className='btn btn-primary btn-next-event'
-                  onClick={this.props.onNextSelected}>{'>'}</button> : null}
+            onClick={this.props.onNextSelected}>{' '}</button> : null}
       </CustomMapPopup>);
   }
 }
@@ -85,20 +85,63 @@ text-align: left;
 .popup-root {
   pointer-events: auto;
   padding: 16px 16px 0 16px;
-  background: #fbfaf9;    
+  background: ${colors.bgWhite};
   border-radius: 5px;
-  // box-shadow: 0 0 2px 0 rgba(55,64,77,0.40);
   box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-  
-  .btn-prev-event, .btn-next-event {
+
+  .btn-prev-event, 
+  .btn-next-event {
     position: absolute;
-    top: calc(50% - 25px);
-    width: 50px;
-    height: 50px;
+    top: 24px;
+    width: 32px;
+    height: calc(100% - 48px);
+    color: black;
+    background: ${colors.bgWhite};    
+    border-radius: 0 5px 5px 0;
+    box-shadow:  inset 10px 0 10px rgba(0,0,0,0.05);
+    /* opacity: 0.9;
+    transition: opacity 0.25s; */
+
+    &::before {
+      position: absolute;
+      content: " ";
+      left: 10px;
+      top: calc(50% - 24px); /*45px*/
+      width: 12px;
+      height: 48px;
+      background-image: url(/images/chevron-big-right-dark@2x.png); 
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+
+    &:hover,
+    &:active,
+    &:hover:active {
+      /* opacity: 1; */
+    }
+
+    &:hover {
+      width: 36px;
+
+      &::before {
+        left: 14px;
+      }
+    }
+
+    &:hover:active {
+      background-color: ${colors.bgWhite};
+    }
   }
   
   .btn-prev-event {
-    left: -50px;
+    left: -32px;
+    transform: scaleX(-1);
+
+    &:hover {
+      left: -36px;
+      /* transition: left 0.25s; */
+    }
   }
   
   .btn-next-event {    
@@ -109,7 +152,7 @@ text-align: left;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     
     .event-description {         
       

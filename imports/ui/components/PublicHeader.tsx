@@ -231,6 +231,4 @@ export default styled(PublicHeader) `
       }
     }
   }
-
-
 `;

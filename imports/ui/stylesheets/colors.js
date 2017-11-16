@@ -1,6 +1,7 @@
 // colors need to be tweaked in this file and also in colors.scss !!!!
 
 export const colors = {
+  bgWhite: '#fbfaf9',               // Wheelmap.beta white
   bgGrey: '#F4F5F6',                // light grey in background
   bgGreyDarker: '#ECEDEF',          // light darker grey for "lower" background areas
   bgAnthracite: '#37404D',          // anthracite used in admin headers
