@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { IStyledComponent } from '../components/IStyledComponent';
+import {IStyledComponent} from '../components/IStyledComponent';
 
 interface IScrollLayoutProps {
   children: React.ReactNode;
@@ -19,6 +19,10 @@ const ScrollableLayout = (props: IStyledComponent & IScrollLayoutProps) => {
 export default styled(ScrollableLayout) `
   overflow: auto;
   width: 100%;
+  
+  @media all and (min-width: 1285px) {
+    overflow-x: hidden;
+  }
 
   .main-header .wrapper {
     max-width: 1260px;
@@ -32,7 +36,7 @@ export default styled(ScrollableLayout) `
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-  }  
+  } 
   
   .hsplit,
   .hsplitWithStats .content-hsplit {

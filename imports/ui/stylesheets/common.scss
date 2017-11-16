@@ -67,6 +67,10 @@ a {
   background-color: white;
   border-bottom: 1px solid $shadow-grey;
   box-sizing: content-box;
+
+  @media all and (max-width: 1285px) {
+    display: none;
+  }
 }
 
 .fill-header-bar:after {
@@ -79,6 +83,10 @@ a {
   background-color: white;
   border-bottom: 1px solid $shadow-grey;
   box-sizing: content-box;
+
+  @media all and (max-width: 1285px) {
+    display: none;
+  }
 }
 
 svg path.event-bounds-polygon {
