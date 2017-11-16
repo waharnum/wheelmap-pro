@@ -1,12 +1,12 @@
-import {t} from 'c-3po';
+import { t } from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
 
-import {colors} from '../../stylesheets/colors';
-import {IStyledComponent} from '../../components/IStyledComponent';
+import { colors } from '../../stylesheets/colors';
+import { IStyledComponent } from '../../components/IStyledComponent';
 import * as moment from 'moment';
-import {Countdown} from '../../components/Countdown';
-import {IEvent} from '../../../both/api/events/events';
+import { Countdown } from '../../components/Countdown';
+import { IEvent } from '../../../both/api/events/events';
 
 interface IEventStatistics {
   event: IEvent;
@@ -38,7 +38,7 @@ class EventStatistics extends React.Component<IEventStatistics & IStyledComponen
         </section>
         {/* long countdown */}
         {this.props.countdown == 'full' && event ?
-          <Countdown start={moment(event.startTime)}/> : null}
+          <Countdown start={moment(event.startTime)} /> : null}
         {/* locations added */}
         <section className="location-stats">
           {this.props.planned ?
@@ -57,13 +57,13 @@ class EventStatistics extends React.Component<IEventStatistics & IStyledComponen
           <section className="event-stats">
             {(event.startTime && event.startTime > new Date()) ?
               (<span className="time-until-event key-figure">
-                          {moment(event.startTime).diff(moment(), 'days')}
+                {moment(event.startTime).diff(moment(), 'days')}
                 <small>{t`Days Left`}</small>
-               </span>) :
+              </span>) :
               (<span className="time-until-event key-figure">
-                            {moment().diff(moment(event.startTime), 'days')}
+                {moment().diff(moment(event.startTime), 'days')}
                 <small>{t`Days Ago`}</small>
-               </span>)
+              </span>)
             }
           </section> : null}
         {/* action */}
@@ -81,9 +81,10 @@ display: flex;
 justify-content: space-between;
 
 section {
+  flex-grow:1;
   padding: 0px 20px 0 20px;
   text-align: center;
-  border-right: 1px solid ${colors.shadowGrey};
+  // border-right: 1px solid ${colors.shadowGrey};
   display: flex;
 
   &:last-child {
@@ -133,13 +134,12 @@ section.location-stats:before { background-image: url(/images/icon-location@2x.p
 section.event-stats:before { background-image: url(/images/icon-date@2x.png); }
 section.event-countdown { &:before { background-image: url(/images/icon-date@2x.png); } }
 
-section.new-event:before { 
-  width: 0;
-  height: 0;
-  background-image: none; 
+section.event-countdown {
+  flex-grow: 0;
 }
 
-section.new-event {
-  padding-bottom: 20px;
+section.location-stats {
+  justify-content: flex-end; 
 }
+
 `;

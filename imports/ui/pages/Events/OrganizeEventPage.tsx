@@ -1,22 +1,22 @@
-import {t} from 'c-3po';
-import {IEventParticipant} from '../../../both/api/event-participants/event-participants';
-import {IOrganization} from '../../../both/api/organizations/organizations';
+import { t } from 'c-3po';
+import { IEventParticipant } from '../../../both/api/event-participants/event-participants';
+import { IOrganization } from '../../../both/api/organizations/organizations';
 import * as moment from 'moment';
 import * as React from 'react';
 import styled from 'styled-components';
-import {colors} from '../../stylesheets/colors';
+import { colors } from '../../stylesheets/colors';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 
-import {default as AdminHeader, HeaderTitle} from '../../components/AdminHeader';
+import { default as AdminHeader, HeaderTitle } from '../../components/AdminHeader';
 
-import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
-import {Events, IEvent} from '../../../both/api/events/events';
-import {IStyledComponent} from '../../components/IStyledComponent';
+import { reactiveSubscriptionByParams, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
+import { Events, IEvent } from '../../../both/api/events/events';
+import { IStyledComponent } from '../../components/IStyledComponent';
 import Button from '../../components/Button';
 import EventTabs from './EventTabs';
-import {wrapDataComponent} from '../../components/AsyncDataComponent';
+import { wrapDataComponent } from '../../components/AsyncDataComponent';
 import EventStatistics from './EventStatistics';
-import {Hint, HintBox} from '../../components/HintBox';
+import { Hint, HintBox } from '../../components/HintBox';
 
 interface IPageModel {
   event: IEvent;
@@ -132,7 +132,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
     hasInvitees: false,
     hasPicture: false,
     resultsShared: false,
-    stats: {invited: 0, registered: 0},
+    stats: { invited: 0, registered: 0 },
     event: {} as IEvent,
     organization: {} as IOrganization,
     participants: [],
@@ -155,7 +155,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
         }
         return sum;
       },
-      {invited: 0, registered: 0});
+      { invited: 0, registered: 0 });
 
     this.setState({
       event: props.model.event,
@@ -170,7 +170,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
   }
 
   private publishEvent = () => {
-    Meteor.call('events.publish', {eventId: this.state.event._id}, (error, result) => {
+    Meteor.call('events.publish', { eventId: this.state.event._id }, (error, result) => {
       // TODO: handle error!
       console.log('events.publish', error, result);
     });
@@ -195,7 +195,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
               prefixLink={`/organizations/${organization._id}/organize`}
             />
           )}
-          tabs={(<EventTabs id={event._id}/>)}
+          tabs={(<EventTabs id={event._id} />)}
           publicLink={`/events/${event._id}`}
         />
         <div className="content-area scrollable hsplitWithStats">
@@ -204,7 +204,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
             event={event}
             planned={true}
             achieved={true}
-            countdown="full"/>
+            countdown="full" />
           <div className='content-hsplit'>
             <div className="content-left">
               <ol className="event-timeline before-event">
@@ -228,7 +228,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
                       <p>{t`Emails will be send when you publish.`}</p>
                     </div>
                     <Button className="btn-primary"
-                            to={`/events/${event._id}/participants`}>{t`Invite participants`}</Button>
+                      to={`/events/${event._id}/participants`}>{t`Invite participants`}</Button>
                   </div>
                   <div className="step-status step-completed">
                     <div className="step-information">
@@ -243,7 +243,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
                   <div className="step-status">
                     <h3>{t`Tips for event organizers`}</h3>
                     <a className="btn" target="_blank"
-                       href="https://developmentseed.org/blog/2015/06/07/organizing-mapathons/">{t`Learn more`}</a>
+                      href="https://developmentseed.org/blog/2015/06/07/organizing-mapathons/">{t`Learn more`}</a>
                   </div>
                 </li>
               </ol>
@@ -300,7 +300,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
                       <h3>{t`Event picture was set`}</h3>
                       <Button to={`/events/${event._id}/edit`}>{t`Edit`}</Button>
                     </section>
-                    <img src={event.photoUrl}/>
+                    <img src={event.photoUrl} />
                   </div>
                 </li>
                 <li className={'event-timeline-step share-results ' + stepStates.shareResults}>
@@ -320,13 +320,17 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
               </ol>
             </div>
             <div className="content-right">
-              <HintBox title={t`Join or create an organization to contribute`}>
+              <HintBox title={t`Organizing your event is easy:`}>
                 <Hint className="done">
-                  {t`If you want to contribute to wheelmap.pro you need an organization.`}
+                  {t`Prepare the essentials before you start.`}
                 </Hint>
-                <Hint className="done">
-                  {t`Creating an organization is free and without any hidden costs. `}
+                <Hint className="group">
+                  {t`Decide to have a public or invite only event.`}
                 </Hint>
+                <Hint className="rocket">
+                  {t`Publish your event to send invitations and see who is onboard.`}
+                </Hint>
+
               </HintBox>
             </div>
           </div>
@@ -344,21 +348,11 @@ const ReactiveOrganizeOrganizationsPage = reactiveSubscriptionByParams(
     const event = Events.findOne(id);
     const participants = event ? event.getParticipants() : [];
     const organization = event ? event.getOrganization() : null;
-    return event && organization ? {event, participants, organization} : null;
+    return event && organization ? { event, participants, organization } : null;
   },
   'events.by_id.private', 'eventParticipants.by_eventId.private', 'organizations.by_eventId.private');
 
 export default styled(ReactiveOrganizeOrganizationsPage) `
-
-/* -------------------------- event stats styling --------------------------------*/
-
-/* .content-area {
-  padding-top: 0;
-  padding-left: 0; 
-  /* to have a marginless stats bar */
-  /* padding-right: 0;  */
-  /* to have a marginless stats bar */
-/* } */
 
 /* -------------------------- event timeline styling -----------------------------------*/
 

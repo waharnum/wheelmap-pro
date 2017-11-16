@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import * as React from 'react';
-import {colors} from '../stylesheets/colors';
+import { colors } from '../stylesheets/colors';
 
-import {IStyledComponent} from '../components/IStyledComponent';
+import { IStyledComponent } from '../components/IStyledComponent';
 
 interface IHintHeader {
   children: React.ReactNode;
@@ -116,7 +116,7 @@ export const HintBox = styled(InternalHintBox) `
       content: '';
     }
     .rocket::before {
-      content: '';
+      content: '¶';
     }
   }
 `;

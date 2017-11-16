@@ -84,7 +84,7 @@ justify-content: space-between;
 section {
   padding: 0px 20px 0 20px;
   text-align: center;
-  border-right: 1px solid ${colors.shadowGrey};
+  // border-right: 1px solid ${colors.shadowGrey};
   display: flex;
 
   &:last-child {
@@ -137,6 +137,10 @@ section.new-event:before {
   width: 0;
   height: 0;
   background-image: none; 
+}
+
+section.event-countdown {
+  justify-content: space-around;
 }
 
 section.new-event {
