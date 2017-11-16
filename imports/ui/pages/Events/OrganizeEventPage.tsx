@@ -224,19 +224,27 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
                   <div className="notification-completed">{t`${stats.invited} Invitations sent.`}</div>
                   <div className="step-status step-todo">
                     <div className="step-information">
-                      <h3>{t`No participants invited.`}</h3>
+                      <h3>{t`No participant invites prepare.`}</h3>
                       <p>{t`Emails will be send when you publish.`}</p>
                     </div>
                     <Button className="btn-primary"
                             to={`/events/${event._id}/participants`}>{t`Invite participants`}</Button>
                   </div>
-                  <div className="step-status step-completed">
-                    <div className="step-information">
-                      <h3>{t`${stats.invited} participants invited`}.</h3>
-                      <p>{t`Emails will be send when you publish.`}</p>
+                  {event.status == 'draft' ?
+                    <div className="step-status step-completed">
+                      <div className="step-information">
+                        <h3>{t`${stats.invited} participant invites prepared`}.</h3>
+                        <p>{t`Emails will be send when you publish.`}</p>
+                      </div>
+                      <Button to={`/events/${event._id}/participants`}>{t`Add more`}</Button>
+                    </div> :
+                    <div className="step-status step-completed">
+                      <div className="step-information">
+                        <h3>{t`${stats.invited} participants invited`}.</h3>
+                      </div>
+                      <Button to={`/events/${event._id}/participants`}>{t`Invite more`}</Button>
                     </div>
-                    <Button to={`/events/${event._id}/participants`}>{t`Invite more`}</Button>
-                  </div>
+                  }
                 </li>
                 <li className={'event-timeline-step organizer-tips ' + stepStates.organizerTips}>
                   <div className="notification-completed">{t`Some documents to read.`}</div>
