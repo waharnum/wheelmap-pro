@@ -1,26 +1,26 @@
-import {t} from 'c-3po';
+import { t } from 'c-3po';
 import * as L from 'leaflet';
 import styled from 'styled-components';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 import * as React from 'react';
 import * as moment from 'moment';
 import ClipboardButton from 'react-clipboard.js';
-import {browserHistory} from 'react-router';
+import { browserHistory } from 'react-router';
 
 import Map from '../../components/Map';
 import Button from '../../components/Button';
-import {colors} from '../../stylesheets/colors';
+import { colors } from '../../stylesheets/colors';
 import MapLayout from '../../layouts/MapLayout';
-import {regionToBbox} from '../../../both/lib/geo-bounding-box';
-import {defaultRegion} from './EventBaseForm';
+import { regionToBbox } from '../../../both/lib/geo-bounding-box';
+import { defaultRegion } from './EventBaseForm';
 import EventStatistics from './EventStatistics';
 import EventMiniMarker from './EventMiniMarker';
-import {IOrganization} from '../../../both/api/organizations/organizations';
-import {IEvent, Events} from '../../../both/api/events/events';
-import {IStyledComponent} from '../../components/IStyledComponent';
-import {wrapDataComponent} from '../../components/AsyncDataComponent';
-import {default as PublicHeader, HeaderTitle} from '../../components/PublicHeader';
-import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
+import { IOrganization } from '../../../both/api/organizations/organizations';
+import { IEvent, Events } from '../../../both/api/events/events';
+import { IStyledComponent } from '../../components/IStyledComponent';
+import { wrapDataComponent } from '../../components/AsyncDataComponent';
+import { default as PublicHeader, HeaderTitle } from '../../components/PublicHeader';
+import { reactiveSubscriptionByParams, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
 
 interface IPageModel {
   organization: IOrganization;
@@ -32,24 +32,24 @@ const PublicEventHeader = (props: { event: IEvent, organization: IOrganization }
     titleComponent={(
       <HeaderTitle
         title={props.event.name}
+        subTitle={moment(props.event.startTime).format('LLL')}
         description={props.event.description}
         prefixTitle={props.organization.name}
         logo={props.organization.logo}
         prefixLink={`/organizations/${props.organization._id}`}
       />
     )}
-    action={(<HeaderShareAction/>)}
+    action={(<HeaderShareAction />)}
     organizeLink={props.event.editableBy(Meteor.userId()) ? `/events/${props.event._id}/organize` : undefined}
   />
 );
 
 const OngoingEventHeader = (props: { event: IEvent }) => (
   <div>
-    <div className="event-date">{moment(props.event.startTime).format('LLLL')}</div>
     <EventStatistics
       event={props.event}
       achieved={true}
-      countdown={'full'}/>
+      countdown={'full'} />
   </div>
 );
 
@@ -61,10 +61,10 @@ const OngoingEventMapContent = () => (
 
 const HeaderShareAction = () => (
   <ClipboardButton className="btn btn-dark"
-                   data-clipboard-text={window.location.href}
-                   onSuccess={() => {
-                     toast.success(t`Link copied to clipboard`);
-                   }}>
+    data-clipboard-text={window.location.href}
+    onSuccess={() => {
+      toast.success(t`Link copied to clipboard`);
+    }}>
     {t`Share…`}
   </ClipboardButton>
 );
@@ -72,13 +72,13 @@ const HeaderShareAction = () => (
 const FinishedEventMapContent = (props: { event: IEvent }) => {
   const barGraphAchieved =
     props.event.statistics && props.event.targets &&
-    props.event.targets.mappedPlacesCount && props.event.targets.mappedPlacesCount > 0 ?
+      props.event.targets.mappedPlacesCount && props.event.targets.mappedPlacesCount > 0 ?
       Math.floor(100 * props.event.statistics.mappedPlacesCount / props.event.targets.mappedPlacesCount) : null;
 
   return (
     <div className="event-stats">
       <div className="event-picture-container">
-        {props.event.photoUrl ? <img src={props.event.photoUrl} alt={t`Event picture`}/> : null}
+        {props.event.photoUrl ? <img src={props.event.photoUrl} alt={t`Event picture`} /> : null}
         <section className="image-overlay">
           <div className="participant-count">
             {props.event.statistics ? props.event.statistics.acceptedParticipantCount : 0}
@@ -95,7 +95,7 @@ const FinishedEventMapContent = (props: { event: IEvent }) => {
       </div>
       <div className="stats-box">
         <div className="places-block">
-          <section className="poi-icon"/>
+          <section className="poi-icon" />
           <section className="planned-label">
             <p>{props.event.targets ? props.event.targets.mappedPlacesCount : 0}</p>
             <small>{t`Planned`}</small>
@@ -107,8 +107,8 @@ const FinishedEventMapContent = (props: { event: IEvent }) => {
         </div>
         {barGraphAchieved !== null ?
           <div className="places-graph">
-            <section style={{width: t`${barGraphAchieved}%`}} className="bar-graph-achieved"/>
-            <section style={{width: t`${100 - barGraphAchieved}%`}} className="bar-graph-planned"/>
+            <section style={{ width: t`${barGraphAchieved}%` }} className="bar-graph-achieved" />
+            <section style={{ width: t`${100 - barGraphAchieved}%` }} className="bar-graph-planned" />
           </div>
           : null
         }
@@ -118,36 +118,36 @@ const FinishedEventMapContent = (props: { event: IEvent }) => {
 }
 
 const ShowEventPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent) => {
-    const event = props.model.event;
-    const organization = props.model.organization;
-    const bbox = regionToBbox(event.region || defaultRegion);
+  const event = props.model.event;
+  const organization = props.model.organization;
+  const bbox = regionToBbox(event.region || defaultRegion);
 
-    return (
-      <MapLayout className={props.className}>
-        <PublicEventHeader event={event} organization={organization}/>
-        {event.status == 'ongoing' ? <OngoingEventHeader event={event}/> : null}
-        {event.status == 'planned' ? <OngoingEventHeader event={event}/> : null}
-        <div className="content-area">
-          <Map
-            bbox={bbox}>
-            <EventMiniMarker
-              event={event}
-              additionalLeafletLayers={[L.rectangle(bbox, {
-                className: 'event-bounds-polygon',
-                interactive: false,
-              })]}
-            />
-          </Map>
-          <div className="map-overlay">
-            {event.status == 'completed' ? <FinishedEventMapContent event={event}/> : null}
-            {event.status == 'ongoing' ? <OngoingEventMapContent/> : null}
-            {event.status == 'planned' ? <OngoingEventMapContent/> : null}
-          </div>
+  return (
+    <MapLayout className={props.className}>
+      <PublicEventHeader event={event} organization={organization} />
+      {event.status == 'ongoing' ? <OngoingEventHeader event={event} /> : null}
+      {event.status == 'planned' ? <OngoingEventHeader event={event} /> : null}
+      <div className="content-area">
+        <Map
+          bbox={bbox}>
+          <EventMiniMarker
+            event={event}
+            additionalLeafletLayers={[L.rectangle(bbox, {
+              className: 'event-bounds-polygon',
+              interactive: false,
+            })]}
+          />
+        </Map>
+        <div className="map-overlay">
+          {event.status == 'completed' ? <FinishedEventMapContent event={event} /> : null}
+          {event.status == 'ongoing' ? <OngoingEventMapContent /> : null}
+          {event.status == 'planned' ? <OngoingEventMapContent /> : null}
         </div>
-      </MapLayout>
-    );
-  }
-;
+      </div>
+    </MapLayout>
+  );
+}
+  ;
 
 const ReactiveShowEventPage = reactiveSubscriptionByParams(
   wrapDataComponent<IPageModel,
@@ -157,7 +157,7 @@ const ReactiveShowEventPage = reactiveSubscriptionByParams(
     const event = Events.findOne(id);
     const organization = event ? event.getOrganization() : null;
     // fetch model with organization & events in one go
-    return event && organization ? {organization, event} : null;
+    return event && organization ? { organization, event } : null;
   }, 'events.by_id.public', 'organizations.by_eventId.public', 'users.my.private');
 
 export default styled(ReactiveShowEventPage) `
