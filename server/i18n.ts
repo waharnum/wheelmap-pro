@@ -10,6 +10,7 @@ import 'moment/min/locales';
 const files = readdirSync('./assets/app/i18n');
 const fallbackLanguage = 'en-DEV';
 
+declare const Assets: any;
 const availableLanguages = fromPairs(files.map((file) => {
   const name = file.substring(0, file.length - 8);
   return [name, JSON.parse(Assets.getText(`i18n/${name}.po.json`))]
@@ -44,7 +45,6 @@ export const remove = new ValidatedMethod({
     const momentData = mapKeys(moment.localeData(language) as Dictionary<any>, function (value, key) {
       return key.substr(1);
     });
-
 
     // we could potentially combine languages on the fly here, but this would be very confusing for plurals etc.
     return {language, data: availableLanguages[language], momentData};
