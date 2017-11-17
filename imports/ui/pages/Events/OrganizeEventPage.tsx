@@ -141,7 +141,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
       organization: props.model.organization,
       participants: props.model.participants,
       status: props.model.event.status,
-      hasInvitees: props.model.event.statistics.fullParticipantCount > 0,
+      hasInvitees: !!props.model.event.statistics && props.model.event.statistics.fullParticipantCount > 0,
       hasPicture: !!props.model.event.photoUrl,
       resultsShared: false,
     });
