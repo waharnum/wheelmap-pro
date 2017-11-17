@@ -54,21 +54,11 @@ const determineCssClassesFromState = (state: IOrganizeEventPageState) => {
         shareResults: 'disabled',
       };
     case 'planned':
-      if (state.hasInvitees) {
-        return {
-          createEvent: 'finished',
-          inviteParticipants: 'finished',
-          organizerTips: 'finished',
-          startEvent: 'active',
-          setEventPicture: 'disabled',
-          shareResults: 'disabled',
-        };
-      }
       return {
         createEvent: 'finished',
-        inviteParticipants: 'todo',
-        organizerTips: 'enabled',
-        startEvent: 'disabled',
+        inviteParticipants: 'finished',
+        organizerTips: 'finished',
+        startEvent: 'active',
         setEventPicture: 'disabled',
         shareResults: 'disabled',
       };
@@ -247,6 +237,7 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
               <ol className="event-timeline during-event">
                 <h2>{t`Publish event`}</h2>
                 <li className={'event-timeline-step publish-event ' + stepStates.startEvent}>
+                  {/* Before event was published */}
                   <div className="step-status step-todo">
                     <div className="step-information">
                       <h3>{t`Mapping event still a draft`}</h3>
@@ -256,8 +247,10 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
                       <button className="btn btn-primary" onClick={this.publishEvent}>{t`Publish event`}</button>
                     </div>
                   </div>
-                  <div
-                    className="notification-completed step-active">{t`Congratulations! Your event has been published`}</div>
+                  {/* After event was published */}
+                  <div className="notification-completed step-active">
+                    {t`Congratulations! Your event has been published`}
+                  </div>
                   <div className="step-status step-active">
                     <div className="step-information">
                       <h3>{t`Mapping event published`}</h3>
@@ -266,9 +259,10 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
                     </div>
                     <div className="publishing-actions">
                       <Button to={`/events/${event._id}`}>{t`View event`}</Button>
-                      <Button className="btn-primary" to='.'>{t`Cancel event`}</Button>
+                      <Button className="btn-primary" disabled={true} to='.'>{t`Cancel event`}</Button>
                     </div>
                   </div>
+                  {/* After event was completed */}
                   <div className="notification-completed step-completed">{t`Your event has been completed`}</div>
                   <div className="step-status step-completed">
                     <div className="step-information">
