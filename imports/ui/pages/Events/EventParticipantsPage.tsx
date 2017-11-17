@@ -26,9 +26,10 @@ interface IPageModel {
 }
 
 const removeParticipant = (id: Mongo.ObjectID | undefined) => {
-  Meteor.call('eventParticipants.remove', id, (error, result) => {
-    // TODO: handle error!
-    console.log('eventParticipants.remove', error, result);
+  Meteor.call('eventParticipants.remove', id, (error: Meteor.Error, result) => {
+    if (error) {
+      toast.error(error.reason);
+    }
   });
 };
 
