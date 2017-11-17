@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import * as React from 'react';
 
 import {regionToBbox} from '../../../both/lib/geo-bounding-box';
-import {defaultRegion} from './EventBaseForm';
 import {CustomMapIcon} from '../../components/MapIcon';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import {IEvent} from '../../../both/api/events/events';
+import {defaultRegion} from '../../../both/api/events/schema';
 
 interface IMarkerProps {
   event: IEvent;

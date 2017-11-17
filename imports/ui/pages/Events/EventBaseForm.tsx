@@ -12,6 +12,7 @@ import {Events, IEvent, EventRegion} from '../../../both/api/events/events';
 import ImageLinkUrlField from '../../components/ImageLinkUrlField';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import {bboxToRegion, regionToBbox} from '../../../both/lib/geo-bounding-box';
+import {defaultRegion} from '../../../both/api/events/schema';
 
 
 export interface IEventBaseFormProps {
@@ -51,10 +52,6 @@ schema.extend({
   },
 });
 
-export const defaultRegion: EventRegion = {
-  topLeft: {latitude: 52.67551, longitude: 13.08835},
-  bottomRight: {latitude: 52.33826, longitude: 13.76116},
-};
 
 class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyledComponent, IBaseFormState> {
   public state = {

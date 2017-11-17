@@ -3,9 +3,15 @@ import {t} from 'c-3po';
 import {registerSchemaForI18n} from '../../i18n/i18n';
 import {openForLabels} from './eventOpenFor';
 import {eventStatusLabels} from './eventStatus';
+import {EventRegion} from './events';
 
 // allow custom uniforms fields
 SimpleSchema.extendOptions(['uniforms']);
+
+export const defaultRegion: EventRegion = {
+  topLeft: {latitude: 52.67551, longitude: 13.08835},
+  bottomRight: {latitude: 52.33826, longitude: 13.76116},
+};
 
 export const EventSchema = new SimpleSchema({
   'organizationId': {
@@ -41,6 +47,7 @@ export const EventSchema = new SimpleSchema({
     type: Object,
     optional: true,
     uniforms: () => null,
+    defaultValue: defaultRegion,
   },
   'region.topLeft': Object,
   'region.topLeft.latitude': {
