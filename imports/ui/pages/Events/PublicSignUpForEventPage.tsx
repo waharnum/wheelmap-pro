@@ -40,6 +40,7 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
     error: null,
     guestMode: true,
   };
+  private formRef: AutoForm;
 
   public componentWillReceiveProps(nextProps: InternalPageProperties) {
     this.modelChanged(nextProps);
@@ -50,10 +51,21 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
   }
 
   private onSubmit = (doc) => {
-    loginGuestUser(doc.username, (error, result) => {
-      // TODO: handle error
-      console.log('HANDLE RESULT', error, result);
+    return new Promise((resolve: (user: Meteor.User) => void, reject: (error: Meteor.Error) => void) => {
+      loginGuestUser(doc.username, (error: Meteor.Error, result) => {
+        if (!error) {
+          resolve(result);
+        } else {
+          reject(error);
+        }
+      });
+    }).catch((error: Meteor.Error) => {
+      this.formRef.setState({error: new Error(error.reason)});
     });
+  }
+
+  private storeFormReference = (ref: AutoForm) => {
+    this.formRef = ref;
   }
 
   public render(): JSX.Element | null {
@@ -90,6 +102,7 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
               placeholder={true}
               showInlineError={true}
               schema={GuestUserSchema}
+              ref={this.storeFormReference}
               submitField={() => (<SubmitField value={t`Sign up as a guest`}/>)}
               onSubmit={this.onSubmit}/>
             <Button to="">{t`Sign-in/Sign-up with email`}</Button>
