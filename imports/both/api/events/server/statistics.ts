@@ -12,6 +12,7 @@ function isPlaceInfo(document: IEvent | IEventParticipant | IPlaceInfo): documen
 }
 
 const buildStatistics = (document?: IEvent | IEventParticipant | IPlaceInfo | null) => {
+  // console.log('Update event statistics', document);
   if (document && document._id) {
     let id: Mongo.ObjectID = document._id;
     if (isParticipant(document) && document.eventId) {
@@ -29,18 +30,17 @@ const buildStatistics = (document?: IEvent | IEventParticipant | IPlaceInfo | nu
     const acceptedParticipantCount = EventParticipants.find({eventId: id, invitationState: 'accepted'}).count();
     const mappedPlacesCount = PlaceInfos.find({'properties.eventId': id}).count();
 
-    console.log('Update event statistics', id)
+    const statistics = {
+      fullParticipantCount,
+      invitedParticipantCount,
+      draftParticipantCount,
+      acceptedParticipantCount,
+      mappedPlacesCount,
+    };
 
+    // console.log('Update event statistics', id, statistics)
     Events.update(id, {
-      $set: {
-        statistics: {
-          fullParticipantCount,
-          invitedParticipantCount,
-          draftParticipantCount,
-          acceptedParticipantCount,
-          mappedPlacesCount,
-        },
-      },
+      $set: {statistics},
     });
   }
 }
@@ -64,7 +64,7 @@ Meteor.startup(() => {
     },
   });
 
-  EventParticipants.find({}, {fields: {_id: 1, 'eventId': 1}}).observe({
+  EventParticipants.find({}, {fields: {_id: 1, 'eventId': 1, 'invitationState': 1}}).observe({
     added: (...args) => {
       if (!isStartup) {
         buildStatistics(...args)
