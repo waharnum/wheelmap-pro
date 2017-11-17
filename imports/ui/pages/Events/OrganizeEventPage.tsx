@@ -1,22 +1,23 @@
 import {t} from 'c-3po';
-import {IEventParticipant} from '../../../both/api/event-participants/event-participants';
-import {IOrganization} from '../../../both/api/organizations/organizations';
-import * as moment from 'moment';
-import * as React from 'react';
 import styled from 'styled-components';
+import {toast} from 'react-toastify';
 import {colors} from '../../stylesheets/colors';
+import * as React from 'react';
+import * as moment from 'moment';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 
 import {default as AdminHeader, HeaderTitle} from '../../components/AdminHeader';
 
-import {IAsyncDataByIdProps, reactiveSubscriptionByParams} from '../../components/reactiveModelSubscription';
-import {Events, IEvent} from '../../../both/api/events/events';
-import {IStyledComponent} from '../../components/IStyledComponent';
 import Button from '../../components/Button';
 import EventTabs from './EventTabs';
 import EventStatistics from './EventStatistics';
-import {wrapDataComponent} from '../../components/AsyncDataComponent';
+import {IOrganization} from '../../../both/api/organizations/organizations';
 import {Hint, HintBox} from '../../components/HintBox';
+import {Events, IEvent} from '../../../both/api/events/events';
+import {IStyledComponent} from '../../components/IStyledComponent';
+import {wrapDataComponent} from '../../components/AsyncDataComponent';
+import {IEventParticipant} from '../../../both/api/event-participants/event-participants';
+import {IAsyncDataByIdProps, reactiveSubscriptionByParams} from '../../components/reactiveModelSubscription';
 
 interface IPageModel {
   event: IEvent;
@@ -158,8 +159,9 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
 
   private publishEvent = () => {
     Meteor.call('events.publish', {eventId: this.state.event._id}, (error, result) => {
-      // TODO: handle error!
-      console.log('events.publish', error, result);
+      if (error) {
+        toast.error(error.reason);
+      }
     });
   }
 
