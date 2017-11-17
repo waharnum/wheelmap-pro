@@ -100,6 +100,9 @@ export const EventSchema = new SimpleSchema({
   'targets': {
     type: Object,
     optional: true,
+    defaultValue: {
+      mappedPlacesCount: 0,
+    },
   },
   'targets.mappedPlacesCount': {
     label: t`Goal for mapped places`,
@@ -121,6 +124,13 @@ export const EventSchema = new SimpleSchema({
   'statistics': {
     optional: true,
     type: Object,
+    defaultValue: {
+      fullParticipantCount: 0,
+      invitedParticipantCount: 0,
+      draftParticipantCount: 0,
+      acceptedParticipantCount: 0,
+      mappedPlacesCount: 0,
+    },
   },
   'statistics.fullParticipantCount': Number,
   'statistics.invitedParticipantCount': Number,
