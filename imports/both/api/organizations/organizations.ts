@@ -45,11 +45,7 @@ export function setActiveOrganization(userId: Mongo.ObjectID,
 };
 
 export function getActiveOrganizationId(userId: Mongo.ObjectID | null): Mongo.ObjectID | null {
-  const user = Meteor.users.findOne(userId);
+  const user = userId ? Meteor.users.findOne(userId) : null;
   return user ? user.profile.activeOrganizationId : null;
 };
-
-export function getActiveOrganization(userId: Mongo.ObjectID): IOrganization | null {
-  const activeOrganizationId = getActiveOrganizationId(userId);
-  return activeOrganizationId ? Organizations.findOne(activeOrganizationId) : null;
-};
+;
