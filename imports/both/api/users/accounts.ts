@@ -49,7 +49,7 @@ export function loginGuestUser(username, callback) {
         custom: 'guest',
         username,
       }],
-      userCallback: function (error, result) {
+      userCallback: function (error: Meteor.Error, result: Meteor.User) {
         if (error) {
           callback && callback(error);
         } else {
