@@ -56,6 +56,14 @@ Meteor.startup(() => {
     },
   });
 
+  Events.find({}, {fields: {_id: 1}}).observe({
+    added: (...args) => {
+      if (!isStartup) {
+        buildStatistics(...args);
+      }
+    },
+  });
+
   EventParticipants.find({}, {fields: {_id: 1, 'eventId': 1}}).observe({
     added: (...args) => {
       if (!isStartup) {
