@@ -4,20 +4,21 @@ import {toast} from 'react-toastify';
 import {colors} from '../../stylesheets/colors';
 import * as React from 'react';
 import * as moment from 'moment';
-import ScrollableLayout from '../../layouts/ScrollableLayout';
-
-import {default as AdminHeader, HeaderTitle} from '../../components/AdminHeader';
 
 import Button from '../../components/Button';
 import EventTabs from './EventTabs';
 import EventStatistics from './EventStatistics';
 import {IOrganization} from '../../../both/api/organizations/organizations';
 import {Hint, HintBox} from '../../components/HintBox';
+import ScrollableLayout from '../../layouts/ScrollableLayout';
 import {Events, IEvent} from '../../../both/api/events/events';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
 import {IEventParticipant} from '../../../both/api/event-participants/event-participants';
+import {default as AdminHeader, HeaderTitle} from '../../components/AdminHeader';
 import {IAsyncDataByIdProps, reactiveSubscriptionByParams} from '../../components/reactiveModelSubscription';
+import {modalAppDialog} from '../../App';
+import * as Dialog from 'react-bootstrap-dialog';
 
 interface IPageModel {
   event: IEvent;
@@ -114,8 +115,8 @@ const determineCssClassesFromState = (state: IOrganizeEventPageState) => {
   }
 };
 
-class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> & IStyledComponent,
-  IOrganizeEventPageState> {
+class OrganizeEventPage extends React.Component
+  <IAsyncDataByIdProps<IPageModel> & IStyledComponent, IOrganizeEventPageState> {
 
   public state: IOrganizeEventPageState = {
     status: 'draft',
@@ -152,6 +153,23 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
       if (error) {
         toast.error(error.reason);
       }
+    });
+  }
+
+  private cancelEvent = () => {
+    modalAppDialog.show({
+      title: t`Please confirm cancelation`,
+      body: t`This will cancel your event and send out cancelation emails to all invitations. You will not be able to undo this!`,
+      actions: [
+        Dialog.CancelAction(),
+        Dialog.OKAction(() => {
+          Meteor.call('events.cancel', {eventId: this.state.event._id}, (error, result) => {
+            if (error) {
+              toast.error(error.reason);
+            }
+          });
+        }),
+      ],
     });
   }
 
@@ -259,7 +277,8 @@ class OrganizeEventPage extends React.Component<IAsyncDataByIdProps<IPageModel> 
                     </div>
                     <div className="publishing-actions">
                       <Button to={`/events/${event._id}`}>{t`View event`}</Button>
-                      <Button className="btn-primary" disabled={true} to='.'>{t`Cancel event`}</Button>
+                      <button className="btn btn-danger"
+                              onClick={this.cancelEvent}>{t`Cancel event`}</button>
                     </div>
                   </div>
                   {/* After event was completed */}

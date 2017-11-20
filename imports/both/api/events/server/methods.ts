@@ -64,9 +64,9 @@ export const publish = new ValidatedMethod({
       throw new Meteor.Error(404, 'Event not found.');
     }
     if (!event.editableBy(this.userId)) {
-      throw new Meteor.Error(403, 'You don\'t have permission to remove this event.');
+      throw new Meteor.Error(403, 'You don\'t have permission to publish this event.');
     }
-    if (event.status !== 'draft') {
+    if (event.status !== 'draft' && event.status !== 'canceled') {
       throw new Meteor.Error(403, 'This event is already published.');
     }
 
@@ -77,5 +77,32 @@ export const publish = new ValidatedMethod({
       console.log('Publishing!', invitation._id);
       sendEventInvitationEmailTo(invitation, event, organization);
     });
+  },
+});
+
+export const cancel = new ValidatedMethod({
+  name: 'events.cancel',
+  validate: new SimpleSchema({
+    eventId: {
+      type: String,
+      regEx: SimpleSchema.RegEx.Id,
+    },
+  }).validator(),
+  run({eventId}) {
+    const event = Events.findOne(eventId);
+
+    if (!event) {
+      throw new Meteor.Error(404, 'Event not found.');
+    }
+    if (!event.editableBy(this.userId)) {
+      throw new Meteor.Error(403, 'You don\'t have permission to cancel this event.');
+    }
+    if (event.status === 'canceled') {
+      throw new Meteor.Error(403, 'This event is already canceled.');
+    }
+
+    Events.update(eventId, {$set: {status: 'canceled'}});
+
+    // TODO sent email about cancelled event
   },
 });
