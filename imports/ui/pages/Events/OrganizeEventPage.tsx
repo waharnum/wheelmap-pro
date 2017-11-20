@@ -158,8 +158,8 @@ class OrganizeEventPage extends React.Component
 
   private cancelEvent = () => {
     modalAppDialog.show({
-      title: t`Please confirm cancelation`,
-      body: t`This will cancel your event and send out cancelation emails to all invitations. You will not be able to undo this!`,
+      title: t`Please confirm cancellation`,
+      body: t`This will cancel your event and send out cancellation emails to all invitees. You will not be able to undo this!`,
       actions: [
         Dialog.CancelAction(),
         Dialog.OKAction(() => {
