@@ -18,9 +18,9 @@ import OrganizationAdminHeader from './OrganizationAdminHeader';
 import OrganizationStatistics from './OrganizationStatistics';
 import EventStatistics from '../Events/EventStatistics';
 import {regionToBbox} from '../../../both/lib/geo-bounding-box';
-import EventMiniMarker from '../Events/EventMiniMarker';
 import {getLabelForEventStatus} from '../../../both/api/events/eventStatus';
 import {defaultRegion} from '../../../both/api/events/schema';
+import {CustomMapIcon} from '../../components/MapIcon';
 
 interface IPageModel {
   organization: IOrganization;
@@ -65,8 +65,9 @@ const EventListEntry = (props: { model: IEvent }) => {
         className="event-mini-map"
         enablePlaceDetails={false}
         bbox={bbox}>
-        <EventMiniMarker
-          event={event}
+        <CustomMapIcon
+          lat={bbox.getCenter().lat}
+          lon={bbox.getCenter().lng}
           additionalLeafletLayers={[L.rectangle(bbox, {
             className: 'event-bounds-polygon',
             interactive: false,
