@@ -1,17 +1,17 @@
-import { t } from 'c-3po';
+import {t} from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
 
-import { IStyledComponent } from './IStyledComponent';
-import { getGravatarImageUrl } from '../../both/lib/user-icon';
-import { getDisplayedNameForUser } from '../../both/lib/user-name';
-import { withTracker } from 'meteor/react-meteor-data';
-import { Accounts, STATES } from 'meteor/std:accounts-ui';
-import { T9n } from 'meteor/softwarerero:accounts-t9n';
-import { Meteor } from 'meteor/meteor';
-import { browserHistory } from 'react-router';
-import { AutoForm, SubmitField } from 'uniforms-bootstrap3';
-import { ClaimAccountSchema } from '../../both/api/users/accounts';
+import {IStyledComponent} from './IStyledComponent';
+import {getGravatarImageUrl} from '../../both/lib/user-icon';
+import {getDisplayedNameForUser} from '../../both/lib/user-name';
+import {withTracker} from 'meteor/react-meteor-data';
+import {Accounts, STATES} from 'meteor/std:accounts-ui';
+import {T9n} from 'meteor/softwarerero:accounts-t9n';
+import {Meteor} from 'meteor/meteor';
+import {browserHistory} from 'react-router';
+import {AutoForm, SubmitField} from 'uniforms-bootstrap3';
+import {ClaimAccountSchema} from '../../both/api/users/accounts';
 
 interface IUserProps {
   user: Meteor.User;
@@ -27,7 +27,7 @@ const NoUserContent = (props: { onSignInSelected: () => void, onSignUpSelected: 
 
 const UserContent = (props: { user: Meteor.User }) => (
   <section className="user-menu">
-    <img src={getGravatarImageUrl(props.user.profile.gravatarHash)} className="user-icon" />
+    <img src={getGravatarImageUrl(props.user.profile.gravatarHash)} className="user-icon"/>
     {getDisplayedNameForUser(props.user)}
   </section>
 );
@@ -41,7 +41,7 @@ const GuestUserContent = () => {
         placeholder={true}
         showInlineError={true}
         schema={ClaimAccountSchema}
-        submitField={() => (<SubmitField value={t`Claim Account`} />)}
+        submitField={() => (<SubmitField value={t`Claim Account`}/>)}
         ref={(ref) => form = ref}
         onSubmit={(doc) => {
           return new Promise((resolve: (any) => void, reject: (error: Error) => void) => {
@@ -54,13 +54,13 @@ const GuestUserContent = () => {
               }
             });
           }).then((result: any) => {
-          },
+            },
             (error) => {
               if (form) {
-                form.setState({ error });
+                form.setState({error});
               }
             });
-        }} />
+        }}/>
     </div>
   );
 }
@@ -82,23 +82,23 @@ class UserMenu extends React.Component<IUserProps & IStyledComponent, IState> {
     return (
       <div className={this.props.className + ' dropdown'}>
         <div className="dropdown-toggle title-bar" id="UserMenuDropdown" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="true">
-          {user ? <UserContent user={user} /> : <NoUserContent
+             aria-haspopup="true" aria-expanded="true">
+          {user ? <UserContent user={user}/> : <NoUserContent
             onSignInSelected={this.onSignInSelected}
-            onSignUpSelected={this.onSignUpSelected} />}
+            onSignUpSelected={this.onSignUpSelected}/>}
         </div>
         <ul className="dropdown-menu" aria-labelledby="UserMenuDropdown">
-          <Accounts.ui.LoginForm formState={this.state.forcedLoginFormState} />
-          {(this.state._debug_forceGuest || user && user.guest) ? <GuestUserContent /> : null}
+          <Accounts.ui.LoginForm formState={this.state.forcedLoginFormState}/>
+          {(this.state._debug_forceGuest || user && user.guest) ? <GuestUserContent/> : null}
         </ul>
       </div>);
   }
 
   private onSignInSelected = () => {
-    this.setState({ forcedLoginFormState: STATES.SIGN_IN });
+    this.setState({forcedLoginFormState: STATES.SIGN_IN});
   }
   private onSignUpSelected = () => {
-    this.setState({ forcedLoginFormState: STATES.SIGN_UP });
+    this.setState({forcedLoginFormState: STATES.SIGN_UP});
   }
 }
 
@@ -142,18 +142,17 @@ img {
 
 ul.dropdown-menu {
   position: absolute;
-  top: 36px;    
-  left: -20px;
+  top: 36px;
+  right: 0px;
+  left: unset;
       
-    form {
-      width: 24em;
-      padding: 10px;
+  form {
+    width: 24em;
+    padding: 10px;
 
-      fieldset, fieldset .form-group {
-         width: 100%;
-      }
+    fieldset, fieldset .form-group {
+       width: 100%;
     }
   }
-
-
+}
 `;
