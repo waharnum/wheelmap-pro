@@ -29,6 +29,7 @@ export default styled(MapLayout) `
     justify-content: center;
     align-content: center;
     display: flex;
+    overflow: hidden;
     
     .map-overlay {
       position: absolute;
