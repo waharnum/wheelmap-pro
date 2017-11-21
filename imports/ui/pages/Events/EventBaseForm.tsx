@@ -13,6 +13,7 @@ import ImageLinkUrlField from '../../components/ImageLinkUrlField';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import {bboxToRegion, regionToBbox} from '../../../both/lib/geo-bounding-box';
 import {defaultRegion} from '../../../both/api/events/schema';
+import DateTimePicker from '../../components/DateTimePicker';
 
 
 export interface IEventBaseFormProps {
@@ -41,6 +42,11 @@ schema.extend({
   region: {
     uniforms: {
       component: MapLocationField,
+    },
+  },
+  startTime: {
+    uniforms: {
+      component: DateTimePicker,
     },
   },
   // if not an object this will override the placeholder
