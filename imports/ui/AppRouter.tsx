@@ -98,7 +98,9 @@ const AppRouter = (
 
       {/* public pages  */}
       <Route path="/organizations/:_id" component={ShowOrganizationPage}/>
+      <Route path="/organizations/:_id/browse" component={ShowOrganizationPage}/>
       <Route path="/organizations/:_id/event/:event_id" component={ShowOrganizationPage}/>
+      <Route path="/organizations/:_id/place/:place_id" component={ShowOrganizationPage}/>
       <Route path="/events/:_id" component={ShowEventPage}/>
 
       <Route path="/welcome" component={HomePage}/>

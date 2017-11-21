@@ -1,12 +1,13 @@
 import {t} from 'c-3po';
 import styled from 'styled-components';
-import * as React from 'react';
 import {Meteor} from 'meteor/meteor';
-
-import MapLayout from '../../layouts/MapLayout';
+import * as React from 'react';
 import {browserHistory} from 'react-router';
 
+import {accessibilityCloudFeatureCache} from 'wheelmap-react/lib/lib/cache/AccessibilityCloudFeatureCache';
+
 import Map from '../../components/Map';
+import MapLayout from '../../layouts/MapLayout';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
 import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
@@ -18,6 +19,8 @@ import {regionToBbox} from '../../../both/lib/geo-bounding-box';
 import EventMiniMarker from '../Events/EventMiniMarker';
 import EventMapPopup from '../Events/EventMapPopup';
 import {defaultRegion} from '../../../both/api/events/schema';
+import {IPlaceInfo} from '../../../both/api/place-infos/place-infos';
+import PlaceDetailsContainer from '../../components/PlaceDetailsContainer';
 
 interface IPageModel {
   organization: IOrganization;
@@ -28,6 +31,7 @@ type PageParams = {
   params: {
     _id: string,
     event_id: string | undefined
+    place_id: string | undefined
   }
 }
 type PageProps = PageParams & IAsyncDataByIdProps<IPageModel> & IStyledComponent;
@@ -35,21 +39,22 @@ type PageProps = PageParams & IAsyncDataByIdProps<IPageModel> & IStyledComponent
 class ShowOrganizationPage extends React.Component<PageProps> {
   ignoreMapMovement: boolean;
   state: {
-    placeDetailsShown: boolean,
+    selectedPlace: IPlaceInfo | null,
     mapWasMovedManually: false,
   } = {
-    placeDetailsShown: false,
+    selectedPlace: null,
     mapWasMovedManually: false,
   }
 
   public componentWillMount() {
-    this.redirectToCorrectRoute(this.props);
+    this.redirectToCorrectRoute(this.props, true);
   }
 
   public componentWillReceiveProps(nextProps) {
-    if (this.props.params.event_id != nextProps.params.event_id) {
+    if (this.props.params.event_id != nextProps.params.event_id ||
+      this.props.params.place_id != nextProps.params.place_id) {
       this.ignoreMapMovement = true;
-      this.redirectToCorrectRoute(nextProps);
+      this.redirectToCorrectRoute(nextProps, false);
       this.setState({mapWasMovedManually: false}, () => {
         this.ignoreMapMovement = false;
       });
@@ -61,15 +66,16 @@ class ShowOrganizationPage extends React.Component<PageProps> {
     const events = this.props.model.events;
 
     let eventIndex = 0;
+    let selectedEvent, nextEvent, prevEvent;
+
     if (this.props.params.event_id) {
       eventIndex = events.findIndex((e) => {
         return e._id == this.props.params.event_id;
       });
+      selectedEvent = events[eventIndex];
+      nextEvent = events[(eventIndex + 1) % events.length];
+      prevEvent = events[(eventIndex + events.length - 1) % events.length];
     }
-
-    const selectedEvent = events[eventIndex];
-    const nextEvent = events[(eventIndex + 1) % events.length];
-    const prevEvent = events[(eventIndex + events.length - 1) % events.length];
 
     return (
       <MapLayout className={this.props.className}>
@@ -85,14 +91,14 @@ class ShowOrganizationPage extends React.Component<PageProps> {
         />
         <div className="content-area">
           <Map
-            {...this.determineMapPosition(selectedEvent)}
+            {...this.determineMapPosition(selectedEvent, this.state.selectedPlace)}
             onBboxApplied={this.onMapBboxApplied}
             onMoveEnd={this.onMapMoveEnd}
-            onPlaceDetailsChanged={(options) => {
-              this.setState({placeDetailsShown: options.visible})
-            }}>
+            onMarkerClick={this.onMarkerClick}
+            selectedPlace={this.state.selectedPlace}
+          >
             {events.map((event: IEvent) => {
-              if (event._id == selectedEvent._id) {
+              if (selectedEvent && event._id == selectedEvent._id) {
                 return (<EventMapPopup event={event}
                                        key={String(event._id)}
                                        primaryAction={event.status == 'ongoing' || event.status == 'planned' ?
@@ -114,23 +120,51 @@ class ShowOrganizationPage extends React.Component<PageProps> {
                     event={event}
                     key={String(event._id)}
                     onClick={() => {
+                      this.setState({selectedPlace: null});
                       browserHistory.replace(`/organizations/${organization._id}/event/${event._id}`);
                     }}
                   />);
               }
             })}
+
+            <PlaceDetailsContainer
+              className="place-details-container"
+              feature={this.state.selectedPlace}
+              onClose={this.dismissPlaceDetails}
+            />
           </Map>
         </div>
       </MapLayout>
     );
   }
 
-  private determineMapPosition(selectedEvent: IEvent) {
-    if (!selectedEvent || this.state.mapWasMovedManually) {
+  private onMarkerClick = (featureId) => {
+    const organization = this.props.model.organization;
+    browserHistory.replace(`/organizations/${organization._id}/place/${featureId}`);
+  };
+
+  private dismissPlaceDetails = () => {
+    this.setState({selectedPlace: null});
+
+    const organization = this.props.model.organization;
+    browserHistory.replace(`/organizations/${organization._id}/browse`);
+  }
+
+  private determineMapPosition(selectedEvent: IEvent | null, selectedPlace: IPlaceInfo | null) {
+    if (this.state.mapWasMovedManually) {
       return {};
     }
 
-    return {bbox: regionToBbox(selectedEvent.region || defaultRegion)};
+    if (selectedPlace) {
+      const coordinates = selectedPlace.geometry.coordinates;
+      return {lat: coordinates[1], lon: coordinates[0], zoom: 17};
+    }
+
+    if (selectedEvent) {
+      return {bbox: regionToBbox(selectedEvent.region || defaultRegion)};
+    }
+
+    return {};
   }
 
   private onMapMoveEnd = () => {
@@ -142,7 +176,7 @@ class ShowOrganizationPage extends React.Component<PageProps> {
   private onMapBboxApplied = () => {
   }
 
-  private redirectToCorrectRoute(props: PageProps) {
+  private redirectToCorrectRoute(props: PageProps, isInitialMount: boolean) {
     // decide if the url is correct and matches our event
     const organization = props.model.organization;
     const events = props.model.events;
@@ -162,7 +196,13 @@ class ShowOrganizationPage extends React.Component<PageProps> {
           browserHistory.replace(`/organizations/${organization._id}`);
         }
       }
-    } else if (events.length > 0) {
+    } else if (props.params.place_id) {
+      accessibilityCloudFeatureCache.getFeature(props.params.place_id).then((feature: IPlaceInfo) => {
+        this.setState({selectedPlace: feature});
+      }, (reason) => {
+        console.error('Failed loading feature', reason);
+      });
+    } else if (events.length > 0 && isInitialMount) {
       // select first event url
       browserHistory.replace(`/organizations/${organization._id}/event/${events[0]._id}`);
     }

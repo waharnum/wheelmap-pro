@@ -12,7 +12,6 @@ import 'wheelmap-react/src/Map.css'
 
 import styled from 'styled-components';
 import {IStyledComponent} from './IStyledComponent';
-import PlaceDetailsContainer from './PlaceDetailsContainer';
 import {IPlaceInfo} from '../../both/api/place-infos/place-infos';
 import {PropTypes} from 'react';
 
@@ -27,18 +26,16 @@ interface IMapProps {
   bbox?: L.LatLngBounds;
   onMoveEnd?: (options: { zoom: number, lat: number, lon: number, bbox: L.LatLngBounds }) => void;
   onBboxApplied?: () => void;
-  onPlaceDetailsChanged?: (options: { placeInfo: IPlaceInfo | null, visible: boolean }) => void;
-  enablePlaceDetails?: boolean;
+  onMarkerClick?: (placeId: string) => void;
+  selectedPlace?: IPlaceInfo | null,
 }
 
 interface IMapState {
-  feature: IPlaceInfo | null | undefined;
   leafletMap: L.Map | null;
 }
 
 class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
   state: IMapState = {
-    feature: null,
     leafletMap: null,
   }
   private leafletMap: L.Map;
@@ -63,7 +60,7 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
           category={null}
           minZoomWithSetCategory={this.props.minZoom || 13}
           minZoomWithoutSetCategory={this.props.minZoom || 16}
-          featureId={this.state.feature && this.state.feature.properties && this.state.feature.properties._id}
+          featureId={this.props.selectedPlace && this.props.selectedPlace.properties && this.props.selectedPlace.properties._id}
           zoom={this.props.bbox ? null : (this.props.zoom)}
           maxZoom={this.props.maxZoom || 19}
           defaultStartCenter={[52.541017, 13.38609]}
@@ -82,11 +79,6 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
           pointToLayer={this.createMarkerFromFeature}
         />
         {this.props.children}
-        <PlaceDetailsContainer
-          className="place-details-container"
-          feature={this.state.feature}
-          onClose={this.dismissPlaceDetails}
-        />
       </section>
     );
   }
@@ -120,45 +112,26 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
   }
 
   private onMarkerClick = (featureId) => {
-    if (this.props.enablePlaceDetails === false) {
-      return;
+    if (this.props.onMarkerClick) {
+      this.props.onMarkerClick(featureId);
     }
-
-    console.log('You clicked the marker', featureId);
-    accessibilityCloudFeatureCache.getFeature(featureId).then((feature: IPlaceInfo) => {
-      this.setState({feature: feature});
-      if (this.props.onPlaceDetailsChanged) {
-        this.props.onPlaceDetailsChanged({
-          placeInfo: feature, visible: true,
-        });
-      }
-    }, (reason) => {
-      console.error('Failed loading feature', reason);
-    });
   };
 
-  private dismissPlaceDetails = () => {
-    this.setState({feature: null});
-    if (this.props.onPlaceDetailsChanged) {
-      this.props.onPlaceDetailsChanged({
-        placeInfo: null, visible: false,
-      });
-    }
-  }
-
-  private createMarkerFromFeature = (feature: IPlaceInfo, latlng: [number, number]) => {
+  private createMarkerFromFeature = (feature: IPlaceInfo, coordinates: [number, number]) => {
     const properties = feature && feature.properties;
     if (!properties) {
       return null;
     }
 
-    return new HighlightableMarker(latlng, {
+    const marker = new HighlightableMarker(coordinates, {
       onClick: this.onMarkerClick,
       hrefForFeatureId: () => {
-        return this.props.enablePlaceDetails === false ? '' : '#';
+        return '';
       },
       feature,
     });
+
+    return marker;
   }
 
   public static childContextTypes = {
