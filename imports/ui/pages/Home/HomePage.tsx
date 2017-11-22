@@ -1,9 +1,9 @@
-import {t} from 'c-3po';
+import { t } from 'c-3po';
 import * as React from 'react';
 
 import Button from '../../components/Button';
-import {Link} from 'react-router';
-import {colors} from '../../stylesheets/colors';
+import { Link } from 'react-router';
+import { colors } from '../../stylesheets/colors';
 import UserMenu from '../../components/UserMenu';
 import styled from 'styled-components';
 
@@ -13,12 +13,12 @@ const HomePage = (props) => (
       <span className="logo">
         <h1>{t`wheelmap.pro`}</h1>
       </span>
-      <UserMenu/>
+      <UserMenu />
     </header>
     <div className="wrapper sawblade">
       <section className="hero-banner">
         <div className="wrapper">
-          <div className="hero-image"/>
+          <div className="hero-image" />
           <h2>{t`Like Wheelmap but customized to fit your own community.`}</h2>
           <p>{t`Which public places are accessible for people with disabilities? Create your own mapping community and empower your volunteers to go out and mark the accessibility of places! Wheelmap Pro is a powerful tool with your own brand, your specific accessibility criteria and step-by-step action plans.`}</p>
           <Button to="/organizations/create" className="btn-primary">{t`Create your community`}</Button>
@@ -30,21 +30,21 @@ const HomePage = (props) => (
         <article className="explainStep step1">
           <h2>{t`Step 1.`}</h2>
           <p>{t`Start a new mapping community or join a community as a volunteer. We help you plan and organize successful mapping events for collecting accessibility data.`}</p>
-          <img src="/images/comic-step1@2x.png" width="246px" height="202px"/>
+          <img src="/images/comic-step1.png" width="246px" height="202px" />
         </article>
         <article className="explainStep step2">
           <h2>{t`Step 2.`}</h2>
           <p>{t`Invite volunteers to mapping events during which groups evaluate the accessibility of local public places.`}</p>
-          <img src="/images/comic-step2@2x.png" width="246px" height="202px"/>
+          <img src="/images/comic-step2.png" width="246px" height="202px" />
         </article>
         <article className="explainStep step3">
           <h2>{t`Step 3.`}</h2>
           <p>{t`The accessibility information which your community gathers can then be shared publicly to help people with and without disabilities to navigate the world.`}</p>
-          <img src="/images/comic-step3@2x.png" width="246px" height="202px"/>
+          <img src="/images/comic-step3.png" width="246px" height="202px" />
         </article>
       </section>
     </div>
-    <div className="wrapper onDarkGrey">
+    {/* <div className="wrapper onDarkGrey">
       <section className="videoIntroduction">
         <h2>{t`Watch a short video introduction.`}</h2>
         <div className="media">
@@ -52,13 +52,9 @@ const HomePage = (props) => (
           </div>
         </div>
       </section>
-    </div>
+    </div> */}
     <section className="partners">
-      <a href="." className="partnerLogo jaccede"/>
-      <a href="." className="partnerLogo foursquare"></a>
-      <a href="." className="partnerLogo axsmap"/>
-      <a href="." className="partnerLogo wheelmap"/>
-      <a href="." className="partnerLogo google"/>
+      <a href="https://wheelmap.org" target='new' className="partnerLogo wheelmap" />
     </section>
     <div className="wrapper onDarkGrey">
       <footer>
@@ -159,9 +155,9 @@ export default styled(HomePage) `
 
       .hero-image {
         content: " ";
-        width: 491px;
-        height: 244px;
-        background-image: url(/images/comic-hero@2x.png); 
+        width: 512px;
+        height: 216.5px;
+        background-image: url(/images/comic-hero.png); 
         background-position: center center;
         background-repeat: no-repeat;
         background-size: 100% 100%;
@@ -272,6 +268,7 @@ export default styled(HomePage) `
       flex-shrink: 0;
 
       .media-left {
+        positon: relative;
         content: " ";
         width: 557px;
         min-width: 557px;
