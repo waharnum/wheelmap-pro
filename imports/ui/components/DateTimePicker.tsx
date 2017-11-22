@@ -2,22 +2,51 @@ import * as React from 'react';
 import connectField from 'uniforms/connectField';
 import * as Datetime from 'react-datetime';
 import * as moment from 'moment';
+import styled from 'styled-components';
+import { IStyledComponent } from '../components/IStyledComponent';
+import { colors } from '../stylesheets/colors';
 
 function isMoment(value: moment.Moment | string): value is moment.Moment {
   return (value as moment.Moment).toDate !== undefined;
 }
 
-const DateTimePicker = (options: { onChange: (value: Date | null) => void, value: Date }) =>
+const DateTimePicker = (props: { onChange: (value: Date | null) => void, value: Date } & IStyledComponent) =>
   <Datetime
-    value={options.value}
+    className={props.className}
+    value={props.value}
     onChange={(moment: moment.Moment | string) => {
       if (isMoment(moment)) {
-        options.onChange(moment.toDate());
+        props.onChange(moment.toDate());
       } else {
-        options.onChange(null);
+        props.onChange(null);
       }
     }}
   />
-;
+  ;
 
-export default connectField(DateTimePicker);
+const DateTimePickerField = connectField(DateTimePicker);
+
+export default styled(DateTimePickerField) `
+
+  color: ${colors.bgAnthracite} !important;
+
+  td.rdtActive {
+    font-weight: 800 !important;
+    background-color: ${colors.linkBlue} !important;
+  }
+
+  td.rdtToday {
+    color: ${colors.bgAnthracite};
+    font-weight: 800 !important;
+
+    &::before {
+      border-left: 7px solid transparent !important;
+      border-bottom: 7px solid ${colors.linkBlue} !important;
+    }
+  }
+
+  .rdtDays {
+
+  }
+
+`;
