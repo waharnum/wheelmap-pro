@@ -1,23 +1,23 @@
-import {t} from 'c-3po';
+import { t } from 'c-3po';
 import styled from 'styled-components';
-import {toast} from 'react-toastify';
-import {colors} from '../../stylesheets/colors';
+import { toast } from 'react-toastify';
+import { colors } from '../../stylesheets/colors';
 import * as React from 'react';
 import * as moment from 'moment';
 
 import Button from '../../components/Button';
 import EventTabs from './EventTabs';
 import EventStatistics from './EventStatistics';
-import {IOrganization} from '../../../both/api/organizations/organizations';
-import {Hint, HintBox} from '../../components/HintBox';
+import { IOrganization } from '../../../both/api/organizations/organizations';
+import { Hint, HintBox } from '../../components/HintBox';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
-import {Events, IEvent} from '../../../both/api/events/events';
-import {IStyledComponent} from '../../components/IStyledComponent';
-import {wrapDataComponent} from '../../components/AsyncDataComponent';
-import {IEventParticipant} from '../../../both/api/event-participants/event-participants';
-import {default as AdminHeader, HeaderTitle} from '../../components/AdminHeader';
-import {IAsyncDataByIdProps, reactiveSubscriptionByParams} from '../../components/reactiveModelSubscription';
-import {modalAppDialog} from '../../App';
+import { Events, IEvent } from '../../../both/api/events/events';
+import { IStyledComponent } from '../../components/IStyledComponent';
+import { wrapDataComponent } from '../../components/AsyncDataComponent';
+import { IEventParticipant } from '../../../both/api/event-participants/event-participants';
+import { default as AdminHeader, HeaderTitle } from '../../components/AdminHeader';
+import { IAsyncDataByIdProps, reactiveSubscriptionByParams } from '../../components/reactiveModelSubscription';
+import { modalAppDialog } from '../../App';
 import * as Dialog from 'react-bootstrap-dialog';
 
 interface IPageModel {
@@ -149,7 +149,7 @@ class OrganizeEventPage extends React.Component
   }
 
   private publishEvent = () => {
-    Meteor.call('events.publish', {eventId: this.state.event._id}, (error, result) => {
+    Meteor.call('events.publish', { eventId: this.state.event._id }, (error, result) => {
       if (error) {
         toast.error(error.reason);
       }
@@ -163,7 +163,7 @@ class OrganizeEventPage extends React.Component
       actions: [
         Dialog.CancelAction(),
         Dialog.OKAction(() => {
-          Meteor.call('events.cancel', {eventId: this.state.event._id}, (error, result) => {
+          Meteor.call('events.cancel', { eventId: this.state.event._id }, (error, result) => {
             if (error) {
               toast.error(error.reason);
             }
@@ -192,7 +192,7 @@ class OrganizeEventPage extends React.Component
               prefixLink={`/organizations/${organization._id}/organize`}
             />
           )}
-          tabs={(<EventTabs id={event._id}/>)}
+          tabs={(<EventTabs id={event._id} />)}
           publicLink={`/events/${event._id}`}
         />
         <div className="content-area scrollable hsplitWithStats">
@@ -201,7 +201,7 @@ class OrganizeEventPage extends React.Component
             event={event}
             planned={true}
             achieved={true}
-            countdown="full"/>
+            countdown="full" />
           <div className='content-hsplit'>
             <div className="content-left">
               <ol className="event-timeline before-event">
@@ -225,7 +225,7 @@ class OrganizeEventPage extends React.Component
                       <p>{t`Emails will be send when you publish.`}</p>
                     </div>
                     <Button className="btn-primary"
-                            to={`/events/${event._id}/participants`}>{t`Invite participants`}</Button>
+                      to={`/events/${event._id}/participants`}>{t`Invite participants`}</Button>
                   </div>
                   {event.status == 'draft' ?
                     <div className="step-status step-completed">
@@ -248,7 +248,7 @@ class OrganizeEventPage extends React.Component
                   <div className="step-status">
                     <h3>{t`Tips for event organizers`}</h3>
                     <a className="btn" target="_blank"
-                       href="https://developmentseed.org/blog/2015/06/07/organizing-mapathons/">{t`Learn more`}</a>
+                      href="https://developmentseed.org/blog/2015/06/07/organizing-mapathons/">{t`Learn more`}</a>
                   </div>
                 </li>
               </ol>
@@ -270,15 +270,19 @@ class OrganizeEventPage extends React.Component
                     {t`Congratulations! Your event has been published`}
                   </div>
                   <div className="step-status step-active">
-                    <div className="step-information">
-                      <h3>{t`Mapping event published`}</h3>
-                      <p>{t`Your event is now online. It will be closed the day after it finishes. Be careful when cancelling your event:
-                      you can not undo this.`}</p>
+                    <div className="first-row">
+                      <div className="step-information">
+                        <h3>{t`Mapping event published`}</h3>
+                      </div>
+                      <div className="publishing-actions">
+                        <Button to={`/events/${event._id}`}>{t`View event`}</Button>
+                        <button className="btn btn-danger"
+                          onClick={this.cancelEvent}>{t`Cancel event`}</button>
+                      </div>
                     </div>
-                    <div className="publishing-actions">
-                      <Button to={`/events/${event._id}`}>{t`View event`}</Button>
-                      <button className="btn btn-danger"
-                              onClick={this.cancelEvent}>{t`Cancel event`}</button>
+                    <div className="second-row">
+                      <p>{t`Your event is now online. It will be closed the day after it finishes. Be careful when cancelling your event:
+                    you can not undo this.`}</p>
                     </div>
                   </div>
                   {/* After event was completed */}
@@ -310,7 +314,7 @@ class OrganizeEventPage extends React.Component
                       <h3>{t`Event picture was set`}</h3>
                       <Button to={`/events/${event._id}/edit`}>{t`Edit`}</Button>
                     </section>
-                    <img src={event.photoUrl}/>
+                    <img src={event.photoUrl} />
                   </div>
                 </li>
                 <li className={'event-timeline-step share-results ' + stepStates.shareResults}>
@@ -357,7 +361,7 @@ const ReactiveOrganizeOrganizationsPage = reactiveSubscriptionByParams(
     const event = Events.findOne(id);
     const participants = event ? event.getParticipants() : [];
     const organization = event ? event.getOrganization() : null;
-    return event && organization ? {event, participants, organization} : null;
+    return event && organization ? { event, participants, organization } : null;
   },
   'events.by_id.private', 'eventParticipants.by_eventId.private', 'organizations.by_eventId.private');
 
@@ -456,13 +460,13 @@ ol.event-timeline {
       }
 
       .step-information {
-        width: 20em;
+        /* width: 20em; */
         display: flex;
         flex-direction: column;
       }
 
       .publishing-actions {
-        margin-left: 20px;
+        margin-left: 10px;
         display: flex;
         align-items: flex-start;
       }
@@ -510,6 +514,37 @@ ol.event-timeline {
     }
     .step-completed {
       display: flex;
+    }
+  }
+
+  li.active { /* allow description to use complete width when event is published */
+    .step-active {
+      flex-direction: column;
+
+      .first-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        a,
+        button {
+          line-height: 24px;
+        }
+
+        button {
+          padding-right: 0;
+        }
+
+        a {
+          padding-left: 0;
+          padding-right: 0;
+        }
+      }
+
+      .second-row {
+        padding-top: 10px;
+      }
     }
   }
 
