@@ -28,28 +28,52 @@ const AdminTab = (props: IAdminTabProps & LinkProps & IStyledComponent) => {
 
 export default styled(AdminTab) `
 
+  display: inline-block;
+  margin: 0 24px 0 0 ; 
+  
+  a {
     display: inline-block;
-    margin: 0 24px 0 0 ; 
+    font-size: 14px;
+    line-height: 36px;
+    text-transform: uppercase;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
     
-    a {
-      display: inline-block;
-      font-size: 14px;
-      line-height: 36px;
-      text-transform: uppercase;
-      border-bottom: 2px solid transparent;
-      cursor: pointer;
-      
-      &.active,
-      &:hover {
-        border-bottom: 2px solid ${colors.ctaGreen};
-      }
-      
-      &.active {
-        font-weight: 600;
-      }
+    &.active,
+    &:hover {
+      border-bottom: 2px solid ${colors.linkBlue};
+    }
+    
+    &.active {
+      font-weight: 600;
+    }
 
-      &:hover {
-        color: ${colors.ctaGreenLighter} !important;
+    &:hover {
+      color: ${colors.linkBlueLighter} !important;
+    }
+  }
+
+  &.ac-link {
+
+    a {
+      padding-right: 12px;
+    }
+
+    &:after  {/* chevron right */
+      position: relative;
+      right: 6px;
+      top: 0px;
+      content: 'Î';
+      color: ${colors.shadowGrey};
+      font-family: 'iconfield-v03';
+      font-size: 14px;  
+    }
+
+    &:hover {
+      &::after {
+        color: ${colors.linkBlueLighter} !important;
       }
     }
+  }
+  
 `;
