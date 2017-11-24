@@ -4,7 +4,7 @@ import * as React from 'react';
 import connectField from 'uniforms/connectField';
 import {debounce} from 'lodash';
 
-const ImageLinkUrl = class extends React.Component<any, { validImage: boolean, proposedUrl?: string }> {
+class ImageLinkUrl extends React.Component<any, { validImage: boolean, proposedUrl?: string }> {
   public state = {
     validImage: false,
     proposedUrl: undefined,
@@ -37,7 +37,7 @@ const ImageLinkUrl = class extends React.Component<any, { validImage: boolean, p
   private onInputChanged = (value) => {
     this.setState({proposedUrl: value});
     this.inputDebounced(value);
-  }
+  };
 
   private inputDebounced = debounce((value: string) => {
     if (this.image)
@@ -49,14 +49,14 @@ const ImageLinkUrl = class extends React.Component<any, { validImage: boolean, p
       return;
     this.setState({validImage: false});
     this.props.onChange(this.state.proposedUrl);
-  }
+  };
 
   private imageOkay = () => {
     if (!this.image)
       return;
     this.setState({validImage: true});
     this.props.onChange(this.image.src);
-  }
+  };
 };
 
 const ImageLinkUrlField = connectField(ImageLinkUrl, {
