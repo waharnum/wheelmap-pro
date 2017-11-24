@@ -29,6 +29,7 @@ import SignUpForOrganizationPage from './pages/Organizations/SignUpForOrganizati
 import OrganizationStatisticsPage from './pages/Organizations/OrganizationStatisticsPage';
 
 import EnsureUserLoggedIn from './components/EnsureUserLoggedIn';
+import MappingTest from './pages/PlaceInfos/MappingTest';
 
 const RedirectAccordingToUser = () => {
   const user = Meteor.user();
@@ -92,6 +93,8 @@ const AppRouter = (
         <Route path="/events/:_id/organize" component={OrganizeEventPage}/>
         <Route path="/events/:_id/statistics" component={EventStatisticsPage}/>
         <Route path="/events/:_id/participants" component={EventParticipantsPage}/>
+
+        <Route path="/places" component={MappingTest}/>
 
         <Route path="/profile" component={ProfilePage}/>
       </Route>
