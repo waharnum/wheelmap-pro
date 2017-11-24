@@ -3,8 +3,8 @@ import connectField from 'uniforms/connectField';
 import * as Datetime from 'react-datetime';
 import * as moment from 'moment';
 import styled from 'styled-components';
-import { IStyledComponent } from '../components/IStyledComponent';
-import { colors } from '../stylesheets/colors';
+import {IStyledComponent} from './IStyledComponent';
+import {colors} from '../stylesheets/colors';
 
 function isMoment(value: moment.Moment | string): value is moment.Moment {
   return (value as moment.Moment).toDate !== undefined;
@@ -22,7 +22,7 @@ const DateTimePicker = (props: { onChange: (value: Date | null) => void, value: 
       }
     }}
   />
-  ;
+;
 
 const DateTimePickerField = connectField(DateTimePicker);
 
