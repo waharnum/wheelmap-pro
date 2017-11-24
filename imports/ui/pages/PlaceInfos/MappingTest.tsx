@@ -21,7 +21,10 @@ const MappingTestPage = (props: IStyledComponent & { user: Meteor.User, ready: b
           placeholder={true}
           showInlineError={true}
           schema={PlaceInfoSchema}>
-          <SubSchemaChooser value={5} name="properties.name" schema={PlaceInfoSchema} expanded={['properties']}>
+          <SubSchemaChooser
+            name="properties.name"
+            schema={PlaceInfoSchema}
+            expanded={['properties', 'properties.accessibility']}>
           </SubSchemaChooser>
         </AutoForm>
       </div>

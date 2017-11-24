@@ -77,29 +77,53 @@ const deriveTreeFromSchema = (schema: SimplSchema, prefix: string = ''): Array<C
 };
 
 type Props = {
-  onChange: (value: Array<string> | null) => void,
-  value: Array<string>,
+  onChange?: (value: Array<string> | null) => void,
+  name?: string,
+  value?: Array<string>,
   schema: SimplSchema,
+  expanded?: Array<string>,
 } & IStyledComponent;
 
-class SubSchemaChooser extends React.Component<Props> {
-  public state = {
+type State = {
+  nodes: Array<CheckBoxTreeNode>,
+  checked: Array<string>,
+  expanded: Array<string>,
+};
+
+class SubSchemaChooser extends React.Component<Props, State> {
+  public state: State = {
+    nodes: [],
     checked: [],
-    expanded: ['properties', 'properties.accessibility'],
+    expanded: [],
   };
 
-  public render() {
-    const nodes = deriveTreeFromSchema(this.props.schema);
-    console.log(nodes);
+  constructor(props: Props) {
+    super(props);
+    this.state.nodes = deriveTreeFromSchema(props.schema);
+    this.state.expanded = props.expanded || [];
+    this.state.checked = props.value || [];
+  }
 
+  componentWillReceiveProps(nextProps: Props) {
+    if (this.props.schema != nextProps.schema) {
+      this.setState({nodes: deriveTreeFromSchema(nextProps.schema)});
+    }
+    this.setState({checked: nextProps.value || []});
+  }
+
+  public render() {
     return (
       <section className={this.props.className}>
         <CheckboxTree
-          nodes={nodes}
+          nodes={this.state.nodes}
           checked={this.state.checked}
           expanded={this.state.expanded}
-          onCheck={checked => this.setState({checked})}
-          onExpand={expanded => this.setState({expanded})}
+          onCheck={(checked: Array<string>) => {
+            if (this.props.onChange) {
+              this.props.onChange(checked);
+            }
+          }}
+          onExpand={(expanded: Array<string>) => this.setState({expanded})}
         />
       </section>
     );
@@ -108,7 +132,7 @@ class SubSchemaChooser extends React.Component<Props> {
 
 const SubSchemaChooserField = connectField(SubSchemaChooser);
 
-export default styled(SubSchemaChooserField) `
+export default styled<Props>(SubSchemaChooserField) `
 .react-checkbox-tree {
   label {
     font-weight: normal;
