@@ -210,6 +210,15 @@ input.form-control {
     transition: transform 200ms ease, opacity 200ms ease;
     transform-origin: top center;
     opacity: 1;
+   
+    .rct-text {
+      // Tried a better height transitions, but really un-smooth. Reduced steps and added delay.
+      // animating height still sucks
+      transition: height 150ms steps(5);
+      transition-delay: 50ms;
+      height: 24px;
+      overflow: hidden;
+    }
   
     &.tree-filter-found > .rct-text {
     }
@@ -220,10 +229,13 @@ input.form-control {
         cursor: unset;
       }
     }
-    &.tree-filter-not-found > .rct-text {
+    &.tree-filter-not-found {
       transform: scale(1, 0);
-      position: absolute;
       opacity: 0;
+      
+      &> .rct-text {
+        height: 0px;
+      }
     }
   }
   
