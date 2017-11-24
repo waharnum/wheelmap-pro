@@ -5,29 +5,18 @@ import styled from 'styled-components';
 import SimplSchema from 'simpl-schema';
 import {IStyledComponent} from './IStyledComponent';
 import {colors} from '../stylesheets/colors';
+import {t} from 'c-3po';
+import {debounce, union, flatten} from 'lodash';
 
 type CheckBoxTreeNode = {
   value: string,
+  searchText: string,
   label: React.ReactNode,
   children?: Array<CheckBoxTreeNode>,
   className?: string,
   disabled?: boolean,
   icon?: React.ReactNode,
 }
-const nodes: Array<CheckBoxTreeNode> = [{
-  value: 'mars',
-  label: 'Mars',
-  children: [
-    {
-      value: 'phobos', label: 'Phobos',
-      children: [
-        {value: 'phobos2', label: 'Phobos2'},
-        {value: 'deimos2', label: 'Deimos2'},
-      ],
-    },
-    {value: 'deimos', label: 'Deimos'},
-  ],
-}];
 
 const isDefinitionTypeArray = (types: any[]): boolean => {
   // Check whether we need to handle multiple definitions
@@ -60,16 +49,28 @@ const deriveTreeFromSchema = (schema: SimplSchema, prefix: string = ''): Array<C
     if (isDefinitionTypeArray(definition.type)) {
       return {
         value: definitionKey,
-        label: (<span>{label} <span className="field-duration">2s</span></span>),
+        searchText: label.toLowerCase(),
+        label: (
+          <span className="array-node">
+            <span className="tree-label">{label}</span>
+            <span className="field-duration">2s</span>
+          </span>
+        ),
         children: deriveTreeFromSchema(schema, childSearchKey + '.$'),
-        className: 'array-node',
       };
     }
     else {
+      const children = deriveTreeFromSchema(schema, childSearchKey);
       return {
         value: definitionKey,
-        label: (<span>{label} <span className="field-duration">2s</span></span>),
-        children: deriveTreeFromSchema(schema, childSearchKey),
+        searchText: label.toLowerCase(),
+        label: (
+          <span className={children && children.length > 0 ? 'object-node' : ''}>
+            <span className="tree-label">{label}</span>
+            <span className="field-duration">2s</span>
+          </span>
+        ),
+        children,
       };
     }
   });
@@ -97,6 +98,8 @@ class SubSchemaChooser extends React.Component<Props, State> {
     expanded: [],
   };
 
+  private filterField: HTMLInputElement | null;
+
   constructor(props: Props) {
     super(props);
     this.state.nodes = deriveTreeFromSchema(props.schema);
@@ -114,6 +117,11 @@ class SubSchemaChooser extends React.Component<Props, State> {
   public render() {
     return (
       <section className={this.props.className}>
+        <input className="form-control"
+               ref={(ref) => this.filterField = ref}
+               type="text"
+               placeholder={t`Filter`}
+               onChange={this.onFilterChanged}/>
         <CheckboxTree
           nodes={this.state.nodes}
           checked={this.state.checked}
@@ -128,17 +136,97 @@ class SubSchemaChooser extends React.Component<Props, State> {
       </section>
     );
   }
+
+  onFilterChanged = debounce((event) => {
+    if (!this.filterField) {
+      return;
+    }
+
+    let exactHits: Array<string> = [];
+    const needle = this.filterField.value.trim().toLowerCase();
+    const markSelection = (node): boolean => {
+      let foundChild = false;
+      if (node.children) {
+        for (let i = 0; i < node.children.length; i++) {
+          foundChild = markSelection(node.children[i]) || foundChild;
+        }
+      }
+      if (!needle || needle.length == 0) {
+        delete node.className;
+        return false;
+      } else {
+        const found = node.searchText.indexOf(needle) >= 0;
+        if (found) {
+          exactHits.push(node.value);
+        }
+        node.className = found ? 'tree-filter-found' :
+          (foundChild ? 'tree-filter-found-child' : 'tree-filter-not-found');
+        return found || foundChild;
+      }
+    };
+    this.state.nodes.forEach(markSelection);
+    // open up any found nodes
+    this.state.expanded = union(flatten(exactHits.map(SubSchemaChooser.buildPathToObject)), this.state.expanded);
+    // we have to force update as we are manipulating the state object directly
+    this.forceUpdate();
+  });
+
+  /// takes an object path like 'foo.bar.baz' and returns an array with all the paths to the full object
+  ///  e.g. ['foo', 'foo.bar']
+  static buildPathToObject(key: string): Array<string> {
+    if (!key) {
+      return [];
+    }
+    const parts = key.split('.');
+    let last = parts[0];
+    let results = [last];
+    for (let i = 1; i < parts.length - 1; i++) {
+      last = last + '.' + parts[i];
+      if (parts[i] != '$') {
+        results.push(last);
+      }
+    }
+    return results;
+  }
 };
 
 const SubSchemaChooserField = connectField(SubSchemaChooser);
 
 export default styled<Props>(SubSchemaChooserField) `
+input.form-control {
+  margin: 15px;
+  width: calc(100% - 30px); 
+}
+
 .react-checkbox-tree {
   label {
     font-weight: normal;
     display: flex;
     flex-grow: 1;
   }
+  
+  .rct-node {
+    transform: scale(1, 1);
+    transition: transform 200ms ease, opacity 200ms ease;
+    transform-origin: top center;
+    opacity: 1;
+  
+    &.tree-filter-found > .rct-text {
+    }
+    &.tree-filter-found-child > .rct-text {      
+      opacity: 0.5;
+      label {
+        pointer-events: none;
+        cursor: unset;
+      }
+    }
+    &.tree-filter-not-found > .rct-text {
+      transform: scale(1, 0);
+      position: absolute;
+      opacity: 0;
+    }
+  }
+  
   .rct-title {
     flex-grow: 1;
   
@@ -151,6 +239,21 @@ export default styled<Props>(SubSchemaChooserField) `
         color: #ccc;
         margin-left: 20px;
       }
+    }
+  }
+  
+  .rct-node-parent {
+    .object-node .tree-label::after {      
+      content: '…';
+      color: #888;
+    }
+    
+    .array-node .tree-label::after {      
+      content: ' [ ]';
+      color: #888;
+      font-size: 0.8em;
+      position: relative;
+      bottom: 1px;
     }
   }
   
