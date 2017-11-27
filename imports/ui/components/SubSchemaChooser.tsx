@@ -6,8 +6,9 @@ import SimpleSchema from 'simpl-schema';
 import {IStyledComponent} from './IStyledComponent';
 import {colors} from '../stylesheets/colors';
 import {t} from 'c-3po';
-import {debounce, union, flatten} from 'lodash';
+import {debounce, union, flatten, compact} from 'lodash';
 import {isDefinitionTypeArray} from '../../both/lib/simpl-schema-filter';
+import {AccessibilitySchemaExtension} from '@sozialhelden/ac-format';
 
 type CheckBoxTreeNode = {
   value: string,
@@ -37,6 +38,11 @@ const deriveTreeFromSchema = (schema: SimpleSchema, prefix: string = ''): Array<
     const definition = schema.getDefinition(definitionKey);
     const label = schema.label(definitionKey);
 
+    const accessibility: AccessibilitySchemaExtension | undefined = definition.accessibility;
+
+    if (accessibility && accessibility.machineData) {
+      return null;
+    }
     let childSearchKey = definitionKey;
     if (isDefinitionTypeArray(definition.type)) {
       return {
@@ -66,7 +72,7 @@ const deriveTreeFromSchema = (schema: SimpleSchema, prefix: string = ''): Array<
       };
     }
   });
-  return nodes;
+  return compact(nodes);
 };
 
 type Props = {
