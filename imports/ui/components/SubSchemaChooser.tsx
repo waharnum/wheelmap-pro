@@ -12,15 +12,18 @@ import {AccessibilitySchemaExtension} from '@sozialhelden/ac-format';
 
 type CheckBoxTreeNode = {
   value: string,
-  searchText: string,
   label: React.ReactNode,
   children?: Array<CheckBoxTreeNode> | null,
   className?: string,
   disabled?: boolean,
   icon?: React.ReactNode,
+  // custom extension
+  searchText: string,
 }
 
-const deriveTreeFromSchema = (schema: SimpleSchema, prefix: string = ''): Array<CheckBoxTreeNode> => {
+const deriveTreeFromSchema = (schema: SimpleSchema,
+                              required: Array<string>,
+                              prefix: string = ''): Array<CheckBoxTreeNode> => {
   const nodeNames: Array<string> = schema.objectKeys(prefix);
 
   if (!nodeNames) {
@@ -38,11 +41,16 @@ const deriveTreeFromSchema = (schema: SimpleSchema, prefix: string = ''): Array<
     const definition = schema.getDefinition(definitionKey);
     const label = schema.label(definitionKey);
 
-    const accessibility: AccessibilitySchemaExtension | undefined = definition.accessibility;
+    const isRequired = definition.optional === false;
+    if (isRequired) {
+      required.push(definitionKey);
+    }
 
+    const accessibility: AccessibilitySchemaExtension | undefined = definition.accessibility;
     if (accessibility && accessibility.machineData) {
       return null;
     }
+
     let childSearchKey = definitionKey;
     if (isDefinitionTypeArray(definition.type)) {
       return {
@@ -54,11 +62,12 @@ const deriveTreeFromSchema = (schema: SimpleSchema, prefix: string = ''): Array<
             <span className="field-duration">2s</span>
           </span>
         ),
-        children: deriveTreeFromSchema(schema, childSearchKey + '.$'),
+        children: deriveTreeFromSchema(schema, required, childSearchKey + '.$'),
       };
     }
     else {
-      const children = accessibility && accessibility.inseparable ? undefined : deriveTreeFromSchema(schema, childSearchKey);
+      const children = accessibility && accessibility.inseparable ?
+        undefined : deriveTreeFromSchema(schema, required, childSearchKey);
       return {
         value: definitionKey,
         searchText: label.toLowerCase(),
@@ -97,19 +106,25 @@ class SubSchemaChooser extends React.Component<Props, State> {
   };
 
   private filterField: HTMLInputElement | null;
+  private required: Array<string> = [];
 
   constructor(props: Props) {
     super(props);
-    this.state.nodes = deriveTreeFromSchema(props.schema);
+    this.state.nodes = deriveTreeFromSchema(props.schema, this.required);
     this.state.expanded = props.expanded || [];
-    this.state.checked = props.value || [];
+    this.state.checked = this.ensureRequiredAreIncluded(props.value || []);
+    if (props.onChange) {
+      console.log('required', this.required);
+      props.onChange(this.state.checked);
+    }
   }
 
   componentWillReceiveProps(nextProps: Props) {
     if (this.props.schema != nextProps.schema) {
-      this.setState({nodes: deriveTreeFromSchema(nextProps.schema)});
+      this.required = [];
+      this.setState({nodes: deriveTreeFromSchema(nextProps.schema, this.required)});
     }
-    this.setState({checked: nextProps.value || []});
+    this.setState({checked: this.ensureRequiredAreIncluded(nextProps.value || [])});
   }
 
   public render() {
@@ -126,7 +141,7 @@ class SubSchemaChooser extends React.Component<Props, State> {
           expanded={this.state.expanded}
           onCheck={(checked: Array<string>) => {
             if (this.props.onChange) {
-              this.props.onChange(checked);
+              this.props.onChange(this.ensureRequiredAreIncluded(checked));
             }
           }}
           onExpand={(expanded: Array<string>) => this.setState({expanded})}
@@ -185,6 +200,11 @@ class SubSchemaChooser extends React.Component<Props, State> {
       }
     }
     return results;
+  }
+
+  ensureRequiredAreIncluded(selected: Array<string>): Array<string> {
+    // TODO not required, the correct behavior would be to only include the `required`s if their parent is selected
+    return union(this.required, selected);
   }
 };
 
