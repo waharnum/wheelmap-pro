@@ -7,6 +7,7 @@ import {IStyledComponent} from './IStyledComponent';
 import {colors} from '../stylesheets/colors';
 import {t} from 'c-3po';
 import {debounce, union, flatten} from 'lodash';
+import {isDefinitionTypeArray} from '../../both/lib/simpl-schema-filter';
 
 type CheckBoxTreeNode = {
   value: string,
@@ -17,15 +18,6 @@ type CheckBoxTreeNode = {
   disabled?: boolean,
   icon?: React.ReactNode,
 }
-
-const isDefinitionTypeArray = (types: any[]): boolean => {
-  // Check whether we need to handle multiple definitions
-  if (types[0] && types[0].type === Array) {
-    return true;
-  }
-
-  return false;
-};
 
 const deriveTreeFromSchema = (schema: SimplSchema, prefix: string = ''): Array<CheckBoxTreeNode> => {
   const nodeNames: Array<string> = schema.objectKeys(prefix);
