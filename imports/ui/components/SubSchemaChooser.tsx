@@ -14,7 +14,7 @@ type CheckBoxTreeNode = {
   value: string,
   searchText: string,
   label: React.ReactNode,
-  children?: Array<CheckBoxTreeNode>,
+  children?: Array<CheckBoxTreeNode> | null,
   className?: string,
   disabled?: boolean,
   icon?: React.ReactNode,
@@ -58,7 +58,7 @@ const deriveTreeFromSchema = (schema: SimpleSchema, prefix: string = ''): Array<
       };
     }
     else {
-      const children = deriveTreeFromSchema(schema, childSearchKey);
+      const children = accessibility && accessibility.inseparable ? undefined : deriveTreeFromSchema(schema, childSearchKey);
       return {
         value: definitionKey,
         searchText: label.toLowerCase(),
