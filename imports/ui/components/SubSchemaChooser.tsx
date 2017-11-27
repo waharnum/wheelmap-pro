@@ -2,7 +2,7 @@ import * as React from 'react';
 import connectField from 'uniforms/connectField';
 import * as CheckboxTree from 'react-checkbox-tree';
 import styled from 'styled-components';
-import SimplSchema from 'simpl-schema';
+import SimpleSchema from 'simpl-schema';
 import {IStyledComponent} from './IStyledComponent';
 import {colors} from '../stylesheets/colors';
 import {t} from 'c-3po';
@@ -19,7 +19,7 @@ type CheckBoxTreeNode = {
   icon?: React.ReactNode,
 }
 
-const deriveTreeFromSchema = (schema: SimplSchema, prefix: string = ''): Array<CheckBoxTreeNode> => {
+const deriveTreeFromSchema = (schema: SimpleSchema, prefix: string = ''): Array<CheckBoxTreeNode> => {
   const nodeNames: Array<string> = schema.objectKeys(prefix);
 
   if (!nodeNames) {
@@ -73,7 +73,7 @@ type Props = {
   onChange?: (value: Array<string> | null) => void,
   name?: string,
   value?: Array<string>,
-  schema: SimplSchema,
+  schema: SimpleSchema,
   expanded?: Array<string>,
 } & IStyledComponent;
 
