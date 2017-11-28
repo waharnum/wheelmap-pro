@@ -1,20 +1,21 @@
-import {gettext, t} from 'c-3po';
+import { gettext, t } from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
-import {Meteor} from 'meteor/meteor';
-import {Location} from 'history';
-import {Accounts, STATES} from 'meteor/std:accounts-ui';
+import { Meteor } from 'meteor/meteor';
+import { Location } from 'history';
+import { Accounts, STATES } from 'meteor/std:accounts-ui';
 
 import Button from '../../components/Button';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
-import {IOrganization} from '../../../both/api/organizations/organizations';
-import {Events, IEvent} from '../../../both/api/events/events';
-import {setLoginRedirect} from '../../../both/api/users/accounts';
-import {IStyledComponent} from '../../components/IStyledComponent';
-import {wrapDataComponent} from '../../components/AsyncDataComponent';
-import PublicHeader, {HeaderTitle} from '../../components/PublicHeader';
-import {EventParticipants, IEventParticipant} from '../../../both/api/event-participants/event-participants';
-import {IAsyncDataByIdProps, reactiveSubscriptionByParams} from '../../components/reactiveModelSubscription';
+import { Hint, HintBox } from '../../components/HintBox';
+import { IOrganization } from '../../../both/api/organizations/organizations';
+import { Events, IEvent } from '../../../both/api/events/events';
+import { setLoginRedirect } from '../../../both/api/users/accounts';
+import { IStyledComponent } from '../../components/IStyledComponent';
+import { wrapDataComponent } from '../../components/AsyncDataComponent';
+import PublicHeader, { HeaderTitle } from '../../components/PublicHeader';
+import { EventParticipants, IEventParticipant } from '../../../both/api/event-participants/event-participants';
+import { IAsyncDataByIdProps, reactiveSubscriptionByParams } from '../../components/reactiveModelSubscription';
 
 interface IAcceptInviteParams {
   _id: Mongo.ObjectID;
@@ -36,9 +37,9 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
     busy: boolean;
     error: string | null;
   } = {
-    busy: false,
-    error: null,
-  };
+      busy: false,
+      error: null,
+    };
 
   public componentWillReceiveProps(nextProps: InternalPageProperties) {
     this.modelChanged(nextProps);
@@ -74,7 +75,7 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
         <div className="content-area scrollable">
           <h2>{t`Great to have you here!`}</h2>
           <div className="alert alert-info">{t`Please sign up with ${organization.name} to join ${event.name}.`}</div>
-          <Accounts.ui.LoginForm formState={STATES.SIGN_UP}/>
+          <Accounts.ui.LoginForm formState={STATES.SIGN_UP} />
         </div>
       );
     } else {
@@ -101,7 +102,21 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
             />
           )}
         />
-        {content}
+        <div className="content-area scrollable hsplit">
+          <div className="content-left">
+            {content}
+          </div>
+          <div className="content-right">
+            <HintBox title={t`You want to join us? Great.`}>
+              <Hint className="group">
+                {t`Meet new friends while collecting accessibility data.`}
+              </Hint>
+              <Hint className="done">
+                {t`Make our world a little bit better.`}
+              </Hint>
+            </HintBox>
+          </div>
+        </div>
       </ScrollableLayout>
     );
   }
@@ -115,7 +130,7 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
     }
 
     if (!props.model.user) {
-      this.setState({busy: false, error: null});
+      this.setState({ busy: false, error: null });
       setLoginRedirect(this.props.location.pathname);
     } else {
       setLoginRedirect(null);
@@ -127,14 +142,14 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
   }
 
   private acceptInvite = () => {
-    this.setState({busy: true});
+    this.setState({ busy: true });
     Meteor.call('eventParticipants.acceptInvitation',
-      {eventId: this.props.params._id, invitationToken: this.props.params.token},
+      { eventId: this.props.params._id, invitationToken: this.props.params.token },
       (error, result) => {
         if (error) {
-          this.setState({busy: false, error: t`Accepting invitation failed.` + gettext(error.reason)});
+          this.setState({ busy: false, error: t`Accepting invitation failed.` + gettext(error.reason) });
         } else {
-          this.setState({busy: false});
+          this.setState({ busy: false });
         }
       },
     );
@@ -149,9 +164,9 @@ const ReactiveSignUpForEventPage = reactiveSubscriptionByParams(
     const event = Events.findOne(id);
     const organization = event ? event.getOrganization() : null;
     const user = Meteor.user();
-    const participant = EventParticipants.findOne({eventId: event ? event._id : -1, invitationToken: params.token});
+    const participant = EventParticipants.findOne({ eventId: event ? event._id : -1, invitationToken: params.token });
 
-    return event && organization ? {user, event, organization, participant} : null;
+    return event && organization ? { user, event, organization, participant } : null;
   }, 'events.by_id.public', 'organizations.by_eventId.public',
   'eventParticipants.by_eventIdAndToken.public', 'users.my.private');
 
