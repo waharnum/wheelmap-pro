@@ -23,7 +23,7 @@ export const translateAcFormatToUniforms = (schema: SimpleSchema, prefix: string
     valuePrefix = `${prefix}.`;
   }
 
-  const extensions = {};
+  const extensions: { [key: string]: any } = {};
   nodeNames.forEach((name) => {
     const definitionKey = `${valuePrefix}${name}`;
     const definition = schema.getDefinition(definitionKey);

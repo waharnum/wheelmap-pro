@@ -155,13 +155,13 @@ class SubSchemaChooser extends React.Component<Props, State> {
       return;
     }
 
-    let exactHits: Array<string> = [];
+    const exactHits: Array<string> = [];
     const needle = this.filterField.value.trim().toLowerCase();
     const markSelection = (node): boolean => {
       let foundChild = false;
       if (node.children) {
-        for (let i = 0; i < node.children.length; i++) {
-          foundChild = markSelection(node.children[i]) || foundChild;
+        for (const child of node.children) {
+          foundChild = markSelection(child) || foundChild;
         }
       }
       if (!needle || needle.length == 0) {
@@ -192,7 +192,7 @@ class SubSchemaChooser extends React.Component<Props, State> {
     }
     const parts = key.split('.');
     let last = parts[0];
-    let results = [last];
+    const results = [last];
     for (let i = 1; i < parts.length - 1; i++) {
       last = last + '.' + parts[i];
       if (parts[i] != '$') {

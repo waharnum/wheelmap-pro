@@ -5,7 +5,7 @@ type FieldTree = { [key: string]: FieldTree };
 /// Returns true if the given SimpleSchema definition contains a SimpleSchema instance
 export const isDefinitionTypeSchema = (types: any[]): boolean => {
   // Check whether we need to handle multiple definitions
-  if (types && types[0] && types[0].type && types[0].type.pick) {
+  if (types && SimpleSchema.isSimpleSchema(types[0].type)) {
     return true;
   }
 

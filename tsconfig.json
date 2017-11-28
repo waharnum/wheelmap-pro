@@ -9,14 +9,17 @@
       "node"
     ],
     "lib": [
+      "es2015",
       "es2016",
+      "es2017",
       "dom"
     ],
     "strictNullChecks": true,
     "noImplicitAny": false,
     "noImplicitThis": false,
     "alwaysStrict": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true
   },
   "compileOnSave": true
 }
