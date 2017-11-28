@@ -2,7 +2,7 @@ import SimpleSchema from 'simpl-schema';
 import {gettext} from 'c-3po';
 import {cloneDeep} from 'lodash';
 
-let registeredSchemas: Array<SimpleSchema> = [];
+const registeredSchemas: Array<SimpleSchema> = [];
 
 export function registerSchemaForI18n(schema: SimpleSchema) {
   registeredSchemas.push(schema);
@@ -10,8 +10,8 @@ export function registerSchemaForI18n(schema: SimpleSchema) {
 
 export function localeChanged(locale: string) {
   registeredSchemas.forEach((schema) => {
-    const orig = schema._origSchema || schema._schema;
-    const result = schema._origSchema ? schema._schema : cloneDeep(orig); // only clone initially
+    const orig = (schema as any)._origSchema || (schema as any)._schema;
+    const result = (schema as any)._origSchema ? (schema as any)._schema : cloneDeep(orig); // only clone initially
 
     // TODO recurse into sub object
     Object.keys(orig).forEach((key) => {
@@ -36,7 +36,7 @@ export function localeChanged(locale: string) {
       }
     });
 
-    schema._origSchema = orig;
-    schema._schema = result;
-  })
+    (schema as any)._origSchema = orig;
+    (schema as any)._schema = result;
+  });
 }
