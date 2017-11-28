@@ -3,6 +3,7 @@ import connectField from 'uniforms/connectField';
 import * as CheckboxTree from 'react-checkbox-tree';
 import styled from 'styled-components';
 import SimpleSchema from 'simpl-schema';
+
 import {IStyledComponent} from './IStyledComponent';
 import {colors} from '../stylesheets/colors';
 import {t} from 'c-3po';
@@ -51,7 +52,6 @@ const deriveTreeFromSchema = (schema: SimpleSchema,
       return null;
     }
 
-    let childSearchKey = definitionKey;
     if (isDefinitionTypeArray(definition.type)) {
       return {
         value: definitionKey,
@@ -62,12 +62,12 @@ const deriveTreeFromSchema = (schema: SimpleSchema,
             <span className="field-duration">2s</span>
           </span>
         ),
-        children: deriveTreeFromSchema(schema, required, childSearchKey + '.$'),
+        children: deriveTreeFromSchema(schema, required, definitionKey + '.$'),
       };
     }
     else {
       const children = accessibility && accessibility.inseparable ?
-        undefined : deriveTreeFromSchema(schema, required, childSearchKey);
+        undefined : deriveTreeFromSchema(schema, required, definitionKey);
       return {
         value: definitionKey,
         searchText: label.toLowerCase(),

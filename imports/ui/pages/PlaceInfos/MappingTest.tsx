@@ -10,6 +10,7 @@ import {PlaceInfoSchema} from '@sozialhelden/ac-format';
 import {AutoForm, BaseForm, AutoFields, SubmitField, LongTextField, ErrorsField} from 'uniforms-bootstrap3';
 import SubSchemaChooser from '../../components/SubSchemaChooser';
 import {pickFields} from '../../../both/lib/simpl-schema-filter';
+import {translateAcFormatToUniforms} from '../../../both/lib/ac-format-uniforms-bridge';
 
 type Props = {} & IStyledComponent;
 
@@ -24,6 +25,7 @@ class MappingTestPage extends React.Component<Props, State> {
     let schema = PlaceInfoSchema;
     if (this.state.selectedFields && this.state.selectedFields.length > 0) {
       schema = pickFields(schema, this.state.selectedFields);
+      translateAcFormatToUniforms(schema);
     }
     return (
       <ScrollableLayout id="ProfilePage" className={this.props.className}>
