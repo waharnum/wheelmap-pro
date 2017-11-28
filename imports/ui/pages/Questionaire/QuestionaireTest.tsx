@@ -1,102 +1,97 @@
-import { t } from 'c-3po';
+import {t} from 'c-3po';
 import * as React from 'react';
-import { Meteor } from 'meteor/meteor';
+import {Meteor} from 'meteor/meteor';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 import AdminHeader from '../../components/AdminHeader';
-import { Accounts } from 'meteor/std:accounts-ui';
+import {Accounts} from 'meteor/std:accounts-ui';
 import styled from 'styled-components';
-import { IStyledComponent } from '../../components/IStyledComponent';
-import { withTracker } from 'meteor/react-meteor-data';
-import { Link } from 'react-router';
-import { colors } from '../../stylesheets/colors';
+import {IStyledComponent} from '../../components/IStyledComponent';
+import {withTracker} from 'meteor/react-meteor-data';
+import {Link} from 'react-router';
+import {colors} from '../../stylesheets/colors';
 
 const QuestionaireTestPage = (props: IStyledComponent & { user: Meteor.User, ready: boolean }) => {
   return (
-    <ScrollableLayout id="Questionaire" className={props.className}>
-      <AdminHeader titleComponent={<Link to="/" className="logo"><h1>{t`wheelmap.pro`}</h1></Link>} />
-      <div className="content-area scrollable">
-        <div className='questionaire-area'>
-          <header className='questionaire-progress'>
-            <span className='progress-information'>
-              <figure className='progress-done'>12</figure>
-              <h1 className='place-name'>Add new place</h1>
-            </span>
-            <span className='progress-bar'>
-              <div className='progress-done'></div>
-            </span>
-          </header>
-          <div className='questionaire-column'>
-            <section className='questionaire-step onboarding'>
-              <h3 className='question'>Carla, this is your first place to be mapped! Please answer some questions:</h3>
-            </section>
-            <section className='questionaire-step next-block'>
-              <h2 className='block-name'>Collect place information</h2>
-            </section>
-            <section className='questionaire-step simple-choice'>
-              <h3 className='question'>Is the owner or somebody responsible here?</h3>
-              <span className='call-to-action'>
-                <div className='form'>
-                  <div className='form-group'>
-                    <button className='primary'>yes</button>
-                    <button className='primary'>no</button>
-                    <button className='secondary'>skip</button>
-                  </div>
-                </div>
-              </span>
-            </section>
-            <section className='questionaire-step string-input'>
-              <h3 className='question'>What is the name of this place?</h3>
-              <span className='call-to-action'>
-                <div className='form'>
-                  <div className='form-group'>
-                    <input className='form-control' name='placeName' placeholder='e.g. Doctor Smith' />
-                    <button className='secondary'>skip</button>
-                  </div>
-                </div>
-              </span>
-            </section>
-            <section className='questionaire-step select'>
-              <h3 className='question'>What kind of place is this?</h3>
-              <span className='call-to-action'>
-                <div className='form'>
-                  <div className='form-group'>
-                    <span className='selectWrapper'>
-                      <select className='form-control' name='selectCategory'>
-                        <option value="" disabled selected>Please select</option>
-                        <option value='Education'>Education</option>
-                        <option value='FoodAndDrinks'>Food and Drinks</option>
-                        <option value='Health'>Health</option>
-                        <option value='Hotels'>Hotels</option>
-                        <option value='Leisure'>Leisure</option>
-                        <option value='Money'>Money</option>
-                        <option value='Other'>Other</option>
-                        <option value='Official'>Official</option>
-                        <option value='Shopping'>Shopping</option>
-                        <option value='Sports'>Sports</option>
-                        <option value='Tourism'>Tourism</option>
-                        <option value='Travel'>Travel</option>
-                      </select>
-                    </span>
-                    <button className='secondary'>skip</button>
-                  </div>
-                </div>
-              </span>
-            </section>
-            <footer className='questionaire-status'>
-              <span className='time-left'>
-                <figure className='minutes'>12</figure>
-                <small>min left to complete</small>
-                <small className='more-specific'>this place</small>
-              </span>
-              <span className='footer-actions'>
-                <button>stop here</button>
-                <button>skip block</button>
-              </span>
-            </footer>
-          </div>
-        </div>
+    <div className={`questionaire-area ${props.className}`}>
+      <header className='questionaire-progress'>
+        <span className='progress-information'>
+          <figure className='progress-done'>12</figure>
+          <h1 className='place-name'>Add new place</h1>
+        </span>
+        <span className='progress-bar'>
+          <div className='progress-done'></div>
+        </span>
+      </header>
+      <div className='questionaire-column'>
+        <section className='questionaire-step onboarding'>
+          <h3 className='question'>Carla, this is your first place to be mapped! Please answer some questions:</h3>
+        </section>
+        <section className='questionaire-step next-block'>
+          <h2 className='block-name'>Collect place information</h2>
+        </section>
+        <section className='questionaire-step simple-choice'>
+          <h3 className='question'>Is the owner or somebody responsible here?</h3>
+          <span className='call-to-action'>
+            <div className='form'>
+              <div className='form-group'>
+                <button className='primary'>yes</button>
+                <button className='primary'>no</button>
+                <button className='secondary'>skip</button>
+              </div>
+            </div>
+          </span>
+        </section>
+        <section className='questionaire-step string-input'>
+          <h3 className='question'>What is the name of this place?</h3>
+          <span className='call-to-action'>
+            <div className='form'>
+              <div className='form-group'>
+                <input className='form-control' name='placeName' placeholder='e.g. Doctor Smith'/>
+                <button className='secondary'>skip</button>
+              </div>
+            </div>
+          </span>
+        </section>
+        <section className='questionaire-step select'>
+          <h3 className='question'>What kind of place is this?</h3>
+          <span className='call-to-action'>
+            <div className='form'>
+              <div className='form-group'>
+                <span className='selectWrapper'>
+                  <select className='form-control' name='selectCategory'>
+                    <option value="" disabled selected>Please select</option>
+                    <option value='Education'>Education</option>
+                    <option value='FoodAndDrinks'>Food and Drinks</option>
+                    <option value='Health'>Health</option>
+                    <option value='Hotels'>Hotels</option>
+                    <option value='Leisure'>Leisure</option>
+                    <option value='Money'>Money</option>
+                    <option value='Other'>Other</option>
+                    <option value='Official'>Official</option>
+                    <option value='Shopping'>Shopping</option>
+                    <option value='Sports'>Sports</option>
+                    <option value='Tourism'>Tourism</option>
+                    <option value='Travel'>Travel</option>
+                  </select>
+                </span>
+                <button className='secondary'>skip</button>
+              </div>
+            </div>
+          </span>
+        </section>
+        <footer className='questionaire-status'>
+          <span className='time-left'>
+            <figure className='minutes'>12</figure>
+            <small>min left to complete</small>
+            <small className='more-specific'>this place</small>
+          </span>
+          <span className='footer-actions'>
+            <button>stop here</button>
+            <button>skip block</button>
+          </span>
+        </footer>
       </div>
-    </ScrollableLayout>
+    </div>
   );
 };
 
@@ -104,14 +99,13 @@ export default styled(QuestionaireTestPage) `
 
   background-color: ${colors.bgGrey};
 
-  .questionaire-area {
+  &.questionaire-area {
     color: ${colors.bgAnthracite};
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.2);
 
-    margin-top: 20px; /* testing mobile widths */
-    margin-left: 20px; /* testing mobile widths */
+    margin: 5px;
     max-width: 375px; /* testing mobile widths */
 
     h1 {
