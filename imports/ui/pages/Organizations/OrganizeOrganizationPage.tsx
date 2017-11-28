@@ -63,7 +63,6 @@ const EventListEntry = (props: { model: IEvent }) => {
       </div>
       <Map
         className="event-mini-map"
-        enablePlaceDetails={false}
         bbox={bbox}>
         <CustomMapIcon
           lat={bbox.getCenter().lat}
@@ -76,7 +75,7 @@ const EventListEntry = (props: { model: IEvent }) => {
       </Map>
     </div>
   );
-}
+};
 
 const EventList = (props: { model: IEvent[] }) => (
   <div>
