@@ -358,8 +358,8 @@ declare class SimpleSchema {
    */
   validateAndReturnErrorsPromise(obj: any, options?: ValidationOption): Promise<Array<Error>>;
 
-  validator(options: ValidationOption): Function;
 
+  validator(options?: ValidationOption): (args: { [key: string]: any; }) => void;
 }
 
 declare module 'simpl-schema' {
