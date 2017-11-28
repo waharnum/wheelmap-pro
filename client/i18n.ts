@@ -18,7 +18,7 @@ export function preparei18n(callback: Function) {
       useLocale(result.language);
       moment.updateLocale(result.momentData.abbr, result.momentData);
 
-      mapLocale = result.language || 'en';
+      (mapLocale as any) = result.language || 'en';
 
       const momentLocale = result.language || 'en-us';
       moment.locale(momentLocale);
@@ -29,7 +29,7 @@ export function preparei18n(callback: Function) {
       console.error('Failed loading i18n!', error);
       moment.locale('en-us');
       T9n.setLanguage('en');
-      mapLocale = 'en';
+      (mapLocale as any) = 'en';
       callback('en');
     }
   });

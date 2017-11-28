@@ -1,3 +1,7 @@
+declare module 'wheelmap-react/lib/lib/i18n' {
+  export let currentLocale: string;
+}
+
 declare module 'wheelmap-react/lib/components/Map/Map' {
   import * as React from 'react';
   import * as L from 'leaflet';
