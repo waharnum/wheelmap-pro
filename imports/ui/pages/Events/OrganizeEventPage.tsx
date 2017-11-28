@@ -221,11 +221,13 @@ class OrganizeEventPage extends React.Component
                   <div className="notification-completed">{t`${stats.fullParticipantCount} invitations prepared.`}</div>
                   <div className="step-status step-todo">
                     <div className="step-information">
-                      <h3>{t`No participant invites prepared.`}</h3>
+                      <h3>{t`No invitations prepared.`}</h3>
                       <p>{t`Emails will be send when you publish.`}</p>
                     </div>
-                    <Button className="btn-primary"
-                      to={`/events/${event._id}/participants`}>{t`Invite participants`}</Button>
+                    <div className="publishing-actions">
+                      <Button className="btn-primary"
+                        to={`/events/${event._id}/participants`}>{t`Invite participants`}</Button>
+                    </div>
                   </div>
                   {event.status == 'draft' ?
                     <div className="step-status step-completed">
@@ -494,6 +496,35 @@ ol.event-timeline {
     }
    .step-todo {
       display: flex;
+    }
+  }
+
+  li.publish-event.disabled {
+    .step-todo {
+
+      button,
+      button.btn,
+      button.primary,
+      a.btn,
+      a.btn-primary {
+        padding: 0 16px;
+        padding-right: 0;
+        font-size: 16px;
+        line-height: 40px;
+        text-transform: uppercase;
+        color: ${colors.linkBlueDarker};
+        background-color: transparent;
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+        outline: 0;
+
+        &:hover {
+          color: ${colors.linkBlue};
+          background-color: transparent;
+          box-shadow: none;
+        }
+      }
     }
   }
   
