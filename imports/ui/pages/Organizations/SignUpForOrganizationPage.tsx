@@ -126,7 +126,7 @@ class SignUpForOrganizationPage extends React.Component<InternalPageProperties> 
         this.acceptInvite();
       }
     }
-  }
+  };
 
   private acceptInvite = () => {
     this.setState({busy: true});
@@ -134,13 +134,16 @@ class SignUpForOrganizationPage extends React.Component<InternalPageProperties> 
       {organizationId: this.props.params._id, invitationToken: this.props.params.token},
       (error: Meteor.Error | null) => {
         if (error) {
-          this.setState({busy: false, error: t`Accepting invitation failed.` + gettext(error.reason)});
+          this.setState({
+            busy: false,
+            error: t`Accepting invitation failed.` + gettext(error.reason || 'Unknown error'),
+          });
         } else {
           browserHistory.replace(`/organizations/${this.props.model.organization._id}/organize`);
         }
       },
     );
-  }
+  };
 }
 
 const ReactiveSignUpForOrganizationPage = reactiveSubscriptionByParams(
