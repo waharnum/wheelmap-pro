@@ -232,9 +232,9 @@ input.form-control {
     .rct-text {
       // Tried a better height transitions, but really un-smooth. Reduced steps and added delay.
       // animating height still sucks
-      transition: height 150ms steps(5);
+      transition: max-height 150ms steps(5);
       transition-delay: 50ms;
-      height: 24px;
+      max-height: 72px; // allow maximum three rows
       overflow: hidden;
     }
   
@@ -252,7 +252,7 @@ input.form-control {
       opacity: 0;
       
       &> .rct-text {
-        height: 0px;
+        max-height: 0px;
       }
     }
   }
