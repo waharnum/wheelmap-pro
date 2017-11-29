@@ -1,13 +1,13 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {AutoForm, AutoField, ErrorsField, SubmitField} from 'uniforms-bootstrap3';
-import {t} from 'c-3po';
-import {get, set, concat, sample} from 'lodash';
+import { AutoForm, AutoField, ErrorsField, SubmitField } from 'uniforms-bootstrap3';
+import { t } from 'c-3po';
+import { get, set, concat, sample } from 'lodash';
 
-import {colors} from '../../stylesheets/colors';
-import {IStyledComponent} from '../IStyledComponent';
-import {pickFieldForAutoForm} from '../../../both/lib/simpl-schema-filter';
-import {AccessibilitySchemaExtension} from '@sozialhelden/ac-format';
+import { colors } from '../../stylesheets/colors';
+import { IStyledComponent } from '../IStyledComponent';
+import { pickFieldForAutoForm } from '../../../both/lib/simpl-schema-filter';
+import { AccessibilitySchemaExtension } from '@sozialhelden/ac-format';
 
 
 const affirmativeAnswers: Array<string> = [t`Yes!`, t`Okay!`, t`Sure!`, t`Let's do this!`, t`I'm ready!`];
@@ -126,9 +126,15 @@ class Questionnaire extends React.Component<Props, State> {
             label={false}
             name={field}>
           </AutoField>
-          <SubmitField value={t`Submit`}/>
-          {isOptional ? <button className="secondary" onClick={this.goToNextField}>{t`Skip`}</button> : null}
-          <ErrorsField/>
+          <span className='call-to-action'>
+            <div className='form'>
+              <div className='form-group'>
+                <SubmitField className={t`primary-action`} value={t`Submit`} />
+                {isOptional ? <button className="secondary" onClick={this.goToNextField}>{t`Skip`}</button> : null}
+                <ErrorsField />
+              </div>
+            </div>
+          </span>
         </AutoForm>
       </section>
     );
@@ -162,7 +168,13 @@ class Questionnaire extends React.Component<Props, State> {
     return (
       <section className="questionnaire-step">
         <h3 className="question">{question}</h3>
-        <button className="secondary" onClick={this.enterBlock.bind(this, field, question)}>{t`YES PLEASE`}</button>
+        <span className="call-to-action">
+          <div className='form'>
+            <div className='form-group'>
+              <button className="primary" onClick={this.enterBlock.bind(this, field, question)}>{t`YES PLEASE`}</button>
+            </div>
+          </div>
+        </span>
       </section>
     );
   }
@@ -179,7 +191,13 @@ class Questionnaire extends React.Component<Props, State> {
     return (
       <section className="questionnaire-step">
         <h3 className="question">{question}</h3>
-        <button className="secondary" onClick={this.goToNextField}>{t`YES PLEASE`}</button>
+        <span className="call-to-action">
+          <div className='form'>
+            <div className='form-group'>
+              <button className="primary" onClick={this.goToNextField}>{t`YES PLEASE`}</button>
+            </div>
+          </div>
+        </span>
       </section>
     );
   }
@@ -204,13 +222,13 @@ class Questionnaire extends React.Component<Props, State> {
     return (
       <div className={`questionnaire-area ${this.props.className}`}>
         <header className="questionnaire-progress">
-        <span className="progress-information">
-          <figure className="progress-done">{Math.floor(this.state.progress * 100)}</figure>
-          <h1 className="place-name">Add new place</h1>
-        </span>
+          <span className="progress-information">
+            <figure className="progress-done">{Math.floor(this.state.progress * 100)}</figure>
+            <h1 className="place-name">Add new place</h1>
+          </span>
           <span className="progress-bar">
-          <div className="progress-done" style={{width: `${this.state.progress * 100}%`}}/>
-        </span>
+            <div className="progress-done" style={{ width: `${this.state.progress * 100}%` }} />
+          </span>
         </header>
         <div className="history-column">
           {this.historySection()}
@@ -263,6 +281,8 @@ export default styled(Questionnaire) `
     form .form-group, 
     form .form-input {
       width: unset;
+      width: 100%;
+      margin-bottom: 0;
     }
 
     section.onboarding h3 {
@@ -270,6 +290,8 @@ export default styled(Questionnaire) `
       opacity: 0.8;
     }
 
+    .primary-action input.btn.btn-primary,
+    input.btn.btn-primary,
     button {
       flex-grow: 1;
       padding: 0 10px;
@@ -312,7 +334,6 @@ export default styled(Questionnaire) `
     input,
     select {
       padding: 0;
-
       font-size: 21px;
       font-weight: 400;
       text-overflow: ellipsis;
@@ -389,8 +410,23 @@ export default styled(Questionnaire) `
       option {
         outline: none;
       }
+    }
 
+    form.form.error {
 
+      .form-group.has-feedback.has-error, 
+      .form-group .panel-danger, 
+      .input.has-feedback.has-error, 
+      .input .panel-danger {
+
+        input.form-control.form-control-danger, 
+        input, 
+        input:focus {
+          border: none;
+          border-bottom: 2px solid ${colors.errorRed};
+          transition: border 0.25s;
+        }
+      }
     }
   }
 
@@ -462,18 +498,36 @@ export default styled(Questionnaire) `
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
-    opacity: 0.75;
+    opacity: 0.5;
     
-    h3.question {
-      font-size: 20px;
-      width: 100%;
-      font-weight: 600;
-    }
+    h3.question,
     span.answer {
-      background-color: ${colors.bgAnthracite};
-      color: ${colors.white100};
-      padding: 5px 12px;
-      border-radius: 12px;
+      font-size: 20px;
+      line-height: 1.25em;
+    }
+
+    h3.question {
+      width: 100%;
+      font-weight: 800;
+    }
+
+    span.answer {
+      MARGIN-TOP: 8px;
+      font-weight: 300;
+      position: relative;
+
+      &:after {
+        position: relative;
+        right: 0;
+        padding-left: 8px;
+        top: -0.1em;
+        content: 'e';
+        font-size: 16px;
+        text-align: center;
+        -moz-line-height: 0;
+        font-family: 'iconfield-V03';
+        opacity: 0.5;
+      }
     }
   }
 
@@ -488,6 +542,7 @@ export default styled(Questionnaire) `
 
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 
     span.time-left {
       display: flex;
@@ -496,6 +551,10 @@ export default styled(Questionnaire) `
         padding-right: 4px;
         font-weight: 800;
         opacity: 0.5;
+      }
+
+      small {
+        flex-shrink: 0;
       }
 
       small.more-specific {
@@ -507,11 +566,13 @@ export default styled(Questionnaire) `
       display: flex;
       flex-direction: row-reverse;
 
+
       button {
-        padding: 0 8px;
+        padding: 0px 8px;
         margin-right: 0px;
-        line-height: 1em;
         font-size: 14px;
+        /* line-height: 2em; */
+        line-height: 42px;
         letter-spacing: -0.33px;
         border: none;
         transition: color 0.25s, background-color 0.25s;

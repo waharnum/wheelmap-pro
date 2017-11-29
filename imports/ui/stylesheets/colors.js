@@ -14,7 +14,7 @@ export const colors = {
   ctaDisabledGrey: '#CBCED3',       // primary button disabled
   darkGreen: '#719511',             // status notifications in organize events
   bgLightGreen: '#E0F1C1',          // status notifications in organize events
-  errorRed: '#C30400',              // main error color 
+  errorRed: '#FD3149',              // main error color 
   activeOrange: '#F5A623',          // in event timeline
   doneGreen: '#96C545',             // in event timeline
   white100: '#fff',                 // perfect white

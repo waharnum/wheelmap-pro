@@ -169,8 +169,10 @@ a.btn-sm { /* e.g. forgot password */
   }
 }
 
-.panel.panel-danger {
+.panel.panel-danger,
+form .panel-danger .panel-body {
   color: $error-red;
+  font-weight: 400;
 }
 
 form {
@@ -276,7 +278,7 @@ form {
       input.form-control.form-control-danger,
       input,
       input:focus {
-        border: 1px solid $error-red !important;
+        border: 1px solid $error-red; /* remove !important */
         box-shadow: none;
       }
 
