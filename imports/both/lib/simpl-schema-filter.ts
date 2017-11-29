@@ -1,4 +1,5 @@
 import SimpleSchema from 'simpl-schema';
+import {pick} from 'lodash';
 
 type FieldTree = { [key: string]: FieldTree };
 
@@ -28,14 +29,14 @@ const filterSchemaWithHierarchy = (schema: SimpleSchema, fieldTree: FieldTree) =
   const pickKeys: Array<string> = [];
   const extendKeys: { [key: string]: SimpleSchema } = {};
   currentLevelKeys.forEach((key) => {
-    const fieldDefinition = schema.getDefinition(key);
+    const fieldDefinition = schema.getDefinition(key, ['type']);
 
     const hasChildren = Object.keys(fieldTree[key]).length > 0;
     // array
     if (hasChildren && isDefinitionTypeArray(fieldDefinition.type)) {
       const arrayKey = key + '.$';
       const hasArrayChildren = Object.keys(fieldTree[key]['$']).length > 0;
-      const arrayFieldDefinition = schema.getDefinition(arrayKey);
+      const arrayFieldDefinition = schema.getDefinition(arrayKey, ['type']);
       // always add array itself
       pickKeys.push(key);
       // array of schema
@@ -90,4 +91,16 @@ export const pickFields = (schema: SimpleSchema, fields: Array<string>) => {
   });
 
   return filterSchemaWithHierarchy(schema, expandedFields);
+};
+
+/**
+ * Takes a single for a SimpleSchema and picks the matching fields into
+ * a new SimpleSchema that will only include these, also ensuring child schema are filtered.
+ *
+ * @param {SimpleSchema} schema The schema to pick a hierarchical sub schema from
+ * @param {Array<string>} key a key to a part of the schema 'foo.bar.$.baz']
+ * @returns {SimpleSchema} The schema with the chosen fields.
+ */
+export const pickFieldForAutoForm = (schema: SimpleSchema, key: string) => {
+  return pickFields(schema, [key]);
 };

@@ -1,13 +1,16 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {AutoForm, AutoField, ErrorsField} from 'uniforms-bootstrap3';
+import {AutoForm, AutoField, ErrorsField, SubmitField} from 'uniforms-bootstrap3';
 import {t} from 'c-3po';
+import {get, set, concat, sample} from 'lodash';
 
 import {colors} from '../../stylesheets/colors';
 import {IStyledComponent} from '../IStyledComponent';
-import {pickFields} from '../../../both/lib/simpl-schema-filter';
+import {pickFieldForAutoForm} from '../../../both/lib/simpl-schema-filter';
 import {AccessibilitySchemaExtension} from '@sozialhelden/ac-format';
 
+
+const affirmativeAnswers: Array<string> = [t`Yes!`, t`Okay!`, t`Sure!`, t`Let's do this!`, t`I'm ready!`];
 
 type Props = {
   model?: any | null,
@@ -16,7 +19,7 @@ type Props = {
 } & IStyledComponent;
 
 type State = {
-  history: Array<{}>,
+  history: Array<{ question: string, answer: string }>,
   progress: number,
   currentIndex: number,
   activeField: string | null,
@@ -33,6 +36,7 @@ class Questionnaire extends React.Component<Props, State> {
       properties: {},
     },
   };
+  private lastAutoForm: AutoForm | null;
 
   constructor(props: Props) {
     super(props);
@@ -44,9 +48,7 @@ class Questionnaire extends React.Component<Props, State> {
   public componentWillReceiveProps(nextProps: Props) {
     if (this.props.schema != nextProps.schema) {
       (window as any).__schema = nextProps.schema;
-
       console.log(nextProps.fields);
-
       const firstKey = nextProps.fields[0];
 
       this.setState({
@@ -58,7 +60,7 @@ class Questionnaire extends React.Component<Props, State> {
     }
   }
 
-  determineNextField = () => {
+  goToNextField = () => {
     const nextIndex = this.state.currentIndex + 1;
     this.setState({
       currentIndex: nextIndex,
@@ -67,9 +69,30 @@ class Questionnaire extends React.Component<Props, State> {
     });
   };
 
-  historySection(field: string) {
-    return (<div></div>);
+  historySection() {
+    return this.state.history.map(entry => (
+      <section className="questionnaire-history-entry">
+        <h3 className="question">{entry.question}</h3>
+        <span className="answer">{entry.answer}</span>
+      </section>
+    ));
   }
+
+  submitValue = (field, question, resultObj) => {
+    console.log('Submitted', resultObj, field, question);
+    // TODO setting object in array use [0] instead of .$!
+    var resultValue = get(resultObj, field);
+    set(this.state.model, field, resultValue);
+    this.setState({
+      history: concat(this.state.history, {
+        question,
+        answer: resultValue, // TODO toString for arbitrary, translated values!
+      }),
+      model: this.state.model,
+    });
+
+    this.goToNextField();
+  };
 
   valueEntrySection(field: string) {
     const definition = this.props.schema.getDefinition(field);
@@ -81,25 +104,51 @@ class Questionnaire extends React.Component<Props, State> {
       (accessibility && accessibility.question) ||
       t`Please specify the value for \`${label}\`.`;
 
-    const subSchema = pickFields(this.props.schema, [field]);
+    const subSchema = pickFieldForAutoForm(this.props.schema, field);
+
+
+    if (this.lastAutoForm) {
+      this.lastAutoForm.reset();
+    }
 
     return (
-      <section className="questionnaire-step">
+      <section className={t`questionnaire-step ${isOptional ? 'questionnaire-optional' : 'questionnaire-mandatory'}`}>
         <AutoForm
+          ref={form => {
+            this.lastAutoForm = form;
+          }}
           placeholder={true}
-          model={this.state.model}
-          onSubmit={(f, v) => console.log('Submitted', f, v)}
-          schema={subSchema}>
+          onSubmit={this.submitValue.bind(this, field, question)}
+          schema={subSchema}
+          model={this.state.model}>
           <h3 className="question">{question}</h3>
           <AutoField
             label={false}
-            name={field}/>
+            name={field}>
+          </AutoField>
+          <SubmitField value={t`Submit`}/>
+          {isOptional ? <button className="secondary" onClick={this.goToNextField}>{t`Skip`}</button> : null}
           <ErrorsField/>
         </AutoForm>
-        {isOptional ? <button className="secondary" onClick={this.determineNextField}>{t`Skip`}</button> : null}
       </section>
     );
   }
+
+  enterBlock = (field, question) => {
+    console.log('Entered', field, question);
+    // start empty object if not existing yet
+    // TODO setting object in array use [0] instead of .$!
+    set(this.state.model, field, get(this.state.model, field, {}));
+    this.setState({
+      history: concat(this.state.history, {
+        question,
+        answer: sample(affirmativeAnswers) as string,
+      }),
+      model: this.state.model,
+    });
+
+    this.goToNextField();
+  };
 
   enterBlockSection(field: string) {
     const definition = this.props.schema.getDefinition(field);
@@ -113,7 +162,7 @@ class Questionnaire extends React.Component<Props, State> {
     return (
       <section className="questionnaire-step">
         <h3 className="question">{question}</h3>
-        <button className="secondary" onClick={this.determineNextField}>{t`YES PLEASE`}</button>
+        <button className="secondary" onClick={this.enterBlock.bind(this, field, question)}>{t`YES PLEASE`}</button>
       </section>
     );
   }
@@ -130,7 +179,7 @@ class Questionnaire extends React.Component<Props, State> {
     return (
       <section className="questionnaire-step">
         <h3 className="question">{question}</h3>
-        <button className="secondary" onClick={this.determineNextField}>{t`YES PLEASE`}</button>
+        <button className="secondary" onClick={this.goToNextField}>{t`YES PLEASE`}</button>
       </section>
     );
   }
@@ -150,7 +199,7 @@ class Questionnaire extends React.Component<Props, State> {
       }
     }
 
-    console.log(this.state.model);
+    console.log('model:', this.state.model, 'history:', this.state.history);
 
     return (
       <div className={`questionnaire-area ${this.props.className}`}>
@@ -163,6 +212,9 @@ class Questionnaire extends React.Component<Props, State> {
           <div className="progress-done" style={{width: `${this.state.progress * 100}%`}}/>
         </span>
         </header>
+        <div className="history-column">
+          {this.historySection()}
+        </div>
         <div className="questionnaire-column">
           {displayField}
           <footer className="questionnaire-status">
@@ -280,7 +332,6 @@ export default styled(Questionnaire) `
       &:focus {
         border: none;
         border-bottom: 2px solid ${colors.linkBlue};
-        color: ${colors.white100};
         outline-offset: 0;
         outline-style: none;
       }
@@ -390,6 +441,7 @@ export default styled(Questionnaire) `
   }
 
   section.questionnaire-step,
+  section.questionnaire-history-entry,
   footer.questionnaire-status {
     padding: 16px;
   }
@@ -402,6 +454,26 @@ export default styled(Questionnaire) `
       margin-bottom: 0;
       display: flex;
       align-items: center;
+    }
+  }
+  
+  section.questionnaire-history-entry {
+    box-shadow: inset 0 -1px 0 0 ${colors.shadowGrey};
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    opacity: 0.75;
+    
+    h3.question {
+      font-size: 20px;
+      width: 100%;
+      font-weight: 600;
+    }
+    span.answer {
+      background-color: ${colors.bgAnthracite};
+      color: ${colors.white100};
+      padding: 5px 12px;
+      border-radius: 12px;
     }
   }
 
