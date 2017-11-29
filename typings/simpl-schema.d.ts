@@ -62,7 +62,7 @@ interface SchemaDefinition {
 }
 
 interface EvaluatedSchemaDefinition {
-  type: Array<SchemaType>;
+  type: Array<{ type: SchemaType }>;
   label?: string | Function;
   optional?: boolean | Function;
   min?: number | boolean | Date | Function;
