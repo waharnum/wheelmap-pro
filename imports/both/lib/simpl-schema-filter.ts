@@ -102,5 +102,21 @@ export const pickFields = (schema: SimpleSchema, fields: Array<string>) => {
  * @returns {SimpleSchema} The schema with the chosen fields.
  */
 export const pickFieldForAutoForm = (schema: SimpleSchema, key: string) => {
-  return pickFields(schema, [key]);
+  const definition = schema.mergedSchema();
+
+  let reducedDefinition = pick(definition, key);
+  const parents = key.split('.');
+  // add optional hierarchy
+  for (let i = 0; i < parents.length - 1; i++) {
+    const key = parents.slice(0, i + 1).join('.');
+    reducedDefinition[key] = {
+      type: parents[i] === '$' ? Array : Object,
+      optional: true,
+    };
+  }
+
+  // remove accessibility definition as uniforms gets confused when they are available
+  delete reducedDefinition[key].accessibility;
+
+  return new SimpleSchema(reducedDefinition);
 };

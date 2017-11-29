@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { AutoForm, AutoField, ErrorsField, SubmitField } from 'uniforms-bootstrap3';
 import { t } from 'c-3po';
-import { get, set, concat, sample } from 'lodash';
+import { extend, get, pick, set, concat, sample } from 'lodash';
 
 import { colors } from '../../stylesheets/colors';
 import { IStyledComponent } from '../IStyledComponent';
@@ -33,7 +33,9 @@ class Questionnaire extends React.Component<Props, State> {
     currentIndex: -1,
     activeField: null,
     model: {
-      properties: {},
+      properties: {
+        name: 'FooMAN',
+      },
     },
   };
   private lastAutoForm: AutoForm | null;
@@ -60,18 +62,24 @@ class Questionnaire extends React.Component<Props, State> {
     }
   }
 
-  goToNextField = () => {
+  goToNextField<K extends keyof State>(nextState: Pick<State, K>) {
     const nextIndex = this.state.currentIndex + 1;
-    this.setState({
+
+    if (this.lastAutoForm) {
+      this.lastAutoForm.reset();
+    }
+
+    this.setState(extend(nextState, {
       currentIndex: nextIndex,
       progress: nextIndex / this.props.fields.length,
       activeField: this.props.fields[nextIndex],
-    });
+    }));
   };
 
   historySection() {
+    let index = 0;
     return this.state.history.map(entry => (
-      <section className="questionnaire-history-entry">
+      <section className="questionnaire-history-entry" key={index++}>
         <h3 className="question">{entry.question}</h3>
         <span className="answer">{entry.answer}</span>
       </section>
@@ -81,17 +89,17 @@ class Questionnaire extends React.Component<Props, State> {
   submitValue = (field, question, resultObj) => {
     console.log('Submitted', resultObj, field, question);
     // TODO setting object in array use [0] instead of .$!
-    var resultValue = get(resultObj, field);
+    const resultValue = get(resultObj, field);
     set(this.state.model, field, resultValue);
-    this.setState({
+    const nextState = {
       history: concat(this.state.history, {
         question,
         answer: resultValue, // TODO toString for arbitrary, translated values!
       }),
       model: this.state.model,
-    });
+    };
 
-    this.goToNextField();
+    this.goToNextField(nextState);
   };
 
   valueEntrySection(field: string) {
@@ -105,11 +113,9 @@ class Questionnaire extends React.Component<Props, State> {
       t`Please specify the value for \`${label}\`.`;
 
     const subSchema = pickFieldForAutoForm(this.props.schema, field);
+    const subModel = pick(this.state.model, field.split('.'));
 
-
-    if (this.lastAutoForm) {
-      this.lastAutoForm.reset();
-    }
+    console.log('subModel', field, subModel);
 
     return (
       <section className={t`questionnaire-step ${isOptional ? 'questionnaire-optional' : 'questionnaire-mandatory'}`}>
@@ -120,7 +126,7 @@ class Questionnaire extends React.Component<Props, State> {
           placeholder={true}
           onSubmit={this.submitValue.bind(this, field, question)}
           schema={subSchema}
-          model={this.state.model}>
+          model={subModel}>
           <h3 className="question">{question}</h3>
           <AutoField
             label={false}
@@ -130,7 +136,7 @@ class Questionnaire extends React.Component<Props, State> {
             <div className='form'>
               <div className='form-group'>
                 <SubmitField className={t`primary-action`} value={t`Submit`} />
-                {isOptional ? <button className="secondary" onClick={this.goToNextField}>{t`Skip`}</button> : null}
+                {isOptional ? <button className="secondary" onClick={this.goToNextField.bind(this, {})}>{t`Skip`}</button> : null}
                 <ErrorsField />
               </div>
             </div>
@@ -145,15 +151,15 @@ class Questionnaire extends React.Component<Props, State> {
     // start empty object if not existing yet
     // TODO setting object in array use [0] instead of .$!
     set(this.state.model, field, get(this.state.model, field, {}));
-    this.setState({
+    const nextState = {
       history: concat(this.state.history, {
         question,
         answer: sample(affirmativeAnswers) as string,
       }),
       model: this.state.model,
-    });
+    };
 
-    this.goToNextField();
+    this.goToNextField(nextState);
   };
 
   enterBlockSection(field: string) {
@@ -179,6 +185,22 @@ class Questionnaire extends React.Component<Props, State> {
     );
   }
 
+  enterArray = (field, question) => {
+    console.log('Entered', field, question);
+    // start empty object if not existing yet
+    // TODO setting object in array use [0] instead of .$!
+    set(this.state.model, field, get(this.state.model, field, []));
+    const nextState = {
+      history: concat(this.state.history, {
+        question,
+        answer: sample(affirmativeAnswers) as string,
+      }),
+      model: this.state.model,
+    };
+
+    this.goToNextField(nextState);
+  };
+
   enterArraySection(field: string) {
     const definition = this.props.schema.getDefinition(field);
     const label = definition.label;
@@ -194,7 +216,7 @@ class Questionnaire extends React.Component<Props, State> {
         <span className="call-to-action">
           <div className='form'>
             <div className='form-group'>
-              <button className="primary" onClick={this.goToNextField}>{t`YES PLEASE`}</button>
+              <button className="primary" onClick=this.enterArray.bind(this, field, question)}>{t`YES PLEASE`}</button>
             </div>
           </div>
         </span>
@@ -205,7 +227,6 @@ class Questionnaire extends React.Component<Props, State> {
   public render() {
     let displayField: JSX.Element | null = null;
     if (this.state.activeField) {
-      const definition = this.props.schema.getDefinition(this.state.activeField);
       const type = this.props.schema.getQuickTypeForKey(this.state.activeField);
       if (type === 'objectArray') {
         displayField = this.enterArraySection(this.state.activeField);
