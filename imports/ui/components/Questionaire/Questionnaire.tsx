@@ -216,7 +216,7 @@ class Questionnaire extends React.Component<Props, State> {
         <span className="call-to-action">
           <div className='form'>
             <div className='form-group'>
-              <button className="primary" onClick=this.enterArray.bind(this, field, question)}>{t`YES PLEASE`}</button>
+              <button className="primary" onClick={this.enterArray.bind(this, field, question)}>{t`YES PLEASE`}</button>
             </div>
           </div>
         </span>
@@ -433,13 +433,20 @@ export default styled(Questionnaire) `
       }
     }
 
-    form.form.error {
+    // FIXME: HACKY HACKY hide all but the last error
+    .panel.panel-danger .panel-body div {
+      display: none;
+      
+      &:last-child {
+        display: block;
+      }
+    }
 
+    form.form.error {
       .form-group.has-feedback.has-error, 
       .form-group .panel-danger, 
       .input.has-feedback.has-error, 
       .input .panel-danger {
-
         input.form-control.form-control-danger, 
         input, 
         input:focus {

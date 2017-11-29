@@ -1,5 +1,8 @@
 import SimpleSchema from 'simpl-schema';
-import {pick} from 'lodash';
+
+type FilterOptions = {
+  stripAccessibilityFromDefinition?: boolean
+};
 
 type FieldTree = { [key: string]: FieldTree };
 
@@ -24,7 +27,7 @@ export const isDefinitionTypeArray = (types: any[]): boolean => {
 };
 
 // picks the fields in the current schema and then extends with recursive calls to picks from subschema
-const filterSchemaWithHierarchy = (schema: SimpleSchema, fieldTree: FieldTree) => {
+const filterSchemaWithHierarchy = (schema: SimpleSchema, fieldTree: FieldTree, options: FilterOptions) => {
   const currentLevelKeys = Object.keys(fieldTree);
   const pickKeys: Array<string> = [];
   const extendKeys: { [key: string]: SimpleSchema } = {};
@@ -61,12 +64,20 @@ const filterSchemaWithHierarchy = (schema: SimpleSchema, fieldTree: FieldTree) =
   });
 
   Object.keys(extendKeys).forEach((key) => {
-    extendKeys[key] = filterSchemaWithHierarchy(extendKeys[key], fieldTree[key]);
+    extendKeys[key] = filterSchemaWithHierarchy(extendKeys[key], fieldTree[key], options);
   });
 
   const filteredSchema = schema.pick(...pickKeys);
+
   // we need to extend the sub schema manually, as this is not supported by SimpleSchema::pick
   filteredSchema.extend(extendKeys);
+
+  // delete accessibility manually, uniforms cannot handle this, and there is no way to un-extend a schema
+  if (options.stripAccessibilityFromDefinition) {
+    pickKeys.forEach((key) => {
+      delete (filteredSchema as any)._schema[key].accessibility;
+    });
+  }
 
   return filteredSchema;
 };
@@ -79,7 +90,7 @@ const filterSchemaWithHierarchy = (schema: SimpleSchema, fieldTree: FieldTree) =
  * @param {Array<string>} fields A list of fields ['foo', 'foo.bar', 'foo.bar.$', 'foo.bar.$.baz']
  * @returns {SimpleSchema} The schema with the chosen fields.
  */
-export const pickFields = (schema: SimpleSchema, fields: Array<string>) => {
+export const pickFields = (schema: SimpleSchema, fields: Array<string>, options: FilterOptions = {}) => {
   const expandedFields: FieldTree = {};
 
   fields.forEach((key) => {
@@ -90,7 +101,7 @@ export const pickFields = (schema: SimpleSchema, fields: Array<string>) => {
     }
   });
 
-  return filterSchemaWithHierarchy(schema, expandedFields);
+  return filterSchemaWithHierarchy(schema, expandedFields, options);
 };
 
 /**
@@ -102,21 +113,7 @@ export const pickFields = (schema: SimpleSchema, fields: Array<string>) => {
  * @returns {SimpleSchema} The schema with the chosen fields.
  */
 export const pickFieldForAutoForm = (schema: SimpleSchema, key: string) => {
-  const definition = schema.mergedSchema();
-
-  let reducedDefinition = pick(definition, key);
-  const parents = key.split('.');
-  // add optional hierarchy
-  for (let i = 0; i < parents.length - 1; i++) {
-    const key = parents.slice(0, i + 1).join('.');
-    reducedDefinition[key] = {
-      type: parents[i] === '$' ? Array : Object,
-      optional: true,
-    };
-  }
-
-  // remove accessibility definition as uniforms gets confused when they are available
-  delete reducedDefinition[key].accessibility;
-
-  return new SimpleSchema(reducedDefinition);
+  return pickFields(schema, [key], {
+    stripAccessibilityFromDefinition: true,
+  });
 };
