@@ -61,6 +61,29 @@ interface SchemaDefinition {
   [key: string]: any;
 }
 
+interface EvaluatedSchemaDefinition {
+  type: Array<SchemaType>;
+  label?: string | Function;
+  optional?: boolean | Function;
+  min?: number | boolean | Date | Function;
+  max?: number | boolean | Date | Function;
+  minCount?: number | Function;
+  maxCount?: number | Function;
+  allowedValues?: any[] | Function;
+  decimal?: boolean;
+  exclusiveMax?: boolean;
+  exclusiveMin?: boolean;
+  regEx?: RegExp | RegExp[];
+  custom?: ValidationFunction;
+  blackbox?: boolean;
+  autoValue?: Function;
+  defaultValue?: any;
+  trim?: boolean;
+
+  // allow custom extensions
+  [key: string]: any;
+}
+
 interface ValidationOption {
   modifier?: boolean;
   upsert?: boolean;
@@ -237,7 +260,7 @@ declare class SimpleSchema {
    * if you want the evaluated definition, where any properties that are functions
    * have been run to produce a result.
    */
-  schema(key?: string): SchemaDefinition | SchemaDefinition[];
+  schema(key?: string): SchemaDefinition | { [key: string]: SchemaDefinition };
 
   /**
    * @returns {Object} The entire schema object with subschemas merged. This is the
@@ -247,7 +270,7 @@ declare class SimpleSchema {
    * if you want the evaluated definition, where any properties that are functions
    * have been run to produce a result.
    */
-  mergedSchema(): SimpleSchema;
+  mergedSchema(): { [key: string]: SchemaDefinition };
 
   /**
    * Returns the evaluated definition for one key in the schema
@@ -257,7 +280,7 @@ declare class SimpleSchema {
    * @param {Object} [functionContext] The context to use when evaluating schema options that are functions
    * @returns {Object} The schema definition for the requested key
    */
-  getDefinition(key: string, propList?: Array<string>, functionContext?: any): any;
+  getDefinition(key: string, propList?: Array<string>, functionContext?: any): EvaluatedSchemaDefinition;
 
   /**
    * Returns a string identifying the best guess data type for a key. For keys
