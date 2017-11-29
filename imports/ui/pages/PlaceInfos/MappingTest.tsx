@@ -11,6 +11,7 @@ import {AutoForm, BaseForm, AutoFields, SubmitField, LongTextField, ErrorsField}
 import SubSchemaChooser from '../../components/SubSchemaChooser';
 import {pickFields} from '../../../both/lib/simpl-schema-filter';
 import {translateAcFormatToUniforms} from '../../../both/lib/ac-format-uniforms-bridge';
+import Questionnaire from '../../components/Questionaire/Questionnaire';
 
 type Props = {} & IStyledComponent;
 
@@ -36,7 +37,6 @@ class MappingTestPage extends React.Component<Props, State> {
               showInlineError={true}
               schema={PlaceInfoSchema}
               onChange={(field, value) => {
-                console.log(value);
                 this.setState({selectedFields: value});
               }}>
               <SubSchemaChooser
@@ -47,20 +47,21 @@ class MappingTestPage extends React.Component<Props, State> {
             </AutoForm>
           </div>
           <div className="content-left">
-            <AutoForm
-              placeholder={true}
-              showInlineError={true}
-              schema={schema}>
-            </AutoForm>
+            <Questionnaire
+              schema={schema}
+              fields={this.state.selectedFields}
+            />
+            {/*<AutoForm*/}
+            {/*placeholder={true}*/}
+            {/*showInlineError={true}*/}
+            {/*schema={schema}>*/}
+            {/*</AutoForm>*/}
           </div>
         </div>
       </ScrollableLayout>
     );
   }
-
-
 };
-
 
 export default styled(MappingTestPage) `
 `;
