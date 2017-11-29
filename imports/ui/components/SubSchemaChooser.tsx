@@ -189,6 +189,10 @@ class SubSchemaChooser extends React.Component<Props, State> {
       return [];
     }
     const parts = key.split('.');
+    if (parts.length <= 1) {
+      return [];
+    }
+
     let last = parts[0];
     const results = [last];
     for (let i = 1; i < parts.length - 1; i++) {
@@ -201,8 +205,21 @@ class SubSchemaChooser extends React.Component<Props, State> {
   }
 
   ensureRequiredAreIncluded(selected: Array<string>): Array<string> {
-    // TODO not required, the correct behavior would be to only include the `required`s if their parent is selected
-    return union(selected, this.required);
+    const alreadyContained: { [key: string]: boolean } = {};
+    const withParents: Array<string> = [];
+    for (const field of selected) {
+      for (const path of SubSchemaChooser.buildPathToObject(field)) {
+        if (alreadyContained[path] !== true) {
+          alreadyContained[path] = true;
+          withParents.push(path);
+        }
+      }
+      withParents.push(field);
+    }
+
+    // the correct behavior would be to only include the `required`s if their parent is selected
+    // and to preserve the order, hooray
+    return union(withParents, this.required);
   }
 };
 
