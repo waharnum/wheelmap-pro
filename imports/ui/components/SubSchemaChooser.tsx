@@ -193,7 +193,7 @@ class SubSchemaChooser extends React.Component<Props, State> {
     const results = [last];
     for (let i = 1; i < parts.length - 1; i++) {
       last = last + '.' + parts[i];
-      if (parts[i] != '$') {
+      if (parts[i] !== '$') {
         results.push(last);
       }
     }
@@ -202,7 +202,7 @@ class SubSchemaChooser extends React.Component<Props, State> {
 
   ensureRequiredAreIncluded(selected: Array<string>): Array<string> {
     // TODO not required, the correct behavior would be to only include the `required`s if their parent is selected
-    return union(this.required, selected);
+    return union(selected, this.required);
   }
 };
 
