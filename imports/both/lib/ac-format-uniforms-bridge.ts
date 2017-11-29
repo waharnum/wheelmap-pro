@@ -28,7 +28,7 @@ export const translateAcFormatToUniforms = (schema: SimpleSchema, prefix: string
     if (accessibility) {
       extensions[definitionKey] = {
         uniforms: {
-          placeholder: accessibility.example,
+          placeholder: accessibility.example || definition.label,
           help: accessibility.description,
         },
       };
