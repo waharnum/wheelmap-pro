@@ -20,7 +20,7 @@ type CheckBoxTreeNode = {
   icon?: React.ReactNode,
   // custom extension
   searchText: string,
-}
+};
 
 const deriveTreeFromSchema = (schema: SimpleSchema,
                               required: Array<string>,
@@ -64,8 +64,7 @@ const deriveTreeFromSchema = (schema: SimpleSchema,
         ),
         children: deriveTreeFromSchema(schema, required, definitionKey + '.$'),
       };
-    }
-    else {
+    } else {
       const children = accessibility && accessibility.inseparable ?
         undefined : deriveTreeFromSchema(schema, required, definitionKey);
       return {
@@ -114,7 +113,6 @@ class SubSchemaChooser extends React.Component<Props, State> {
     this.state.expanded = props.expanded || [];
     this.state.checked = this.ensureRequiredAreIncluded(props.value || []);
     if (props.onChange) {
-      console.log('required', this.required);
       props.onChange(this.state.checked);
     }
   }

@@ -2,11 +2,7 @@ import SimpleSchema from 'simpl-schema';
 
 SimpleSchema.extendOptions(['uniforms']);
 
-console.log(SimpleSchema);
-
 import {AccessibilitySchemaExtension} from '@sozialhelden/ac-format';
-
-console.log(SimpleSchema);
 
 import {isDefinitionTypeArray, isDefinitionTypeSchema} from './simpl-schema-filter';
 
