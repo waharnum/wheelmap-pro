@@ -86,7 +86,11 @@ const filterSchemaWithHierarchy = (schema: SimpleSchema, fieldTree: FieldTree, o
   });
 
   Object.keys(extendKeys).forEach((key) => {
-    extendKeys[key] = filterSchemaWithHierarchy(extendKeys[key], fieldTree[key], options, path.concat([key]));
+    extendKeys[key] = filterSchemaWithHierarchy(
+      extendKeys[key],
+      fieldTree[key],
+      options,
+      path.concat(key.split('.')));
   });
 
   const filteredSchema = schema.pick(...pickKeys);
