@@ -108,7 +108,7 @@ const filterSchemaWithHierarchy = (schema: SimpleSchema, fieldTree: FieldTree, o
   const filteredSchema = schema.pick(...pickKeys);
   // we need to extend the sub schema manually, as this is not supported by SimpleSchema::pick
   transform(extendKeys, (result, value, key) => {
-    result[key] = extend(result[key] || {}, {
+    result[key] = extend(result[key] || {}, schema.getDefinition(key), {
       type: value,
     });
 
