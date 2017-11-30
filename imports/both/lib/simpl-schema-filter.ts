@@ -1,11 +1,11 @@
 import SimpleSchema from 'simpl-schema';
 
-import {transform} from 'lodash';
-import {c} from 'c-3po';
+import {transform, isEqual, extend} from 'lodash';
 
 type FilterOptions = {
   stripAccessibilityFromDefinition?: boolean,
   ensureExistingParentArrayAndObjects?: boolean,
+  forceNonOptionalLeaf?: Array<string>,
 };
 
 type FieldTree = { [key: string]: FieldTree };
@@ -31,14 +31,16 @@ export const isDefinitionTypeArray = (types: any[]): boolean => {
 };
 
 // picks the fields in the current schema and then extends with recursive calls to picks from subschema
-const filterSchemaWithHierarchy = (schema: SimpleSchema, fieldTree: FieldTree, options: FilterOptions) => {
+const filterSchemaWithHierarchy = (schema: SimpleSchema, fieldTree: FieldTree, options: FilterOptions, path: Array<string>) => {
   const currentLevelKeys = Object.keys(fieldTree);
   const pickKeys: Array<string> = [];
   const extendKeys: { [key: string]: SimpleSchema } = {};
   const extensions: { [key: string]: Partial<SchemaDefinition> } = {};
+
+
   currentLevelKeys.forEach((key) => {
     const fieldDefinition = schema.getDefinition(key, ['type']);
-
+    const currentPath = path.concat([key]);
     const hasChildren = Object.keys(fieldTree[key]).length > 0;
     // array
     if (hasChildren && isDefinitionTypeArray(fieldDefinition.type)) {
@@ -48,13 +50,13 @@ const filterSchemaWithHierarchy = (schema: SimpleSchema, fieldTree: FieldTree, o
       // always add array itself
       pickKeys.push(key);
       if (options.ensureExistingParentArrayAndObjects) {
-        extensions[key] = {
+        extensions[key] = extend(extensions[key] || {}, {
           autoValue: function () {
             if (!this.isSet) {
               return [];
             }
           },
-        };
+        });
       }
       // array of schema
       if (hasArrayChildren && isDefinitionTypeSchema(arrayFieldDefinition.type)) {
@@ -75,18 +77,24 @@ const filterSchemaWithHierarchy = (schema: SimpleSchema, fieldTree: FieldTree, o
     else {
       pickKeys.push(key);
     }
+
+    if (options.forceNonOptionalLeaf && isEqual(options.forceNonOptionalLeaf, currentPath)) {
+      extensions[key] = extend(extensions[key] || {}, {
+        optional: false,
+      });
+    }
   });
 
   Object.keys(extendKeys).forEach((key) => {
-    extendKeys[key] = filterSchemaWithHierarchy(extendKeys[key], fieldTree[key], options);
+    extendKeys[key] = filterSchemaWithHierarchy(extendKeys[key], fieldTree[key], options, path.concat([key]));
   });
 
   const filteredSchema = schema.pick(...pickKeys);
   // we need to extend the sub schema manually, as this is not supported by SimpleSchema::pick
   transform(extendKeys, (result, value, key) => {
-    result[key] = {
+    result[key] = extend(result[key] || {}, {
       type: value,
-    };
+    });
 
     if (options.ensureExistingParentArrayAndObjects) {
       result[key].autoValue = function () {
@@ -96,8 +104,8 @@ const filterSchemaWithHierarchy = (schema: SimpleSchema, fieldTree: FieldTree, o
       };
     }
   }, extensions);
-  filteredSchema.extend(extensions);
 
+  filteredSchema.extend(extensions);
   // delete accessibility manually, uniforms cannot handle this, and there is no way to un-extend a schema
   if (options.stripAccessibilityFromDefinition) {
     pickKeys.forEach((key) => {
@@ -129,7 +137,7 @@ export const pickFields = (schema: SimpleSchema, fields: Array<string>, options:
     }
   });
 
-  return filterSchemaWithHierarchy(schema, expandedFields, options);
+  return filterSchemaWithHierarchy(schema, expandedFields, options, []);
 };
 
 /**
@@ -144,5 +152,6 @@ export const pickFieldForAutoForm = (schema: SimpleSchema, key: string) => {
   return pickFields(schema, [key], {
     stripAccessibilityFromDefinition: true,
     ensureExistingParentArrayAndObjects: true,
+    forceNonOptionalLeaf: key.split('.'),
   });
 };
