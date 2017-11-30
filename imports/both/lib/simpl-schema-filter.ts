@@ -50,20 +50,22 @@ const filterSchemaWithHierarchy = (schema: SimpleSchema, fieldTree: FieldTree, o
       // always add array itself
       pickKeys.push(key);
 
-      if (options.ensureExistingParentArrayAndObjects) {
-        extensions[key] = extend(extensions[key] || {}, {
-          autoValue: function () {
-            if (!this.isSet) {
-              return [];
-            }
-          },
-        });
-      }
 
       // array of schema
       if (hasArrayChildren && isDefinitionTypeSchema(arrayFieldDefinition.type)) {
 
         if (options.ensureExistingParentArrayAndObjects) {
+
+          if (options.ensureExistingParentArrayAndObjects) {
+            extensions[key] = extend(extensions[key] || {}, {
+              autoValue: function () {
+                if (!this.isSet) {
+                  return [{}];
+                }
+              },
+            });
+          }
+
           extensions[arrayKey] = extend(extensions[arrayKey] || {}, {
             autoValue: function () {
               if (!this.isSet) {
@@ -78,6 +80,16 @@ const filterSchemaWithHierarchy = (schema: SimpleSchema, fieldTree: FieldTree, o
       } else {
         // add array element type
         pickKeys.push(arrayKey);
+
+        if (options.ensureExistingParentArrayAndObjects) {
+          extensions[key] = extend(extensions[key] || {}, {
+            autoValue: function () {
+              if (!this.isSet) {
+                return [];
+              }
+            },
+          });
+        }
       }
     }
     // schema
