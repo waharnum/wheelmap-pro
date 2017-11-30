@@ -333,7 +333,7 @@ class Questionnaire extends React.Component<Props, State> {
 
     // start empty object if not existing yet
     const objectPath = simpleSchemaPathToObjectPath(field, this.state.arrayIndexes);
-    set(this.state.model, objectPath, get(this.state.model, objectPath, []));
+    set(this.state.model, objectPath, get(this.state.model, objectPath, [{}]));
 
     const nextState = {
       history: concat(this.state.history, {
