@@ -718,11 +718,17 @@ export default styled(Questionnaire) `
   section.questionnaire-step {
     box-shadow: inset 0 -1px 0 0 ${colors.shadowGrey};
 
-    span.call-to-action .form .form-group {
-      margin-top: 1em;
-      margin-bottom: 0;
-      display: flex;
-      align-items: center;
+    span.call-to-action {
+      display: block;
+      width: 100%;
+      
+      .form .form-group {
+        margin-top: 1em;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
     }
   }
   
