@@ -248,9 +248,9 @@ class Questionnaire extends React.Component<Props, State> {
   }
 
   submitValue = (field, question, resultObj) => {
-    console.log('Submitted', JSON.stringify(resultObj), field, question);
-
     const objectPath = simpleSchemaPathToObjectPath(field, this.state.arrayIndexes);
+
+    console.log('Submitted', JSON.stringify(resultObj), field, objectPath, question);
 
     const resultValue = get(resultObj, objectPath);
     set(this.state.model, objectPath, resultValue);
@@ -297,11 +297,13 @@ class Questionnaire extends React.Component<Props, State> {
       t`Please specify the value for \`${label}\`.`;
 
     const subSchema = pickFieldForAutoForm(this.props.schema, field);
-    const subModel = pick(this.state.model, field.split('.'));
+
+    const objectPath = simpleSchemaPathToObjectPath(field, this.state.arrayIndexes);
+    const subModel = pick(this.state.model, objectPath.split('.'));
 
     (window as any).__subSchema = subSchema;
 
-    // console.log('subModel', field, subModel);
+    // console.log('subModel', field, objectPath, subModel);
     // console.log('subSchema', field, subSchema);
 
     /* specify key on AutoForm, so that the form is not reused between fields */
