@@ -329,7 +329,8 @@ class Questionnaire extends React.Component<Props, State> {
     const accessibility = definition.accessibility;
     const question: string | string[] =
       (accessibility && accessibility.questionBlockBegin) ||
-      isOptional ? t`Do you wanna dive into \`${label}\`?` : t`Please specify \`${label}\`.`;
+      (accessibility && accessibility.question) ||
+      (isOptional ? t`Do you wanna dive into \`${label}\`?` : t`Please specify \`${label}\`.`);
 
     return (
       <section className="questionnaire-step">
@@ -391,9 +392,10 @@ class Questionnaire extends React.Component<Props, State> {
     const accessibility = definition.accessibility;
     const question: string | string[] =
       (accessibility && accessibility.questionBlockBegin) ||
-      isOptional ?
+      (accessibility && accessibility.question) ||
+      (isOptional ?
         t`Do you wanna add a new element to the list \`${label}\`?` :
-        t`Please add a new element to the list \`${label}\`.`;
+        t`Please add a new element to the list \`${label}\`.`);
 
     return (
       <section className="questionnaire-step">
