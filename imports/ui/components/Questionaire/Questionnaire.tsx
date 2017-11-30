@@ -1,16 +1,24 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { AutoForm, AutoField, ErrorsField, SubmitField } from 'uniforms-bootstrap3';
-import { t } from 'c-3po';
-import { extend, get, pick, set, concat, sample } from 'lodash';
+import {AutoForm, AutoField, ErrorsField, SubmitField} from 'uniforms-bootstrap3';
+import {t} from 'c-3po';
+import {extend, get, pick, set, concat, sample} from 'lodash';
 
-import { colors } from '../../stylesheets/colors';
-import { IStyledComponent } from '../IStyledComponent';
-import { pickFieldForAutoForm } from '../../../both/lib/simpl-schema-filter';
-import { AccessibilitySchemaExtension } from '@sozialhelden/ac-format';
+import {colors} from '../../stylesheets/colors';
+import {IStyledComponent} from '../IStyledComponent';
+import {pickFieldForAutoForm} from '../../../both/lib/simpl-schema-filter';
+import {AccessibilitySchemaExtension} from '@sozialhelden/ac-format';
 
 
-const affirmativeAnswers: Array<string> = [t`Yes!`, t`Okay!`, t`Sure!`, t`Let's do this!`, t`I'm ready!`];
+const affirmativeAnswers: ReadonlyArray<string> = Object.freeze([t`Yes!`, t`Okay!`, t`Sure!`, t`Let's do this!`, t`I'm ready!`]);
+const skipAnswers: ReadonlyArray<string> = Object.freeze([t`I'm not sure.`, t`I'll skip this one.`, t`No idea.`, t`Ask me next time.`, t`Phew, I couldn't tell.`]);
+const skipBlockAnswers: ReadonlyArray<string> = Object.freeze([t`I'd rather move to the next topic.`, t`I'll skip this block.`]);
+
+type HistoryEntry = {
+  question: string,
+  answer: string,
+  className?: string,
+};
 
 type Props = {
   model?: any | null,
@@ -19,7 +27,7 @@ type Props = {
 } & IStyledComponent;
 
 type State = {
-  history: Array<{ question: string, answer: string }>,
+  history: Array<HistoryEntry>,
   progress: number,
   currentIndex: number,
   activeField: string | null,
@@ -38,7 +46,6 @@ class Questionnaire extends React.Component<Props, State> {
       },
     },
   };
-  private lastAutoForm: AutoForm | null;
 
   constructor(props: Props) {
     super(props);
@@ -48,7 +55,7 @@ class Questionnaire extends React.Component<Props, State> {
   }
 
   public componentWillReceiveProps(nextProps: Props) {
-    if (this.props.schema != nextProps.schema) {
+    if (this.props.schema !== nextProps.schema) {
       (window as any).__schema = nextProps.schema;
       console.log(nextProps.fields);
       const firstKey = nextProps.fields[0];
@@ -65,10 +72,6 @@ class Questionnaire extends React.Component<Props, State> {
   goToNextField<K extends keyof State>(nextState: Pick<State, K>) {
     const nextIndex = this.state.currentIndex + 1;
 
-    if (this.lastAutoForm) {
-      this.lastAutoForm.reset();
-    }
-
     this.setState(extend(nextState, {
       currentIndex: nextIndex,
       progress: nextIndex / this.props.fields.length,
@@ -79,7 +82,7 @@ class Questionnaire extends React.Component<Props, State> {
   historySection() {
     let index = 0;
     return this.state.history.map(entry => (
-      <section className="questionnaire-history-entry" key={index++}>
+      <section className={`questionnaire-history-entry ${entry.className || ''}`} key={index++}>
         <h3 className="question">{entry.question}</h3>
         <span className="answer">{entry.answer}</span>
       </section>
@@ -102,6 +105,18 @@ class Questionnaire extends React.Component<Props, State> {
     this.goToNextField(nextState);
   };
 
+  skipField = (field, question) => {
+    const nextState = {
+      history: concat(this.state.history, {
+        question,
+        answer: sample(skipAnswers) as string,
+        className: 'history-skipped',
+      }),
+    };
+
+    this.goToNextField(nextState);
+  };
+
   valueEntrySection(field: string) {
     const definition = this.props.schema.getDefinition(field);
     const label = definition.label;
@@ -115,14 +130,16 @@ class Questionnaire extends React.Component<Props, State> {
     const subSchema = pickFieldForAutoForm(this.props.schema, field);
     const subModel = pick(this.state.model, field.split('.'));
 
-    console.log('subModel', field, subModel);
+    (window as any).__subSchema = subSchema;
 
+    // console.log('subModel', field, subModel);
+    // console.log('subSchema', field, subSchema);
+
+    /* specify key on AutoForm, so that the form is not reused between fields */
     return (
       <section className={t`questionnaire-step ${isOptional ? 'questionnaire-optional' : 'questionnaire-mandatory'}`}>
         <AutoForm
-          ref={form => {
-            this.lastAutoForm = form;
-          }}
+          key={field}
           placeholder={true}
           onSubmit={this.submitValue.bind(this, field, question)}
           schema={subSchema}
@@ -135,9 +152,11 @@ class Questionnaire extends React.Component<Props, State> {
           <span className='call-to-action'>
             <div className='form'>
               <div className='form-group'>
-                <SubmitField className={t`primary-action`} value={t`Submit`} />
-                {isOptional ? <button className="secondary" onClick={this.goToNextField.bind(this, {})}>{t`Skip`}</button> : null}
-                <ErrorsField />
+                <SubmitField className={t`primary-action`} value={t`Submit`}/>
+                {isOptional ?
+                  <button className="secondary"
+                          onClick={this.skipField.bind(this, field, question)}>{t`Skip`}</button> : null}
+                <ErrorsField/>
               </div>
             </div>
           </span>
@@ -175,8 +194,8 @@ class Questionnaire extends React.Component<Props, State> {
       <section className="questionnaire-step">
         <h3 className="question">{question}</h3>
         <span className="call-to-action">
-          <div className='form'>
-            <div className='form-group'>
+          <div className="form">
+            <div className="form-group">
               <button className="primary" onClick={this.enterBlock.bind(this, field, question)}>{t`YES PLEASE`}</button>
             </div>
           </div>
@@ -248,7 +267,7 @@ class Questionnaire extends React.Component<Props, State> {
             <h1 className="place-name">Add new place</h1>
           </span>
           <span className="progress-bar">
-            <div className="progress-done" style={{ width: `${this.state.progress * 100}%` }} />
+            <div className="progress-done" style={{width: `${this.state.progress * 100}%`}}/>
           </span>
         </header>
         <div className="history-column">
@@ -430,15 +449,6 @@ export default styled(Questionnaire) `
 
       option {
         outline: none;
-      }
-    }
-
-    // FIXME: HACKY HACKY hide all but the last error
-    .panel.panel-danger .panel-body div {
-      display: none;
-      
-      &:last-child {
-        display: block;
       }
     }
 
