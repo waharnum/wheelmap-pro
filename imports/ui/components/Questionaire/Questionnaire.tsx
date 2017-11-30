@@ -43,6 +43,7 @@ class Questionnaire extends React.Component<Props, State> {
     model: {
       properties: {
         name: 'FooMAN',
+        category: 'none',
       },
     },
   };

@@ -5,6 +5,7 @@ import AdminHeader from '../../components/AdminHeader';
 import styled from 'styled-components';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import {Link} from 'react-router';
+import SimpleSchema from 'simpl-schema';
 
 import {PlaceInfoSchema} from '@sozialhelden/ac-format';
 import {AutoForm, BaseForm, AutoFields, SubmitField, LongTextField, ErrorsField} from 'uniforms-bootstrap3';
@@ -35,12 +36,26 @@ class MappingTestPage extends React.Component<Props, State> {
           <div className="content-left">
             <AutoForm
               showInlineError={true}
-              schema={PlaceInfoSchema}
+              model={{
+                fields: [
+                  'properties',
+                  'properties.name',
+                  'properties.category',
+                  'properties.accessibility',
+                  'properties.accessibility.entrances',
+                  'properties.accessibility.entrances.$.ratingForWheelchair',
+                  'properties.accessibility.entrances.$.door',
+                  'properties.accessibility.entrances.$.door.width'],
+              }}
+              schema={new SimpleSchema({
+                fields: Array,
+                'fields.$': String,
+              })}
               onChange={(field, value) => {
                 this.setState({selectedFields: value});
               }}>
               <SubSchemaChooser
-                name="properties.name"
+                name="fields"
                 schema={PlaceInfoSchema}
                 expanded={['properties', 'properties.accessibility']}>
               </SubSchemaChooser>
