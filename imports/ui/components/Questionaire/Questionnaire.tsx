@@ -186,8 +186,9 @@ class Questionnaire extends React.Component<Props, State> {
   submitValue = (field, question, resultObj) => {
     console.log('Submitted', resultObj, field, question);
 
+    const resultValue = get(resultObj, field);
+
     const objectPath = simpleSchemaPathToObjectPath(field, this.state.arrayIndexes);
-    const resultValue = get(resultObj, objectPath);
     set(this.state.model, objectPath, resultValue);
     const nextState = {
       history: concat(this.state.history, {
