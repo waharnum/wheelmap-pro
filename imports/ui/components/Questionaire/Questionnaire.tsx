@@ -352,7 +352,7 @@ class Questionnaire extends React.Component<Props, State> {
     );
   }
 
-  enterArray = (field, question) => {
+  enterArray = (field: string, question: string, index: number) => {
     console.log('Entered', field, question);
 
     // start empty object if not existing yet
@@ -365,7 +365,7 @@ class Questionnaire extends React.Component<Props, State> {
         question,
         answer: sample(affirmativeAnswers) as string,
       }),
-      arrayIndexes: this.state.arrayIndexes.concat([0]),
+      arrayIndexes: this.state.arrayIndexes.concat([index]),
       model: this.state.model,
     };
 
@@ -389,13 +389,27 @@ class Questionnaire extends React.Component<Props, State> {
     const label = definition.label;
     const isOptional = definition.optional === true;
 
+    const currentValue = get(this.state.model, simpleSchemaPathToObjectPath(field), []);
     const accessibility = definition.accessibility;
-    const question: string | string[] =
-      (accessibility && accessibility.questionBlockBegin) ||
-      (accessibility && accessibility.question) ||
-      (isOptional ?
-        t`Do you wanna add a new element to the list \`${label}\`?` :
-        t`Please add a new element to the list \`${label}\`.`);
+    let question: string | string[];
+
+    const hasEntries = currentValue.length > 0;
+    const needsMoreEntries = definition.min === true;
+    if (hasEntries) {
+      question = (accessibility && accessibility.questionMore) ||
+        (accessibility && accessibility.question) ||
+        (needsMoreEntries ?
+          t`Do you wanna add another element to the list \`${label}\` (${currentValue.length})?` :
+          t`Please add another element to the list \`${label}\` (${currentValue.length}).`);
+    } else {
+      question = (accessibility && accessibility.questionBlockBegin) ||
+        (accessibility && accessibility.question) ||
+        (isOptional ?
+          t`Do you wanna add the first element to the list \`${label}\`?` :
+          t`Please add the first element to the list \`${label}\`.`);
+    }
+
+    const arrayIndex = currentValue.length;
 
     return (
       <section className="questionnaire-step">
@@ -405,9 +419,9 @@ class Questionnaire extends React.Component<Props, State> {
             <div className='form-group'>
               {isOptional ?
                 [<button key="yes" className="primary"
-                         onClick={this.enterArray.bind(this, field, question)}>{t`Yes`}</button>,
+                         onClick={this.enterArray.bind(this, field, question, arrayIndex)}>{t`Yes`}</button>,
                   <button key="no" className="primary"
-                          onClick={this.skipBlock.bind(this, field, question)}>{t`No`}</button>] :
+                          onClick={this.skipBlock.bind(this, field, question, arrayIndex)}>{t`No`}</button>] :
                 <button className="primary" onClick={this.enterArray.bind(this, field, question)}>{t`Okay`}</button>
               }
             </div>
