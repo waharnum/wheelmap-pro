@@ -28,7 +28,7 @@ type Props = {
 } & IStyledComponent;
 
 type ContentTypes = 'welcome' | 'enterArray' | 'addToArray' | 'chooseFromArray' | 'enterBlock' | 'valueEntry' | 'done';
-type NextFieldMode = 'nextIndex' | 'exitBlock' | 'skipBlock';
+type NextFieldMode = 'nextIndex' | 'exitBlock' | 'skipBlock' | 'stop';
 
 type State = {
   history: Array<HistoryEntry>,
@@ -98,9 +98,7 @@ class Questionnaire extends React.Component<Props, State> {
   public componentWillReceiveProps(nextProps: Props) {
     if (this.props.schema !== nextProps.schema) {
       (window as any).__schema = nextProps.schema;
-      console.log(nextProps.fields);
-      const firstKey = nextProps.fields[0];
-
+      // console.log(nextProps.fields);
       this.setState({
         history: [],
         progress: 0,
@@ -116,6 +114,8 @@ class Questionnaire extends React.Component<Props, State> {
 
     const currentActiveField: string | null = this.state.activeField;
     let nextIndex: number = -1;
+    let shouldCheckForArrayAgain: boolean = true;
+
     switch (mode) {
       case 'nextIndex':
         nextIndex = this.state.currentIndex + 1;
@@ -133,6 +133,24 @@ class Questionnaire extends React.Component<Props, State> {
           }
         }
         break;
+      case 'exitBlock':
+        if (!currentActiveField || this.state.currentIndex < 0) {
+          console.error('Invalid state', this.state, mode);
+          return;
+        }
+        const parentField = currentActiveField.split('.').slice(0, 1).join('.');
+        // find next field that is not starting with the currentFields text
+        for (let i = this.state.currentIndex; i < this.props.fields.length; i++) {
+          if (!this.props.fields[i].startsWith(parentField)) {
+            nextIndex = i;
+            break;
+          }
+        }
+        break;
+      case 'stop':
+        shouldCheckForArrayAgain = false;
+        nextIndex = this.props.fields.length;
+        break;
     }
 
     let nextActiveField: string | null = this.props.fields[nextIndex];
@@ -140,7 +158,7 @@ class Questionnaire extends React.Component<Props, State> {
     // are we currently in an array
     let arrayIndexes: Array<number>;
     arrayIndexes = nextState.arrayIndexes || this.state.arrayIndexes;
-    if (arrayIndexes.length > 0 && currentActiveField) {
+    if (arrayIndexes.length > 0 && currentActiveField && shouldCheckForArrayAgain) {
       // check array depth in new active field
       let arrayNodesCount = 0;
       if (nextActiveField) {
@@ -431,6 +449,16 @@ class Questionnaire extends React.Component<Props, State> {
     );
   }
 
+  exitBlock = () => {
+    // TODO: history
+    this.goToNextField('exitBlock', {});
+  };
+
+  stopSurvey = () => {
+    // TODO: history
+    this.goToNextField('stop', {});
+  };
+
   public render() {
     let displayField: JSX.Element | null = null;
 
@@ -477,8 +505,8 @@ class Questionnaire extends React.Component<Props, State> {
               <small className="more-specific">this place</small>
             </span>
             <span className="footer-actions">
-              <button>{t`Stop here`}</button>
-              <button>{t`Skip block`}</button>
+              <button onClick={this.stopSurvey}>{t`Stop here`}</button>
+              <button onClick={this.exitBlock}>{t`Skip block`}</button>
             </span>
           </footer>
         </div>
