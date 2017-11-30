@@ -15,7 +15,10 @@ const skipAnswers: ReadonlyArray<string> = Object.freeze([t`I'm not sure.`, t`I'
 const skipBlockAnswers: ReadonlyArray<string> = Object.freeze([t`I'd rather move to the next topic.`, t`I'll skip this block.`]);
 
 type HistoryEntry = {
-  field: string | null,
+  goTo?: {
+    index: number,
+    arrayIndexes: Array<number>,
+  }
   question: string,
   answer: string,
   className?: string,
@@ -28,7 +31,7 @@ type Props = {
 } & IStyledComponent;
 
 type ContentTypes = 'welcome' | 'enterArray' | 'addToArray' | 'chooseFromArray' | 'enterBlock' | 'valueEntry' | 'done';
-type NextFieldMode = 'nextIndex' | 'exitBlock' | 'skipBlock' | 'stop';
+type NextFieldMode = 'nextIndex' | 'exitBlock' | 'skipBlock' | 'stop' | 'history';
 
 type State = {
   history: Array<HistoryEntry>,
@@ -151,6 +154,10 @@ class Questionnaire extends React.Component<Props, State> {
         shouldCheckForArrayAgain = false;
         nextIndex = this.props.fields.length;
         break;
+      case 'history':
+        shouldCheckForArrayAgain = false;
+        nextIndex = nextState.currentIndex;
+        break;
     }
 
     let nextActiveField: string | null = this.props.fields[nextIndex];
@@ -215,12 +222,29 @@ class Questionnaire extends React.Component<Props, State> {
 
   historySection() {
     let index = 0;
-    return this.state.history.map(entry => (
-      <section className={`questionnaire-history-entry ${entry.className || ''}`} key={index++}>
-        <h3 className="question">{entry.question}</h3>
-        <span className="answer">{entry.answer}</span>
-      </section>
-    ));
+    const historyItemCount = this.state.history.length;
+    return this.state.history.map(entry => {
+      index++;
+      const isLast = index === historyItemCount;
+      let callback: (() => void) | undefined = undefined;
+      if (entry.goTo && isLast) {
+        callback = this.goToNextField.bind(this, 'history', {
+          history: this.state.history.slice(0, -1),
+          currentIndex: entry.goTo.index,
+          arrayIndexes: entry.goTo.arrayIndexes,
+        });
+      }
+
+      return (
+        <section
+          className={`questionnaire-history-entry ${entry.className || ''} ${callback ? 'qhe-has-interaction' : ''}`}
+          onClick={callback}
+          key={index}>
+          <h3 className="question">{entry.question}</h3>
+          <span className="answer">{entry.answer}</span>
+        </section>
+      );
+    });
   }
 
   submitValue = (field, question, resultObj) => {
@@ -232,7 +256,10 @@ class Questionnaire extends React.Component<Props, State> {
     set(this.state.model, objectPath, resultValue);
     const nextState = {
       history: concat(this.state.history, {
-        field,
+        goTo: {
+          index: this.state.currentIndex,
+          arrayIndexes: this.state.arrayIndexes,
+        },
         question,
         answer: String(resultValue), // TODO toString for arbitrary, translated values!
       }),
@@ -245,7 +272,10 @@ class Questionnaire extends React.Component<Props, State> {
   skipField = (field, question) => {
     const nextState = {
       history: concat(this.state.history, {
-        field,
+        goTo: {
+          index: this.state.currentIndex,
+          arrayIndexes: this.state.arrayIndexes,
+        },
         question,
         answer: sample(skipAnswers) as string,
         className: 'history-skipped',
@@ -315,7 +345,10 @@ class Questionnaire extends React.Component<Props, State> {
     set(this.state.model, objectPath, get(this.state.model, objectPath, {}));
     const nextState = {
       history: concat(this.state.history, {
-        field,
+        goTo: {
+          index: this.state.currentIndex,
+          arrayIndexes: this.state.arrayIndexes,
+        },
         question,
         answer: sample(affirmativeAnswers) as string,
       }),
@@ -365,7 +398,10 @@ class Questionnaire extends React.Component<Props, State> {
 
     const nextState = {
       history: concat(this.state.history, {
-        field,
+        goTo: {
+          index: this.state.currentIndex,
+          arrayIndexes: this.state.arrayIndexes,
+        },
         question,
         answer: sample(affirmativeAnswers) as string,
       }),
@@ -379,7 +415,10 @@ class Questionnaire extends React.Component<Props, State> {
   skipBlock = (field, question) => {
     const nextState = {
       history: concat(this.state.history, {
-        field,
+        goTo: {
+          index: this.state.currentIndex,
+          arrayIndexes: this.state.arrayIndexes,
+        },
         question,
         answer: sample(skipBlockAnswers) as string,
       }),
@@ -440,7 +479,6 @@ class Questionnaire extends React.Component<Props, State> {
 
     const nextState = {
       history: concat(this.state.history, {
-        field: null,
         question: t`Welcome text goes here.`,
         answer: sample(affirmativeAnswers) as string,
       }),
@@ -638,7 +676,7 @@ export default styled(Questionnaire) `
       box-shadow: none;
       border: none;
       border-bottom: 2px solid ${colors.shadowGrey};
-      transition: border 0.5s, color 0.5s;
+      transition: border-color 0.5s, color 0.5s;
 
       &:hover {
         border: none;
@@ -688,13 +726,11 @@ export default styled(Questionnaire) `
         -moz-line-height: 0;
         color: ${colors.linkBlue};
         font-family: 'iconfield-V03';
-        transition: color 0.5s;
         pointer-events: none;
       }
 
       &:hover select{
         border-bottom: 2px solid ${colors.linkBlue};
-        transition: color 0.5s;
       }
     }
 
@@ -717,7 +753,7 @@ export default styled(Questionnaire) `
         input:focus {
           border: none;
           border-bottom: 2px solid ${colors.errorRed};
-          transition: border 0.25s;
+          transition: border-color 0.25s;
         }
       }
     }
@@ -808,6 +844,7 @@ export default styled(Questionnaire) `
     flex-wrap: wrap;
     justify-content: flex-end;
     opacity: 0.5;
+    transition: opacity 0.25s ease;
     
     h3.question,
     span.answer {
@@ -821,11 +858,16 @@ export default styled(Questionnaire) `
     }
 
     span.answer {
-      MARGIN-TOP: 8px;
+      margin-top: 8px;
       font-weight: 300;
       position: relative;
-
-      &:after {
+    }
+    
+    &.qhe-has-interaction {
+      cursor: pointer;
+      
+      span.answer:after {
+        transition: color 0.25s ease, opacity 0.25s ease;
         position: relative;
         right: 0;
         padding-left: 8px;
@@ -836,6 +878,16 @@ export default styled(Questionnaire) `
         -moz-line-height: 0;
         font-family: 'iconfield-V03';
         opacity: 0.5;
+      }
+      
+      &:hover {
+        opacity: 0.75;
+        box-shadow: inset 0 -1px 0 0 ${colors.shadowGrey}, 0 -5px 10px 0 ${colors.shadowGrey};
+        
+        span.answer:after {
+          color: ${colors.linkBlue};
+          opacity: 1.0;
+        }
       }
     }
   }
