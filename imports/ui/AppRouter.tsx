@@ -27,6 +27,7 @@ import PublicSignUpForEventPage from './pages/Events/PublicSignUpForEventPage';
 import OrganizeOrganizationPage from './pages/Organizations/OrganizeOrganizationPage';
 import SignUpForOrganizationPage from './pages/Organizations/SignUpForOrganizationPage';
 import OrganizationStatisticsPage from './pages/Organizations/OrganizationStatisticsPage';
+import AccessibilityCloudPage from './pages/Organizations/AccessibilityCloudPage';
 
 import QuestionaireTestPage from './pages/Questionaire/QuestionaireTest';
 
@@ -89,6 +90,7 @@ const AppRouter = (
         <Route path="/organizations/:_id/statistics" component={OrganizationStatisticsPage} />
         <Route path="/organizations/:_id/organize" component={OrganizeOrganizationPage}
           onEnter={SaveActiveOrganization} />
+        <Route path='/organizations/:_id/accloud' component={AccessibilityCloudPage} />
 
         <Route path="/events/create" component={CreateEventPage} />
         <Route path="/events/:_id/edit" component={EditEventPage} />
@@ -96,9 +98,10 @@ const AppRouter = (
         <Route path="/events/:_id/statistics" component={EventStatisticsPage} />
         <Route path="/events/:_id/participants" component={EventParticipantsPage} />
 
-        <Route path="/places" component={MappingTest}/>
 
-        <Route path="/profile" component={ProfilePage}/>
+        <Route path="/places" component={MappingTest} />
+
+        <Route path="/profile" component={ProfilePage} />
       </Route>
 
       {/* public pages  */}

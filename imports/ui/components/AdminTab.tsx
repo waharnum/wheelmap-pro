@@ -52,28 +52,4 @@ export default styled(AdminTab) `
       color: ${colors.linkBlueLighter} !important;
     }
   }
-
-  &.ac-link {
-
-    a {
-      padding-right: 12px;
-    }
-
-    &:after  {/* chevron right */
-      position: relative;
-      right: 6px;
-      top: 0px;
-      content: 'Î';
-      color: ${colors.shadowGrey};
-      font-family: 'iconfield-v03';
-      font-size: 14px;  
-    }
-
-    &:hover {
-      &::after {
-        color: ${colors.linkBlueLighter} !important;
-      }
-    }
-  }
-  
 `;

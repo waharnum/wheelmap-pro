@@ -20,7 +20,7 @@ const OrganizationTabs = (props: IStyledComponent & ITabProps) => {
       <AdminTab to={`/organizations/${props.id}/members`} title={t`Members`} />
       {/* <AdminTab to={`/organizations/${props.id}/statistics`} title={t`Statistics`}/> */}
       <AdminTab to={`/organizations/${props.id}/edit`} title={t`Edit`} />
-      {/* <AdminTab to={`/organizations/${props.id}/aclink`} className="ac-link" title={t`Accessibility Cloud`} /> */}
+      <AdminTab to={`/organizations/${props.id}/accloud`} title={t`Accessibility Cloud`} />
     </section>
   );
 };

@@ -56,6 +56,8 @@ export const HintBox = styled(InternalHintBox) `
     font-size: 24px;
     line-height: 24px;
     font-weight: 300;
+    color: ${colors.bgAnthracite};
+    opacity: 0.8;
 
     :before {
       position: absolute;
@@ -64,7 +66,8 @@ export const HintBox = styled(InternalHintBox) `
       font-size: 24px;
       font-family: "iconfield-v03";
       font-size: 2em;
-      color: #c7cdd9;
+      color: ${colors.bgAnthracite};
+      opacity: 0.5;
     }
   }
 
@@ -73,11 +76,12 @@ export const HintBox = styled(InternalHintBox) `
   }
 
   ol {
-    font-size: 18px;
+    font-size: 16px;
     line-height: 26px;
     font-weight: 300;
     list-style: none;
-
+    color: ${colors.bgAnthracite};
+    
     li {
       position: relative;
       padding-bottom: 18px;
@@ -88,8 +92,9 @@ export const HintBox = styled(InternalHintBox) `
         position: absolute;
         left: 7px;
         top: 0;
-        color: #767e8a;
         font-family: "iconfield-v03";
+        color: ${colors.bgAnthracite};
+        opacity: 0.5;
       }
 
       li.empty {
@@ -97,26 +102,22 @@ export const HintBox = styled(InternalHintBox) `
       }
     }
 
-    .idea::before {
-      content: '';
-    }
-    .done::before {
-      content: '';
-    }
-    .user::before {
-      content: 'p';
-    }
-    .group::before {
-      content: '∏';
-    }
-    .map::before {
-      content: '';
-    }
-    .info::before {
-      content: '';
-    }
-    .rocket::before {
-      content: '¶';
-    }
+    .idea::before   { content: ''; }
+    .done::before   { content: ''; }
+    .user::before   { content: 'p';  }
+    .group::before  { content: '∏'; }
+    .map::before    { content: ''; }
+    .info::before   { content: ''; }
+    .rocket::before  { content: '¶'; }
+    .cloud::before  { content: ''; }
+    .share::before  { content: ''; }
+  }
+
+  @media only screen and (max-width: 580px) {
+    margin-top: 2em;
+    margin-left: 20px;
+    padding-left: 0;
+    border-left: none;
+    border-top: 2px solid ${colors.bgGreyDarker};
   }
 `;
