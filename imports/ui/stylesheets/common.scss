@@ -24,6 +24,10 @@ body {
   box-sizing: border-box;
 }
 
+h1, h2, h3, h4, p, small {
+  color: $bg-anthracite;
+}
+
 h2 {
   font-weight: 300 !important;
 }
@@ -114,11 +118,14 @@ a.logo {
 /* svg map event region */
 
 svg path.event-bounds-polygon {
-  stroke: forestgreen;
-  stroke-opacity: 0.3;
-  fill: forestgreen;
-  fill-opacity: 0.1;
-  stroke-width: 1px;
+  stroke: $bg-anthracite;
+  stroke-opacity: 1;
+  fill: url(/images/pattern-white.svg);
+  // fill: $link-blue;
+  // fill-opacity: 0.2;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-dasharray: 1,4;
 }
 
 /* dropdown transitions */

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>pattern-blue</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="pattern-blue" fill="#29A3CB">
+            <path d="M-16,22.9038059 L80,22.9038059 L80,32 L-16,32 L-16,22.9038059 Z M-16,32 L80,32 L80,41.0961941 L-16,41.0961941 L-16,32 Z M-16,-13.4809704 L80,-13.4809704 L80,-4.38477631 L-16,-4.38477631 L-16,-13.4809704 Z M-16,68.3847763 L80,68.3847763 L80,77.4809704 L-16,77.4809704 L-16,68.3847763 Z" id="Combined-Shape" transform="translate(32.000000, 32.000000) rotate(-45.000000) translate(-32.000000, -32.000000) "></path>
+        </g>
+    </g>
+</svg>
