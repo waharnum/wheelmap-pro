@@ -47,7 +47,8 @@ type State = {
  */
 const simpleSchemaPathToObjectPath = (simpleSchemaPath: string,
                                       arrayIndexes: Array<number> = [],
-                                      defaultValue: number = 0): string => {
+                                      defaultValue: number = 0,
+                                      options: { wrapInArray: boolean } = {wrapInArray: true}): string => {
   if (!simpleSchemaPath) {
     return '';
   }
@@ -56,7 +57,12 @@ const simpleSchemaPathToObjectPath = (simpleSchemaPath: string,
   let index = 0;
   for (const path of simpleSchemaPath.split('.')) {
     if (path === '$') {
-      result += `[${arrayIndexes[index] || defaultValue}]`;
+      if (options.wrapInArray) {
+        result += `[${arrayIndexes[index] || defaultValue}]`;
+      } else {
+        result += `.${arrayIndexes[index] || defaultValue}`;
+      }
+      index++;
     } else {
       result += `.${path}`;
     }
@@ -111,9 +117,6 @@ class Questionnaire extends React.Component<Props, State> {
     let nextIndex = this.state.currentIndex + 1;
     let arrayIndexes: Array<number>;
     let nextActiveField: string | null = this.props.fields[nextIndex];
-
-
-    console.log(nextActiveField, simpleSchemaPathToObjectPath(nextActiveField, [4, 3, 2, 1]));
 
     // are we currently in an array
     arrayIndexes = nextState.arrayIndexes || this.state.arrayIndexes;
@@ -184,11 +187,11 @@ class Questionnaire extends React.Component<Props, State> {
   }
 
   submitValue = (field, question, resultObj) => {
-    console.log('Submitted', resultObj, field, question);
-
-    const resultValue = get(resultObj, field);
+    console.log('Submitted', JSON.stringify(resultObj), field, question);
 
     const objectPath = simpleSchemaPathToObjectPath(field, this.state.arrayIndexes);
+
+    const resultValue = get(resultObj, objectPath);
     set(this.state.model, objectPath, resultValue);
     const nextState = {
       history: concat(this.state.history, {
@@ -245,7 +248,7 @@ class Questionnaire extends React.Component<Props, State> {
           <h3 className="question">{question}</h3>
           <AutoField
             label={false}
-            name={field}>
+            name={simpleSchemaPathToObjectPath(field, this.state.arrayIndexes, 0, {wrapInArray: false})}>
           </AutoField>
           <span className='call-to-action'>
             <div className='form'>
