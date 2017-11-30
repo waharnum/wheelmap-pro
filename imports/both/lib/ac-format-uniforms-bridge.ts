@@ -35,12 +35,12 @@ export const translateAcFormatToUniforms = (schema: SimpleSchema, prefix: string
     }
 
     if (isDefinitionTypeSchema(definition.type)) {
-      translateAcFormatToUniforms(definition.type[0].type, '');
+      translateAcFormatToUniforms(definition.type[0].type as SimpleSchema, '');
     } else if (isDefinitionTypeArray(definition.type)) {
       const arrayKey = definitionKey + '.$';
       const arrayFieldDefinition = schema.getDefinition(arrayKey);
       if (isDefinitionTypeSchema(arrayFieldDefinition.type)) {
-        translateAcFormatToUniforms(arrayFieldDefinition.type[0].type, '');
+        translateAcFormatToUniforms(arrayFieldDefinition.type[0].type as SimpleSchema, '');
       } else {
         translateAcFormatToUniforms(schema, arrayKey);
       }
