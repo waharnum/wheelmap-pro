@@ -49,6 +49,7 @@ const filterSchemaWithHierarchy = (schema: SimpleSchema, fieldTree: FieldTree, o
       const arrayFieldDefinition = schema.getDefinition(arrayKey, ['type']);
       // always add array itself
       pickKeys.push(key);
+
       if (options.ensureExistingParentArrayAndObjects) {
         extensions[key] = extend(extensions[key] || {}, {
           autoValue: function () {
@@ -58,8 +59,19 @@ const filterSchemaWithHierarchy = (schema: SimpleSchema, fieldTree: FieldTree, o
           },
         });
       }
+
       // array of schema
       if (hasArrayChildren && isDefinitionTypeSchema(arrayFieldDefinition.type)) {
+
+        if (options.ensureExistingParentArrayAndObjects) {
+          extensions[arrayKey] = extend(extensions[arrayKey] || {}, {
+            autoValue: function () {
+              if (!this.isSet) {
+                return {};
+              }
+            },
+          });
+        }
         // extend with array element type after picking
         extendKeys[arrayKey] = arrayFieldDefinition.type[0].type as SimpleSchema;
         fieldTree[arrayKey] = fieldTree[key]['$']; // ensure array can be found with the combined key
