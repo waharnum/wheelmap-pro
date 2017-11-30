@@ -28,6 +28,7 @@ type Props = {
 } & IStyledComponent;
 
 type ContentTypes = 'welcome' | 'enterArray' | 'addToArray' | 'chooseFromArray' | 'enterBlock' | 'valueEntry' | 'done';
+type NextFieldMode = 'nextIndex' | 'exitBlock' | 'skipBlock';
 
 type State = {
   history: Array<HistoryEntry>,
@@ -106,19 +107,38 @@ class Questionnaire extends React.Component<Props, State> {
         currentIndex: -1,
         activeField: null,
         mainContent: 'welcome',
+        arrayIndexes: [],
       });
     }
   }
 
-  goToNextField<K extends keyof State>(nextState: Pick<State, K>) {
+  goToNextField<K extends keyof State>(mode: NextFieldMode, nextState: Pick<State, K>) {
 
     const currentActiveField: string | null = this.state.activeField;
+    let nextIndex: number = -1;
+    switch (mode) {
+      case 'nextIndex':
+        nextIndex = this.state.currentIndex + 1;
+        break;
+      case 'skipBlock':
+        if (!currentActiveField || this.state.currentIndex < 0) {
+          console.error('Invalid state', this.state, mode);
+          return;
+        }
+        // find next field that is not starting with the currentFields text
+        for (let i = this.state.currentIndex; i < this.props.fields.length; i++) {
+          if (!this.props.fields[i].startsWith(currentActiveField)) {
+            nextIndex = i;
+            break;
+          }
+        }
+        break;
+    }
 
-    let nextIndex = this.state.currentIndex + 1;
-    let arrayIndexes: Array<number>;
     let nextActiveField: string | null = this.props.fields[nextIndex];
 
     // are we currently in an array
+    let arrayIndexes: Array<number>;
     arrayIndexes = nextState.arrayIndexes || this.state.arrayIndexes;
     if (arrayIndexes.length > 0 && currentActiveField) {
       // check array depth in new active field
@@ -133,14 +153,12 @@ class Questionnaire extends React.Component<Props, State> {
 
       // we are leaving an array, try to ask for entries again
       if (arrayIndexes.length > arrayNodesCount) {
-        console.log('LEAVING ARRAY!');
         let potentialNextActiveField = currentActiveField;
         while (arrayIndexes.length > 0) {
           potentialNextActiveField = potentialNextActiveField.substr(0, potentialNextActiveField.lastIndexOf('.$.'));
           const foundIndex = this.props.fields.indexOf(potentialNextActiveField);
           arrayIndexes = arrayIndexes.slice(0, arrayNodesCount);
           if (foundIndex) {
-            console.log('FOUND A NICER PARENT!', potentialNextActiveField);
             nextActiveField = potentialNextActiveField;
             nextIndex = foundIndex;
             break;
@@ -152,7 +170,7 @@ class Questionnaire extends React.Component<Props, State> {
     // determine component to use
     let mainContent: ContentTypes = 'welcome';
     // valid path
-    if (nextIndex < this.props.fields.length) {
+    if (nextIndex < this.props.fields.length && nextActiveField) {
       const type = this.props.schema.getQuickTypeForKey(nextActiveField);
       if (type === 'objectArray') {
         mainContent = 'enterArray';
@@ -165,6 +183,7 @@ class Questionnaire extends React.Component<Props, State> {
     } else {
       mainContent = 'done';
       arrayIndexes = [];
+      nextIndex = this.props.fields.length;
     }
 
     this.setState(extend(nextState, {
@@ -202,7 +221,7 @@ class Questionnaire extends React.Component<Props, State> {
       model: this.state.model,
     };
 
-    this.goToNextField(nextState);
+    this.goToNextField('nextIndex', nextState);
   };
 
   skipField = (field, question) => {
@@ -215,7 +234,7 @@ class Questionnaire extends React.Component<Props, State> {
       }),
     };
 
-    this.goToNextField(nextState);
+    this.goToNextField('nextIndex', nextState);
   };
 
   valueEntrySection(field: string) {
@@ -281,7 +300,7 @@ class Questionnaire extends React.Component<Props, State> {
       model: this.state.model,
     };
 
-    this.goToNextField(nextState);
+    this.goToNextField('nextIndex', nextState);
   };
 
   enterBlockSection(field: string) {
@@ -301,6 +320,7 @@ class Questionnaire extends React.Component<Props, State> {
           <div className="form">
             <div className="form-group">
               <button className="primary" onClick={this.enterBlock.bind(this, field, question)}>{t`Yes`}</button>
+              <button className="primary" onClick={this.skipBlock.bind(this, field, question)}>{t`No`}</button>
             </div>
           </div>
         </span>
@@ -310,10 +330,11 @@ class Questionnaire extends React.Component<Props, State> {
 
   enterArray = (field, question) => {
     console.log('Entered', field, question);
-    // start empty object if not existing yet
 
+    // start empty object if not existing yet
     const objectPath = simpleSchemaPathToObjectPath(field, this.state.arrayIndexes);
     set(this.state.model, objectPath, get(this.state.model, objectPath, []));
+
     const nextState = {
       history: concat(this.state.history, {
         field,
@@ -324,7 +345,19 @@ class Questionnaire extends React.Component<Props, State> {
       model: this.state.model,
     };
 
-    this.goToNextField(nextState);
+    this.goToNextField('nextIndex', nextState);
+  };
+
+  skipBlock = (field, question) => {
+    const nextState = {
+      history: concat(this.state.history, {
+        field,
+        question,
+        answer: sample(skipBlockAnswers) as string,
+      }),
+      model: this.state.model,
+    };
+    this.goToNextField('skipBlock', nextState);
   };
 
   enterArraySection(field: string) {
@@ -344,6 +377,7 @@ class Questionnaire extends React.Component<Props, State> {
           <div className='form'>
             <div className='form-group'>
               <button className="primary" onClick={this.enterArray.bind(this, field, question)}>{t`Yes`}</button>
+              <button className="primary" onClick={this.skipBlock.bind(this, field, question)}>{t`No`}</button>
             </div>
           </div>
         </span>
@@ -363,7 +397,7 @@ class Questionnaire extends React.Component<Props, State> {
       model: this.state.model,
     };
 
-    this.goToNextField(nextState);
+    this.goToNextField('nextIndex', nextState);
   };
 
   welcomeSection() {
@@ -385,6 +419,7 @@ class Questionnaire extends React.Component<Props, State> {
     return (
       <section className="questionnaire-step">
         <h3 className="question">{t`Well done, you made it through!`}</h3>
+        <code>{JSON.stringify(this.state.model)}</code>
         <span className="call-to-action">
           <div className='form'>
             <div className='form-group'>
@@ -416,7 +451,6 @@ class Questionnaire extends React.Component<Props, State> {
         displayField = this.doneSection();
         break;
     }
-
 
     console.log('state:', this.state);
 
