@@ -15,6 +15,7 @@ const skipAnswers: ReadonlyArray<string> = Object.freeze([t`I'm not sure.`, t`I'
 const skipBlockAnswers: ReadonlyArray<string> = Object.freeze([t`I'd rather move to the next topic.`, t`I'll skip this block.`]);
 
 type HistoryEntry = {
+  field: string | null,
   question: string,
   answer: string,
   className?: string,
@@ -26,11 +27,15 @@ type Props = {
   fields: Array<string>,
 } & IStyledComponent;
 
+type ContentTypes = 'welcome' | 'enterArray' | 'addToArray' | 'chooseFromArray' | 'enterBlock' | 'valueEntry' | 'done';
+
 type State = {
   history: Array<HistoryEntry>,
   progress: number,
   currentIndex: number,
   activeField: string | null,
+  arrayIndexes: Array<number>,
+  mainContent: ContentTypes,
   model: any,
 } & IStyledComponent;
 
@@ -40,6 +45,8 @@ class Questionnaire extends React.Component<Props, State> {
     progress: 0,
     currentIndex: -1,
     activeField: null,
+    arrayIndexes: [],
+    mainContent: 'welcome',
     model: {
       properties: {
         name: 'FooMAN',
@@ -51,7 +58,7 @@ class Questionnaire extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    // console.log(props.schema.mergedSchema());
+    (window as any).__schema = props.schema;
     // TODO handle initial value here, similar to componentWillReceiveProps
   }
 
@@ -63,9 +70,10 @@ class Questionnaire extends React.Component<Props, State> {
 
       this.setState({
         history: [],
-        currentIndex: 0,
         progress: 0,
-        activeField: firstKey,
+        currentIndex: -1,
+        activeField: null,
+        mainContent: 'welcome',
       });
     }
   }
@@ -73,10 +81,45 @@ class Questionnaire extends React.Component<Props, State> {
   goToNextField<K extends keyof State>(nextState: Pick<State, K>) {
     const nextIndex = this.state.currentIndex + 1;
 
+    let arrayIndexes: Array<number>;
+    let activeField: string | null = null;
+    let mainContent: ContentTypes = 'welcome';
+
+    // valid path
+    if (nextIndex < this.props.fields.length) {
+      activeField = this.props.fields[nextIndex];
+
+      const type = this.props.schema.getQuickTypeForKey(activeField);
+      if (type === 'objectArray') {
+        mainContent = 'enterArray';
+      } else if (type) {
+        mainContent = 'valueEntry';
+      } else {
+        // schema subfields are undefined
+        mainContent = 'enterBlock';
+      }
+
+      // remove array history that is not needed for the path any more
+      // e.g. when going form a.$.b.$.c.$.d with [4,2,0] to a.$.b it will be reduced to [4]
+      arrayIndexes = nextState.arrayIndexes || this.state.arrayIndexes;
+      let arrayNodesCount = 0;
+      for (const path of activeField.split('.')) {
+        if (path === '$') {
+          arrayNodesCount++;
+        }
+      }
+      arrayIndexes.slice(0, arrayNodesCount);
+    } else {
+      mainContent = 'done';
+      arrayIndexes = [];
+    }
+
     this.setState(extend(nextState, {
       currentIndex: nextIndex,
       progress: nextIndex / this.props.fields.length,
-      activeField: this.props.fields[nextIndex],
+      activeField,
+      mainContent,
+      arrayIndexes,
     }));
   };
 
@@ -97,6 +140,7 @@ class Questionnaire extends React.Component<Props, State> {
     set(this.state.model, field, resultValue);
     const nextState = {
       history: concat(this.state.history, {
+        field,
         question,
         answer: resultValue, // TODO toString for arbitrary, translated values!
       }),
@@ -109,6 +153,7 @@ class Questionnaire extends React.Component<Props, State> {
   skipField = (field, question) => {
     const nextState = {
       history: concat(this.state.history, {
+        field,
         question,
         answer: sample(skipAnswers) as string,
         className: 'history-skipped',
@@ -173,6 +218,7 @@ class Questionnaire extends React.Component<Props, State> {
     set(this.state.model, field, get(this.state.model, field, {}));
     const nextState = {
       history: concat(this.state.history, {
+        field,
         question,
         answer: sample(affirmativeAnswers) as string,
       }),
@@ -212,9 +258,11 @@ class Questionnaire extends React.Component<Props, State> {
     set(this.state.model, field, get(this.state.model, field, []));
     const nextState = {
       history: concat(this.state.history, {
+        field,
         question,
         answer: sample(affirmativeAnswers) as string,
       }),
+      arrayIndexes: this.state.arrayIndexes.concat([0]),
       model: this.state.model,
     };
 
@@ -244,21 +292,74 @@ class Questionnaire extends React.Component<Props, State> {
     );
   }
 
+  startQuestionnaire = () => {
+    console.log('Started');
+
+    const nextState = {
+      history: concat(this.state.history, {
+        field: null,
+        question: t`Welcome text goes here.`,
+        answer: sample(affirmativeAnswers) as string,
+      }),
+      model: this.state.model,
+    };
+
+    this.goToNextField(nextState);
+  };
+
+  welcomeSection() {
+    return (
+      <section className="questionnaire-step">
+        <h3 className="question">{t`Welcome text goes here.`}</h3>
+        <span className="call-to-action">
+          <div className='form'>
+            <div className='form-group'>
+              <button className="primary" onClick={this.startQuestionnaire}>{t`Okay`}</button>
+            </div>
+          </div>
+        </span>
+      </section>
+    );
+  }
+
+  doneSection() {
+    return (
+      <section className="questionnaire-step">
+        <h3 className="question">{t`Well done, you made it through!`}</h3>
+        <span className="call-to-action">
+          <div className='form'>
+            <div className='form-group'>
+              <button className="primary">{t`What now??`}</button>
+            </div>
+          </div>
+        </span>
+      </section>
+    );
+  }
+
   public render() {
     let displayField: JSX.Element | null = null;
-    if (this.state.activeField) {
-      const type = this.props.schema.getQuickTypeForKey(this.state.activeField);
-      if (type === 'objectArray') {
-        displayField = this.enterArraySection(this.state.activeField);
-      } else if (type) {
-        displayField = this.valueEntrySection(this.state.activeField);
-      } else {
-        // schema subfields are undefined
-        displayField = this.enterBlockSection(this.state.activeField);
-      }
+
+    switch (this.state.mainContent) {
+      case 'enterArray':
+        displayField = this.enterArraySection(this.state.activeField || '');
+        break;
+      case 'valueEntry':
+        displayField = this.valueEntrySection(this.state.activeField || '');
+        break;
+      case 'enterBlock':
+        displayField = this.enterBlockSection(this.state.activeField || '');
+        break;
+      case 'welcome':
+        displayField = this.welcomeSection();
+        break;
+      case 'done':
+        displayField = this.doneSection();
+        break;
     }
 
-    console.log('model:', this.state.model, 'history:', this.state.history);
+
+    console.log('state:', this.state);
 
     return (
       <div className={`questionnaire-area ${this.props.className}`}>
