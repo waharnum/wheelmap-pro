@@ -329,7 +329,7 @@ class Questionnaire extends React.Component<Props, State> {
     const accessibility = definition.accessibility;
     const question: string | string[] =
       (accessibility && accessibility.questionBlockBegin) ||
-      t`Do you wanna dive into \`${label}\`?`;
+      isOptional ? t`Do you wanna dive into \`${label}\`?` : t`Please specify \`${label}\`.`;
 
     return (
       <section className="questionnaire-step">
@@ -337,8 +337,11 @@ class Questionnaire extends React.Component<Props, State> {
         <span className="call-to-action">
           <div className="form">
             <div className="form-group">
-              <button className="primary" onClick={this.enterBlock.bind(this, field, question)}>{t`Yes`}</button>
-              <button className="primary" onClick={this.skipBlock.bind(this, field, question)}>{t`No`}</button>
+              {isOptional ?
+                [<button className="primary" onClick={this.enterBlock.bind(this, field, question)}>{t`Yes`}</button>,
+                  <button className="primary" onClick={this.skipBlock.bind(this, field, question)}>{t`No`}</button>] :
+                <button className="primary" onClick={this.enterBlock.bind(this, field, question)}>{t`Okay`}</button>
+              }
             </div>
           </div>
         </span>
@@ -386,7 +389,9 @@ class Questionnaire extends React.Component<Props, State> {
     const accessibility = definition.accessibility;
     const question: string | string[] =
       (accessibility && accessibility.questionBlockBegin) ||
-      t`Do you wanna add a new element to the list \`${label}\`?`;
+      isOptional ?
+        t`Do you wanna add a new element to the list \`${label}\`?` :
+        t`Please add a new element to the list \`${label}\`.`;
 
     return (
       <section className="questionnaire-step">
@@ -394,8 +399,11 @@ class Questionnaire extends React.Component<Props, State> {
         <span className="call-to-action">
           <div className='form'>
             <div className='form-group'>
-              <button className="primary" onClick={this.enterArray.bind(this, field, question)}>{t`Yes`}</button>
-              <button className="primary" onClick={this.skipBlock.bind(this, field, question)}>{t`No`}</button>
+              {isOptional ?
+                [<button className="primary" onClick={this.enterArray.bind(this, field, question)}>{t`Yes`}</button>,
+                  <button className="primary" onClick={this.skipBlock.bind(this, field, question)}>{t`No`}</button>] :
+                <button className="primary" onClick={this.enterArray.bind(this, field, question)}>{t`Okay`}</button>
+              }
             </div>
           </div>
         </span>
