@@ -79,17 +79,49 @@ class Questionnaire extends React.Component<Props, State> {
   }
 
   goToNextField<K extends keyof State>(nextState: Pick<State, K>) {
-    const nextIndex = this.state.currentIndex + 1;
 
+    const currentActiveField: string | null = this.state.activeField;
+
+    let nextIndex = this.state.currentIndex + 1;
     let arrayIndexes: Array<number>;
-    let activeField: string | null = null;
-    let mainContent: ContentTypes = 'welcome';
+    let nextActiveField: string | null = this.props.fields[nextIndex];
 
+    // are we currently in an array
+    arrayIndexes = nextState.arrayIndexes || this.state.arrayIndexes;
+    if (arrayIndexes.length > 0 && currentActiveField) {
+      // check array depth in new active field
+      let arrayNodesCount = 0;
+      if (nextActiveField) {
+        for (const path of nextActiveField.split('.')) {
+          if (path === '$') {
+            arrayNodesCount++;
+          }
+        }
+      }
+
+      // we are leaving an array, try to ask for entries again
+      if (arrayIndexes.length > arrayNodesCount) {
+        console.log('LEAVING ARRAY!');
+        let potentialNextActiveField = currentActiveField;
+        while (arrayIndexes.length > 0) {
+          potentialNextActiveField = potentialNextActiveField.substr(0, potentialNextActiveField.lastIndexOf('.$.'));
+          const foundIndex = this.props.fields.indexOf(potentialNextActiveField);
+          arrayIndexes = arrayIndexes.slice(0, arrayNodesCount);
+          if (foundIndex) {
+            console.log('FOUND A NICER PARENT!', potentialNextActiveField);
+            nextActiveField = potentialNextActiveField;
+            nextIndex = foundIndex;
+            break;
+          }
+        }
+      }
+    }
+
+    // determine component to use
+    let mainContent: ContentTypes = 'welcome';
     // valid path
     if (nextIndex < this.props.fields.length) {
-      activeField = this.props.fields[nextIndex];
-
-      const type = this.props.schema.getQuickTypeForKey(activeField);
+      const type = this.props.schema.getQuickTypeForKey(nextActiveField);
       if (type === 'objectArray') {
         mainContent = 'enterArray';
       } else if (type) {
@@ -98,17 +130,6 @@ class Questionnaire extends React.Component<Props, State> {
         // schema subfields are undefined
         mainContent = 'enterBlock';
       }
-
-      // remove array history that is not needed for the path any more
-      // e.g. when going form a.$.b.$.c.$.d with [4,2,0] to a.$.b it will be reduced to [4]
-      arrayIndexes = nextState.arrayIndexes || this.state.arrayIndexes;
-      let arrayNodesCount = 0;
-      for (const path of activeField.split('.')) {
-        if (path === '$') {
-          arrayNodesCount++;
-        }
-      }
-      arrayIndexes.slice(0, arrayNodesCount);
     } else {
       mainContent = 'done';
       arrayIndexes = [];
@@ -117,7 +138,7 @@ class Questionnaire extends React.Component<Props, State> {
     this.setState(extend(nextState, {
       currentIndex: nextIndex,
       progress: nextIndex / this.props.fields.length,
-      activeField,
+      activeField: nextActiveField,
       mainContent,
       arrayIndexes,
     }));
@@ -243,7 +264,7 @@ class Questionnaire extends React.Component<Props, State> {
         <span className="call-to-action">
           <div className="form">
             <div className="form-group">
-              <button className="primary" onClick={this.enterBlock.bind(this, field, question)}>{t`YES PLEASE`}</button>
+              <button className="primary" onClick={this.enterBlock.bind(this, field, question)}>{t`Yes`}</button>
             </div>
           </div>
         </span>
@@ -272,11 +293,12 @@ class Questionnaire extends React.Component<Props, State> {
   enterArraySection(field: string) {
     const definition = this.props.schema.getDefinition(field);
     const label = definition.label;
+    const isOptional = definition.optional === true;
 
     const accessibility = definition.accessibility;
     const question: string | string[] =
       (accessibility && accessibility.questionBlockBegin) ||
-      t`Do you wanna add (another) stuff for the block \`${label}\`?`;
+      t`Do you wanna add a new element to the list \`${label}\`?`;
 
     return (
       <section className="questionnaire-step">
@@ -284,7 +306,7 @@ class Questionnaire extends React.Component<Props, State> {
         <span className="call-to-action">
           <div className='form'>
             <div className='form-group'>
-              <button className="primary" onClick={this.enterArray.bind(this, field, question)}>{t`YES PLEASE`}</button>
+              <button className="primary" onClick={this.enterArray.bind(this, field, question)}>{t`Yes`}</button>
             </div>
           </div>
         </span>
