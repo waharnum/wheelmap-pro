@@ -234,7 +234,7 @@ class Questionnaire extends React.Component<Props, State> {
       history: concat(this.state.history, {
         field,
         question,
-        answer: resultValue, // TODO toString for arbitrary, translated values!
+        answer: String(resultValue), // TODO toString for arbitrary, translated values!
       }),
       model: this.state.model,
     };
@@ -259,6 +259,7 @@ class Questionnaire extends React.Component<Props, State> {
     const definition = this.props.schema.getDefinition(field);
     const label = definition.label;
     const isOptional = definition.optional === true;
+    const isSelfSubmitting = definition.uniforms && definition.uniforms.selfSubmitting;
 
     const accessibility = definition.accessibility;
     const question: string | string[] =
@@ -283,21 +284,24 @@ class Questionnaire extends React.Component<Props, State> {
           schema={subSchema}
           model={subModel}>
           <h3 className="question">{question}</h3>
-          <AutoField
-            label={false}
-            name={simpleSchemaPathToObjectPath(field, this.state.arrayIndexes, 0, {wrapInArray: false})}>
-          </AutoField>
-          <span className='call-to-action'>
-            <div className='form'>
-              <div className='form-group'>
-                <SubmitField className={t`primary-action`} value={t`Submit`}/>
-                {isOptional ?
-                  <button className="secondary"
-                          onClick={this.skipField.bind(this, field, question)}>{t`Skip`}</button> : null}
-                <ErrorsField/>
+          <section className={isSelfSubmitting ? 'value-entry-section ves-inline-field' : 'value-entry-section'}>
+            <AutoField
+              label={false}
+              name={simpleSchemaPathToObjectPath(field, this.state.arrayIndexes, 0, {wrapInArray: false})}>
+            </AutoField>
+            <span className={isSelfSubmitting ? 'call-to-action' : 'call-to-action cta-full-width'}>
+              <div className="form'">
+                <div className="form-group">
+                  {!isSelfSubmitting ?
+                    <SubmitField className={t`primary-action`} value={t`Submit`}/> : null}
+                  {isOptional ?
+                    <button className="secondary"
+                            onClick={this.skipField.bind(this, field, question)}>{t`Skip`}</button> : null}
+                  <ErrorsField/>
+                </div>
               </div>
-            </div>
-          </span>
+            </span>
+          </section>
         </AutoForm>
       </section>
     );
@@ -774,9 +778,19 @@ export default styled(Questionnaire) `
   section.questionnaire-step {
     box-shadow: inset 0 -1px 0 0 ${colors.shadowGrey};
 
-    span.call-to-action {
-      display: block;
+    section.value-entry-section {
       width: 100%;
+      &.ves-inline-field {
+        display: flex;
+        flex-wrap: wrap;
+      }
+    } 
+    
+    span.call-to-action {
+      &.cta-full-width {
+        display: block;
+        width: 100%;
+      }
       
       .form .form-group {
         margin-top: 1em;

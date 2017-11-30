@@ -32,4 +32,5 @@ const YesNoQuestion = class extends React.Component<IStyledComponent & Props> {
 const YesNoQuestionField = connectField(YesNoQuestion);
 
 export default styled(YesNoQuestionField) `
+  flex-grow: 1;
 `;

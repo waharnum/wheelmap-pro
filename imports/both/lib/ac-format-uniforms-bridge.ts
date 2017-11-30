@@ -30,6 +30,7 @@ export const translateAcFormatToUniforms = (schema: SimpleSchema, prefix: string
       extensions[definitionKey] = extensions[definitionKey] || {};
       extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
       extensions[definitionKey].uniforms.component = YesNoQuestion;
+      extensions[definitionKey].uniforms.selfSubmitting = true;
     }
 
     const accessibility: AccessibilitySchemaExtension | undefined = definition.accessibility;
