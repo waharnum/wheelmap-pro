@@ -248,7 +248,7 @@ declare class SimpleSchema {
    * @param {SimpleSchema|Object} schema
    * @returns The SimpleSchema instance (chainable)
    */
-  extend(schema: SchemaDefinition | SimpleSchema | { [key: string]: any }): SimpleSchema;
+  extend(schema: Partial<SchemaDefinition> | SimpleSchema | { [key: string]: Partial<SchemaDefinition> }): SimpleSchema;
 
   clean(doc: any, options?: CleanOption): any;
 
