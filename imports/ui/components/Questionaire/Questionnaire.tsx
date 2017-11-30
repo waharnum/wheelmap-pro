@@ -338,8 +338,10 @@ class Questionnaire extends React.Component<Props, State> {
           <div className="form">
             <div className="form-group">
               {isOptional ?
-                [<button className="primary" onClick={this.enterBlock.bind(this, field, question)}>{t`Yes`}</button>,
-                  <button className="primary" onClick={this.skipBlock.bind(this, field, question)}>{t`No`}</button>] :
+                [<button key="yes" className="primary"
+                         onClick={this.enterBlock.bind(this, field, question)}>{t`Yes`}</button>,
+                  <button key="no" className="primary"
+                          onClick={this.skipBlock.bind(this, field, question)}>{t`No`}</button>] :
                 <button className="primary" onClick={this.enterBlock.bind(this, field, question)}>{t`Okay`}</button>
               }
             </div>
@@ -400,8 +402,10 @@ class Questionnaire extends React.Component<Props, State> {
           <div className='form'>
             <div className='form-group'>
               {isOptional ?
-                [<button className="primary" onClick={this.enterArray.bind(this, field, question)}>{t`Yes`}</button>,
-                  <button className="primary" onClick={this.skipBlock.bind(this, field, question)}>{t`No`}</button>] :
+                [<button key="yes" className="primary"
+                         onClick={this.enterArray.bind(this, field, question)}>{t`Yes`}</button>,
+                  <button key="no" className="primary"
+                          onClick={this.skipBlock.bind(this, field, question)}>{t`No`}</button>] :
                 <button className="primary" onClick={this.enterArray.bind(this, field, question)}>{t`Okay`}</button>
               }
             </div>
