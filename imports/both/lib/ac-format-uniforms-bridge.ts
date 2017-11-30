@@ -1,10 +1,10 @@
 import SimpleSchema from 'simpl-schema';
+import {AccessibilitySchemaExtension} from '@sozialhelden/ac-format';
 
 SimpleSchema.extendOptions(['uniforms']);
 
-import {AccessibilitySchemaExtension} from '@sozialhelden/ac-format';
-
 import {isDefinitionTypeArray, isDefinitionTypeSchema} from './simpl-schema-filter';
+import YesNoQuestion from '../../ui/components/Questionaire/YesNoQuestion';
 
 export const translateAcFormatToUniforms = (schema: SimpleSchema, prefix: string = '') => {
   const nodeNames: Array<string> = schema.objectKeys(prefix);
@@ -24,14 +24,22 @@ export const translateAcFormatToUniforms = (schema: SimpleSchema, prefix: string
     const definitionKey = `${valuePrefix}${name}`;
     const definition = schema.getDefinition(definitionKey);
 
+    const type = schema.getQuickTypeForKey(definitionKey);
+
+    if (type === 'boolean') {
+      extensions[definitionKey] = extensions[definitionKey] || {};
+      extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
+      extensions[definitionKey].uniforms.component = YesNoQuestion;
+    }
+
     const accessibility: AccessibilitySchemaExtension | undefined = definition.accessibility;
     if (accessibility) {
-      extensions[definitionKey] = {
-        uniforms: {
-          placeholder: accessibility.example || definition.label,
-          help: accessibility.description,
-        },
-      };
+      extensions[definitionKey] = extensions[definitionKey] || {};
+      extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
+      extensions[definitionKey].uniforms.placeholder = accessibility.example || definition.label;
+      if (accessibility.description) {
+        extensions[definitionKey].uniforms.help = accessibility.description;
+      }
     }
 
     if (isDefinitionTypeSchema(definition.type)) {
