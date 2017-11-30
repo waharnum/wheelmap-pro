@@ -39,6 +39,32 @@ type State = {
   model: any,
 } & IStyledComponent;
 
+/**
+ * Takes a simple schema path such as a.$.b.$.c.e.f and array indexes and replaces each occurrence of .$ with [x]
+ * where x is the matching value from arrayIndexes.
+ *
+ * simpleSchemaPathToObjectPath( 'a.$.b.$.c.e.f', [4, 2] ) return 'a[4].b[2].c.e.f'.
+ */
+const simpleSchemaPathToObjectPath = (simpleSchemaPath: string,
+                                      arrayIndexes: Array<number> = [],
+                                      defaultValue: number = 0): string => {
+  if (!simpleSchemaPath) {
+    return '';
+  }
+
+  let result = '';
+  let index = 0;
+  for (const path of simpleSchemaPath.split('.')) {
+    if (path === '$') {
+      result += `[${arrayIndexes[index] || defaultValue}]`;
+    } else {
+      result += `.${path}`;
+    }
+  }
+  return result.substr(1);
+};
+
+
 class Questionnaire extends React.Component<Props, State> {
   public state: State = {
     history: [],
@@ -85,6 +111,9 @@ class Questionnaire extends React.Component<Props, State> {
     let nextIndex = this.state.currentIndex + 1;
     let arrayIndexes: Array<number>;
     let nextActiveField: string | null = this.props.fields[nextIndex];
+
+
+    console.log(nextActiveField, simpleSchemaPathToObjectPath(nextActiveField, [4, 3, 2, 1]));
 
     // are we currently in an array
     arrayIndexes = nextState.arrayIndexes || this.state.arrayIndexes;
@@ -156,9 +185,10 @@ class Questionnaire extends React.Component<Props, State> {
 
   submitValue = (field, question, resultObj) => {
     console.log('Submitted', resultObj, field, question);
-    // TODO setting object in array use [0] instead of .$!
-    const resultValue = get(resultObj, field);
-    set(this.state.model, field, resultValue);
+
+    const objectPath = simpleSchemaPathToObjectPath(field, this.state.arrayIndexes);
+    const resultValue = get(resultObj, objectPath);
+    set(this.state.model, objectPath, resultValue);
     const nextState = {
       history: concat(this.state.history, {
         field,
@@ -235,8 +265,9 @@ class Questionnaire extends React.Component<Props, State> {
   enterBlock = (field, question) => {
     console.log('Entered', field, question);
     // start empty object if not existing yet
-    // TODO setting object in array use [0] instead of .$!
-    set(this.state.model, field, get(this.state.model, field, {}));
+
+    const objectPath = simpleSchemaPathToObjectPath(field, this.state.arrayIndexes);
+    set(this.state.model, objectPath, get(this.state.model, objectPath, {}));
     const nextState = {
       history: concat(this.state.history, {
         field,
@@ -252,11 +283,12 @@ class Questionnaire extends React.Component<Props, State> {
   enterBlockSection(field: string) {
     const definition = this.props.schema.getDefinition(field);
     const label = definition.label;
+    const isOptional = definition.optional === true;
 
     const accessibility = definition.accessibility;
     const question: string | string[] =
       (accessibility && accessibility.questionBlockBegin) ||
-      t`Do you wanna answer stuff for the block \`${label}\`?`;
+      t`Do you wanna dive into \`${label}\`?`;
 
     return (
       <section className="questionnaire-step">
@@ -275,8 +307,9 @@ class Questionnaire extends React.Component<Props, State> {
   enterArray = (field, question) => {
     console.log('Entered', field, question);
     // start empty object if not existing yet
-    // TODO setting object in array use [0] instead of .$!
-    set(this.state.model, field, get(this.state.model, field, []));
+
+    const objectPath = simpleSchemaPathToObjectPath(field, this.state.arrayIndexes);
+    set(this.state.model, objectPath, get(this.state.model, objectPath, []));
     const nextState = {
       history: concat(this.state.history, {
         field,
