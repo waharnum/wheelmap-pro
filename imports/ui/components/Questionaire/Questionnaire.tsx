@@ -507,7 +507,7 @@ class Questionnaire extends React.Component<Props, State> {
     return (
       <section className="questionnaire-step">
         <h3 className="question">{t`Well done, you made it through!`}</h3>
-        <code>{JSON.stringify(this.state.model)}</code>
+        <code>{JSON.stringify(this.state.model, null, 2)}</code>
         <span className="call-to-action">
           <div className='form'>
             <div className='form-group'>
@@ -609,6 +609,13 @@ export default styled(Questionnaire) `
       font-weight: 800;
       letter-spacing: -0.51px;
       line-height: 29px;
+    }
+    
+    code {
+      overflow: auto;
+      width: 100%;
+      display: block;
+      white-space: pre;
     }
     
     form .form-group, 
