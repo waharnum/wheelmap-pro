@@ -22,9 +22,9 @@ export const translateAcFormatToUniforms = (schema: SimpleSchema, prefix: string
   const extensions: { [key: string]: any } = {};
   nodeNames.forEach((name) => {
     const definitionKey = `${valuePrefix}${name}`;
-    const definition = schema.getDefinition(definitionKey);
-
     const type = schema.getQuickTypeForKey(definitionKey);
+
+    const definition = schema.getDefinition(definitionKey, ['type']);
 
     if (type === 'boolean') {
       extensions[definitionKey] = extensions[definitionKey] || {};
