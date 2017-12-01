@@ -14,6 +14,7 @@ import HistoryEntry from './HistoryEntry';
 const affirmativeAnswers: ReadonlyArray<string> = Object.freeze([t`Yes!`, t`Okay!`, t`Sure!`, t`Let's do this!`, t`I'm ready!`]);
 const skipAnswers: ReadonlyArray<string> = Object.freeze([t`I'm not sure.`, t`I'll skip this one.`, t`No idea.`, t`Ask me next time.`, t`Phew, I couldn't tell.`]);
 const skipBlockAnswers: ReadonlyArray<string> = Object.freeze([t`I'd rather move to the next topic.`, t`I'll skip this block.`]);
+const stopQuestionnaireAnswers: ReadonlyArray<string> = Object.freeze([t`I think I'm done.`, t`I've had enough`, t`I answered enough questions!`]);
 
 type HistoryDataEntry = {
   goTo?: {
@@ -290,7 +291,7 @@ class Questionnaire extends React.Component<Props, State> {
     });
   }
 
-  submitValue = (field, question, resultObj) => {
+  submitValue = (field: string, question: string, resultObj: any) => {
     const objectPath = simpleSchemaPathToObjectPath(field, this.state.arrayIndexes);
 
     console.log('Submitted', JSON.stringify(resultObj), field, objectPath, question);
@@ -313,7 +314,7 @@ class Questionnaire extends React.Component<Props, State> {
     this.goToNextField('nextIndex', nextState);
   };
 
-  skipField = (field, question) => {
+  skipField = (field: string, question: string) => {
     const nextState = {
       history: concat(this.state.history, {
         goTo: {
@@ -379,7 +380,7 @@ class Questionnaire extends React.Component<Props, State> {
     );
   }
 
-  enterBlock = (field, question) => {
+  enterBlock = (field: string, question: string) => {
     console.log('Entered', field, question);
     // start empty object if not existing yet
 
@@ -448,7 +449,7 @@ class Questionnaire extends React.Component<Props, State> {
     this.goToNextField('nextIndex', nextState);
   };
 
-  skipBlock = (field, question) => {
+  skipBlock = (field: string, question: string) => {
     const nextState = {
       history: concat(this.state.history, {
         goTo: {
@@ -538,13 +539,31 @@ class Questionnaire extends React.Component<Props, State> {
   }
 
   exitBlock = () => {
-    // TODO: history
-    this.goToNextField('exitBlock', {});
+    const nextState = {
+      history: concat(this.state.history, {
+        goTo: {
+          index: this.state.currentIndex,
+          arrayIndexes: this.state.arrayIndexes,
+        },
+        question: this.state.question,
+        answer: sample(skipBlockAnswers),
+      }),
+    };
+    this.goToNextField('exitBlock', nextState);
   };
 
   stopSurvey = () => {
-    // TODO: history
-    this.goToNextField('stop', {});
+    const nextState = {
+      history: concat(this.state.history, {
+        goTo: {
+          index: this.state.currentIndex,
+          arrayIndexes: this.state.arrayIndexes,
+        },
+        question: this.state.question,
+        answer: sample(stopQuestionnaireAnswers),
+      }),
+    };
+    this.goToNextField('stop', nextState);
   };
 
   public render() {
