@@ -363,7 +363,7 @@ declare class SimpleSchema {
    *   top-level Object-type keys
    * @returns {[[Type]]} [[Description]]
    */
-  objectKeys(keyPrefix: any): any[];
+  objectKeys(keyPrefix?: any): any[];
 
   /**
    * @param obj {Object|Object[]} Object or array of objects to validate.
