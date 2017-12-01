@@ -612,8 +612,10 @@ class Questionnaire extends React.Component<Props, State> {
               <small className="more-specific">this place</small>
             </span>
             <span className="footer-actions">
-              <button onClick={this.stopSurvey}>{t`Stop here`}</button>
-              <button onClick={this.exitBlock}>{t`Skip block`}</button>
+              <button disabled={['welcome', 'done'].includes(this.state.mainContent)}
+                      onClick={this.stopSurvey}>{t`Stop here`}</button>
+              <button disabled={['welcome', 'done'].includes(this.state.mainContent)}
+                      onClick={this.exitBlock}>{t`Skip block`}</button>
             </span>
           </footer>
         </div>
@@ -939,6 +941,10 @@ export default styled(Questionnaire) `
           color: ${colors.linkBlueDarker};
           background: none;
           transition: color 0.25s, background-color 0.25s;
+        }
+        
+        &[disabled] {
+          color: ${colors.ctaDisabledGrey};        
         }
       }
     }
