@@ -201,8 +201,15 @@ class Questionnaire extends React.Component<Props, State> {
       } else if (type) {
         mainContent = 'valueEntry';
       } else {
-        // schema subfields are undefined
-        mainContent = 'enterBlock';
+        // schema subfields have an undefined quick type
+        const definition = this.props.schema.getDefinition(nextActiveField, ['uniforms']);
+        // has component defined for uniforms
+        if (definition.uniforms && definition.uniforms.component) {
+          mainContent = 'valueEntry';
+        } else {
+          // otherwise enter block
+          mainContent = 'enterBlock';
+        }
       }
     } else {
       mainContent = 'done';
@@ -587,7 +594,7 @@ class Questionnaire extends React.Component<Props, State> {
         break;
     }
 
-    console.log('state:', this.state);
+    // console.log('state:', this.state);
 
     return (
       <div className={`questionnaire-area ${this.props.className}`}>
