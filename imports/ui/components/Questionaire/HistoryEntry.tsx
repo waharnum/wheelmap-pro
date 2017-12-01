@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import * as React from 'react';
 
 import {IStyledComponent} from '../IStyledComponent';
+import {colors} from '../../stylesheets/colors';
 
 type Props = {
   question: string,
@@ -27,4 +28,55 @@ const HistoryEntry = class extends React.Component<IStyledComponent & Props> {
 };
 
 export default styled(HistoryEntry) `
+  box-shadow: inset 0 -1px 0 0 ${colors.shadowGrey};
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  opacity: 0.5;
+  transition: opacity 0.25s ease;
+  
+  h3.question,
+  span.answer {
+    font-size: 20px;
+    line-height: 1.25em;
+  }
+
+  h3.question {
+    width: 100%;
+    font-weight: 800;
+  }
+
+  span.answer {
+    margin-top: 8px;
+    font-weight: 300;
+    position: relative;
+  }
+  
+  &.qhe-has-interaction {
+    cursor: pointer;
+    
+    span.answer:after {
+      transition: color 0.25s ease, opacity 0.25s ease;
+      position: relative;
+      right: 0;
+      padding-left: 8px;
+      top: -0.1em;
+      content: 'e';
+      font-size: 16px;
+      text-align: center;
+      -moz-line-height: 0;
+      font-family: 'iconfield-V03';
+      opacity: 0.5;
+    }
+    
+    &:hover {
+      opacity: 0.75;
+      box-shadow: inset 0 -1px 0 0 ${colors.shadowGrey}, 0 -5px 10px 0 ${colors.shadowGrey};
+      
+      span.answer:after {
+        color: ${colors.linkBlue};
+        opacity: 1.0;
+      }
+    }
+  }
 `;
