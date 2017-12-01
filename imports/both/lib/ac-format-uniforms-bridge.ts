@@ -1,10 +1,39 @@
 import SimpleSchema from 'simpl-schema';
-import {AccessibilitySchemaExtension} from '@sozialhelden/ac-format';
+import {AccessibilitySchemaExtension, PointGeometrySchema} from '@sozialhelden/ac-format';
+import {isEqual} from 'lodash';
 
 SimpleSchema.extendOptions(['uniforms']);
 
 import {isDefinitionTypeArray, isDefinitionTypeSchema} from './simpl-schema-filter';
 import YesNoQuestion from '../../ui/components/Questionaire/YesNoQuestion';
+import PlaceOnMapQuestion from '../../ui/components/Questionaire/PlaceOnMapQuestion';
+
+
+const hashSchema = (schema: SimpleSchema): string | null => {
+  if (!schema || !SimpleSchema.isSimpleSchema(schema)) {
+    return null;
+  }
+
+  if ((schema as any).__hash) {
+    return (schema as any).__hash;
+  }
+
+  const keys = schema.objectKeys();
+  const hash = keys.reduce((result, key) => {
+    let type: string | null = String(schema.getQuickTypeForKey(key));
+    if (!type) {
+      type = hashSchema(schema.schema(key).definitions[0].type);
+    }
+    return `${result}-${key}:${type}`;
+  }, '');
+  (schema as any).__hash = hash;
+  return hash;
+};
+
+const hasSchema = (typeDefinition: EvaluatedSchemaDefinition, schema: SimpleSchema) => {
+  // as schema instances are wildly different and get duplicated all the time, we hash their keys&types and go with that
+  return hashSchema(schema) === hashSchema(typeDefinition.type[0].type as SimpleSchema);
+};
 
 export const translateAcFormatToUniforms = (schema: SimpleSchema, prefix: string = '') => {
   const nodeNames: Array<string> = schema.objectKeys(prefix);
@@ -24,7 +53,7 @@ export const translateAcFormatToUniforms = (schema: SimpleSchema, prefix: string
     const definitionKey = `${valuePrefix}${name}`;
     const type = schema.getQuickTypeForKey(definitionKey);
 
-    const definition = schema.getDefinition(definitionKey, ['type']);
+    const typeDefinition = schema.getDefinition(definitionKey, ['type']);
 
     if (type === 'boolean') {
       extensions[definitionKey] = extensions[definitionKey] || {};
@@ -33,19 +62,27 @@ export const translateAcFormatToUniforms = (schema: SimpleSchema, prefix: string
       extensions[definitionKey].uniforms.selfSubmitting = true;
     }
 
-    const accessibility: AccessibilitySchemaExtension | undefined = definition.accessibility;
+    if (!type) {
+      if (hasSchema(typeDefinition, PointGeometrySchema)) {
+        extensions[definitionKey] = extensions[definitionKey] || {};
+        extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
+        extensions[definitionKey].uniforms.component = PlaceOnMapQuestion;
+      }
+    }
+
+    const accessibility: AccessibilitySchemaExtension | undefined = typeDefinition.accessibility;
     if (accessibility) {
       extensions[definitionKey] = extensions[definitionKey] || {};
       extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
-      extensions[definitionKey].uniforms.placeholder = accessibility.example || definition.label;
+      extensions[definitionKey].uniforms.placeholder = accessibility.example || typeDefinition.label;
       if (accessibility.description) {
         extensions[definitionKey].uniforms.help = accessibility.description;
       }
     }
 
-    if (isDefinitionTypeSchema(definition.type)) {
-      translateAcFormatToUniforms(definition.type[0].type as SimpleSchema, '');
-    } else if (isDefinitionTypeArray(definition.type)) {
+    if (isDefinitionTypeSchema(typeDefinition.type)) {
+      translateAcFormatToUniforms(typeDefinition.type[0].type as SimpleSchema, '');
+    } else if (isDefinitionTypeArray(typeDefinition.type)) {
       const arrayKey = definitionKey + '.$';
       const arrayFieldDefinition = schema.getDefinition(arrayKey);
       if (isDefinitionTypeSchema(arrayFieldDefinition.type)) {
