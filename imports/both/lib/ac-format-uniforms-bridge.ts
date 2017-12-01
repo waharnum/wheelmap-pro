@@ -1,6 +1,5 @@
 import SimpleSchema from 'simpl-schema';
 import {AccessibilitySchemaExtension, PointGeometrySchema} from '@sozialhelden/ac-format';
-import {isEqual} from 'lodash';
 
 SimpleSchema.extendOptions(['uniforms']);
 
