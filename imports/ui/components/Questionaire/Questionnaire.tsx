@@ -313,7 +313,7 @@ class Questionnaire extends React.Component<Props, State> {
               name={simpleSchemaPathToObjectPath(field, this.state.arrayIndexes, 0, {wrapInArray: false})}>
             </AutoField>
             <span className={isSelfSubmitting ? 'call-to-action' : 'call-to-action cta-full-width'}>
-              <div className="form'">
+              <div className="form">
                 <div className="form-group">
                   {!isSelfSubmitting ?
                     <SubmitField className={t`primary-action`} value={t`Submit`}/> : null}
@@ -816,16 +816,21 @@ export default styled(Questionnaire) `
 
     section.value-entry-section {
       width: 100%;
+      
       &.ves-inline-field {
         display: flex;
         flex-wrap: wrap;
       }
     } 
     
-    span.call-to-action {
+    span.call-to-action {    
       &.cta-full-width {
         display: block;
         width: 100%;
+        
+        .form .form-group > * {
+          flex: 1;
+        }
       }
       
       .form .form-group {
