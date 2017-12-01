@@ -40,6 +40,7 @@ type State = {
   progress: number,
   currentIndex: number,
   activeField: string | null,
+  question: string,
   arrayIndexes: Array<number>,
   mainContent: ContentTypes,
   model: any,
@@ -82,6 +83,7 @@ class Questionnaire extends React.Component<Props, State> {
     history: [],
     progress: 0,
     currentIndex: -1,
+    question: '',
     activeField: null,
     arrayIndexes: [],
     mainContent: 'welcome',
@@ -207,14 +209,61 @@ class Questionnaire extends React.Component<Props, State> {
       nextIndex = this.props.fields.length;
     }
 
+    const question = this.determineQuestion(mainContent, nextActiveField);
+
     this.setState(extend(nextState, {
       currentIndex: nextIndex,
       progress: nextIndex / this.props.fields.length,
       activeField: nextActiveField,
+      question,
       mainContent,
       arrayIndexes,
     }));
   };
+
+  determineQuestion(type: ContentTypes, field: string | null): string | string[] {
+    if (!field) {
+      return '';
+    }
+
+    const definition = this.props.schema.getDefinition(field);
+    const label = definition.label;
+    const accessibility = definition.accessibility;
+    const isOptional = definition.optional === true;
+
+    let question: string | string[] = '';
+    switch (type) {
+      case 'valueEntry':
+        question = (accessibility && accessibility.question) ||
+          t`Please specify the value for \`${label}\`.`;
+        break;
+      case 'enterBlock':
+        question = (accessibility && accessibility.questionBlockBegin) ||
+          (accessibility && accessibility.question) ||
+          (isOptional ? t`Do you wanna dive into \`${label}\`?` : t`Please specify \`${label}\`.`);
+        break;
+      case 'enterArray':
+        const currentValue = get(this.state.model, simpleSchemaPathToObjectPath(field), []);
+        const hasEntries = currentValue.length > 0;
+        const needsMoreEntries = definition.min === true;
+        if (hasEntries) {
+          question = (accessibility && accessibility.questionMore) ||
+            (accessibility && accessibility.question) ||
+            (needsMoreEntries ?
+              t`Do you wanna add another element to the list \`${label}\` (${currentValue.length})?` :
+              t`Please add another element to the list \`${label}\` (${currentValue.length}).`);
+        } else {
+          question = (accessibility && accessibility.questionBlockBegin) ||
+            (accessibility && accessibility.question) ||
+            (isOptional ?
+              t`Do you wanna add the first element to the list \`${label}\`?` :
+              t`Please add the first element to the list \`${label}\`.`);
+        }
+        break;
+    }
+
+    return question;
+  }
 
   historySection() {
     let index = 0;
@@ -286,10 +335,6 @@ class Questionnaire extends React.Component<Props, State> {
     const isOptional = definition.optional === true;
     const isSelfSubmitting = definition.uniforms && definition.uniforms.selfSubmitting;
 
-    const accessibility = definition.accessibility;
-    const question: string | string[] =
-      (accessibility && accessibility.question) ||
-      t`Please specify the value for \`${label}\`.`;
 
     const subSchema = pickFieldForAutoForm(this.props.schema, field);
 
@@ -307,10 +352,10 @@ class Questionnaire extends React.Component<Props, State> {
         <AutoForm
           key={field}
           placeholder={true}
-          onSubmit={this.submitValue.bind(this, field, question)}
+          onSubmit={this.submitValue.bind(this, field, this.state.question)}
           schema={subSchema}
           model={subModel}>
-          <h3 className="question">{question}</h3>
+          <h3 className="question">{this.state.question}</h3>
           <section className={isSelfSubmitting ? 'value-entry-section ves-inline-field' : 'value-entry-section'}>
             <AutoField
               label={false}
@@ -323,7 +368,7 @@ class Questionnaire extends React.Component<Props, State> {
                     <SubmitField className={t`primary-action`} value={t`Submit`}/> : null}
                   {isOptional ?
                     <button className="secondary"
-                            onClick={this.skipField.bind(this, field, question)}>{t`Skip`}</button> : null}
+                            onClick={this.skipField.bind(this, field, this.state.question)}>{t`Skip`}</button> : null}
                   <ErrorsField/>
                 </div>
               </div>
@@ -357,27 +402,21 @@ class Questionnaire extends React.Component<Props, State> {
 
   enterBlockSection(field: string) {
     const definition = this.props.schema.getDefinition(field);
-    const label = definition.label;
     const isOptional = definition.optional === true;
-
-    const accessibility = definition.accessibility;
-    const question: string | string[] =
-      (accessibility && accessibility.questionBlockBegin) ||
-      (accessibility && accessibility.question) ||
-      (isOptional ? t`Do you wanna dive into \`${label}\`?` : t`Please specify \`${label}\`.`);
 
     return (
       <section className="questionnaire-step">
-        <h3 className="question">{question}</h3>
+        <h3 className="question">{this.state.question}</h3>
         <span className="call-to-action">
           <div className="form">
             <div className="form-group">
               {isOptional ?
                 [<button key="yes" className="primary"
-                         onClick={this.enterBlock.bind(this, field, question)}>{t`Yes`}</button>,
+                         onClick={this.enterBlock.bind(this, field, this.state.question)}>{t`Yes`}</button>,
                   <button key="no" className="primary"
-                          onClick={this.skipBlock.bind(this, field, question)}>{t`No`}</button>] :
-                <button className="primary" onClick={this.enterBlock.bind(this, field, question)}>{t`Okay`}</button>
+                          onClick={this.skipBlock.bind(this, field, this.state.question)}>{t`No`}</button>] :
+                <button className="primary"
+                        onClick={this.enterBlock.bind(this, field, this.state.question)}>{t`Okay`}</button>
               }
             </div>
           </div>
@@ -430,39 +469,21 @@ class Questionnaire extends React.Component<Props, State> {
     const isOptional = definition.optional === true;
 
     const currentValue = get(this.state.model, simpleSchemaPathToObjectPath(field), []);
-    const accessibility = definition.accessibility;
-    let question: string | string[];
-
-    const hasEntries = currentValue.length > 0;
-    const needsMoreEntries = definition.min === true;
-    if (hasEntries) {
-      question = (accessibility && accessibility.questionMore) ||
-        (accessibility && accessibility.question) ||
-        (needsMoreEntries ?
-          t`Do you wanna add another element to the list \`${label}\` (${currentValue.length})?` :
-          t`Please add another element to the list \`${label}\` (${currentValue.length}).`);
-    } else {
-      question = (accessibility && accessibility.questionBlockBegin) ||
-        (accessibility && accessibility.question) ||
-        (isOptional ?
-          t`Do you wanna add the first element to the list \`${label}\`?` :
-          t`Please add the first element to the list \`${label}\`.`);
-    }
-
     const arrayIndex = currentValue.length;
 
     return (
       <section className="questionnaire-step">
-        <h3 className="question">{question}</h3>
+        <h3 className="question">{this.state.question}</h3>
         <span className="call-to-action">
           <div className='form'>
             <div className='form-group'>
               {isOptional ?
                 [<button key="yes" className="primary"
-                         onClick={this.enterArray.bind(this, field, question, arrayIndex)}>{t`Yes`}</button>,
+                         onClick={this.enterArray.bind(this, field, this.state.question, arrayIndex)}>{t`Yes`}</button>,
                   <button key="no" className="primary"
-                          onClick={this.skipBlock.bind(this, field, question, arrayIndex)}>{t`No`}</button>] :
-                <button className="primary" onClick={this.enterArray.bind(this, field, question)}>{t`Okay`}</button>
+                          onClick={this.skipBlock.bind(this, field, this.state.question, arrayIndex)}>{t`No`}</button>] :
+                <button className="primary"
+                        onClick={this.enterArray.bind(this, field, this.state.question)}>{t`Okay`}</button>
               }
             </div>
           </div>
