@@ -231,6 +231,7 @@ class Questionnaire extends React.Component<Props, State> {
     const label = definition.label;
     const accessibility = definition.accessibility;
     const isOptional = definition.optional === true;
+    const currentValue = get(this.state.model, simpleSchemaPathToObjectPath(field));
 
     let question: string | string[] = '';
     switch (type) {
@@ -244,8 +245,7 @@ class Questionnaire extends React.Component<Props, State> {
           (isOptional ? t`Do you wanna dive into \`${label}\`?` : t`Please specify \`${label}\`.`);
         break;
       case 'enterArray':
-        const currentValue = get(this.state.model, simpleSchemaPathToObjectPath(field), []);
-        const hasEntries = currentValue.length > 0;
+        const hasEntries = Array.isArray(currentValue) && currentValue.length > 0;
         const needsMoreEntries = definition.min === true;
         if (hasEntries) {
           question = (accessibility && accessibility.questionMore) ||
