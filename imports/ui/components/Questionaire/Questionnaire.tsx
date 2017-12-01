@@ -8,19 +8,21 @@ import {colors} from '../../stylesheets/colors';
 import {IStyledComponent} from '../IStyledComponent';
 import {pickFieldForAutoForm} from '../../../both/lib/simpl-schema-filter';
 import {AccessibilitySchemaExtension} from '@sozialhelden/ac-format';
+import HistoryEntry from './HistoryEntry';
 
 
 const affirmativeAnswers: ReadonlyArray<string> = Object.freeze([t`Yes!`, t`Okay!`, t`Sure!`, t`Let's do this!`, t`I'm ready!`]);
 const skipAnswers: ReadonlyArray<string> = Object.freeze([t`I'm not sure.`, t`I'll skip this one.`, t`No idea.`, t`Ask me next time.`, t`Phew, I couldn't tell.`]);
 const skipBlockAnswers: ReadonlyArray<string> = Object.freeze([t`I'd rather move to the next topic.`, t`I'll skip this block.`]);
 
-type HistoryEntry = {
+type HistoryDataEntry = {
   goTo?: {
     index: number,
     arrayIndexes: Array<number>,
   }
   question: string,
-  answer: string,
+  answer: any,
+  component?: React.ComponentClass<{ value: any }> | React.StatelessComponent<any>
   className?: string,
 };
 
@@ -34,7 +36,7 @@ type ContentTypes = 'welcome' | 'enterArray' | 'addToArray' | 'chooseFromArray' 
 type NextFieldMode = 'nextIndex' | 'exitBlock' | 'skipBlock' | 'stop' | 'history';
 
 type State = {
-  history: Array<HistoryEntry>,
+  history: Array<HistoryDataEntry>,
   progress: number,
   currentIndex: number,
   activeField: string | null,
@@ -83,12 +85,7 @@ class Questionnaire extends React.Component<Props, State> {
     activeField: null,
     arrayIndexes: [],
     mainContent: 'welcome',
-    model: {
-      properties: {
-        name: 'FooMAN',
-        category: 'none',
-      },
-    },
+    model: {},
   };
 
   constructor(props: Props) {
@@ -114,7 +111,6 @@ class Questionnaire extends React.Component<Props, State> {
   }
 
   goToNextField<K extends keyof State>(mode: NextFieldMode, nextState: Pick<State, K>) {
-
     const currentActiveField: string | null = this.state.activeField;
     let nextIndex: number = -1;
     let shouldCheckForArrayAgain: boolean = true;
@@ -236,13 +232,7 @@ class Questionnaire extends React.Component<Props, State> {
       }
 
       return (
-        <section
-          className={`questionnaire-history-entry ${entry.className || ''} ${callback ? 'qhe-has-interaction' : ''}`}
-          onClick={callback}
-          key={index}>
-          <h3 className="question">{entry.question}</h3>
-          <span className="answer">{entry.answer}</span>
-        </section>
+        <HistoryEntry key={index} question={entry.question} value={entry.answer}/>
       );
     });
   }
@@ -261,7 +251,8 @@ class Questionnaire extends React.Component<Props, State> {
           arrayIndexes: this.state.arrayIndexes,
         },
         question,
-        answer: String(resultValue), // TODO toString for arbitrary, translated values!
+        // TODO  arbitrary, un-translated values, needs to map to whatever the label is
+        answer: resultValue,
       }),
       model: this.state.model,
     };
@@ -352,7 +343,7 @@ class Questionnaire extends React.Component<Props, State> {
           arrayIndexes: this.state.arrayIndexes,
         },
         question,
-        answer: sample(affirmativeAnswers) as string,
+        answer: sample(affirmativeAnswers),
       }),
       model: this.state.model,
     };
@@ -405,7 +396,7 @@ class Questionnaire extends React.Component<Props, State> {
           arrayIndexes: this.state.arrayIndexes,
         },
         question,
-        answer: sample(affirmativeAnswers) as string,
+        answer: sample(affirmativeAnswers),
       }),
       arrayIndexes: this.state.arrayIndexes.concat([index]),
       model: this.state.model,
@@ -422,7 +413,7 @@ class Questionnaire extends React.Component<Props, State> {
           arrayIndexes: this.state.arrayIndexes,
         },
         question,
-        answer: sample(skipBlockAnswers) as string,
+        answer: sample(skipBlockAnswers),
       }),
       model: this.state.model,
     };
@@ -482,7 +473,7 @@ class Questionnaire extends React.Component<Props, State> {
     const nextState = {
       history: concat(this.state.history, {
         question: t`Welcome text goes here.`,
-        answer: sample(affirmativeAnswers) as string,
+        answer: sample(affirmativeAnswers),
       }),
       model: this.state.model,
     };
