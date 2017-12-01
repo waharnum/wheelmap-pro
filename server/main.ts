@@ -40,6 +40,10 @@ import '../imports/both/api/place-infos/server/indexing';
 import '../imports/both/api/place-infos/server/privileges';
 import '../imports/both/api/place-infos/server/methods';
 
+// register categories
+import '../imports/both/api/categories/server/publications';
+import '../imports/both/api/categories/server/privileges';
+
 // configure account system
 import '../imports/both/api/users/accounts';
 

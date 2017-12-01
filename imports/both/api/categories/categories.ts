@@ -2,23 +2,20 @@ import {Mongo} from 'meteor/mongo';
 import {Match} from 'meteor/check';
 import SimpleSchema from 'simpl-schema';
 
-export const Categories = new Mongo.Collection('Categories');
-
-
-/*
-{
-  _id: "atm",
+export interface ICategory {
+  _id: string,
   translations: {
     _id: {
-      "de_DE": "Geldautomat",
-      "en_US": "ATM",
+      [language: string]: string
     }
   },
-  synonyms: ["ATM", "amenity=atm"],
-  icon: "atm",
-  parentIds:["leisure", "money"],  // top-level category if empty
+  synonyms: Array<string>,
+  icon: string,
+  // top-level category if empty
+  parentIds?: Array<string>,
 }
-*/
+
+export const Categories = new Mongo.Collection<ICategory>('Categories');
 
 Categories.schema = new SimpleSchema({
   icon: {
@@ -52,5 +49,3 @@ Categories.schema = new SimpleSchema({
 });
 
 Categories.attachSchema(Categories.schema);
-
-Categories.visibleSelectorForUserId = () => ({});
