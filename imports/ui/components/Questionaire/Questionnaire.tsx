@@ -7,7 +7,6 @@ import {extend, get, pick, set, concat, sample} from 'lodash';
 import {colors} from '../../stylesheets/colors';
 import {IStyledComponent} from '../IStyledComponent';
 import {pickFieldForAutoForm} from '../../../both/lib/simpl-schema-filter';
-import {AccessibilitySchemaExtension} from '@sozialhelden/ac-format';
 import HistoryEntry from './HistoryEntry';
 
 
@@ -278,11 +277,11 @@ class Questionnaire extends React.Component<Props, State> {
     const historyItemCount = this.state.history.length;
     return this.state.history.map(entry => {
       index++;
-      const isLast = index === historyItemCount;
       let callback: (() => void) | undefined = undefined;
-      if (entry.goTo && isLast) {
+      if (entry.goTo) {
         callback = this.goToNextField.bind(this, 'history', {
-          history: this.state.history.slice(0, -1),
+          // TODO this duplicates quite a lot of data, move the slicing into a method
+          history: this.state.history.slice(0, index - 1),
           currentIndex: entry.goTo.index,
           arrayIndexes: entry.goTo.arrayIndexes,
         });
@@ -473,7 +472,6 @@ class Questionnaire extends React.Component<Props, State> {
 
   enterArraySection(field: string) {
     const definition = this.props.schema.getDefinition(field);
-    const label = definition.label;
     const isOptional = definition.optional === true;
 
     const currentValue = get(this.state.model, simpleSchemaPathToObjectPath(field), []);
@@ -483,8 +481,8 @@ class Questionnaire extends React.Component<Props, State> {
       <section className="questionnaire-step">
         <h3 className="question">{this.state.question}</h3>
         <span className="call-to-action">
-          <div className='form'>
-            <div className='form-group'>
+          <div className="form">
+            <div className="form-group">
               {isOptional ?
                 [<button key="yes" className="primary"
                          onClick={this.enterArray.bind(this, field, this.state.question, arrayIndex)}>{t`Yes`}</button>,
@@ -519,8 +517,8 @@ class Questionnaire extends React.Component<Props, State> {
       <section className="questionnaire-step">
         <h3 className="question">{t`Welcome text goes here.`}</h3>
         <span className="call-to-action">
-          <div className='form'>
-            <div className='form-group'>
+          <div className="form">
+            <div className="form-group">
               <button className="primary" onClick={this.startQuestionnaire}>{t`Okay`}</button>
             </div>
           </div>
@@ -535,8 +533,8 @@ class Questionnaire extends React.Component<Props, State> {
         <h3 className="question">{t`Well done, you made it through!`}</h3>
         <code>{JSON.stringify(this.state.model, null, 2)}</code>
         <span className="call-to-action">
-          <div className='form'>
-            <div className='form-group'>
+          <div className="form">
+            <div className="form-group">
               <button className="primary">{t`What now??`}</button>
             </div>
           </div>
