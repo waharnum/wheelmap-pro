@@ -7,20 +7,16 @@ import * as moment from 'moment';
 // load all moment locales
 import 'moment/min/locales';
 
+import {localeWithoutCountry} from '../imports/both/i18n/i18n';
+
 const files = readdirSync('./assets/app/i18n');
 const fallbackLanguage = 'en-DEV';
 
 declare const Assets: any;
 const availableLanguages = fromPairs(files.map((file) => {
   const name = file.substring(0, file.length - 8);
-  return [name, JSON.parse(Assets.getText(`i18n/${name}.po.json`))]
+  return [name, JSON.parse(Assets.getText(`i18n/${name}.po.json`))];
 }));
-
-// Returns the locale as language code without country code etc. removed
-// (for example "en" if given "en-GB").
-function localeWithoutCountry(locale: string): string {
-  return locale.substring(0, 2);
-}
 
 export const remove = new ValidatedMethod({
   name: 'i18n.getBestMatch',
