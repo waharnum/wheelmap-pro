@@ -1,5 +1,5 @@
 import SimpleSchema from 'simpl-schema';
-import {AccessibilitySchemaExtension, PointGeometrySchema} from '@sozialhelden/ac-format';
+import {AccessibilitySchemaExtension, LengthQuantitySchema, PointGeometrySchema} from '@sozialhelden/ac-format';
 
 SimpleSchema.extendOptions(['uniforms']);
 
@@ -7,6 +7,7 @@ import {isDefinitionTypeArray, isDefinitionTypeSchema} from './simpl-schema-filt
 import YesNoQuestion from '../../ui/components/Questionaire/YesNoQuestion';
 import PlaceOnMapQuestion from '../../ui/components/Questionaire/PlaceOnMapQuestion';
 import ChooseCategoryQuestion from '../../ui/components/Questionaire/ChooseCategoryQuestion';
+import UnitQuantityQuestion from '../../ui/components/Questionaire/UnitQuantityQuestion';
 
 const hashSchema = (schema: SimpleSchema): string | null => {
   if (!schema || !SimpleSchema.isSimpleSchema(schema)) {
@@ -54,6 +55,8 @@ export const translateAcFormatToUniforms = (schema: SimpleSchema, prefix: string
 
     const typeDefinition = schema.getDefinition(definitionKey, ['type']);
 
+    const accessibility: AccessibilitySchemaExtension | undefined = typeDefinition.accessibility;
+
     if (type === 'boolean') {
       extensions[definitionKey] = extensions[definitionKey] || {};
       extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
@@ -68,16 +71,24 @@ export const translateAcFormatToUniforms = (schema: SimpleSchema, prefix: string
         extensions[definitionKey] = extensions[definitionKey] || {};
         extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
         extensions[definitionKey].uniforms.component = PlaceOnMapQuestion;
+      } else if (hasSchema(typeDefinition, LengthQuantitySchema)) {
+        extensions[definitionKey] = extensions[definitionKey] || {};
+        extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
+        extensions[definitionKey].uniforms.component = UnitQuantityQuestion;
       }
     }
 
-    const accessibility: AccessibilitySchemaExtension | undefined = typeDefinition.accessibility;
     if (accessibility) {
       extensions[definitionKey] = extensions[definitionKey] || {};
       extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
       extensions[definitionKey].uniforms.placeholder = accessibility.example || typeDefinition.label;
+
       if (accessibility.description) {
         extensions[definitionKey].uniforms.help = accessibility.description;
+      }
+
+      if (accessibility.preferredUnit) {
+        extensions[definitionKey].uniforms.preferredUnit = accessibility.preferredUnit;
       }
     }
 
