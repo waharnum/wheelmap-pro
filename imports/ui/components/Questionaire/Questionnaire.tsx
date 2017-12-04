@@ -769,6 +769,7 @@ export default styled(Questionnaire) `
       flex-grow: 1;
       position: relative;
       display: flex;
+      padding-top: 16px;
 
       &:after {
         content: " ß";
