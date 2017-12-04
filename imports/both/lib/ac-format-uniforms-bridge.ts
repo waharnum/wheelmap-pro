@@ -6,7 +6,7 @@ SimpleSchema.extendOptions(['uniforms']);
 import {isDefinitionTypeArray, isDefinitionTypeSchema} from './simpl-schema-filter';
 import YesNoQuestion from '../../ui/components/Questionaire/YesNoQuestion';
 import PlaceOnMapQuestion from '../../ui/components/Questionaire/PlaceOnMapQuestion';
-
+import ChooseCategoryQuestion from '../../ui/components/Questionaire/ChooseCategoryQuestion';
 
 const hashSchema = (schema: SimpleSchema): string | null => {
   if (!schema || !SimpleSchema.isSimpleSchema(schema)) {
@@ -59,9 +59,11 @@ export const translateAcFormatToUniforms = (schema: SimpleSchema, prefix: string
       extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
       extensions[definitionKey].uniforms.component = YesNoQuestion;
       extensions[definitionKey].uniforms.selfSubmitting = true;
-    }
-
-    if (!type) {
+    } else if (type === 'string' && name === 'category') { // TODO find a better way of identifying this
+      extensions[definitionKey] = extensions[definitionKey] || {};
+      extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
+      extensions[definitionKey].uniforms.component = ChooseCategoryQuestion;
+    } else if (!type) {
       if (hasSchema(typeDefinition, PointGeometrySchema)) {
         extensions[definitionKey] = extensions[definitionKey] || {};
         extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
