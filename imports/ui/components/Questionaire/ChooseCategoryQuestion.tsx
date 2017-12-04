@@ -2,14 +2,14 @@ import {t} from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
 import connectField from 'uniforms/connectField';
-import {set, uniq, flatten} from 'lodash';
+import {set} from 'lodash';
 
 import {IStyledComponent} from '../IStyledComponent';
 import {IAsyncDataProps, reactiveSubscription} from '../reactiveModelSubscription';
 import {wrapDataComponent} from '../AsyncDataComponent';
 import {IOrganization} from '../../../both/api/organizations/organizations';
 import {Categories, ICategory} from '../../../both/api/categories/categories';
-import {readUserLanguages} from '../../../../client/i18n';
+import {getUserLanguages} from '../../../../client/i18n';
 
 
 type Props = {
@@ -22,19 +22,10 @@ type State = {
   selectedCategories: Array<ICategory>,
 };
 
-// TODO move to i18n helper
-// Returns the locale as language code without country code etc. removed
-// (for example "en" if given "en-GB").
-function localeWithoutCountry(locale: string): string {
-  return locale.substring(0, 2);
-}
-
-// TODO make sure the matched language is first in this list
-const languagesWithFallback = uniq(flatten(readUserLanguages().map(l => [l, localeWithoutCountry(l)])));
 
 // gets the translations for a given category using the browser language
-const getTranslation = (cat: ICategory): string => {
-  for (const lang of languagesWithFallback) {
+const getCategoryTranslation = (cat: ICategory): string => {
+  for (const lang of getUserLanguages()) {
     if (cat.translations._id[lang]) {
       return cat.translations._id[lang];
     }
@@ -89,7 +80,7 @@ const CategoryChooserQuestion = class extends React.Component<IStyledComponent &
                     return (
                       <option key={category._id}
                               value={category._id}>
-                        {getTranslation(category)}
+                        {getCategoryTranslation(category)}
                       </option>
                     );
                   })
