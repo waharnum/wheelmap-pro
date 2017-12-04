@@ -764,6 +764,34 @@ export default styled(Questionnaire) `
     input::-ms-clear {
       display: none;
     }
+    
+    section.inputFieldWrapper {
+      flex: 1;
+      display: flex;
+      border-bottom: 2px solid ${colors.shadowGrey};
+      
+      input {
+        border: none;
+        flex-shrink: 1;
+        width: 50%;
+        box-sizing: border-box;
+      }
+      
+      span {
+        flex-grow: 1;
+        font-size: 21px;
+        font-weight: 400;
+        vertical-align: baseline;
+        line-height: 1.25em;
+        padding-top: 12px;
+        color: ${colors.linkBlue};
+      }
+      
+      // not supported for IE or edge
+      &:focus-within {
+        border-bottom: 2px solid ${colors.linkBlue};
+      }
+    }
 
     span.selectWrapper {
       flex-grow: 1;
