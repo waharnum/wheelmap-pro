@@ -8,6 +8,12 @@ export function registerSchemaForI18n(schema: SimpleSchema) {
   registeredSchemas.push(schema);
 }
 
+// Returns the locale as language code without country code etc. removed
+// (for example "en" if given "en-GB").
+export function localeWithoutCountry(locale: string): string {
+  return locale.substring(0, 2);
+}
+
 export function localeChanged(locale: string) {
   registeredSchemas.forEach((schema) => {
     const orig = (schema as any)._origSchema || (schema as any)._schema;
@@ -18,7 +24,7 @@ export function localeChanged(locale: string) {
       const origNode = orig[key];
       const resultNode = result[key];
 
-      // TODO rename more properties
+      // TODO translate more properties
       if (origNode.label) {
         resultNode.label = gettext(origNode.label);
       }
