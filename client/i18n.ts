@@ -1,16 +1,32 @@
-import {useLocale, addLocale} from 'c-3po';
-import * as moment from 'moment';
 import {T9n} from 'meteor/softwarerero:accounts-t9n';
+import * as moment from 'moment';
+import {uniq, flatten} from 'lodash';
+import {useLocale, addLocale} from 'c-3po';
+import {localeWithoutCountry} from '../imports/both/i18n/i18n';
 import {currentLocale as mapLocale} from 'wheelmap-react/lib/lib/i18n';
 
+
 // Returns an expanded list of preferred locales.
-export function readUserLanguages() {
+function getBrowserLanguages() {
   // Note that some browsers don't support navigator.languages
   return window.navigator.languages || [];
 }
 
+export let bestMatchClientLocale = 'en';
+
+export const getUserLanguages = () => {
+  return uniq(
+    // ensure that the best match locale is the first in the list
+    [bestMatchClientLocale].concat(
+      flatten(
+        getBrowserLanguages().map(l => [l, localeWithoutCountry(l)]),
+      ),
+    ),
+  );
+};
+
 export function preparei18n(callback: Function) {
-  const languages = readUserLanguages();
+  const languages = getBrowserLanguages();
 
   Meteor.call('i18n.getBestMatch', {languages}, (error, result) => {
     if (!error) {
@@ -24,12 +40,17 @@ export function preparei18n(callback: Function) {
       moment.locale(momentLocale);
 
       T9n.setLanguage(result.language || 'en');
+
+      bestMatchClientLocale = result.language || 'en';
+
       callback(result.language);
     } else {
       console.error('Failed loading i18n!', error);
       moment.locale('en-us');
       T9n.setLanguage('en');
       (mapLocale as any) = 'en';
+      bestMatchClientLocale = 'en';
+
       callback('en');
     }
   });
