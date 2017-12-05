@@ -98,6 +98,11 @@ const deriveTreeFromSchema = (schema: SimpleSchema,
   return compact(nodes);
 };
 
+const calculateTotalDurationFromCheckedTree = (index: { [key: string]: CheckBoxTreeNode }, checked: Array<string>): number => {
+  let duration = 0;
+  return duration;
+};
+
 type Props = {
   onChange?: (value: Array<string> | null) => void,
   name?: string,
@@ -110,6 +115,7 @@ type State = {
   nodes: Array<CheckBoxTreeNode>,
   checked: Array<string>,
   expanded: Array<string>,
+  duration: number,
 };
 
 class SubSchemaChooser extends React.Component<Props, State> {
@@ -117,6 +123,7 @@ class SubSchemaChooser extends React.Component<Props, State> {
     nodes: [],
     checked: [],
     expanded: [],
+    duration: 0,
   };
 
   private filterField: HTMLInputElement | null;
@@ -140,7 +147,10 @@ class SubSchemaChooser extends React.Component<Props, State> {
       const nodes = deriveTreeFromSchema(nextProps.schema, this.required, this.index);
       this.setState({nodes});
     }
-    this.setState({checked: this.ensureRequiredAreIncluded(nextProps.value || [])});
+    const checked = this.ensureRequiredAreIncluded(nextProps.value || [], 'stripNonLeafs');
+    const duration = calculateTotalDurationFromCheckedTree(this.index, checked);
+
+    this.setState({checked, duration});
   }
 
   public render() {
@@ -157,7 +167,7 @@ class SubSchemaChooser extends React.Component<Props, State> {
           expanded={this.state.expanded}
           onCheck={(checked: Array<string>) => {
             if (this.props.onChange) {
-              this.props.onChange(this.ensureRequiredAreIncluded(checked));
+              this.props.onChange(this.ensureRequiredAreIncluded(checked, 'includeNonLeaf'));
             }
           }}
           onExpand={(expanded: Array<string>) => this.setState({expanded})}
@@ -222,22 +232,36 @@ class SubSchemaChooser extends React.Component<Props, State> {
     return results;
   }
 
-  ensureRequiredAreIncluded(selected: Array<string>): Array<string> {
-    const alreadyContained: { [key: string]: boolean } = {};
-    const withParents: Array<string> = [];
-    for (const field of selected) {
-      for (const path of SubSchemaChooser.buildPathToObject(field)) {
+  ensureRequiredAreIncluded(selected: Array<string>, mode: 'includeNonLeaf' | 'stripNonLeafs'): Array<string> {
+    const modified: Array<string> = [];
+
+    if (mode === 'includeNonLeaf') {
+      const alreadyContained: { [key: string]: boolean } = {};
+      for (const path of selected) {
+        for (const partialPath of SubSchemaChooser.buildPathToObject(path)) {
+          if (alreadyContained[partialPath] !== true) {
+            alreadyContained[partialPath] = true;
+            modified.push(partialPath);
+          }
+        }
         if (alreadyContained[path] !== true) {
           alreadyContained[path] = true;
-          withParents.push(path);
+          modified.push(path);
         }
       }
-      withParents.push(field);
+    } else if (mode === 'stripNonLeafs') {
+      for (const path of selected) {
+        const treeNode = this.index[path];
+        // only keep leaf nodes
+        if (treeNode && (!treeNode.children || treeNode.children.length === 0)) {
+          modified.push(path);
+        }
+      }
     }
 
     // the correct behavior would be to only include the `required`s if their parent is selected
     // and to preserve the order, hooray
-    return union(withParents, this.required);
+    return union(modified, this.required);
   }
 };
 
