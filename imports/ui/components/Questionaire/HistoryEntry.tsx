@@ -46,7 +46,8 @@ export default styled(HistoryEntry) `
     margin-top: 8px;
     font-weight: 300;
     position: relative;
-    &::before {
+    
+    &:before {
       content: open-quote;
     }
     &:after {
@@ -62,12 +63,12 @@ export default styled(HistoryEntry) `
   &.qhe-has-interaction {
     cursor: pointer;
     
-    q.answer:after {
+    &:after {
       transition: color 0.25s ease, opacity 0.25s ease;
       position: relative;
       right: 0;
       padding-left: 8px;
-      top: -0.1em;
+      top: 8px;
       content: 'e';
       font-size: 16px;
       text-align: center;
@@ -80,7 +81,7 @@ export default styled(HistoryEntry) `
       opacity: 0.75;
       box-shadow: inset 0 -1px 0 0 ${colors.shadowGrey}, 0 -5px 10px 0 ${colors.shadowGrey};
       
-      q.answer:after {
+      &:after {
         color: ${colors.linkBlue};
         opacity: 1.0;
       }
