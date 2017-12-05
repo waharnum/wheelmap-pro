@@ -1,4 +1,5 @@
 import SimpleSchema from 'simpl-schema';
+import {assign, update} from 'lodash';
 import {AccessibilitySchemaExtension, LengthQuantitySchema, PointGeometrySchema} from '@sozialhelden/ac-format';
 
 SimpleSchema.extendOptions(['uniforms']);
@@ -28,6 +29,10 @@ const hashSchema = (schema: SimpleSchema): string | null => {
   }, '');
   (schema as any).__hash = hash;
   return hash;
+};
+
+const assignUpdate = (object: {}, path: string | string[], value: {}) => {
+  update(object, path, (orig) => orig ? assign(orig, value) : value);
 };
 
 const hasSchema = (typeDefinition: EvaluatedSchemaDefinition, schema: SimpleSchema) => {
@@ -76,39 +81,38 @@ export const translateAcFormatToUniforms = (rootSchema: SimpleSchema) => {
     const extensions: { [key: string]: any } = {};
 
     const type = schema.getQuickTypeForKey(definitionKey);
-    const definition = schema.getDefinition(definitionKey, ['type', 'accessibility']);
+    const definition = schema.getDefinition(definitionKey, ['label', 'type', 'accessibility']);
     const accessibility: AccessibilitySchemaExtension | undefined = definition.accessibility;
 
     if (type === 'boolean') {
-      extensions[definitionKey] = extensions[definitionKey] || {};
-      extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
-      extensions[definitionKey].uniforms.component = YesNoQuestion;
-      extensions[definitionKey].uniforms.selfSubmitting = true;
+      assignUpdate(extensions, [definitionKey, 'uniforms'], {
+        component: YesNoQuestion,
+        selfSubmitting: true,
+      });
     } else if (type === 'string' && definitionKey === 'category') { // TODO find a better way of identifying this
-      extensions[definitionKey] = extensions[definitionKey] || {};
-      extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
-      extensions[definitionKey].uniforms.component = ChooseCategoryQuestion;
+      assignUpdate(extensions, [definitionKey, 'uniforms'], {
+        component: ChooseCategoryQuestion,
+      });
     } else if (!type) {
       if (hasSchema(definition, PointGeometrySchema)) {
-        extensions[definitionKey] = extensions[definitionKey] || {};
-        extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
-        extensions[definitionKey].uniforms.component = PlaceOnMapQuestion;
+        assignUpdate(extensions, [definitionKey, 'uniforms'], {
+          component: PlaceOnMapQuestion,
+        });
       } else if (hasSchema(definition, LengthQuantitySchema)) {
-        extensions[definitionKey] = extensions[definitionKey] || {};
-        extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
-        extensions[definitionKey].uniforms.component = UnitQuantityQuestion;
+        assignUpdate(extensions, [definitionKey, 'uniforms'], {
+          component: UnitQuantityQuestion,
+        });
       }
     }
 
     if (accessibility) {
-      extensions[definitionKey] = extensions[definitionKey] || {};
-      extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
-      extensions[definitionKey].uniforms.placeholder = accessibility.example || definition.label;
+      assignUpdate(extensions, [definitionKey, 'uniforms'], {
+        placeholder: accessibility.example || definition.label,
+      });
 
       if (accessibility.description) {
         extensions[definitionKey].uniforms.help = accessibility.description;
       }
-
       if (accessibility.preferredUnit) {
         extensions[definitionKey].uniforms.preferredUnit = accessibility.preferredUnit;
       }
