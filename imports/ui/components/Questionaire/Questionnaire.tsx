@@ -419,6 +419,11 @@ class Questionnaire extends React.Component<Props, State> {
                      }
                    }}>
             <AutoField
+              inputRef={ref => {
+                if (ref) {
+                  ref.focus();
+                }
+              }}
               label={false}
               name={simpleSchemaPathToObjectPath(field, this.state.arrayIndexes, {wrapInArray: false})}>
             </AutoField>
