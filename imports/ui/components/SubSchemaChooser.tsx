@@ -10,6 +10,9 @@ import {t} from 'c-3po';
 import {debounce, union, flatten, compact} from 'lodash';
 import {isDefinitionTypeArray} from '../../both/lib/simpl-schema-filter';
 import {AccessibilitySchemaExtension} from '@sozialhelden/ac-format';
+import {determineDuration, newBlockSwitchOverhead} from '../../both/lib/estimate-schema-duration';
+import moment = require('moment');
+import {stringifyDuration} from '../../both/i18n/duration';
 
 type CheckBoxTreeNode = {
   value: string,
@@ -17,6 +20,7 @@ type CheckBoxTreeNode = {
   children?: Array<CheckBoxTreeNode> | null,
   className?: string,
   disabled?: boolean,
+  duration?: number,
   icon?: React.ReactNode,
   // custom extension
   searchText: string,
@@ -39,6 +43,7 @@ const deriveTreeFromSchema = (schema: SimpleSchema,
 
   const nodes = nodeNames.map((name) => {
     const definitionKey = `${valuePrefix}${name}`;
+    // get fully evaluated schema
     const definition = schema.getDefinition(definitionKey);
     const label = schema.label(definitionKey);
 
@@ -53,33 +58,41 @@ const deriveTreeFromSchema = (schema: SimpleSchema,
     }
 
     if (isDefinitionTypeArray(definition.type)) {
+      const children = deriveTreeFromSchema(schema, required, `${definitionKey}.$`);
+      const duration = !children || children.length === 0 ?
+        determineDuration(schema, definitionKey) : children.reduce((p, v) => p + (v.duration || 0), newBlockSwitchOverhead);
       return {
         value: definitionKey,
         searchText: label.toLowerCase(),
         label: (
           <span className="array-node">
             <span className="tree-label">{label}</span>
-            <span className="field-duration">2s</span>
+            <span className="field-duration">{stringifyDuration(duration)}</span>
           </span>
         ),
-        children: deriveTreeFromSchema(schema, required, definitionKey + '.$'),
+        duration,
+        children,
       };
     } else {
       const children = accessibility && accessibility.inseparable ?
         undefined : deriveTreeFromSchema(schema, required, definitionKey);
+      const duration = !children || children.length === 0 ?
+        determineDuration(schema, definitionKey) : children.reduce((p, v) => p + (v.duration || 0), newBlockSwitchOverhead);
       return {
         value: definitionKey,
         searchText: label.toLowerCase(),
         label: (
           <span className={children && children.length > 0 ? 'object-node' : ''}>
             <span className="tree-label">{label}</span>
-            <span className="field-duration">2s</span>
+            <span className="field-duration">{stringifyDuration(duration)}</span>
           </span>
         ),
+        duration,
         children,
       };
     }
   });
+
   return compact(nodes);
 };
 
