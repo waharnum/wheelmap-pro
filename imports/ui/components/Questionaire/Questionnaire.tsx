@@ -412,7 +412,12 @@ class Questionnaire extends React.Component<Props, State> {
           schema={subSchema}
           model={subModel}>
           <h3 className="question">{this.state.question}</h3>
-          <section className={isSelfSubmitting ? 'value-entry-section ves-inline-field' : 'value-entry-section'}>
+          <section className={isSelfSubmitting ? 'value-entry-section ves-inline-field' : 'value-entry-section'}
+                   ref={(ref: HTMLElement) => {
+                     if (ref) {
+                       ref.scrollIntoView({block: 'end', behavior: 'smooth'});
+                     }
+                   }}>
             <AutoField
               label={false}
               name={simpleSchemaPathToObjectPath(field, this.state.arrayIndexes, {wrapInArray: false})}>
