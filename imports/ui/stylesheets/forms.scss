@@ -17,7 +17,7 @@ label,
   font-size: 16px;
   line-height: 40px;
   text-transform: uppercase;
-  color: $link-blue-darker;
+  color: $link-blue;
   background-color: transparent;
   border-radius: 4px;
   border: none;
@@ -25,7 +25,7 @@ label,
   outline: 0;
 
   &:hover {
-    color: $link-blue;
+    color: $link-blue-darker;
     background-color: transparent;
     box-shadow: none;
   }
@@ -34,7 +34,7 @@ label,
 .btn-default {
 
   &:hover {
-    color: $link-blue-lighter;
+    color: $link-blue-darker;
   }
 }
 
@@ -48,7 +48,7 @@ label,
 
   &:hover {
     color: white;
-    background-color: $link-blue-darker;
+    background-color: $link-blue-lighter;
   }
 }
 
@@ -56,7 +56,7 @@ a.btn-primary,
 a.btn-primary.active,
 a.btn-primary:active,
 a.btn-primary:focus {
-  height: fit-content;
+  // height: fit-content; /*bugs on chrome canary, still experimental css-feature;
 }
 
 .btn-danger,
@@ -89,7 +89,7 @@ a.btn-sm { /* e.g. forgot password */
   padding-left: 0;
 
   &:hover {
-    color: $link-blue-lighter;
+    color: $link-blue-darker;
   }
 }
 
