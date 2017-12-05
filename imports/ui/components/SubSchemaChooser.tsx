@@ -11,7 +11,6 @@ import {debounce, union, flatten, compact} from 'lodash';
 import {isDefinitionTypeArray} from '../../both/lib/simpl-schema-filter';
 import {AccessibilitySchemaExtension} from '@sozialhelden/ac-format';
 import {determineDuration, newBlockSwitchOverhead} from '../../both/lib/estimate-schema-duration';
-import moment = require('moment');
 import {stringifyDuration} from '../../both/i18n/duration';
 
 type CheckBoxTreeNode = {
@@ -20,10 +19,10 @@ type CheckBoxTreeNode = {
   children?: Array<CheckBoxTreeNode> | null,
   className?: string,
   disabled?: boolean,
-  duration?: number,
   icon?: React.ReactNode,
   // custom extension
   searchText: string,
+  duration?: number,
 };
 
 const deriveTreeFromSchema = (schema: SimpleSchema,
