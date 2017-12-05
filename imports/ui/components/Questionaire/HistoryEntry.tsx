@@ -43,6 +43,9 @@ export default styled(HistoryEntry) `
   
   q.answer {
     quotes: '"' '"' "'" "'";
+    margin-top: 8px;
+    font-weight: 300;
+    position: relative;
     &::before {
       content: open-quote;
     }
@@ -55,17 +58,11 @@ export default styled(HistoryEntry) `
     width: 100%;
     font-weight: 800;
   }
-
-  span.answer {
-    margin-top: 8px;
-    font-weight: 300;
-    position: relative;
-  }
   
   &.qhe-has-interaction {
     cursor: pointer;
     
-    span.answer:after {
+    q.answer:after {
       transition: color 0.25s ease, opacity 0.25s ease;
       position: relative;
       right: 0;
@@ -83,7 +80,7 @@ export default styled(HistoryEntry) `
       opacity: 0.75;
       box-shadow: inset 0 -1px 0 0 ${colors.shadowGrey}, 0 -5px 10px 0 ${colors.shadowGrey};
       
-      span.answer:after {
+      q.answer:after {
         color: ${colors.linkBlue};
         opacity: 1.0;
       }
