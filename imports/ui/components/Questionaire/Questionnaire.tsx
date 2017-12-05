@@ -1016,7 +1016,8 @@ export default styled(Questionnaire) `
       figure.duration {
         padding-right: 4px;
         font-weight: 800;
-        opacity: 0.5;
+        opacity: 0.5;        
+        white-space: nowrap;
       }
 
       small {
