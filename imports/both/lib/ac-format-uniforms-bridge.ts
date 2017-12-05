@@ -35,12 +35,13 @@ const hasSchema = (typeDefinition: EvaluatedSchemaDefinition, schema: SimpleSche
   return hashSchema(schema) === hashSchema(typeDefinition.type[0].type as SimpleSchema);
 };
 
-export const translateAcFormatToUniforms = (schema: SimpleSchema, prefix: string = '') => {
+export const forEachKeyInSchemas = (schema: SimpleSchema,
+                                    callback: (schema: SimpleSchema, key: string) => void,
+                                    prefix: string = '') => {
   const nodeNames: Array<string> = schema.objectKeys(prefix);
-
   if (!nodeNames) {
-    console.log('Could not find nodes for', prefix);
-    return [];
+    console.warn('Could not find nodes for', prefix);
+    return;
   }
 
   let valuePrefix = '';
@@ -48,30 +49,53 @@ export const translateAcFormatToUniforms = (schema: SimpleSchema, prefix: string
     valuePrefix = `${prefix}.`;
   }
 
-  const extensions: { [key: string]: any } = {};
   nodeNames.forEach((name) => {
     const definitionKey = `${valuePrefix}${name}`;
-    const type = schema.getQuickTypeForKey(definitionKey);
-
     const typeDefinition = schema.getDefinition(definitionKey, ['type']);
 
-    const accessibility: AccessibilitySchemaExtension | undefined = typeDefinition.accessibility;
+    callback(schema, definitionKey);
+
+    if (isDefinitionTypeSchema(typeDefinition.type)) {
+      forEachKeyInSchemas(typeDefinition.type[0].type as SimpleSchema, callback, '');
+    } else if (isDefinitionTypeArray(typeDefinition.type)) {
+      const arrayKey = definitionKey + '.$';
+      const arrayFieldDefinition = schema.getDefinition(arrayKey);
+      if (isDefinitionTypeSchema(arrayFieldDefinition.type)) {
+        forEachKeyInSchemas(arrayFieldDefinition.type[0].type as SimpleSchema, callback, '');
+      } else {
+        forEachKeyInSchemas(schema, callback, arrayKey);
+      }
+    } else {
+      forEachKeyInSchemas(schema, callback, definitionKey);
+    }
+  });
+};
+
+export const translateAcFormatToUniforms = (rootSchema: SimpleSchema) => {
+  forEachKeyInSchemas(rootSchema, (schema, definitionKey) => {
+    const extensions: { [key: string]: any } = {};
+
+    const type = schema.getQuickTypeForKey(definitionKey);
+    const definition = schema.getDefinition(definitionKey, ['type', 'accessibility']);
+    const accessibility: AccessibilitySchemaExtension | undefined = definition.accessibility;
+
+    console.log('definitionKey', definitionKey, type, accessibility);
 
     if (type === 'boolean') {
       extensions[definitionKey] = extensions[definitionKey] || {};
       extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
       extensions[definitionKey].uniforms.component = YesNoQuestion;
       extensions[definitionKey].uniforms.selfSubmitting = true;
-    } else if (type === 'string' && name === 'category') { // TODO find a better way of identifying this
+    } else if (type === 'string' && definitionKey === 'category') { // TODO find a better way of identifying this
       extensions[definitionKey] = extensions[definitionKey] || {};
       extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
       extensions[definitionKey].uniforms.component = ChooseCategoryQuestion;
     } else if (!type) {
-      if (hasSchema(typeDefinition, PointGeometrySchema)) {
+      if (hasSchema(definition, PointGeometrySchema)) {
         extensions[definitionKey] = extensions[definitionKey] || {};
         extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
         extensions[definitionKey].uniforms.component = PlaceOnMapQuestion;
-      } else if (hasSchema(typeDefinition, LengthQuantitySchema)) {
+      } else if (hasSchema(definition, LengthQuantitySchema)) {
         extensions[definitionKey] = extensions[definitionKey] || {};
         extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
         extensions[definitionKey].uniforms.component = UnitQuantityQuestion;
@@ -81,7 +105,7 @@ export const translateAcFormatToUniforms = (schema: SimpleSchema, prefix: string
     if (accessibility) {
       extensions[definitionKey] = extensions[definitionKey] || {};
       extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
-      extensions[definitionKey].uniforms.placeholder = accessibility.example || typeDefinition.label;
+      extensions[definitionKey].uniforms.placeholder = accessibility.example || definition.label;
 
       if (accessibility.description) {
         extensions[definitionKey].uniforms.help = accessibility.description;
@@ -92,20 +116,6 @@ export const translateAcFormatToUniforms = (schema: SimpleSchema, prefix: string
       }
     }
 
-    if (isDefinitionTypeSchema(typeDefinition.type)) {
-      translateAcFormatToUniforms(typeDefinition.type[0].type as SimpleSchema, '');
-    } else if (isDefinitionTypeArray(typeDefinition.type)) {
-      const arrayKey = definitionKey + '.$';
-      const arrayFieldDefinition = schema.getDefinition(arrayKey);
-      if (isDefinitionTypeSchema(arrayFieldDefinition.type)) {
-        translateAcFormatToUniforms(arrayFieldDefinition.type[0].type as SimpleSchema, '');
-      } else {
-        translateAcFormatToUniforms(schema, arrayKey);
-      }
-    } else {
-      translateAcFormatToUniforms(schema, definitionKey);
-    }
+    schema.extend(extensions);
   });
-
-  schema.extend(extensions);
 };
