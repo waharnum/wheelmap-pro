@@ -44,14 +44,19 @@ const hasSchema = (typeDefinition: SchemaDefinition, schema: SimpleSchema) => {
   return hashSchema(schema) === hashSchema(type.definitions[0].type as SimpleSchema);
 };
 
+type ForEachKeyInSchemasCallbackFunction = (schema: SimpleSchema,
+                                            path: string,
+                                            pathFromRoot: string,
+                                            hasChildren: boolean) => void;
+
 export const forEachKeyInSchemas = (schema: SimpleSchema,
-                                    callback: (schema: SimpleSchema, key: string, keyFromRoot: string) => void,
+                                    callback: ForEachKeyInSchemasCallbackFunction,
                                     prefix: string = '',
-                                    keyFromRootPrefix: string = '') => {
+                                    rootPathPrefix: string = ''): boolean => {
   const nodeNames: Array<string> = schema.objectKeys(prefix);
   if (!nodeNames) {
     console.warn('Could not find nodes for', prefix);
-    return;
+    return false;
   }
 
   let valuePrefix = '';
@@ -59,37 +64,39 @@ export const forEachKeyInSchemas = (schema: SimpleSchema,
     valuePrefix = `${prefix}.`;
   }
   let rootPrefix = '';
-  if (keyFromRootPrefix.length > 0) {
-    rootPrefix = `${keyFromRootPrefix}.`;
+  if (rootPathPrefix.length > 0) {
+    rootPrefix = `${rootPathPrefix}.`;
   }
 
   nodeNames.forEach((name) => {
-    const definitionKey = `${valuePrefix}${name}`;
-    const rootKey = `${rootPrefix}${name}`;
-    const typeDefinition = schema.getDefinition(definitionKey, ['type']);
-    const origDefinition = schema.schema(definitionKey);
+    const definitionPath = `${valuePrefix}${name}`;
+    const pathFromRoot = `${rootPrefix}${name}`;
+    const typeDefinition = schema.getDefinition(definitionPath, ['type']);
+    const origDefinition = schema.schema(definitionPath);
 
-    callback(schema, definitionKey, rootKey);
+    let hasChildren = false;
+    if (!origDefinition || !origDefinition.accessibility || !origDefinition.accessibility.inseparable) {
+      if (isDefinitionTypeSchema(typeDefinition.type)) {
+        hasChildren = forEachKeyInSchemas(typeDefinition.type[0].type as SimpleSchema, callback, '', pathFromRoot);
+      } else if (isDefinitionTypeArray(typeDefinition.type)) {
+        const arrayPath = definitionPath + '.$';
+        const rootArrayPath = pathFromRoot + '.$';
 
-    if (origDefinition && origDefinition.accessibility && origDefinition.accessibility.inseparable) {
-      return;
-    }
-
-    if (isDefinitionTypeSchema(typeDefinition.type)) {
-      forEachKeyInSchemas(typeDefinition.type[0].type as SimpleSchema, callback, '', rootKey);
-    } else if (isDefinitionTypeArray(typeDefinition.type)) {
-      const arrayKey = definitionKey + '.$';
-      const rootArrayKey = rootKey + '.$';
-      const arrayFieldDefinition = schema.getDefinition(arrayKey);
-      if (isDefinitionTypeSchema(arrayFieldDefinition.type)) {
-        forEachKeyInSchemas(arrayFieldDefinition.type[0].type as SimpleSchema, callback, '', rootArrayKey);
+        const arrayFieldDefinition = schema.getDefinition(arrayPath);
+        if (isDefinitionTypeSchema(arrayFieldDefinition.type)) {
+          hasChildren = forEachKeyInSchemas(arrayFieldDefinition.type[0].type as SimpleSchema, callback, '', rootArrayPath);
+        } else {
+          hasChildren = forEachKeyInSchemas(schema, callback, arrayPath, rootArrayPath);
+        }
       } else {
-        forEachKeyInSchemas(schema, callback, arrayKey, rootArrayKey);
+        hasChildren = forEachKeyInSchemas(schema, callback, definitionPath, pathFromRoot);
       }
-    } else {
-      forEachKeyInSchemas(schema, callback, definitionKey, rootKey);
     }
+
+    callback(schema, definitionPath, pathFromRoot, hasChildren);
   });
+
+  return nodeNames.length > 0;
 };
 
 export const translateAcFormatToUniforms = (rootSchema: SimpleSchema) => {
