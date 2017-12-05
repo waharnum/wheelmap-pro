@@ -14,7 +14,7 @@ type SchemaType =
   | SimpleSchema
   | SimpleSchemaGroup;
 
-type SimpleSchemaGroup = { definitions: Array<SchemaType> };
+type SimpleSchemaGroup = { definitions: Array<{ type: SchemaType }> };
 
 interface CleanOption {
   filter?: boolean;
@@ -67,20 +67,18 @@ interface SchemaDefinition {
 
 interface EvaluatedSchemaDefinition {
   type: Array<{ type: SchemaType }>;
-  label?: string | Function;
-  optional?: boolean | Function;
-  min?: number | boolean | Date | Function;
-  max?: number | boolean | Date | Function;
-  minCount?: number | Function;
-  maxCount?: number | Function;
-  allowedValues?: any[] | Function;
+  label?: string;
+  optional?: boolean;
+  min?: number | boolean | Date;
+  max?: number | boolean | Date;
+  minCount?: number;
+  maxCount?: number;
+  allowedValues?: any[];
   decimal?: boolean;
   exclusiveMax?: boolean;
   exclusiveMin?: boolean;
   regEx?: RegExp | RegExp[];
-  custom?: ValidationFunction;
   blackbox?: boolean;
-  autoValue?: Function;
   defaultValue?: any;
   trim?: boolean;
 
