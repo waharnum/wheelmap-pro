@@ -665,14 +665,15 @@ class Questionnaire extends React.Component<Props, State> {
           <footer className="questionnaire-status">
             <span className="time-left">
               <figure className="duration">{stringifyDuration(this.state.remainingDuration)}</figure>
-              <small>left to complete</small>
-              <small className="more-specific">this place</small>
+              <small>left</small>
             </span>
             <span className="footer-actions">
-              <button disabled={['welcome', 'done'].includes(this.state.mainContent)}
+              <button className="stop-survey"
+                      disabled={['welcome', 'done'].includes(this.state.mainContent)}
                       onClick={this.stopSurvey}>{t`Stop here`}</button>
-              <button disabled={['welcome', 'done'].includes(this.state.mainContent)}
-                      onClick={this.exitBlock}>{t`Skip block`}</button>
+              <button className="complete-block"
+                      disabled={['welcome', 'done'].includes(this.state.mainContent)}
+                      onClick={this.exitBlock}>{t`Complete ${headers.path || t`block`}`}</button>
             </span>
           </footer>
         </div>
@@ -1007,7 +1008,7 @@ export default styled(Questionnaire) `
 
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 
     span.time-left {
       display: flex;
@@ -1030,7 +1031,8 @@ export default styled(Questionnaire) `
     span.footer-actions {
       display: flex;
       flex-direction: row-reverse;
-
+      overflow: hidden;
+      min-width: 0;
 
       button {
         padding: 0px 8px;
@@ -1041,6 +1043,14 @@ export default styled(Questionnaire) `
         letter-spacing: -0.33px;
         border: none;
         transition: color 0.25s, background-color 0.25s;
+        white-space: nowrap;
+        min-width: 0;    
+        overflow: hidden;
+        
+        &.complete-block {    
+          text-overflow: ellipsis;
+          flex-shrink: 100;
+        }
 
         &:hover,
         &:active {
