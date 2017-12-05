@@ -19,9 +19,9 @@ const HistoryEntry = class extends React.Component<IStyledComponent & Props> {
         className={`questionnaire-history-entry ${this.props.className || ''} ${this.props.onClick ? 'qhe-has-interaction' : ''}`}
         onClick={this.props.onClick}>
         <h3 className="question">{this.props.question}</h3>
-        <span className="answer">{
+        <q className="answer">{
           (ValueComponent) ? <ValueComponent value={this.props.value}/> : String(this.props.value)
-        }</span>
+        }</q>
       </section>
     );
   }
@@ -36,9 +36,19 @@ export default styled(HistoryEntry) `
   transition: opacity 0.25s ease;
   
   h3.question,
-  span.answer {
+  q.answer {
     font-size: 20px;
     line-height: 1.25em;
+  }
+  
+  q.answer {
+    quotes: '"' '"' "'" "'";
+    &::before {
+      content: open-quote;
+    }
+    &:after {
+      content: close-quote;
+    }
   }
 
   h3.question {
