@@ -1,6 +1,9 @@
 import SimpleSchema from 'simpl-schema';
 import {assign, update} from 'lodash';
-import {AccessibilitySchemaExtension, LengthQuantitySchema, PointGeometrySchema} from '@sozialhelden/ac-format';
+import {
+  AccessibilitySchemaExtension, LengthQuantitySchema, PlaceInfoSchema, PlacePropertiesSchema,
+  PointGeometrySchema,
+} from '@sozialhelden/ac-format';
 
 SimpleSchema.extendOptions(['uniforms']);
 
@@ -38,7 +41,7 @@ const assignUpdate = (object: {}, path: string | string[], value: {}) => {
 const hasSchema = (typeDefinition: SchemaDefinition, schema: SimpleSchema) => {
   const type = typeDefinition.type as SimpleSchemaGroup;
   // as schema instances are wildly different and get duplicated all the time, we hash their keys&types and go with that
-  return hashSchema(schema) === hashSchema(type.definitions[0] as SimpleSchema);
+  return hashSchema(schema) === hashSchema(type.definitions[0].type as SimpleSchema);
 };
 
 export const forEachKeyInSchemas = (schema: SimpleSchema,
@@ -90,7 +93,7 @@ export const translateAcFormatToUniforms = (rootSchema: SimpleSchema) => {
         component: YesNoQuestion,
         selfSubmitting: true,
       });
-    } else if (type === 'string' && definitionKey === 'category') { // TODO find a better way of identifying this
+    } else if (type === 'string' && definitionKey === 'category') {
       assignUpdate(extensions, [definitionKey, 'uniforms'], {
         component: ChooseCategoryQuestion,
       });
