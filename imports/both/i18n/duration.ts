@@ -24,6 +24,10 @@ export function stringifyDuration(durationInSeconds: number) {
     {value: duration.seconds(), unit: 'seconds'},
   ];
 
+  if (durationInSeconds <= 1) {
+    return `0${translatedShortUnit['seconds']}`;
+  }
+
   const shortDuration = flow(
     // drop the most significant parts with a value of 0
     dropWhile((part) => part.value === 0),
@@ -34,7 +38,6 @@ export function stringifyDuration(durationInSeconds: number) {
     map((part) => `${part.value}${translatedShortUnit[part.unit]}`),
     join(' '),
   );
-
 
   return shortDuration(allParts);
 };
