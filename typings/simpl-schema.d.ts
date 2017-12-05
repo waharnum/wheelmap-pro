@@ -11,7 +11,10 @@ type SchemaType =
   | Array<any>
   | SchemaDefinition
   | Date
-  | SimpleSchema;
+  | SimpleSchema
+  | SimpleSchemaGroup;
+
+type SimpleSchemaGroup = { definitions: Array<SchemaType> };
 
 interface CleanOption {
   filter?: boolean;
@@ -37,6 +40,7 @@ interface ValidationFunctionSelf<T> {
 }
 
 type ValidationFunction = (this: ValidationFunctionSelf<any>) => string | undefined;
+
 
 interface SchemaDefinition {
   type: SchemaType;
