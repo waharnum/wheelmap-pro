@@ -45,8 +45,9 @@ const hasSchema = (typeDefinition: SchemaDefinition, schema: SimpleSchema) => {
 };
 
 export const forEachKeyInSchemas = (schema: SimpleSchema,
-                                    callback: (schema: SimpleSchema, key: string) => void,
-                                    prefix: string = '') => {
+                                    callback: (schema: SimpleSchema, key: string, keyFromRoot: string) => void,
+                                    prefix: string = '',
+                                    keyFromRootPrefix: string = '') => {
   const nodeNames: Array<string> = schema.objectKeys(prefix);
   if (!nodeNames) {
     console.warn('Could not find nodes for', prefix);
@@ -57,29 +58,36 @@ export const forEachKeyInSchemas = (schema: SimpleSchema,
   if (prefix.length > 0) {
     valuePrefix = `${prefix}.`;
   }
+  let rootPrefix = '';
+  if (keyFromRootPrefix.length > 0) {
+    rootPrefix = `${keyFromRootPrefix}.`;
+  }
 
   nodeNames.forEach((name) => {
     const definitionKey = `${valuePrefix}${name}`;
+    const rootKey = `${rootPrefix}${name}`;
     const typeDefinition = schema.getDefinition(definitionKey, ['type']);
     const origDefinition = schema.schema(definitionKey);
 
-    callback(schema, definitionKey);
+    callback(schema, definitionKey, rootKey);
+
     if (origDefinition && origDefinition.accessibility && origDefinition.accessibility.inseparable) {
       return;
     }
 
     if (isDefinitionTypeSchema(typeDefinition.type)) {
-      forEachKeyInSchemas(typeDefinition.type[0].type as SimpleSchema, callback, '');
+      forEachKeyInSchemas(typeDefinition.type[0].type as SimpleSchema, callback, '', rootKey);
     } else if (isDefinitionTypeArray(typeDefinition.type)) {
       const arrayKey = definitionKey + '.$';
+      const rootArrayKey = rootKey + '.$';
       const arrayFieldDefinition = schema.getDefinition(arrayKey);
       if (isDefinitionTypeSchema(arrayFieldDefinition.type)) {
-        forEachKeyInSchemas(arrayFieldDefinition.type[0].type as SimpleSchema, callback, '');
+        forEachKeyInSchemas(arrayFieldDefinition.type[0].type as SimpleSchema, callback, '', rootArrayKey);
       } else {
-        forEachKeyInSchemas(schema, callback, arrayKey);
+        forEachKeyInSchemas(schema, callback, arrayKey, rootArrayKey);
       }
     } else {
-      forEachKeyInSchemas(schema, callback, definitionKey);
+      forEachKeyInSchemas(schema, callback, definitionKey, rootKey);
     }
   });
 };
