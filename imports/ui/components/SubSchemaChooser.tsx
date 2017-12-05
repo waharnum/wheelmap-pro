@@ -27,6 +27,7 @@ type CheckBoxTreeNode = {
 
 const deriveTreeFromSchema = (schema: SimpleSchema,
                               required: Array<string>,
+                              index: { [key: string]: CheckBoxTreeNode },
                               prefix: string = ''): Array<CheckBoxTreeNode> => {
   const nodeNames: Array<string> = schema.objectKeys(prefix);
 
@@ -57,10 +58,10 @@ const deriveTreeFromSchema = (schema: SimpleSchema,
     }
 
     if (isDefinitionTypeArray(definition.type)) {
-      const children = deriveTreeFromSchema(schema, required, `${definitionKey}.$`);
+      const children = deriveTreeFromSchema(schema, required, index, `${definitionKey}.$`);
       const duration = !children || children.length === 0 ?
         determineDuration(schema, definitionKey) : children.reduce((p, v) => p + (v.duration || 0), newBlockSwitchOverhead);
-      return {
+      index[definitionKey] = {
         value: definitionKey,
         searchText: label.toLowerCase(),
         label: (
@@ -74,10 +75,10 @@ const deriveTreeFromSchema = (schema: SimpleSchema,
       };
     } else {
       const children = accessibility && accessibility.inseparable ?
-        undefined : deriveTreeFromSchema(schema, required, definitionKey);
+        undefined : deriveTreeFromSchema(schema, required, index, definitionKey);
       const duration = !children || children.length === 0 ?
         determineDuration(schema, definitionKey) : children.reduce((p, v) => p + (v.duration || 0), newBlockSwitchOverhead);
-      return {
+      index[definitionKey] = {
         value: definitionKey,
         searchText: label.toLowerCase(),
         label: (
@@ -90,6 +91,8 @@ const deriveTreeFromSchema = (schema: SimpleSchema,
         children,
       };
     }
+
+    return index[definitionKey];
   });
 
   return compact(nodes);
@@ -118,21 +121,24 @@ class SubSchemaChooser extends React.Component<Props, State> {
 
   private filterField: HTMLInputElement | null;
   private required: Array<string> = [];
+  private index: { [key: string]: CheckBoxTreeNode } = {};
 
   constructor(props: Props) {
     super(props);
-    this.state.nodes = deriveTreeFromSchema(props.schema, this.required);
+    this.index = {};
+    this.state.nodes = deriveTreeFromSchema(props.schema, this.required, this.index);
     this.state.expanded = props.expanded || [];
-    this.state.checked = this.ensureRequiredAreIncluded(props.value || []);
+    this.state.checked = this.ensureRequiredAreIncluded(props.value || [], 'stripNonLeafs');
     if (props.onChange) {
       props.onChange(this.state.checked);
     }
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    if (this.props.schema != nextProps.schema) {
+    if (this.props.schema !== nextProps.schema) {
       this.required = [];
-      this.setState({nodes: deriveTreeFromSchema(nextProps.schema, this.required)});
+      const nodes = deriveTreeFromSchema(nextProps.schema, this.required, this.index);
+      this.setState({nodes});
     }
     this.setState({checked: this.ensureRequiredAreIncluded(nextProps.value || [])});
   }
