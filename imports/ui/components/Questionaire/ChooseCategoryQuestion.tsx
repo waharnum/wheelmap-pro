@@ -139,8 +139,6 @@ const CategoryChooserQuestion = class extends React.Component<IStyledComponent &
 
     categoryTree.unshift(props.model.filter(isRoot));
 
-    console.log(props.value, selectedCategories, categoryTree);
-
     this.setState({
       selectedCategories,
       categoryTree,
