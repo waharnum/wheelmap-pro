@@ -2,12 +2,15 @@ import * as React from 'react';
 import styled from 'styled-components';
 import {AutoForm, AutoField, ErrorsField, SubmitField} from 'uniforms-bootstrap3';
 import {t} from 'c-3po';
-import {extend, get, pick, set, concat, sample} from 'lodash';
+import {extend, get, pick, set, concat, sample, isEqual} from 'lodash';
 
 import {colors} from '../../stylesheets/colors';
 import {IStyledComponent} from '../IStyledComponent';
 import {pickFieldForAutoForm} from '../../../both/lib/simpl-schema-filter';
 import HistoryEntry from './HistoryEntry';
+import {forEachKeyInSchemas} from '../../../both/lib/ac-format-uniforms-bridge';
+import {determineDuration, newBlockSwitchOverhead} from '../../../both/lib/estimate-schema-duration';
+import {stringifyDuration} from '../../../both/i18n/duration';
 
 
 const affirmativeAnswers: ReadonlyArray<string> = Object.freeze([t`Yes!`, t`Okay!`, t`Sure!`, t`Let's do this!`, t`I'm ready!`]);
@@ -37,6 +40,7 @@ type NextFieldMode = 'nextIndex' | 'exitBlock' | 'skipBlock' | 'stop' | 'history
 
 type State = {
   history: Array<HistoryDataEntry>,
+  remainingDuration: number,
   progress: number,
   currentIndex: number,
   activeField: string | null,
@@ -90,6 +94,7 @@ class Questionnaire extends React.Component<Props, State> {
   public state: State = {
     history: [],
     progress: 0,
+    remainingDuration: 0,
     currentIndex: -1,
     question: '',
     activeField: null,
@@ -103,6 +108,8 @@ class Questionnaire extends React.Component<Props, State> {
     },
   };
 
+  private durationCache: { [key: string]: number } = {};
+
   constructor(props: Props) {
     super(props);
 
@@ -111,12 +118,20 @@ class Questionnaire extends React.Component<Props, State> {
   }
 
   public componentWillReceiveProps(nextProps: Props) {
-    if (this.props.schema !== nextProps.schema) {
+    if (this.props.schema !== nextProps.schema || !isEqual(this.props.fields, nextProps.fields)) {
       (window as any).__schema = nextProps.schema;
       // console.log(nextProps.fields);
+
+      this.durationCache = {};
+      forEachKeyInSchemas(nextProps.schema, (schema, path, pathFromRoot, hasChildren) => {
+        this.durationCache[pathFromRoot] = hasChildren ? newBlockSwitchOverhead : determineDuration(schema, path);
+      });
+
+      const remainingDuration = nextProps.fields.reduce((p, v) => p + (this.durationCache[v] || 0), newBlockSwitchOverhead);
       this.setState({
         history: [],
         progress: 0,
+        remainingDuration,
         currentIndex: -1,
         activeField: null,
         mainContent: 'welcome',
@@ -231,10 +246,13 @@ class Questionnaire extends React.Component<Props, State> {
 
     const question = this.determineQuestion(mainContent, nextActiveField);
 
+    const remainingDuration = this.props.fields.slice(Math.max(nextIndex, 0)).reduce((p, v) => p + (this.durationCache[v] || 0), 0);
+
     this.setState(extend(nextState, {
       currentIndex: nextIndex,
       progress: nextIndex / this.props.fields.length,
       activeField: nextActiveField,
+      remainingDuration,
       question,
       mainContent,
       arrayIndexes,
@@ -625,8 +643,8 @@ class Questionnaire extends React.Component<Props, State> {
           {displayField}
           <footer className="questionnaire-status">
             <span className="time-left">
-              <figure className="minutes">12</figure>
-              <small>min left to complete</small>
+              <figure className="duration">{stringifyDuration(this.state.remainingDuration)}</figure>
+              <small>left to complete</small>
               <small className="more-specific">this place</small>
             </span>
             <span className="footer-actions">
@@ -953,7 +971,7 @@ export default styled(Questionnaire) `
     span.time-left {
       display: flex;
 
-      figure.minutes {
+      figure.duration {
         padding-right: 4px;
         font-weight: 800;
         opacity: 0.5;
