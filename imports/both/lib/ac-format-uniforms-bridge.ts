@@ -61,8 +61,12 @@ export const forEachKeyInSchemas = (schema: SimpleSchema,
   nodeNames.forEach((name) => {
     const definitionKey = `${valuePrefix}${name}`;
     const typeDefinition = schema.getDefinition(definitionKey, ['type']);
+    const origDefinition = schema.schema(definitionKey);
 
     callback(schema, definitionKey);
+    if (origDefinition && origDefinition.accessibility && origDefinition.accessibility.inseparable) {
+      return;
+    }
 
     if (isDefinitionTypeSchema(typeDefinition.type)) {
       forEachKeyInSchemas(typeDefinition.type[0].type as SimpleSchema, callback, '');
