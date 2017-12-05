@@ -79,8 +79,6 @@ export const translateAcFormatToUniforms = (rootSchema: SimpleSchema) => {
     const definition = schema.getDefinition(definitionKey, ['type', 'accessibility']);
     const accessibility: AccessibilitySchemaExtension | undefined = definition.accessibility;
 
-    console.log('definitionKey', definitionKey, type, accessibility);
-
     if (type === 'boolean') {
       extensions[definitionKey] = extensions[definitionKey] || {};
       extensions[definitionKey].uniforms = extensions[definitionKey].uniforms || {};
