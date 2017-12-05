@@ -50,24 +50,32 @@ type State = {
  * Takes a simple schema path such as a.$.b.$.c.e.f and array indexes and replaces each occurrence of .$ with [x]
  * where x is the matching value from arrayIndexes.
  *
- * simpleSchemaPathToObjectPath( 'a.$.b.$.c.e.f', [4, 2] ) return 'a[4].b[2].c.e.f'.
+ * // used by lodash
+ * simpleSchemaPathToObjectPath( 'a.$.b.$.c.e.f', [4, 2] ) returns 'a[4].b[2].c.e.f'.
+ *
+ * // used by uniforms
+ * simpleSchemaPathToObjectPath( 'a.$.b.$.c.e.f', [4, 2], 0, {wrapInArray: false} ) returns 'a4.b2.c.e.f'.
  */
 const simpleSchemaPathToObjectPath = (simpleSchemaPath: string,
                                       arrayIndexes: Array<number> = [],
-                                      defaultValue: number = 0,
-                                      options: { wrapInArray: boolean } = {wrapInArray: true}): string => {
+                                      options: { wrapInArray?: boolean, defaultValue?: number } = {
+                                        wrapInArray: true,
+                                        defaultValue: 0,
+                                      }): string => {
   if (!simpleSchemaPath) {
     return '';
   }
+
+  options = options || {};
 
   let result = '';
   let index = 0;
   for (const path of simpleSchemaPath.split('.')) {
     if (path === '$') {
       if (options.wrapInArray) {
-        result += `[${arrayIndexes[index] || defaultValue}]`;
+        result += `[${arrayIndexes[index] || options.defaultValue || 0}]`;
       } else {
-        result += `.${arrayIndexes[index] || defaultValue}`;
+        result += `.${arrayIndexes[index] || options.defaultValue || 0}`;
       }
       index++;
     } else {
@@ -87,7 +95,12 @@ class Questionnaire extends React.Component<Props, State> {
     activeField: null,
     arrayIndexes: [],
     mainContent: 'welcome',
-    model: {},
+    model: {
+      properties: {
+        name: 'foo',
+        category: 'doctor',
+      },
+    },
   };
 
   constructor(props: Props) {
@@ -366,7 +379,7 @@ class Questionnaire extends React.Component<Props, State> {
           <section className={isSelfSubmitting ? 'value-entry-section ves-inline-field' : 'value-entry-section'}>
             <AutoField
               label={false}
-              name={simpleSchemaPathToObjectPath(field, this.state.arrayIndexes, 0, {wrapInArray: false})}>
+              name={simpleSchemaPathToObjectPath(field, this.state.arrayIndexes, {wrapInArray: false})}>
             </AutoField>
             <span className={isSelfSubmitting ? 'call-to-action' : 'call-to-action cta-full-width'}>
               <div className="form">
