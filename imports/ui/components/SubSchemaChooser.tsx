@@ -32,7 +32,7 @@ const deriveTreeFromSchema = (schema: SimpleSchema,
   const nodeNames: Array<string> = schema.objectKeys(prefix);
 
   if (!nodeNames) {
-    console.log('Could not find nodes for', prefix);
+    console.warn('Could not find nodes for', prefix);
     return [];
   }
 
@@ -100,6 +100,15 @@ const deriveTreeFromSchema = (schema: SimpleSchema,
 
 const calculateTotalDurationFromCheckedTree = (index: { [key: string]: CheckBoxTreeNode }, checked: Array<string>): number => {
   let duration = 0;
+
+  for (const path of checked) {
+    const treeNode = index[path];
+    if (treeNode && (!treeNode.children || treeNode.children.length === 0)) {
+      duration += treeNode.duration || 0;
+    } else {
+      duration += newBlockSwitchOverhead;
+    }
+  }
   return duration;
 };
 
@@ -148,7 +157,9 @@ class SubSchemaChooser extends React.Component<Props, State> {
       this.setState({nodes});
     }
     const checked = this.ensureRequiredAreIncluded(nextProps.value || [], 'stripNonLeafs');
-    const duration = calculateTotalDurationFromCheckedTree(this.index, checked);
+    // calculate duration with all the leafs to have block changes include
+    const duration = calculateTotalDurationFromCheckedTree(this.index,
+      this.ensureRequiredAreIncluded(nextProps.value || [], 'includeNonLeaf'));
 
     this.setState({checked, duration});
   }
@@ -156,11 +167,14 @@ class SubSchemaChooser extends React.Component<Props, State> {
   public render() {
     return (
       <section className={this.props.className}>
-        <input className="form-control"
-               ref={(ref) => this.filterField = ref}
-               type="text"
-               placeholder={t`Filter`}
-               onChange={this.onFilterChanged}/>
+        <section className="scheme-chooser-filter">
+          <input className="form-control"
+                 ref={(ref) => this.filterField = ref}
+                 type="text"
+                 placeholder={t`Filter`}
+                 onChange={this.onFilterChanged}/>
+          <span className="total-duration">{stringifyDuration(this.state.duration)}</span>
+        </section>
         <CheckboxTree
           nodes={this.state.nodes}
           checked={this.state.checked}
@@ -176,7 +190,7 @@ class SubSchemaChooser extends React.Component<Props, State> {
     );
   }
 
-  onFilterChanged = debounce((event) => {
+  private onFilterChanged = debounce((event) => {
     if (!this.filterField) {
       return;
     }
@@ -212,7 +226,7 @@ class SubSchemaChooser extends React.Component<Props, State> {
 
   /// takes an object path like 'foo.bar.baz' and returns an array with all the paths to the full object
   ///  e.g. ['foo', 'foo.bar']
-  static buildPathToObject(key: string): Array<string> {
+  private static buildPathToObject(key: string): Array<string> {
     if (!key) {
       return [];
     }
@@ -268,9 +282,20 @@ class SubSchemaChooser extends React.Component<Props, State> {
 const SubSchemaChooserField = connectField(SubSchemaChooser);
 
 export default styled<Props>(SubSchemaChooserField) `
-input.form-control {
-  margin: 15px;
-  width: calc(100% - 30px); 
+.scheme-chooser-filter {
+  margin: 15px 0 15px 15px;
+  width: calc(100% - 15px); 
+  display: flex;
+  
+  input.form-control {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
+  span.total-duration {
+    color: #AAA;
+    font-weight: 400;
+  }
 }
 
 .react-checkbox-tree {
