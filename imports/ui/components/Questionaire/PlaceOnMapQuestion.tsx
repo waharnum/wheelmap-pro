@@ -1,4 +1,3 @@
-import {t} from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
 import * as L from 'leaflet';
