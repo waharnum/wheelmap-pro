@@ -303,6 +303,25 @@ class Questionnaire extends React.Component<Props, State> {
     return question;
   }
 
+  determineHeaders(): { title: string, path?: string } {
+    let path = undefined;
+    let title = t`New place`;
+
+    if (this.state.activeField) {
+      const parentPath = this.state.activeField.split('.').slice(0, -1).join('.');
+      if (parentPath && parentPath.length > 0) {
+        path = this.props.schema.get(parentPath, 'label');
+      }
+    }
+
+    if (this.state.model && (this.state.model.properties.name || this.state.model.properties.category)) {
+      // TODO translate category name
+      title = this.state.model.properties.name || this.state.model.properties.category;
+    }
+
+    return {title, path};
+  }
+
   historySection() {
     let index = 0;
     const historyItemCount = this.state.history.length;
@@ -369,7 +388,6 @@ class Questionnaire extends React.Component<Props, State> {
 
   valueEntrySection(field: string) {
     const definition = this.props.schema.getDefinition(field);
-    const label = definition.label;
     const isOptional = definition.optional === true;
     const isSelfSubmitting = definition.uniforms && definition.uniforms.selfSubmitting;
 
@@ -625,12 +643,15 @@ class Questionnaire extends React.Component<Props, State> {
 
     // console.log('state:', this.state);
 
+    const headers = this.determineHeaders();
+
     return (
       <div className={`questionnaire-area ${this.props.className}`}>
         <header className="questionnaire-progress">
           <span className="progress-information">
             <figure className="progress-done">{Math.floor(this.state.progress * 100)}</figure>
-            <h1 className="place-name">Add new place</h1>
+            <h1 className="place-name">{headers.title}</h1>
+            {headers.path ? <h2>{headers.path}</h2> : null}
           </span>
           <span className="progress-bar">
             <div className="progress-done" style={{width: `${this.state.progress * 100}%`}}/>
@@ -676,6 +697,26 @@ export default styled(Questionnaire) `
     h1 {
       font-size: 18px;
       letter-spacing: -0.32px;
+    }
+    
+    h2 {    
+      margin: 0 0 0 10px;
+      font-size: 18px;
+      line-height: 24px;
+      position: relative;
+      
+      &::before {
+        position: absolute;
+        content: " ";
+        left: -8px;
+        top: 4px;
+        width: 6px;
+        height: 16px;
+        background-image: url(/images/chevron-big-right-dark@2x.png);
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
     }
 
     h3 {
