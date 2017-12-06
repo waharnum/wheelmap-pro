@@ -21,7 +21,7 @@ interface IPageModel {
   event: IEvent;
 };
 
-type MapParams = { zoom: number; lat: number; lon: number; bbox: L.LatLngBounds };
+type MapParams = { zoom: number; lat: number; lon: number };
 
 type Props = IAsyncDataByIdProps<IPageModel> & IStyledComponent & WithRouterProps;
 
@@ -32,13 +32,14 @@ type LocationState = {
 
 class CreatePlacePage extends React.Component<Props> {
   public render() {
+    const historyState = this.props.location.state as LocationState;
     const event = this.props.model.event;
 
     // TODO read from event
     const selectedFields = [
-      'properties',
       'properties.name',
       'properties.category',
+      'geometry',
       'properties.accessibility',
       'properties.accessibility.entrances',
       'properties.accessibility.entrances.$.ratingForWheelchair',
@@ -52,13 +53,18 @@ class CreatePlacePage extends React.Component<Props> {
       translateAcFormatToUniforms(schema);
     }
 
+    const geometry = (historyState && historyState.mapPosition) ? {
+      type: 'Point',
+      coordinates: [historyState.mapPosition.lon, historyState.mapPosition.lat],
+    } : undefined;
+
     return (
       <ScrollableLayout className={this.props.className}>
         <Questionnaire
+          model={{geometry}}
           schema={schema}
           fields={selectedFields}
           onExitSurvey={(model: IPlaceInfo) => {
-            const historyState = this.props.location.state as LocationState;
             if (historyState && historyState.historyBehavior === 'back') {
               browserHistory.goBack();
             } else {
