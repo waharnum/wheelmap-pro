@@ -252,7 +252,7 @@ class Questionnaire extends React.Component<Props, State> {
       question,
       mainContent,
       arrayIndexes,
-    }));
+    }), this.scrollRefIntoView);
   };
 
   determineQuestion(type: ContentTypes, field: string | null): string | string[] {
@@ -321,7 +321,6 @@ class Questionnaire extends React.Component<Props, State> {
 
   historySection() {
     let index = 0;
-    const historyItemCount = this.state.history.length;
     return this.state.history.map(entry => {
       index++;
       let callback: (() => void) | undefined = undefined;
@@ -383,6 +382,12 @@ class Questionnaire extends React.Component<Props, State> {
     this.goToNextField('nextIndex', nextState);
   };
 
+  scrollRefIntoView = () => {
+    if (this.refs['latest-active-block']) {
+      (this.refs['latest-active-block'] as HTMLElement).scrollIntoView({block: 'end', behavior: 'smooth'});
+    }
+  };
+
   valueEntrySection(field: string) {
     const definition = this.props.schema.getDefinition(field);
     const isOptional = definition.optional === true;
@@ -401,7 +406,8 @@ class Questionnaire extends React.Component<Props, State> {
 
     /* specify key on AutoForm, so that the form is not reused between fields */
     return (
-      <section className={t`questionnaire-step ${isOptional ? 'questionnaire-optional' : 'questionnaire-mandatory'}`}>
+      <section className={t`questionnaire-step ${isOptional ? 'questionnaire-optional' : 'questionnaire-mandatory'}`}
+               ref="latest-active-block">
         <AutoForm
           key={field}
           placeholder={true}
@@ -409,12 +415,7 @@ class Questionnaire extends React.Component<Props, State> {
           schema={subSchema}
           model={subModel}>
           <h3 className="question">{this.state.question}</h3>
-          <section className={isSelfSubmitting ? 'value-entry-section ves-inline-field' : 'value-entry-section'}
-                   ref={(ref: HTMLElement) => {
-                     if (ref) {
-                       ref.scrollIntoView({block: 'end', behavior: 'smooth'});
-                     }
-                   }}>
+          <section className={isSelfSubmitting ? 'value-entry-section ves-inline-field' : 'value-entry-section'}>
             <AutoField
               inputRef={ref => {
                 if (ref) {
@@ -468,7 +469,8 @@ class Questionnaire extends React.Component<Props, State> {
     const isOptional = definition.optional === true;
 
     return (
-      <section className="questionnaire-step">
+      <section className="questionnaire-step"
+               ref="latest-active-block">
         <h3 className="question">{this.state.question}</h3>
         <span className="call-to-action">
           <div className="form">
@@ -534,7 +536,8 @@ class Questionnaire extends React.Component<Props, State> {
     const arrayIndex = currentValue.length;
 
     return (
-      <section className="questionnaire-step">
+      <section className="questionnaire-step"
+               ref="latest-active-block">
         <h3 className="question">{this.state.question}</h3>
         <span className="call-to-action">
           <div className="form">
@@ -570,7 +573,8 @@ class Questionnaire extends React.Component<Props, State> {
 
   welcomeSection() {
     return (
-      <section className="questionnaire-step">
+      <section className="questionnaire-step"
+               ref="latest-active-block">
         <h3 className="question">{t`Welcome text goes here.`}</h3>
         <span className="call-to-action">
           <div className="form">
@@ -585,7 +589,8 @@ class Questionnaire extends React.Component<Props, State> {
 
   doneSection() {
     return (
-      <section className="questionnaire-step">
+      <section className="questionnaire-step"
+               ref="latest-active-block">
         <h3 className="question">{t`Well done, you made it through!`}</h3>
         <code>{JSON.stringify(this.state.model, null, 2)}</code>
         <span className="call-to-action">
