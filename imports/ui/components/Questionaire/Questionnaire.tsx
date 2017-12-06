@@ -100,12 +100,7 @@ class Questionnaire extends React.Component<Props, State> {
     activeField: null,
     arrayIndexes: [],
     mainContent: 'welcome',
-    model: {
-      properties: {
-        name: 'foo',
-        category: 'doctor',
-      },
-    },
+    model: {},
   };
 
   private durationCache: { [key: string]: number } = {};
@@ -136,6 +131,7 @@ class Questionnaire extends React.Component<Props, State> {
         activeField: null,
         mainContent: 'welcome',
         arrayIndexes: [],
+        model: nextProps.model || {},
       });
     }
   }
@@ -314,7 +310,8 @@ class Questionnaire extends React.Component<Props, State> {
       }
     }
 
-    if (this.state.model && (this.state.model.properties.name || this.state.model.properties.category)) {
+    if (this.state.model && this.state.model.properties &&
+      (this.state.model.properties.name || this.state.model.properties.category)) {
       // TODO translate category name
       title = this.state.model.properties.name || this.state.model.properties.category;
     }
