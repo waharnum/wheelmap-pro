@@ -32,7 +32,7 @@ const PlaceOnMapQuestion = class extends React.Component<IStyledComponent & Prop
           });
         }}
         className={this.props.className}>
-        <div className="ac-big-icon-marker">?</div>
+        <div className="ac-big-icon-marker">*</div>
       </Map>
     );
   }
@@ -49,6 +49,10 @@ export default styled(PlaceOnMapQuestionField) `
     top: calc(50% - 25px);
     z-index: 10000;
     background: ${colors.linkBlueDarker};
+    pointer-events: none;
+    color: white;
+    font-family: 'iconfield-V03';
+    font-size: 24px;
     
     &:after {
       background: ${colors.linkBlueDarker};
