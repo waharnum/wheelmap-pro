@@ -15,6 +15,7 @@ import {getUserLanguages} from '../../../../client/i18n';
 type Props = {
   onChange: (value: string | null) => void,
   value: string;
+  inputRef?: (ref: HTMLElement | null) => void,
 } & IAsyncDataProps<ICategory[]>;
 
 type State = {
@@ -55,6 +56,10 @@ const CategoryChooserQuestion = class extends React.Component<IStyledComponent &
     this.modelChanged(this.props);
   }
 
+  public componentDidMount() {
+    this.fireInputRef();
+  }
+
   public componentWillReceiveProps(nextProps: Props) {
     this.modelChanged(nextProps);
   }
@@ -71,6 +76,7 @@ const CategoryChooserQuestion = class extends React.Component<IStyledComponent &
             <span key={currentLevel}
                   className="selectWrapper">
               <select className="form-control"
+                      ref={`select-${currentLevel}`}
                       name="selectCategory"
                       value={currentSelected ? currentSelected._id : ''}
                       onChange={itemSelected}>
@@ -110,10 +116,20 @@ const CategoryChooserQuestion = class extends React.Component<IStyledComponent &
     this.setState({
       selectedCategories,
       categoryTree,
-    });
+    }, this.fireInputRef);
 
     if (this.props.onChange) {
       this.props.onChange(selectedCategoryId);
+    }
+  };
+
+  fireInputRef = () => {
+    const treeSize = this.state.categoryTree.length - 1;
+    if (this.refs && this.refs[`select-${treeSize}`] && this.state.categoryTree[treeSize].length > 0) {
+      const mainSelectField = this.refs[`select-${treeSize}`] as HTMLSelectElement;
+      if (this.props.inputRef) {
+        this.props.inputRef(mainSelectField);
+      }
     }
   };
 
@@ -142,7 +158,7 @@ const CategoryChooserQuestion = class extends React.Component<IStyledComponent &
     this.setState({
       selectedCategories,
       categoryTree,
-    });
+    }, this.fireInputRef);
   }
 };
 

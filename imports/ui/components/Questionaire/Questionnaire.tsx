@@ -105,6 +105,7 @@ class Questionnaire extends React.Component<Props, State> {
   };
 
   private durationCache: { [key: string]: number } = {};
+  private hasFocus: boolean = false;
 
   constructor(props: Props) {
     super(props);
@@ -252,6 +253,7 @@ class Questionnaire extends React.Component<Props, State> {
 
     const remainingDuration = this.props.fields.slice(Math.max(nextIndex, 0)).reduce((p, v) => p + (this.durationCache[v] || 0), 0);
 
+    this.hasFocus = false;
     this.setState(extend(nextState, {
       currentIndex: nextIndex,
       progress: nextIndex / this.props.fields.length,
@@ -391,7 +393,7 @@ class Questionnaire extends React.Component<Props, State> {
   };
 
   scrollRefIntoView = () => {
-    if (this.refs['footer']) {
+    if (this.refs['footer'] && !this.hasFocus) {
       (this.refs['footer'] as HTMLElement).scrollIntoView({block: 'end', behavior: 'smooth'});
     }
   };
@@ -417,6 +419,7 @@ class Questionnaire extends React.Component<Props, State> {
       <section className={t`questionnaire-step ${isOptional ? 'questionnaire-optional' : 'questionnaire-mandatory'}`}
                ref="latest-active-block">
         <AutoForm
+          action="#"
           key={field}
           placeholder={true}
           onSubmit={this.submitValue.bind(this, field, this.state.question)}
@@ -427,7 +430,10 @@ class Questionnaire extends React.Component<Props, State> {
             <AutoField
               inputRef={ref => {
                 if (ref) {
+                  this.hasFocus = true;
                   ref.focus();
+                } else {
+                  this.hasFocus = false;
                 }
               }}
               label={false}
