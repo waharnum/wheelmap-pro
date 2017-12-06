@@ -14,10 +14,12 @@ import {wrapDataComponent} from '../../components/AsyncDataComponent';
 import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
 import {defaultRegion} from '../../../both/api/events/schema';
 import {HeaderTitle, default as PublicHeader} from '../../components/PublicHeader';
+import {IPlaceInfo} from '../../../both/api/place-infos/place-infos';
 
 interface IPageModel {
   organization: IOrganization;
   event: IEvent;
+  places: IPlaceInfo[];
 };
 
 type MapParams = { zoom: number; lat: number; lon: number; bbox: L.LatLngBounds };
@@ -49,6 +51,8 @@ class MappingPage extends React.Component<Props, State> {
         <div className="content-area">
           <Map
             {...this.state.mapPosition}
+            customPlaces={this.props.model.places}
+            accessibilityCloudTileUrlBuilder={() => false}
             onMoveEnd={this.onMapMoveEnd}
             locateOnStart={!this.state.mapPosition}>
             <Link to={{
@@ -105,9 +109,10 @@ const ReactiveMappingPage = reactiveSubscriptionByParams(
   (id): IPageModel | null => {
     const event = Events.findOne(id);
     const organization = event ? event.getOrganization() : null;
+    const places = event ? event.getPlaces() : [];
     // fetch model with organization & events in one go
-    return event && organization ? {organization, event} : null;
-  }, 'events.by_id.public', 'organizations.by_eventId.public', 'users.my.private');
+    return event && organization ? {organization, event, places} : null;
+  }, 'events.by_id.public', 'organizations.by_eventId.public', 'placeInfos.by_eventId.public', 'users.my.private');
 
 export default styled(ReactiveMappingPage) `
   a.add-place {

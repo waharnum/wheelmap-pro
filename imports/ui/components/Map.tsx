@@ -4,6 +4,7 @@ import ReactWheelmapMap from 'wheelmap-react/lib/components/Map/Map';
 import HighlightableMarker from 'wheelmap-react/lib/components/Map/HighlightableMarker';
 import {yesNoLimitedUnknownArray, yesNoUnknownArray} from 'wheelmap-react/lib/lib/Feature';
 import {accessibilityCloudFeatureCache} from 'wheelmap-react/lib/lib/cache/AccessibilityCloudFeatureCache';
+import Categories from 'wheelmap-react/lib/lib/Categories';
 
 import * as L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -29,6 +30,7 @@ interface IMapProps {
   onMarkerClick?: (placeId: string) => void;
   selectedPlace?: IPlaceInfo | null;
   locateOnStart?: boolean;
+  customPlaces?: IPlaceInfo[];
 }
 
 interface IMapState {
@@ -40,6 +42,7 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
     leafletMap: null,
   };
   private leafletMap: L.Map;
+  private customLayer: L.LayerGroup | null;
 
   public componentWillReceiveProps(nextProps, nextContext) {
     const applyBbox =
@@ -50,6 +53,22 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
     if (applyBbox) {
       this.repositionMap(nextProps);
     }
+
+    Categories.fetchOnce(nextProps).then(() => {
+      if (this.leafletMap) {
+        if (this.customLayer) {
+          this.leafletMap.removeLayer(this.customLayer);
+          this.customLayer.clearLayers();
+          this.customLayer = null;
+        }
+        
+        if (nextProps.customPlaces) {
+          const markers = nextProps.customPlaces.map(feature => this.createMarkerFromFeature(feature, feature.geometry.coordinates.reverse()));
+          this.customLayer = L.layerGroup(markers);
+          this.leafletMap.addLayer(this.customLayer);
+        }
+      }
+    });
   }
 
   public render(): JSX.Element {
