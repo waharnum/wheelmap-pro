@@ -11,6 +11,7 @@ import HistoryEntry from './HistoryEntry';
 import {forEachKeyInSchemas} from '../../../both/lib/ac-format-uniforms-bridge';
 import {determineDuration, newBlockSwitchOverhead} from '../../../both/lib/estimate-schema-duration';
 import {stringifyDuration} from '../../../both/i18n/duration';
+import {toast} from 'react-toastify';
 
 
 const affirmativeAnswers: ReadonlyArray<string> = Object.freeze([t`Yes!`, t`Okay!`, t`Sure!`, t`Let's do this!`, t`I'm ready!`]);
@@ -33,7 +34,8 @@ type Props = {
   model?: any | null,
   schema: SimpleSchema,
   fields: Array<string>,
-  onExitSurvey?: (model: any) => void
+  onExitSurvey?: (model: any) => void,
+  onSubmit?: (model: any, field: string | null) => Promise<Mongo.ObjectID>,
 } & IStyledComponent;
 
 type ContentTypes = 'welcome' | 'enterArray' | 'addToArray' | 'chooseFromArray' | 'enterBlock' | 'valueEntry' | 'done';
@@ -247,6 +249,16 @@ class Questionnaire extends React.Component<Props, State> {
       mainContent = 'done';
       arrayIndexes = [];
       nextIndex = this.props.fields.length;
+
+      if (this.props.onSubmit) {
+        this.props.onSubmit(this.state.model, null)
+          .then((result) => {
+            console.log('SAVED', result);
+          }).catch((error) => {
+          console.error(error);
+          toast.error(error);
+        });
+      }
     }
 
     const question = this.determineQuestion(mainContent, nextActiveField);
