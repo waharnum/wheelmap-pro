@@ -255,6 +255,8 @@ class Questionnaire extends React.Component<Props, State> {
         this.props.onSubmit(this.state.model, null)
           .then((result) => {
             console.log('SAVED', result);
+            // store id for next update
+            this.state.model._id = result;
           }).catch((error) => {
           console.error(error);
           toast.error(error);
