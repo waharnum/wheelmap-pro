@@ -33,6 +33,7 @@ type Props = {
   model?: any | null,
   schema: SimpleSchema,
   fields: Array<string>,
+  onExitSurvey?: (model: any) => void
 } & IStyledComponent;
 
 type ContentTypes = 'welcome' | 'enterArray' | 'addToArray' | 'chooseFromArray' | 'enterBlock' | 'valueEntry' | 'done';
@@ -596,7 +597,7 @@ class Questionnaire extends React.Component<Props, State> {
         <span className="call-to-action">
           <div className="form">
             <div className="form-group">
-              <button className="primary">{t`What now??`}</button>
+              <button onClick={this.props.onExitSurvey} className="primary">{t`Back to map`}</button>
             </div>
           </div>
         </span>

@@ -13,6 +13,8 @@ import Questionnaire from '../../components/Questionaire/Questionnaire';
 import {pickFields} from '../../../both/lib/simpl-schema-filter';
 import {translateAcFormatToUniforms} from '../../../both/lib/ac-format-uniforms-bridge';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
+import {browserHistory} from 'react-router';
+import {IPlaceInfo} from '../../../both/api/place-infos/place-infos';
 
 interface IPageModel {
   organization: IOrganization;
@@ -46,6 +48,7 @@ class CreatePlacePage extends React.Component<IAsyncDataByIdProps<IPageModel> & 
         <Questionnaire
           schema={schema}
           fields={selectedFields}
+          onExitSurvey={(model: IPlaceInfo) => browserHistory.replace(`/events/${event._id}/mapping`)}
         />
       </ScrollableLayout>
     );
