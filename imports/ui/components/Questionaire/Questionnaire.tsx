@@ -111,6 +111,13 @@ class Questionnaire extends React.Component<Props, State> {
 
     (window as any).__schema = props.schema;
     this.state.model = props.model || {};
+
+    // TODO move to shared code
+    this.durationCache = {};
+    forEachKeyInSchemas(props.schema, (schema, path, pathFromRoot, hasChildren) => {
+      this.durationCache[pathFromRoot] = hasChildren ? newBlockSwitchOverhead : determineDuration(schema, path);
+    });
+    this.state.remainingDuration = props.fields.reduce((p, v) => p + (this.durationCache[v] || 0), newBlockSwitchOverhead);
   }
 
   public componentWillReceiveProps(nextProps: Props) {
