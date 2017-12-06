@@ -5,6 +5,8 @@ import {Router, Route, Redirect, browserHistory} from 'react-router';
 
 import App from './App';
 
+import EnsureUserLoggedIn from './components/EnsureUserLoggedIn';
+
 import HomePage from './pages/Home/HomePage';
 import SignUpPage from './pages/Users/SignUpPage';
 import ProfilePage from './pages/Users/ProfilePage';
@@ -12,6 +14,7 @@ import MappingPage from './pages/Events/MappingPage';
 import NotFoundPage from './pages/NotFound/NotFoundPage';
 import EditEventPage from './pages/Events/EditEventPage';
 import ShowEventPage from './pages/Events/ShowEventPage';
+import CreatePlacePage from './pages/Events/CreatePlacePage';
 import CreateEventPage from './pages/Events/CreateEventPage';
 import OrganizeEventPage from './pages/Events/OrganizeEventPage';
 import SignUpForEventPage from './pages/Events/SignUpForEventPage';
@@ -34,7 +37,6 @@ import AccessibilityCloudPage from './pages/Organizations/AccessibilityCloudPage
 import QuestionaireTestPage from './pages/Questionaire/QuestionaireTest';
 import MappingTest from './pages/PlaceInfos/MappingTest';
 
-import EnsureUserLoggedIn from './components/EnsureUserLoggedIn';
 
 const RedirectAccordingToUser = () => {
   const user = Meteor.user();
@@ -114,6 +116,7 @@ const AppRouter = (
 
       <Route path="/events/:_id" component={ShowEventPage}/>
       <Route path="/events/:_id/mapping" component={MappingPage}/>
+      <Route path="/events/:_id/create-place" component={CreatePlacePage}/>
 
       <Route path="/welcome" component={HomePage}/>
 
