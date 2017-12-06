@@ -2,19 +2,19 @@ import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
 import {PlaceInfos} from '../place-infos';
 import {PlaceInfoPublicFields, PlaceInfoVisibleSelectorForUserId} from './privileges';
+import {publishAndLog} from '../../../../server/publish';
 
 const options = {fields: PlaceInfoPublicFields};
 
-// Publishing all placeInfos can be VERY slow.
-// Meteor.publish('placeInfos.public', () => PlaceInfos.find({}, options));
+// Publishing all placeInfos will be VERY slow.
 
-Meteor.publish('placeInfosFromImport.public', (sourceImportId) => {
+publishAndLog('placeInfosFromImport.public', (sourceImportId) => {
   check(sourceImportId, String);
 
   return PlaceInfos.find({'properties.sourceImportId': sourceImportId}, {limit: 3});
 });
 
-Meteor.publish('placeInfos.single', function publish(placeInfoId) {
+publishAndLog('placeInfos.single', function publish(placeInfoId) {
   check(placeInfoId, String);
   const selector = {
     $and: [
@@ -23,4 +23,9 @@ Meteor.publish('placeInfos.single', function publish(placeInfoId) {
     ],
   };
   return PlaceInfos.find(selector, options);
+});
+
+publishAndLog('placeInfos.by_eventId.public', (eventId) => {
+  check(eventId, String);
+  return PlaceInfos.find({'properties.eventId': eventId}, {limit: 200});
 });
