@@ -50,14 +50,14 @@ class MappingPage extends React.Component<Props, State> {
         />
         <div className="content-area">
           <Map
-            {...this.state.mapPosition}
+            {...this.props.location.query}
             customPlaces={this.props.model.places}
             accessibilityCloudTileUrlBuilder={() => false}
             onMoveEnd={this.onMapMoveEnd}
-            locateOnStart={!this.state.mapPosition}>
+            locateOnStart={!this.props.location.query}>
             <Link to={{
               pathname: `/events/${event._id}/create-place`,
-              state: {mapPosition: this.state.mapPosition, historyBehavior: 'back'},
+              state: {mapPosition: this.queryToState(), historyBehavior: 'back'},
             }} className="add-place">+</Link>
           </Map>
         </div>
@@ -65,15 +65,7 @@ class MappingPage extends React.Component<Props, State> {
     );
   }
 
-  public componentWillMount() {
-    this.queryToState(this.props);
-  }
-
-  public componentWillReceiveProps(nextProps: Props) {
-    this.queryToState(nextProps);
-  }
-
-  queryToState = (props: Props) => {
+  queryToState = () => {
     if (this.props.location.query) {
       let {lat, lon, zoom} = this.props.location.query;
       if (lat) {
@@ -86,9 +78,7 @@ class MappingPage extends React.Component<Props, State> {
         zoom = Number.parseFloat(zoom);
       }
 
-      this.setState({
-        mapPosition: {lat, lon, zoom},
-      });
+      return {lat, lon, zoom};
     }
   };
 
