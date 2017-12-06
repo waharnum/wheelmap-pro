@@ -8,7 +8,7 @@ import {accessibilityCloudFeatureCache} from 'wheelmap-react/lib/lib/cache/Acces
 import * as L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.locatecontrol/src/L.Control.Locate.scss';
-import 'wheelmap-react/src/Map.css'
+import 'wheelmap-react/src/Map.css';
 
 import styled from 'styled-components';
 import {IStyledComponent} from './IStyledComponent';
@@ -27,7 +27,8 @@ interface IMapProps {
   onMoveEnd?: (options: { zoom: number, lat: number, lon: number, bbox: L.LatLngBounds }) => void;
   onBboxApplied?: () => void;
   onMarkerClick?: (placeId: string) => void;
-  selectedPlace?: IPlaceInfo | null,
+  selectedPlace?: IPlaceInfo | null;
+  locateOnStart?: boolean;
 }
 
 interface IMapState {
@@ -37,7 +38,7 @@ interface IMapState {
 class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
   state: IMapState = {
     leafletMap: null,
-  }
+  };
   private leafletMap: L.Map;
 
   public componentWillReceiveProps(nextProps, nextContext) {
@@ -75,7 +76,7 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
           wheelmapApiKey={Meteor.settings.public.wheelmap}
           accessibilityFilter={[].concat(yesNoLimitedUnknownArray)}
           toiletFilter={[].concat(yesNoUnknownArray)}
-          locateOnStart={false}
+          locateOnStart={this.props.locateOnStart === true}
           pointToLayer={this.createMarkerFromFeature}
         />
         {this.props.children}
@@ -87,8 +88,8 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
     if (this.props.accessibilityCloudTileUrlBuilder) {
       return this.props.accessibilityCloudTileUrlBuilder();
     }
-    return `https://www.accessibility.cloud/place-infos?x={x}&y={y}&z={z}&appToken=${Meteor.settings.public.accessibilityCloud}`
-  }
+    return `https://www.accessibility.cloud/place-infos?x={x}&y={y}&z={z}&appToken=${Meteor.settings.public.accessibilityCloud}`;
+  };
 
   private onMoveEnd = (options: { zoom: number, lat: number, lon: number, bbox: L.LatLngBounds }) => {
     if (this.props.onMoveEnd) {
@@ -100,7 +101,7 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
     this.leafletMap = map;
     this.setState({leafletMap: map});
     this.repositionMap(this.props);
-  }
+  };
 
   private repositionMap(props: IMapProps) {
     if (props.bbox) {
@@ -132,16 +133,16 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
     });
 
     return marker;
-  }
+  };
 
   public static childContextTypes = {
     map: PropTypes.instanceOf(L.Map),
-  }
+  };
 
   public getChildContext() {
     return {
       map: this.state.leafletMap,
-    }
+    };
   }
 };
 
