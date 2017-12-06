@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { Meteor } from 'meteor/meteor';
-import { Accounts, STATES } from 'meteor/std:accounts-ui';
-import { Router, Route, Redirect, browserHistory } from 'react-router';
+import {Meteor} from 'meteor/meteor';
+import {Accounts, STATES} from 'meteor/std:accounts-ui';
+import {Router, Route, Redirect, browserHistory} from 'react-router';
 
 import App from './App';
 
 import HomePage from './pages/Home/HomePage';
 import SignUpPage from './pages/Users/SignUpPage';
 import ProfilePage from './pages/Users/ProfilePage';
+import MappingPage from './pages/Events/MappingPage';
 import NotFoundPage from './pages/NotFound/NotFoundPage';
 import EditEventPage from './pages/Events/EditEventPage';
 import ShowEventPage from './pages/Events/ShowEventPage';
@@ -29,10 +30,11 @@ import SignUpForOrganizationPage from './pages/Organizations/SignUpForOrganizati
 import OrganizationStatisticsPage from './pages/Organizations/OrganizationStatisticsPage';
 import AccessibilityCloudPage from './pages/Organizations/AccessibilityCloudPage';
 
+// Just for test purposes
 import QuestionaireTestPage from './pages/Questionaire/QuestionaireTest';
+import MappingTest from './pages/PlaceInfos/MappingTest';
 
 import EnsureUserLoggedIn from './components/EnsureUserLoggedIn';
-import MappingTest from './pages/PlaceInfos/MappingTest';
 
 const RedirectAccordingToUser = () => {
   const user = Meteor.user();
@@ -68,63 +70,65 @@ const AppRouter = (
   <Router>
     <Route component={App}>
       {/* Use meteor.user onEnter, as this gets re-evaluated each time */}
-      <Route path="/" onEnter={RedirectAccordingToUser} />
+      <Route path="/" onEnter={RedirectAccordingToUser}/>
 
       {/* weird admin pages */}
       <Route component={(props) => <EnsureUserLoggedIn roles={['admin']} {...props} />}>
-        <Route path="/organizations/list" component={ListOrganizationsPage} />
+        <Route path="/organizations/list" component={ListOrganizationsPage}/>
       </Route>
 
       {/* Invitations */}
-      <Route path="/organizations/:_id/accept-invitation/:token" component={SignUpForOrganizationPage} />
-      <Route path="/events/:_id/accept-invitation/:token" component={SignUpForEventPage} />
-      <Route path="/events/:_id/public-invitation/:token" component={PublicSignUpForEventPage} />
-      <Route path="/signup" component={SignUpPage} />
+      <Route path="/organizations/:_id/accept-invitation/:token" component={SignUpForOrganizationPage}/>
+      <Route path="/events/:_id/accept-invitation/:token" component={SignUpForEventPage}/>
+      <Route path="/events/:_id/public-invitation/:token" component={PublicSignUpForEventPage}/>
+      <Route path="/signup" component={SignUpPage}/>
 
       {/* organize pages */}
       <Route component={EnsureUserLoggedIn}>
-        <Route path="/organizations/none" component={NoOrganizationsPage} />
-        <Route path="/organizations/create" component={CreateOrganizationPage} />
-        <Route path="/organizations/:_id/edit" component={EditOrganizationPage} />
-        <Route path="/organizations/:_id/members" component={OrganizationMembersPage} />
-        <Route path="/organizations/:_id/statistics" component={OrganizationStatisticsPage} />
+        <Route path="/organizations/none" component={NoOrganizationsPage}/>
+        <Route path="/organizations/create" component={CreateOrganizationPage}/>
+        <Route path="/organizations/:_id/edit" component={EditOrganizationPage}/>
+        <Route path="/organizations/:_id/members" component={OrganizationMembersPage}/>
+        <Route path="/organizations/:_id/statistics" component={OrganizationStatisticsPage}/>
         <Route path="/organizations/:_id/organize" component={OrganizeOrganizationPage}
-          onEnter={SaveActiveOrganization} />
-        <Route path='/organizations/:_id/accloud' component={AccessibilityCloudPage} />
+               onEnter={SaveActiveOrganization}/>
+        <Route path='/organizations/:_id/accloud' component={AccessibilityCloudPage}/>
 
-        <Route path="/events/create" component={CreateEventPage} />
-        <Route path="/events/:_id/edit" component={EditEventPage} />
-        <Route path="/events/:_id/organize" component={OrganizeEventPage} />
-        <Route path="/events/:_id/statistics" component={EventStatisticsPage} />
-        <Route path="/events/:_id/participants" component={EventParticipantsPage} />
+        <Route path="/events/create" component={CreateEventPage}/>
+        <Route path="/events/:_id/edit" component={EditEventPage}/>
+        <Route path="/events/:_id/organize" component={OrganizeEventPage}/>
+        <Route path="/events/:_id/statistics" component={EventStatisticsPage}/>
+        <Route path="/events/:_id/participants" component={EventParticipantsPage}/>
 
 
-        <Route path="/places" component={MappingTest} />
+        <Route path="/places" component={MappingTest}/>
 
-        <Route path="/profile" component={ProfilePage} />
+        <Route path="/profile" component={ProfilePage}/>
       </Route>
 
       {/* public pages  */}
-      <Route path="/organizations/:_id" component={ShowOrganizationPage} />
-      <Route path="/organizations/:_id/browse" component={ShowOrganizationPage} />
-      <Route path="/organizations/:_id/event/:event_id" component={ShowOrganizationPage} />
-      <Route path="/organizations/:_id/place/:place_id" component={ShowOrganizationPage} />
-      <Route path="/events/:_id" component={ShowEventPage} />
+      <Route path="/organizations/:_id" component={ShowOrganizationPage}/>
+      <Route path="/organizations/:_id/browse" component={ShowOrganizationPage}/>
+      <Route path="/organizations/:_id/event/:event_id" component={ShowOrganizationPage}/>
+      <Route path="/organizations/:_id/place/:place_id" component={ShowOrganizationPage}/>
 
-      <Route path="/welcome" component={HomePage} />
+      <Route path="/events/:_id" component={ShowEventPage}/>
+      <Route path="/events/:_id/mapping" component={MappingPage}/>
+
+      <Route path="/welcome" component={HomePage}/>
 
       {/* user management */}
-      <Route path="/reset-password" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET} />} />
-      <Route path="/reset-password/:id" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET} />} />
-      <Route path="/#/reset-password/:id" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET} />} />
+      <Route path="/reset-password" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET}/>}/>
+      <Route path="/reset-password/:id" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET}/>}/>
+      <Route path="/#/reset-password/:id" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET}/>}/>
 
       {/* Styling stubs */}
-      <Route path="/questionaire" component={QuestionaireTestPage} />
+      <Route path="/questionaire" component={QuestionaireTestPage}/>
 
       {/* Not found pages */}
-      <Route path="404" component={NotFoundPage} />
-      <Route path="403" component={AccessForbiddenPage} />
-      <Redirect from="*" to="404" />
+      <Route path="404" component={NotFoundPage}/>
+      <Route path="403" component={AccessForbiddenPage}/>
+      <Redirect from="*" to="404"/>
     </Route>
   </Router>
 );
