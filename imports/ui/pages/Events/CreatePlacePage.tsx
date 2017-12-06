@@ -14,7 +14,8 @@ import {pickFields} from '../../../both/lib/simpl-schema-filter';
 import {translateAcFormatToUniforms} from '../../../both/lib/ac-format-uniforms-bridge';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
 import {browserHistory, WithRouterProps} from 'react-router';
-import {IPlaceInfo} from '../../../both/api/place-infos/place-infos';
+import {IPlaceInfo, PlaceInfos} from '../../../both/api/place-infos/place-infos';
+import {t} from 'c-3po';
 
 interface IPageModel {
   organization: IOrganization;
@@ -64,6 +65,7 @@ class CreatePlacePage extends React.Component<Props> {
           model={{geometry}}
           schema={schema}
           fields={selectedFields}
+          onSubmit={this.onSubmit}
           onExitSurvey={(model: IPlaceInfo) => {
             if (historyState && historyState.historyBehavior === 'back') {
               browserHistory.goBack();
@@ -75,6 +77,21 @@ class CreatePlacePage extends React.Component<Props> {
       </ScrollableLayout>
     );
   }
+
+  onSubmit = (model: IPlaceInfo, field: string | null): Promise<Mongo.ObjectID> => {
+    return new Promise((resolve, reject) => {
+      Meteor.call('placeInfos.insertForEvent', {
+        eventId: this.props.model.event._id,
+        place: model,
+      }, (error, result) => {
+        if (error) {
+          reject(error.reason || t`Unknown error`);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  };
 };
 
 const ReactiveCreatePlacePage = reactiveSubscriptionByParams(
