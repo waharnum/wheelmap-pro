@@ -8,7 +8,7 @@ import {colors} from '../../stylesheets/colors';
 import {IStyledComponent} from '../IStyledComponent';
 import {pickFieldForAutoForm} from '../../../both/lib/simpl-schema-filter';
 import HistoryEntry from './HistoryEntry';
-import {forEachKeyInSchemas} from '../../../both/lib/ac-format-uniforms-bridge';
+import {forEachKeyInSchemas, isEqualSchema} from '../../../both/lib/ac-format-uniforms-bridge';
 import {determineDuration, newBlockSwitchOverhead} from '../../../both/lib/estimate-schema-duration';
 import {stringifyDuration} from '../../../both/i18n/duration';
 import {toast} from 'react-toastify';
@@ -124,7 +124,8 @@ class Questionnaire extends React.Component<Props, State> {
   }
 
   public componentWillReceiveProps(nextProps: Props) {
-    if (this.props.schema !== nextProps.schema || !isEqual(this.props.fields, nextProps.fields)) {
+    // reset ui when questionnaire changed
+    if (!isEqual(this.props.fields, nextProps.fields) || !isEqualSchema(this.props.schema, nextProps.schema)) {
       (window as any).__schema = nextProps.schema;
       // console.log(nextProps.fields);
 
