@@ -38,10 +38,14 @@ const assignUpdate = (object: {}, path: string | string[], value: {}) => {
   update(object, path, (orig) => orig ? assign(orig, value) : value);
 };
 
-const hasSchema = (typeDefinition: SchemaDefinition, schema: SimpleSchema) => {
-  const type = typeDefinition.type as SimpleSchemaGroup;
+export const isEqualSchema = (left: SimpleSchema, right: SimpleSchema) => {
   // as schema instances are wildly different and get duplicated all the time, we hash their keys&types and go with that
-  return hashSchema(schema) === hashSchema(type.definitions[0].type as SimpleSchema);
+  return hashSchema(left) === hashSchema(right);
+};
+
+const definitionHasSchema = (typeDefinition: SchemaDefinition, schema: SimpleSchema) => {
+  const type = typeDefinition.type as SimpleSchemaGroup;
+  return isEqualSchema(type.definitions[0].type as SimpleSchema, schema);
 };
 
 type ForEachKeyInSchemasCallbackFunction = (schema: SimpleSchema,
@@ -117,11 +121,11 @@ export const translateAcFormatToUniforms = (rootSchema: SimpleSchema) => {
         component: ChooseCategoryQuestion,
       });
     } else if (!type) {
-      if (hasSchema(definition as SchemaDefinition, PointGeometrySchema)) {
+      if (definitionHasSchema(definition as SchemaDefinition, PointGeometrySchema)) {
         assignUpdate(extensions, [definitionKey, 'uniforms'], {
           component: PlaceOnMapQuestion,
         });
-      } else if (hasSchema(definition as SchemaDefinition, LengthQuantitySchema)) {
+      } else if (definitionHasSchema(definition as SchemaDefinition, LengthQuantitySchema)) {
         assignUpdate(extensions, [definitionKey, 'uniforms'], {
           component: UnitQuantityQuestion,
         });
