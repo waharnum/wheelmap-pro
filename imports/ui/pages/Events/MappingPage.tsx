@@ -24,7 +24,11 @@ type MapParams = { zoom: number; lat: number; lon: number; bbox: L.LatLngBounds 
 
 type Props = IAsyncDataByIdProps<IPageModel> & IStyledComponent & WithRouterProps;
 
-class MappingPage extends React.Component<Props> {
+type State = { mapPosition?: Partial<MapParams> };
+
+class MappingPage extends React.Component<Props, State> {
+  state: State = {};
+
   public render() {
     const event = this.props.model.event;
     const organization = this.props.model.organization;
@@ -44,12 +48,12 @@ class MappingPage extends React.Component<Props> {
         />
         <div className="content-area">
           <Map
-            {...this.props.location.query}
+            {...this.state.mapPosition}
             onMoveEnd={this.onMapMoveEnd}
-            locateOnStart={!this.props.location.query}>
+            locateOnStart={!this.state.mapPosition}>
             <Link to={{
               pathname: `/events/${event._id}/create-place`,
-              state: {mapPosition: this.props.location.query, historyBehavior: 'back'},
+              state: {mapPosition: this.state.mapPosition, historyBehavior: 'back'},
             }} className="add-place">+</Link>
           </Map>
         </div>
@@ -57,12 +61,39 @@ class MappingPage extends React.Component<Props> {
     );
   }
 
+  public componentWillMount() {
+    this.queryToState(this.props);
+  }
+
+  public componentWillReceiveProps(nextProps: Props) {
+    this.queryToState(nextProps);
+  }
+
+  queryToState = (props: Props) => {
+    if (this.props.location.query) {
+      let {lat, lon, zoom} = this.props.location.query;
+      if (lat) {
+        lat = Number.parseFloat(lat);
+      }
+      if (lon) {
+        lon = Number.parseFloat(lon);
+      }
+      if (zoom) {
+        zoom = Number.parseFloat(zoom);
+      }
+
+      this.setState({
+        mapPosition: {lat, lon, zoom},
+      });
+    }
+  };
+
   private onMapMoveEnd = (params: MapParams) => {
     const {lat, lon, zoom} = params;
     browserHistory.replace({
       pathname: this.props.location.pathname,
       state: this.props.location.state,
-      query: {lat, lon, zoom},
+      query: {lat: lat.toString(), lon: lon.toString(), zoom: zoom.toString()},
     });
   };
 };
