@@ -19,13 +19,14 @@ interface IPageModel {
   event: IEvent;
 };
 
-const ShowEventPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent) => {
-    const event = props.model.event;
-    const organization = props.model.organization;
+class MappingPage extends React.Component<IAsyncDataByIdProps<IPageModel> & IStyledComponent> {
+  public render() {
+    const event = this.props.model.event;
+    const organization = this.props.model.organization;
     const bbox = regionToBbox(event.region || defaultRegion);
 
     return (
-      <MapLayout className={props.className}>
+      <MapLayout className={this.props.className}>
         <PublicHeader
           titleComponent={(
             <HeaderTitle
@@ -46,12 +47,12 @@ const ShowEventPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent
       </MapLayout>
     );
   }
-;
+};
 
-const ReactiveShowEventPage = reactiveSubscriptionByParams(
+const ReactiveMappingPage = reactiveSubscriptionByParams(
   wrapDataComponent<IPageModel,
     IAsyncDataByIdProps<IPageModel | null>,
-    IAsyncDataByIdProps<IPageModel>>(ShowEventPage),
+    IAsyncDataByIdProps<IPageModel>>(MappingPage),
   (id): IPageModel | null => {
     const event = Events.findOne(id);
     const organization = event ? event.getOrganization() : null;
@@ -59,7 +60,7 @@ const ReactiveShowEventPage = reactiveSubscriptionByParams(
     return event && organization ? {organization, event} : null;
   }, 'events.by_id.public', 'organizations.by_eventId.public', 'users.my.private');
 
-export default styled(ReactiveShowEventPage) `
+export default styled(ReactiveMappingPage) `
   a.add-place {
     width: 65px;
     height: 65px;
