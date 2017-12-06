@@ -705,9 +705,7 @@ export default styled(Questionnaire) `
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-
     margin: 5px;
-    max-width: 375px; /* testing mobile widths */
 
     h1 {
       font-size: 18px;
