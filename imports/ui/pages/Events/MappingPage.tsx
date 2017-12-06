@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import * as React from 'react';
+import * as L from 'leaflet';
 import {Link} from 'react-router';
+import * as React from 'react';
 
 import Map from '../../components/Map';
 import {colors} from '../../stylesheets/colors';
@@ -19,12 +20,23 @@ interface IPageModel {
   event: IEvent;
 };
 
-class MappingPage extends React.Component<IAsyncDataByIdProps<IPageModel> & IStyledComponent> {
+type MapParams = { zoom: number; lat: number; lon: number; bbox: L.LatLngBounds };
+
+type State = {
+  mapPosition?: MapParams
+};
+
+type Props = IAsyncDataByIdProps<IPageModel> & IStyledComponent;
+
+class MappingPage extends React.Component<Props, State> {
+  state: State = {};
+
   public render() {
     const event = this.props.model.event;
     const organization = this.props.model.organization;
     const bbox = regionToBbox(event.region || defaultRegion);
 
+    console.log(this.state.mapPosition);
     return (
       <MapLayout className={this.props.className}>
         <PublicHeader
@@ -39,14 +51,22 @@ class MappingPage extends React.Component<IAsyncDataByIdProps<IPageModel> & ISty
         />
         <div className="content-area">
           <Map
-            bbox={bbox}
-            locateOnStart={true}>
-            <Link to={`/events/${event._id}/create-place`} className="add-place">+</Link>
+            {...this.state.mapPosition}
+            onMoveEnd={this.onMapMoveEnd}
+            locateOnStart={!this.state.mapPosition}>
+            <Link to={{
+              pathname: `/events/${event._id}/create-place`,
+              state: {mapPosition: this.state.mapPosition, historyBehavior: 'back'},
+            }} className="add-place">+</Link>
           </Map>
         </div>
       </MapLayout>
     );
   }
+
+  private onMapMoveEnd = (params: MapParams) => {
+    this.setState({mapPosition: params});
+  };
 };
 
 const ReactiveMappingPage = reactiveSubscriptionByParams(

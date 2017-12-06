@@ -10,7 +10,7 @@ import {wrapDataComponent} from '../../components/AsyncDataComponent';
 import AdminHeader, {HeaderTitle} from '../../components/AdminHeader';
 import {EventBaseForm} from './EventBaseForm';
 import {
-  reactiveModelSubscriptionByParams, IAsyncDataByIdProps,
+  IAsyncDataByIdProps,
   reactiveSubscriptionByParams,
 } from '../../components/reactiveModelSubscription';
 import {IOrganization} from '../../../both/api/organizations/organizations';

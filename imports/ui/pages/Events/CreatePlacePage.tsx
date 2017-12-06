@@ -13,7 +13,7 @@ import Questionnaire from '../../components/Questionaire/Questionnaire';
 import {pickFields} from '../../../both/lib/simpl-schema-filter';
 import {translateAcFormatToUniforms} from '../../../both/lib/ac-format-uniforms-bridge';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
-import {browserHistory} from 'react-router';
+import {browserHistory, WithRouterProps} from 'react-router';
 import {IPlaceInfo} from '../../../both/api/place-infos/place-infos';
 
 interface IPageModel {
@@ -21,7 +21,16 @@ interface IPageModel {
   event: IEvent;
 };
 
-class CreatePlacePage extends React.Component<IAsyncDataByIdProps<IPageModel> & IStyledComponent> {
+type MapParams = { zoom: number; lat: number; lon: number; bbox: L.LatLngBounds };
+
+type Props = IAsyncDataByIdProps<IPageModel> & IStyledComponent & WithRouterProps;
+
+type LocationState = {
+  mapPosition?: MapParams,
+  historyBehavior?: 'back' | 'replaceWithMap'
+};
+
+class CreatePlacePage extends React.Component<Props> {
   public render() {
     const event = this.props.model.event;
 
@@ -48,7 +57,14 @@ class CreatePlacePage extends React.Component<IAsyncDataByIdProps<IPageModel> & 
         <Questionnaire
           schema={schema}
           fields={selectedFields}
-          onExitSurvey={(model: IPlaceInfo) => browserHistory.replace(`/events/${event._id}/mapping`)}
+          onExitSurvey={(model: IPlaceInfo) => {
+            const historyState = this.props.location.state as LocationState;
+            if (historyState && historyState.historyBehavior === 'back') {
+              browserHistory.goBack();
+            } else {
+              browserHistory.replace(`/events/${event._id}/mapping`);
+            }
+          }}
         />
       </ScrollableLayout>
     );
