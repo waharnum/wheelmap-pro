@@ -110,7 +110,7 @@ class Questionnaire extends React.Component<Props, State> {
     super(props);
 
     (window as any).__schema = props.schema;
-    // TODO handle initial value here, similar to componentWillReceiveProps
+    this.state.model = props.model || {};
   }
 
   public componentWillReceiveProps(nextProps: Props) {
