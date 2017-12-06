@@ -384,8 +384,8 @@ class Questionnaire extends React.Component<Props, State> {
   };
 
   scrollRefIntoView = () => {
-    if (this.refs['latest-active-block']) {
-      (this.refs['latest-active-block'] as HTMLElement).scrollIntoView({block: 'end', behavior: 'smooth'});
+    if (this.refs['footer']) {
+      (this.refs['footer'] as HTMLElement).scrollIntoView({block: 'end', behavior: 'smooth'});
     }
   };
 
@@ -675,7 +675,8 @@ class Questionnaire extends React.Component<Props, State> {
         </div>
         <div className="questionnaire-column">
           {displayField}
-          <footer className="questionnaire-status">
+          <footer className="questionnaire-status"
+                  ref="footer">
             <span className="time-left">
               <figure className="duration">{stringifyDuration(this.state.remainingDuration)}</figure>
               <small>left</small>
