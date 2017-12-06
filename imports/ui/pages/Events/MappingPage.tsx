@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import * as L from 'leaflet';
-import {Link} from 'react-router';
+import {browserHistory, Link, WithRouterProps} from 'react-router';
 import * as React from 'react';
 
 import Map from '../../components/Map';
@@ -22,21 +22,14 @@ interface IPageModel {
 
 type MapParams = { zoom: number; lat: number; lon: number; bbox: L.LatLngBounds };
 
-type State = {
-  mapPosition?: MapParams
-};
+type Props = IAsyncDataByIdProps<IPageModel> & IStyledComponent & WithRouterProps;
 
-type Props = IAsyncDataByIdProps<IPageModel> & IStyledComponent;
-
-class MappingPage extends React.Component<Props, State> {
-  state: State = {};
-
+class MappingPage extends React.Component<Props> {
   public render() {
     const event = this.props.model.event;
     const organization = this.props.model.organization;
     const bbox = regionToBbox(event.region || defaultRegion);
 
-    console.log(this.state.mapPosition);
     return (
       <MapLayout className={this.props.className}>
         <PublicHeader
@@ -51,12 +44,12 @@ class MappingPage extends React.Component<Props, State> {
         />
         <div className="content-area">
           <Map
-            {...this.state.mapPosition}
+            {...this.props.location.query}
             onMoveEnd={this.onMapMoveEnd}
-            locateOnStart={!this.state.mapPosition}>
+            locateOnStart={!this.props.location.query}>
             <Link to={{
               pathname: `/events/${event._id}/create-place`,
-              state: {mapPosition: this.state.mapPosition, historyBehavior: 'back'},
+              state: {mapPosition: this.props.location.query, historyBehavior: 'back'},
             }} className="add-place">+</Link>
           </Map>
         </div>
@@ -65,7 +58,12 @@ class MappingPage extends React.Component<Props, State> {
   }
 
   private onMapMoveEnd = (params: MapParams) => {
-    this.setState({mapPosition: params});
+    const {lat, lon, zoom} = params;
+    browserHistory.replace({
+      pathname: this.props.location.pathname,
+      state: this.props.location.state,
+      query: {lat, lon, zoom},
+    });
   };
 };
 
