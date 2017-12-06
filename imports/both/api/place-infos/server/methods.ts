@@ -6,17 +6,25 @@ import {PlaceInfoSchema} from '@sozialhelden/ac-format';
 import {t} from 'c-3po';
 import {userIsAllowedToMapInEventId} from '../../events/priviledges';
 
+const insertionSchema = new SimpleSchema({
+  eventId: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+  },
+  place: {
+    type: PlaceInfoSchema.extend({
+      '_id': {
+        type: String,
+        regEx: SimpleSchema.RegEx.Id,
+        optional: true,
+      },
+    }),
+  },
+});
+
 export const insert = new ValidatedMethod({
   name: 'placeInfos.insertForEvent',
-  validate: new SimpleSchema({
-    eventId: {
-      type: String,
-      regEx: SimpleSchema.RegEx.Id,
-    },
-    place: {
-      type: PlaceInfoSchema,
-    },
-  }).validator(),
+  validate: insertionSchema.validator(),
   run(doc: { eventId: Mongo.ObjectID, place: IPlaceInfo }) {
     console.log('Inserting place', doc.place, 'for user id', this.userId);
 
@@ -29,10 +37,18 @@ export const insert = new ValidatedMethod({
 
     // TODO fetch or create source for event id
 
-    // TODO store user id with place
-
     (doc.place as any)._testing = true;
 
-    return PlaceInfos.insert(doc.place);
+    // user and event id with place
+    doc.place.properties.eventId = doc.eventId;
+    doc.place.properties.creatorId = this.userId;
+
+    if (doc.place._id) {
+      const {_id, ...strippedDoc} = doc.place;
+      PlaceInfos.update(doc.place._id, {$set: strippedDoc});
+      return _id;
+    } else {
+      return PlaceInfos.insert(doc.place);
+    }
   },
 });
