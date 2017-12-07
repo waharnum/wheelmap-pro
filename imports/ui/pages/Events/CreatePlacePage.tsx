@@ -20,6 +20,7 @@ import {t} from 'c-3po';
 interface IPageModel {
   organization: IOrganization;
   event: IEvent;
+  place: IPlaceInfo | null;
 };
 
 type MapParams = { zoom: number; lat: number; lon: number };
@@ -54,15 +55,22 @@ class CreatePlacePage extends React.Component<Props> {
       translateAcFormatToUniforms(schema);
     }
 
-    const geometry = (historyState && historyState.mapPosition) ? {
-      type: 'Point',
-      coordinates: [historyState.mapPosition.lon, historyState.mapPosition.lat],
-    } : undefined;
+    let initialModel;
+    if (this.props.model.place) {
+      console.log('Editing existing place!', this.props.model.place._id);
+      initialModel = this.props.model.place;
+    } else {
+      const geometry = (historyState && historyState.mapPosition) ? {
+        type: 'Point',
+        coordinates: [historyState.mapPosition.lon, historyState.mapPosition.lat],
+      } : undefined;
+      initialModel = {geometry};
+    }
 
     return (
       <ScrollableLayout className={this.props.className}>
         <Questionnaire
-          model={{geometry}}
+          model={initialModel}
           schema={schema}
           fields={selectedFields}
           onSubmit={this.onSubmit}
@@ -98,11 +106,14 @@ const ReactiveCreatePlacePage = reactiveSubscriptionByParams(
   wrapDataComponent<IPageModel,
     IAsyncDataByIdProps<IPageModel | null>,
     IAsyncDataByIdProps<IPageModel>>(CreatePlacePage),
-  (id): IPageModel | null => {
+  (id, options: { place_id?: string }): IPageModel | null => {
+
     const event = Events.findOne(id);
     const organization = event ? event.getOrganization() : null;
+    const place = PlaceInfos.findOne(options.place_id);
+
     // fetch model with organization & events in one go
-    return event && organization ? {organization, event} : null;
+    return event && organization ? {organization, event, place} : null;
   }, 'events.by_id.public', 'organizations.by_eventId.public');
 
 export default styled(ReactiveCreatePlacePage) `
