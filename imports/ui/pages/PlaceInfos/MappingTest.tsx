@@ -79,4 +79,7 @@ class MappingTestPage extends React.Component<Props, State> {
 };
 
 export default styled(MappingTestPage) `
+.content-left {
+  max-width: 375px;
+}
 `;
