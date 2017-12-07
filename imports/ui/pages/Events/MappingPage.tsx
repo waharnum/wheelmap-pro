@@ -54,6 +54,12 @@ class MappingPage extends React.Component<Props, State> {
             customPlaces={this.props.model.places}
             accessibilityCloudTileUrlBuilder={() => false}
             onMoveEnd={this.onMapMoveEnd}
+            onMarkerClick={(placeId) => {
+              browserHistory.push({
+                pathname: `/events/${event._id}/edit-place/${placeId}`,
+                state: {mapPosition: this.queryToState(), historyBehavior: 'back'},
+              });
+            }}
             locateOnStart={!this.props.location.query}>
             <Link to={{
               pathname: `/events/${event._id}/create-place`,
