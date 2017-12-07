@@ -684,6 +684,7 @@ class Questionnaire extends React.Component<Props, State> {
     // console.log('state:', this.state);
 
     const headers = this.determineHeaders();
+    const canSkip = !['welcome'].includes(this.state.mainContent);
 
     return (
       <div className={`questionnaire-area ${this.props.className}`}>
@@ -693,11 +694,13 @@ class Questionnaire extends React.Component<Props, State> {
             <h1 className={`place-name ${headers.path ? '' : 'no-block'}`}>{headers.title}</h1>
             {headers.path ? <h2>{headers.path}</h2> : null}
             <span className="header-actions">
-              <button className="btn btn-default btn-sm dropdown-toggle" type="button"
-                      id={`tiredDropdown`}
-                      disabled={['welcome', 'done'].includes(this.state.mainContent)}
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{t`I'm tired`}
-              </button>
+              {canSkip ?
+                <button className="btn btn-sm dropdown-toggle" type="button"
+                        id={`tiredDropdown`}
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{t`I'm tired`}
+                </button> :
+                <button className="btn" type="button" onClick={this.props.onExitSurvey}>{t`Cancel`}</button>
+              }
               <div className="dropdown-menu" aria-labelledby={`tiredDropdown`}>
                 <h3>{t`Tired? What do you want to do now?`}</h3>
                 <span className="dropdown-actions">
