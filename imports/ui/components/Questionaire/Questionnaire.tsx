@@ -1,17 +1,17 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {AutoForm, AutoField, ErrorsField, SubmitField} from 'uniforms-bootstrap3';
-import {t} from 'c-3po';
-import {extend, get, pick, set, concat, sample, isEqual} from 'lodash';
+import { AutoForm, AutoField, ErrorsField, SubmitField } from 'uniforms-bootstrap3';
+import { t } from 'c-3po';
+import { extend, get, pick, set, concat, sample, isEqual } from 'lodash';
 
-import {colors} from '../../stylesheets/colors';
-import {IStyledComponent} from '../IStyledComponent';
-import {pickFieldForAutoForm} from '../../../both/lib/simpl-schema-filter';
+import { colors } from '../../stylesheets/colors';
+import { IStyledComponent } from '../IStyledComponent';
+import { pickFieldForAutoForm } from '../../../both/lib/simpl-schema-filter';
 import HistoryEntry from './HistoryEntry';
-import {forEachKeyInSchemas, isEqualSchema} from '../../../both/lib/ac-format-uniforms-bridge';
-import {determineDuration, newBlockSwitchOverhead} from '../../../both/lib/estimate-schema-duration';
-import {stringifyDuration} from '../../../both/i18n/duration';
-import {toast} from 'react-toastify';
+import { forEachKeyInSchemas, isEqualSchema } from '../../../both/lib/ac-format-uniforms-bridge';
+import { determineDuration, newBlockSwitchOverhead } from '../../../both/lib/estimate-schema-duration';
+import { stringifyDuration } from '../../../both/i18n/duration';
+import { toast } from 'react-toastify';
 
 
 const affirmativeAnswers: ReadonlyArray<string> = Object.freeze([t`Yes!`, t`Okay!`, t`Sure!`, t`Let's do this!`, t`I'm ready!`]);
@@ -64,11 +64,11 @@ type State = {
  * simpleSchemaPathToObjectPath( 'a.$.b.$.c.e.f', [4, 2], 0, {wrapInArray: false} ) returns 'a4.b2.c.e.f'.
  */
 const simpleSchemaPathToObjectPath = (simpleSchemaPath: string,
-                                      arrayIndexes: Array<number> = [],
-                                      options: { wrapInArray?: boolean, defaultValue?: number } = {
-                                        wrapInArray: true,
-                                        defaultValue: 0,
-                                      }): string => {
+  arrayIndexes: Array<number> = [],
+  options: { wrapInArray?: boolean, defaultValue?: number } = {
+    wrapInArray: true,
+    defaultValue: 0,
+  }): string => {
   if (!simpleSchemaPath) {
     return '';
   }
@@ -258,9 +258,9 @@ class Questionnaire extends React.Component<Props, State> {
             // store id for next update
             this.state.model._id = result;
           }).catch((error) => {
-          console.error(error);
-          toast.error(error);
-        });
+            console.error(error);
+            toast.error(error);
+          });
       }
     }
 
@@ -336,7 +336,7 @@ class Questionnaire extends React.Component<Props, State> {
       }
     }
 
-    return {title, path};
+    return { title, path };
   }
 
   historySection() {
@@ -355,10 +355,10 @@ class Questionnaire extends React.Component<Props, State> {
 
       return (
         <HistoryEntry key={index}
-                      question={entry.question}
-                      value={entry.answer}
-                      className={entry.className}
-                      onClick={callback}/>
+          question={entry.question}
+          value={entry.answer}
+          className={entry.className}
+          onClick={callback} />
       );
     });
   }
@@ -427,7 +427,7 @@ class Questionnaire extends React.Component<Props, State> {
     /* specify key on AutoForm, so that the form is not reused between fields */
     return (
       <section className={t`questionnaire-step ${isOptional ? 'questionnaire-optional' : 'questionnaire-mandatory'}`}
-               ref="latest-active-block">
+        ref="latest-active-block">
         <AutoForm
           action="#"
           key={field}
@@ -447,17 +447,17 @@ class Questionnaire extends React.Component<Props, State> {
                 }
               }}
               label={false}
-              name={simpleSchemaPathToObjectPath(field, this.state.arrayIndexes, {wrapInArray: false})}>
+              name={simpleSchemaPathToObjectPath(field, this.state.arrayIndexes, { wrapInArray: false })}>
             </AutoField>
             <span className={isSelfSubmitting ? 'call-to-action' : 'call-to-action cta-full-width'}>
               <div className="form">
                 <div className="form-group">
                   {!isSelfSubmitting ?
-                    <SubmitField className={t`primary-action`} value={t`Submit`}/> : null}
+                    <SubmitField className={t`primary-action`} value={t`Submit`} /> : null}
                   {isOptional ?
                     <button className="secondary"
-                            onClick={this.skipField.bind(this, field, this.state.question)}>{t`Skip`}</button> : null}
-                  <ErrorsField/>
+                      onClick={this.skipField.bind(this, field, this.state.question)}>{t`Skip`}</button> : null}
+                  <ErrorsField />
                 </div>
               </div>
             </span>
@@ -495,18 +495,18 @@ class Questionnaire extends React.Component<Props, State> {
 
     return (
       <section className="questionnaire-step enter-block"
-               ref="latest-active-block">
+        ref="latest-active-block">
         <h3 className="question">{this.state.question}</h3>
         <span className="call-to-action">
           <div className="form">
             <div className="form-group">
               {isOptional ?
                 [<button key="yes" className="primary"
-                         onClick={this.enterBlock.bind(this, field, this.state.question)}>{t`Yes`}</button>,
-                  <button key="no" className="primary"
-                          onClick={this.skipBlock.bind(this, field, this.state.question)}>{t`No`}</button>] :
+                  onClick={this.enterBlock.bind(this, field, this.state.question)}>{t`Yes`}</button>,
+                <button key="no" className="primary"
+                  onClick={this.skipBlock.bind(this, field, this.state.question)}>{t`No`}</button>] :
                 <button className="primary"
-                        onClick={this.enterBlock.bind(this, field, this.state.question)}>{t`Okay`}</button>
+                  onClick={this.enterBlock.bind(this, field, this.state.question)}>{t`Okay`}</button>
               }
             </div>
           </div>
@@ -564,18 +564,18 @@ class Questionnaire extends React.Component<Props, State> {
 
     return (
       <section className="questionnaire-step enter-array"
-               ref="latest-active-block">
+        ref="latest-active-block">
         <h3 className="question">{this.state.question}</h3>
         <span className="call-to-action">
           <div className="form">
             <div className="form-group">
               {isOptional ?
                 [<button key="yes" className="primary"
-                         onClick={this.enterArray.bind(this, field, this.state.question, arrayIndex)}>{t`Yes`}</button>,
-                  <button key="no" className="primary"
-                          onClick={this.skipBlock.bind(this, field, this.state.question, arrayIndex)}>{t`No`}</button>] :
+                  onClick={this.enterArray.bind(this, field, this.state.question, arrayIndex)}>{t`Yes`}</button>,
+                <button key="no" className="primary"
+                  onClick={this.skipBlock.bind(this, field, this.state.question, arrayIndex)}>{t`No`}</button>] :
                 <button className="primary"
-                        onClick={this.enterArray.bind(this, field, this.state.question)}>{t`Okay`}</button>
+                  onClick={this.enterArray.bind(this, field, this.state.question)}>{t`Okay`}</button>
               }
             </div>
           </div>
@@ -601,7 +601,7 @@ class Questionnaire extends React.Component<Props, State> {
   welcomeSection() {
     return (
       <section className="questionnaire-step welcome"
-               ref="latest-active-block">
+        ref="latest-active-block">
         <h3 className="question">{t`Welcome text goes here.`}</h3>
         <span className="call-to-action">
           <div className="form">
@@ -617,7 +617,7 @@ class Questionnaire extends React.Component<Props, State> {
   doneSection() {
     return (
       <section className="questionnaire-step done"
-               ref="latest-active-block">
+        ref="latest-active-block">
         <h3 className="question">{t`Well done, you made it through!`}</h3>
         <code>{JSON.stringify(this.state.model, null, 2)}</code>
         <span className="call-to-action">
@@ -695,8 +695,8 @@ class Questionnaire extends React.Component<Props, State> {
             <span className="header-actions">
               {canSkip ?
                 <button className="btn btn-sm dropdown-toggle" type="button"
-                        id={`tiredDropdown`}
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{t`I'm tired`}
+                  id={`tiredDropdown`}
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{t`I'm tired`}
                 </button> :
                 <button className="btn" type="button" onClick={this.props.onExitSurvey}>{t`Cancel`}</button>
               }
@@ -704,9 +704,9 @@ class Questionnaire extends React.Component<Props, State> {
                 <h3>{t`Tired? What do you want to do now?`}</h3>
                 <span className="dropdown-actions">
                   <button className="complete-block"
-                          onClick={this.exitBlock}>{t`Complete ${headers.path || t`block`}`}</button>
+                    onClick={this.exitBlock}>{t`Complete ${headers.path || t`block`}`}</button>
                   <button className="stop-survey"
-                          onClick={this.stopSurvey}>{t`Stop here`}</button>
+                    onClick={this.stopSurvey}>{t`Stop here`}</button>
                   <button className="secondary">{t`I'm fine`}</button>
                 </span>
               </div>
@@ -717,7 +717,7 @@ class Questionnaire extends React.Component<Props, State> {
             </span>
           </span>
           <span className="progress-bar">
-            <div className="progress-done" style={{width: `${this.state.progress * 100}%`}}/>
+            <div className="progress-done" style={{ width: `${this.state.progress * 100}%` }} />
           </span>
         </header>
         <div className="history-column">
@@ -795,28 +795,55 @@ export default styled(Questionnaire) `
       margin-bottom: 0;
     }
 
+    form .field.form-group {
+      .checkbox {
+        border-radius: 32px;
+
+        label {
+          input {
+              width: 8px;
+              height: 8px;
+          }
+        }
+      }
+    }
+
     .primary-action input.btn.btn-primary,
     input.btn.btn-primary,
-    button {
-      flex-grow: 1;
-      padding: 0 10px;
-      margin-right: 4px;
-      line-height: 2em;
+    button,
+    .checkbox,
+    .checkbox label {
       font-size: 21px;
       font-weight: 400;
-      text-transform: uppercase;
       color: ${colors.linkBlue};
-      background-color: white;
-      border: 1px solid ${colors.linkBlue};
-      border-radius: 4px;
       transition: color 0.25s, background-color 0.25s;
-
+      
       &:hover,
       &:active {
         color: white;
         background: ${colors.linkBlue};
         transition: color 0.25s, background-color 0.25s;
       }
+    }
+    
+    
+    .primary-action input.btn.btn-primary,
+    input.btn.btn-primary,
+    button,
+    .checkbox {
+      flex-grow: 1;
+      padding: 0 10px;
+      margin-right: 4px;
+      line-height: 2em;
+      background: none;
+      border: 1px solid ${colors.linkBlue};
+    }
+    
+    .primary-action input.btn.btn-primary,
+    input.btn.btn-primary,
+    button {
+      text-transform: uppercase;
+      border-radius: 4px;
     }
 
     button.secondary {
@@ -828,7 +855,9 @@ export default styled(Questionnaire) `
       transition: color 0.25s, background-color 0.25s, opacity 0.25s;
 
       &:hover,
-      &:active {
+      &:active,
+      &:hover label,
+      &:active label, {
         opacity: 1;
         color: white;
         background: ${colors.bgAnthracite};
