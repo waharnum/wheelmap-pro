@@ -61,9 +61,13 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
           this.customLayer.clearLayers();
           this.customLayer = null;
         }
-        
+
         if (nextProps.customPlaces) {
-          const markers = nextProps.customPlaces.map(feature => this.createMarkerFromFeature(feature, feature.geometry.coordinates.reverse()));
+          const markers = nextProps.customPlaces.map(
+            feature => {
+              feature.properties._id = feature._id;
+              return this.createMarkerFromFeature(feature, feature.geometry.coordinates.reverse());
+            });
           this.customLayer = L.layerGroup(markers);
           this.leafletMap.addLayer(this.customLayer);
         }
