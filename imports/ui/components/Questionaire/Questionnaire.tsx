@@ -265,10 +265,9 @@ class Questionnaire extends React.Component<Props, State> {
     }
 
     const question = this.determineQuestion(mainContent, nextActiveField);
-
     const remainingDuration = this.props.fields.slice(Math.max(nextIndex, 0)).reduce((p, v) => p + (this.durationCache[v] || 0), 0);
-
     this.hasFocus = false;
+
     this.setState(extend(nextState, {
       currentIndex: nextIndex,
       progress: nextIndex / this.props.fields.length,
@@ -404,8 +403,8 @@ class Questionnaire extends React.Component<Props, State> {
   };
 
   scrollRefIntoView = () => {
-    if (this.refs['footer'] && !this.hasFocus) {
-      (this.refs['footer'] as HTMLElement).scrollIntoView({block: 'end', behavior: 'smooth'});
+    if (this.refs['latest-active-block'] && !this.hasFocus) {
+      (this.refs['latest-active-block'] as HTMLElement).scrollIntoView({block: 'end', behavior: 'smooth'});
     }
   };
 
@@ -441,8 +440,8 @@ class Questionnaire extends React.Component<Props, State> {
             <AutoField
               inputRef={ref => {
                 if (ref) {
-                  this.hasFocus = true;
                   ref.focus();
+                  this.hasFocus = true;
                 } else {
                   this.hasFocus = false;
                 }
@@ -1105,8 +1104,7 @@ export default styled(Questionnaire) `
   }
 
   section.questionnaire-step,
-  section.questionnaire-history-entry,
-  footer.questionnaire-status {
+  section.questionnaire-history-entry {
     padding: 16px;
   }
 
