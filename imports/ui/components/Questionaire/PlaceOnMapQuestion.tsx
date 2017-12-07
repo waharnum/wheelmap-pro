@@ -19,6 +19,7 @@ const PlaceOnMapQuestion = class extends React.Component<IStyledComponent & Prop
       <Map
         lon={this.props.value.coordinates && this.props.value.coordinates[0]}
         lat={this.props.value.coordinates && this.props.value.coordinates[1]}
+        accessibilityCloudTileUrlBuilder={() => false}
         zoom={19}
         onMoveEnd={(options: { zoom: number, lat: number, lon: number, bbox: L.LatLngBounds }) => {
 
