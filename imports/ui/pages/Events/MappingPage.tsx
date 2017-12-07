@@ -122,4 +122,10 @@ export default styled(ReactiveMappingPage) `
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     font-family: 'iconfield-V03';
   }
+  
+  @media (max-height: 500px), (max-width: 500px) {  
+    .leaflet-bottom.leaflet-left {
+       bottom: 0;
+    }
+  }
 `;
