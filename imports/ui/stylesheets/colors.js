@@ -2,9 +2,10 @@
 
 export const colors = {
   bgWhite: '#fbfaf9',               // Wheelmap.beta white
+  bgAnthracite: '#37404D',          // anthracite used in admin headers
   bgGrey: '#F4F5F6',                // light grey in background
   bgGreyDarker: '#ECEDEF',          // light darker grey for "lower" background areas
-  bgAnthracite: '#37404D',          // anthracite used in admin headers
+  bgGreyLighter: '#EDEEEF',         // lighter grey for past questionnaire
 
   ctaGreen: '#9BBD40',              // primary button color
   ctaGreenLighter: '#A5C353',       // primary button hover color
