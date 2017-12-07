@@ -117,6 +117,7 @@ const AppRouter = (
       <Route path="/events/:_id" component={ShowEventPage}/>
       <Route path="/events/:_id/mapping" component={MappingPage}/>
       <Route path="/events/:_id/create-place" component={CreatePlacePage}/>
+      <Route path="/events/:_id/edit-place/:place_id" component={CreatePlacePage}/>
 
       <Route path="/welcome" component={HomePage}/>
 
