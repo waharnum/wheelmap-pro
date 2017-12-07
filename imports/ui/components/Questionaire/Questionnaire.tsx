@@ -774,6 +774,12 @@ export default styled(Questionnaire) `
       letter-spacing: -0.51px;
       line-height: 29px;
     }
+
+    section.questionnaire-step.welcome h3,
+    section.questionnaire-history-entry.welcome h3  {
+      font-weight: 300;
+      opacity: 0.8;
+    }
     
     code {
       overflow: auto;
@@ -787,11 +793,6 @@ export default styled(Questionnaire) `
       width: unset;
       width: 100%;
       margin-bottom: 0;
-    }
-
-    section.onboarding h3 {
-      font-weight: 300;
-      opacity: 0.8;
     }
 
     .primary-action input.btn.btn-primary,
@@ -820,7 +821,7 @@ export default styled(Questionnaire) `
 
     button.secondary {
       /* color: #8B8B8C; */
-      flex-grow:0;
+      flex-grow: 0;
       color: ${colors.bgAnthracite};
       opacity: 0.4;
       border: none;
@@ -836,13 +837,14 @@ export default styled(Questionnaire) `
     }
 
     input,
-    select {
-      padding: 0;
+    span.selectWrapper select {
+      padding: 0 8px;
       font-size: 21px;
       font-weight: 400;
       text-overflow: ellipsis;
       -webkit-appearance: none; /* default arrows get hidden */
       -moz-appearance: none; /* default arrows get hidden */
+      background-color: ${colors.bgWhiteDarker};
       border-radius: 0;
       box-shadow: none;
       border: none;
@@ -862,6 +864,7 @@ export default styled(Questionnaire) `
       }
 
       &:disabled {
+        background: none;
         opacity: 0.5;
       }
     }
@@ -917,35 +920,46 @@ export default styled(Questionnaire) `
       }
     }
 
-    span.selectWrapper {
-      flex-grow: 1;
-      position: relative;
-      display: flex;
-      padding-top: 16px;
-
-      &:after {
-        content: " ß";
-        position: absolute;
-        top: 0.2em;
-        right: 2px;
-        text-align: center;
-        -moz-line-height: 0;
-        color: ${colors.linkBlue};
-        font-family: 'iconfield-V03';
-        pointer-events: none;
+    section.questionnaire-step {
+      
+      span.selectWrapper,
+      span.selectWrapper select.form-control {
+        line-height: 52px;
       }
 
-      &:hover select{
-        border-bottom: 2px solid ${colors.linkBlue};
-      }
-    }
+      span.selectWrapper {
+        flex-grow: 1;
+        position: relative;
+        display: flex;
+        padding-top: 16px;
+        height: 60px;
 
-    select {
-      flex-grow: 1;
-      cursor: pointer;
+        &:after {
+          content: " ß";
+          position: absolute;
+          top: 0.8em;
+          right: 8px;
+          font-size: 18px;
+          text-align: center;
+          -moz-line-height: 0;
+          color: ${colors.linkBlue};
+          font-family: 'iconfield-V03';
+          pointer-events: none;
+        }
 
-      option {
-        outline: none;
+        &:hover select{
+          border-bottom: 2px solid ${colors.linkBlue};
+        }
+        
+        select.form-control {
+          flex-grow: 1;
+          cursor: pointer;
+          height: 52px;
+          
+          option {
+            outline: none;
+          }
+        }
       }
     }
 
@@ -1127,6 +1141,10 @@ export default styled(Questionnaire) `
         
         .form .form-group > * {
           flex: 1;
+
+        }
+        .form .form-group > button.secondary {
+          flex-grow:0;
         }
       }
       
@@ -1139,6 +1157,21 @@ export default styled(Questionnaire) `
       }
     }
   }
+
+  section.questionnaire-step.enter-block,
+  section.questionnaire-step.enter-array,
+  section.questionnaire-history-entry.enter-block-history,
+  section.questionnaire-history-entry.enter-array-history {
+
+    h3 {
+      opacity: 0.75;
+      font-size: 14px;
+      line-height: 14px;
+      font-weight: 400;
+      letter-spacing: -0.25px;
+      text-transform: uppercase;
+    }
+  } 
 
   section.questionnaire-history-entry {
     background-color: ${colors.bgGreyLighter};
@@ -1157,5 +1190,9 @@ export default styled(Questionnaire) `
 
   section.questionnaire-step.next-block {
     display: none;
+  }
+
+  form .form-group span.help-block {
+    line-height: 18px;
   }
 `;

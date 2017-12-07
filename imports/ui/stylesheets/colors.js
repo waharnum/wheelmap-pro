@@ -2,10 +2,12 @@
 
 export const colors = {
   bgWhite: '#fbfaf9',               // Wheelmap.beta white
+  white100: '#fff',                 // perfect white
   bgAnthracite: '#37404D',          // anthracite used in admin headers
   bgGrey: '#F4F5F6',                // light grey in background
   bgGreyDarker: '#ECEDEF',          // light darker grey for "lower" background areas
   bgGreyLighter: '#EDEEEF',         // lighter grey for past questionnaire
+  bgWhiteDarker: '#F2F3F5',         // inputs in questionnaire
 
   ctaGreen: '#9BBD40',              // primary button color
   ctaGreenLighter: '#A5C353',       // primary button hover color
@@ -18,7 +20,6 @@ export const colors = {
   errorRed: '#FD3149',              // main error color 
   activeOrange: '#F5A623',          // in event timeline
   doneGreen: '#96C545',             // in event timeline
-  white100: '#fff',                 // perfect white
 
   shadowGrey: '#DEE1E7',            // used for embossed boxes
   boxShadow: 'rgba(55,64,77,0.40)',  // event timeline icons
