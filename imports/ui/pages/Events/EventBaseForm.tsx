@@ -81,10 +81,8 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
     this.state = {model: initialModel, mapState: 'init'};
     this.resetRegion = initialModel.region || defaultRegion;
 
-    // convert the input time from utc to local
     this.state.model.startTime = this.props.initialModel ?
-      moment(this.props.initialModel.startTime).add(moment().utcOffset(), 'minutes').toDate() :
-      moment().add(7, 'days').add(moment().utcOffset(), 'minutes').minutes(0).seconds(0).toDate();
+      this.props.initialModel.startTime : moment().add(7, 'days').minutes(0).seconds(0).toDate();
   }
 
   public render(): JSX.Element {
@@ -149,16 +147,16 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
   }
 
   private onMapReset = () => {
-    const region = Object.assign({}, this.resetRegion)
+    const region = Object.assign({}, this.resetRegion);
     this.formRef.onChange('region', region);
     const model = Object.assign({}, this.state.model, {region});
     this.setState({mapState: 'view', model});
-  }
+  };
 
   private onMapAccept = () => {
     this.resetRegion = this.state.model.region || defaultRegion;
     this.setState({mapState: 'view'});
-  }
+  };
 
   private onMapMoved = (params: { lat: number, lon: number, zoom: number, bbox: leaflet.LatLngBounds }) => {
     if (!this.formRef || this.state.mapState == 'init') {
@@ -185,15 +183,15 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
     }
 
     this.formRef.onChange('region', region);
-  }
+  };
 
   private onChangeModel = (model) => {
     this.setState({model});
-  }
+  };
 
   private storeFormReference = (ref: AutoForm) => {
     this.formRef = ref;
-  }
+  };
 
   private onSubmit = (doc: IEvent) => {
     // reset map state
@@ -205,8 +203,6 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
       const id = this.state.model._id;
       // remove id
       const {_id, ...strippedDoc} = doc;
-      // convert local back to utc when saving
-      strippedDoc.startTime = moment(strippedDoc.startTime).subtract(moment().utcOffset(), 'minutes').toDate();
       if (id != null) {
         console.log('Updating doc', strippedDoc, id);
         Events.update({_id: id}, {$set: strippedDoc}, {}, (error, count) => {
@@ -236,7 +232,7 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
     }, (error) => {
       this.formRef.setState({error});
     });
-  }
+  };
 };
 
 export const EventBaseForm = styled(InternalEventBaseForm) `
