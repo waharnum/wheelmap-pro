@@ -12,12 +12,14 @@ function getBrowserLanguages() {
   return window.navigator.languages || [];
 }
 
-export let bestMatchClientLocale = 'en';
+export const i18nSettings = {
+  bestMatchClientLocale: 'en',
+};
 
 export const getUserLanguages = () => {
   return uniq(
     // ensure that the best match locale is the first in the list
-    [bestMatchClientLocale].concat(
+    [i18nSettings.bestMatchClientLocale].concat(
       flatten(
         getBrowserLanguages().map(l => [l, localeWithoutCountry(l)]),
       ),
@@ -41,7 +43,7 @@ export function preparei18n(callback: Function) {
 
       T9n.setLanguage(result.language || 'en');
 
-      bestMatchClientLocale = result.language || 'en';
+      i18nSettings.bestMatchClientLocale = result.language || 'en';
 
       callback(result.language);
     } else {
@@ -49,7 +51,7 @@ export function preparei18n(callback: Function) {
       moment.locale('en-us');
       T9n.setLanguage('en');
       (mapLocale as any) = 'en';
-      bestMatchClientLocale = 'en';
+      i18nSettings.bestMatchClientLocale = 'en';
 
       callback('en');
     }

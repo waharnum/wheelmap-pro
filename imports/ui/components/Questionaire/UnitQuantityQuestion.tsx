@@ -7,7 +7,7 @@ import {determineUnitKind, Quantity} from '@sozialhelden/ac-format';
 
 import {colors} from '../../stylesheets/colors';
 import {IStyledComponent} from '../IStyledComponent';
-import {bestMatchClientLocale} from '../../../../client/i18n';
+import {i18nSettings} from '../../../../client/i18n';
 import {getPreferredUnitForKind} from '../../../both/i18n/units';
 
 type Props = {
@@ -79,7 +79,7 @@ const UnitQuantityQuestion = class extends React.Component<IStyledComponent & Pr
     const unitKind = determineUnitKind(props.field.type as SimpleSchema);
     const preferredUnit = props.field.uniforms ? props.field.uniforms.preferredUnit : '';
     const unit = getPreferredUnitForKind(unitKind, preferredUnit);
-    const displayUnit = getPreferredUnitForKind(unitKind, preferredUnit, bestMatchClientLocale);
+    const displayUnit = getPreferredUnitForKind(unitKind, preferredUnit, i18nSettings.bestMatchClientLocale);
 
     let lastValue = props.value;
     if (props.value) {
