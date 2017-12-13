@@ -2,7 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 
 import {IPlaceInfo, PlaceInfos} from '../place-infos';
-import {PlaceInfoSchema} from '@sozialhelden/ac-format';
+import {FormatVersion, PlaceInfo, PlaceInfoSchema} from '@sozialhelden/ac-format';
 import {t} from 'c-3po';
 import {userIsAllowedToMapInEventId} from '../../events/priviledges';
 
@@ -18,6 +18,10 @@ const insertionSchema = new SimpleSchema({
         regEx: SimpleSchema.RegEx.Id,
         optional: true,
       },
+      '_testing': {
+        type: Boolean,
+        optional: true,
+      },
     }),
   },
 });
@@ -25,7 +29,7 @@ const insertionSchema = new SimpleSchema({
 export const insert = new ValidatedMethod({
   name: 'placeInfos.insertForEvent',
   validate: insertionSchema.validator(),
-  run(doc: { eventId: Mongo.ObjectID, place: IPlaceInfo }) {
+  run(doc: { eventId: Mongo.ObjectID, place: PlaceInfo & { _id: Mongo.ObjectID } }) {
     console.log('Inserting place', doc.place, 'for user id', this.userId);
 
     if (!this.userId) {
@@ -40,15 +44,17 @@ export const insert = new ValidatedMethod({
     (doc.place as any)._testing = true;
 
     // user and event id with place
-    doc.place.properties.eventId = doc.eventId;
+    doc.place.properties.eventId = String(doc.eventId);
     doc.place.properties.creatorId = this.userId;
+
+    doc.place.formatVersion = FormatVersion;
 
     if (doc.place._id) {
       const {_id, ...strippedDoc} = doc.place;
       PlaceInfos.update(doc.place._id, {$set: strippedDoc});
       return _id;
     } else {
-      return PlaceInfos.insert(doc.place);
+      return PlaceInfos.insert(doc.place as any as IPlaceInfo);
     }
   },
 });
