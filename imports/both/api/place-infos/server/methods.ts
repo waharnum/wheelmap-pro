@@ -12,7 +12,7 @@ const insertionSchema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
   },
   place: {
-    type: PlaceInfoSchema.extend({
+    type: new SimpleSchema({
       '_id': {
         type: String,
         regEx: SimpleSchema.RegEx.Id,
@@ -22,7 +22,7 @@ const insertionSchema = new SimpleSchema({
         type: Boolean,
         optional: true,
       },
-    }),
+    }).extend(PlaceInfoSchema),
   },
 });
 
