@@ -20,7 +20,7 @@ export interface IPlaceInfo {
   geometry: {
     type: string;
     coordinates: [number, number];
-  }
+  };
 }
 
-export const PlaceInfos = new Mongo.Collection<IPlaceInfo>('PlaceInfos');
+export const PlaceInfos = new Mongo.Collection<IPlaceInfo>('PlaceInfosNew');
