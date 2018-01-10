@@ -38,7 +38,7 @@ const PublicEventHeader = (props: { event: IEvent, organization: IOrganization }
         prefixLink={`/organizations/${props.organization._id}`}
       />
     )}
-    action={(<HeaderShareAction/>)}
+    action={(<HeaderShareAction event={props.event}/>)}
     organizeLink={props.event.editableBy(Meteor.userId()) ? `/events/${props.event._id}/organize` : undefined}
   />
 );
@@ -57,7 +57,7 @@ const OngoingEventMapContent = () => (
   </div>
 );
 
-const HeaderShareAction = () => (
+const HeaderShareAction = (props: { event: IEvent }) => (
   <div>
     <ClipboardButton className="btn btn-dark"
                      data-clipboard-text={window.location.href}
@@ -66,7 +66,7 @@ const HeaderShareAction = () => (
                      }}>
       {t`Share Link`}
     </ClipboardButton>
-    <Button className="join-button btn-primary" to="">{t`Join Event`}</Button>
+    <Button className="join-button btn-primary" to={`/events/${props.event._id}/mapping`}>{t`Start mapping`}</Button>
   </div>
 );
 
@@ -116,7 +116,7 @@ const FinishedEventMapContent = (props: { event: IEvent }) => {
       </div>
     </div>
   );
-}
+};
 
 const ShowEventPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent) => {
     const event = props.model.event;
