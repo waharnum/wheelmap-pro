@@ -12,7 +12,7 @@ class ImageLinkUrl extends React.Component<any, { validImage: boolean, proposedU
   private image: HTMLImageElement | null;
 
   constructor(props) {
-    super();
+    super(props);
     const {value} = props;
     this.state.proposedUrl = value;
   }
