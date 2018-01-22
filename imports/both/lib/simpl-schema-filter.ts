@@ -30,7 +30,7 @@ export const isDefinitionTypeArray = (types: any[]): boolean => {
   return false;
 };
 
-// picks the fields in the current schema and then extends with recursive calls to picks from subschema
+// picks the fields in the current schema and then extends with recursive calls to picks from sub-schema
 const filterSchemaWithHierarchy = (schema: SimpleSchema, fieldTree: FieldTree, options: FilterOptions, path: Array<string>) => {
   const currentLevelKeys = Object.keys(fieldTree);
   const pickKeys: Array<string> = [];
@@ -40,8 +40,15 @@ const filterSchemaWithHierarchy = (schema: SimpleSchema, fieldTree: FieldTree, o
 
   currentLevelKeys.forEach((key) => {
     const fieldDefinition = schema.getDefinition(key, ['type']);
+
+    if (!fieldDefinition) {
+      console.warn('Could not find type on key', key);
+      return;
+    }
+
     const currentPath = path.concat([key]);
     const hasChildren = Object.keys(fieldTree[key]).length > 0;
+
     // array
     if (hasChildren && isDefinitionTypeArray(fieldDefinition.type)) {
       const arrayKey = key + '.$';
@@ -49,7 +56,6 @@ const filterSchemaWithHierarchy = (schema: SimpleSchema, fieldTree: FieldTree, o
       const arrayFieldDefinition = schema.getDefinition(arrayKey, ['type']);
       // always add array itself
       pickKeys.push(key);
-
 
       // array of schema
       if (hasArrayChildren && isDefinitionTypeSchema(arrayFieldDefinition.type)) {
