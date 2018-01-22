@@ -109,7 +109,7 @@ export const translateAcFormatToUniforms = (rootSchema: SimpleSchema) => {
 
     const type = schema.getQuickTypeForKey(definitionKey);
     const definition = schema.schema(definitionKey);
-    const accessibility: AccessibilitySchemaExtension | undefined = definition.accessibility;
+    const accessibility: AccessibilitySchemaExtension<any> | undefined = definition.accessibility;
 
     if (type === 'boolean') {
       assignUpdate(extensions, [definitionKey, 'uniforms'], {

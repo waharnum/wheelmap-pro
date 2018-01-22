@@ -52,7 +52,7 @@ const deriveTreeFromSchema = (schema: SimpleSchema,
       required.push(definitionKey);
     }
 
-    const accessibility: AccessibilitySchemaExtension | undefined = definition.accessibility;
+    const accessibility: AccessibilitySchemaExtension<any> | undefined = definition.accessibility;
     if (accessibility && accessibility.machineData) {
       return null;
     }
