@@ -13,6 +13,7 @@ import SubSchemaChooser from '../../components/SubSchemaChooser';
 import {pickFields} from '../../../both/lib/simpl-schema-filter';
 import {translateAcFormatToUniforms} from '../../../both/lib/ac-format-uniforms-bridge';
 import Questionnaire from '../../components/Questionaire/Questionnaire';
+import DebugTable from '../../components/Questionaire/DebugTable';
 
 type Props = {} & IStyledComponent;
 
@@ -61,8 +62,12 @@ class MappingTestPage extends React.Component<Props, State> {
               </SubSchemaChooser>
             </AutoForm>
           </div>
-          <div className="content-left">
+          <div className="content-right">
             <Questionnaire
+              schema={schema}
+              fields={this.state.selectedFields}
+            />
+            <DebugTable
               schema={schema}
               fields={this.state.selectedFields}
             />
