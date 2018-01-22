@@ -11,15 +11,21 @@ class ImageLinkUrl extends React.Component<any, { validImage: boolean, proposedU
   };
   private image: HTMLImageElement | null;
 
+  constructor(props) {
+    super();
+    const {value} = props;
+    this.state.proposedUrl = value;
+  }
+
   public componentWillReceiveProps(nextProps) {
     if (nextProps.value !== this.state.proposedUrl) {
-      this.setState({validImage: false});
+      this.setState({validImage: false, proposedUrl: nextProps.value});
     }
   }
 
   public render() {
     // strip away properties
-    const {className, onChange, value, ...remainingProps} = this.props;
+    const {className, ...remainingProps} = this.props;
 
     return (
       <div className={'field form-group ' + className}>
