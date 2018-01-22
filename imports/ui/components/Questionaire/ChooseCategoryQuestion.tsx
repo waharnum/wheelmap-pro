@@ -52,8 +52,9 @@ const CategoryChooserQuestion = class extends React.Component<IStyledComponent &
     selectedCategories: [],
   };
 
-  public componentWillMount() {
-    this.modelChanged(this.props);
+  constructor(props: Props) {
+    super(props);
+    this.state = this.stateFromProps(props);
   }
 
   public componentDidMount() {
@@ -61,7 +62,7 @@ const CategoryChooserQuestion = class extends React.Component<IStyledComponent &
   }
 
   public componentWillReceiveProps(nextProps: Props) {
-    this.modelChanged(nextProps);
+    this.setState(this.stateFromProps(nextProps), this.fireInputRef);
   }
 
   public render() {
@@ -133,21 +134,30 @@ const CategoryChooserQuestion = class extends React.Component<IStyledComponent &
     }
   };
 
-  modelChanged(props: Props) {
+  stateFromProps(props: Props) {
     const categoryTree: Array<Array<ICategory>> = [];
     const selectedCategories: Array<ICategory> = [];
     if (props.value) {
       // find category in list
       const foundCategory = props.model.find((cat) => cat._id === props.value);
       if (foundCategory) {
-        let parentCategory: ICategory | undefined = foundCategory;
+        // add current level
         selectedCategories.unshift(foundCategory);
+        const siblings = props.model.filter(hasSameParent(foundCategory._id));
+        if (siblings.length > 0) {
+          categoryTree.unshift(siblings);
+        }
+        // build parent tree levels
+        let parentCategory: ICategory | undefined = foundCategory;
         while (parentCategory && parentCategory.parentIds && parentCategory.parentIds.length > 0 && parentCategory.parentIds[0]) {
           const parentId = parentCategory.parentIds[0];
           parentCategory = props.model.find((cat) => cat._id === parentId);
           if (parentCategory) {
-            categoryTree.unshift(props.model.filter(hasSameParent(parentId)));
-            selectedCategories.unshift(parentCategory);
+            const treeSiblings = props.model.filter(hasSameParent(parentId));
+            if (treeSiblings.length > 0) {
+              categoryTree.unshift(treeSiblings);
+              selectedCategories.unshift(parentCategory);
+            }
           }
         }
       }
@@ -155,10 +165,10 @@ const CategoryChooserQuestion = class extends React.Component<IStyledComponent &
 
     categoryTree.unshift(props.model.filter(isRoot));
 
-    this.setState({
+    return {
       selectedCategories,
       categoryTree,
-    }, this.fireInputRef);
+    };
   }
 };
 
