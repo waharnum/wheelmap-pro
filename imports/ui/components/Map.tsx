@@ -1,4 +1,12 @@
 import * as React from 'react';
+import {PropTypes} from 'react';
+import {isEqual} from 'lodash';
+import styled from 'styled-components';
+
+import * as L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet.locatecontrol/src/L.Control.Locate.scss';
+import 'wheelmap-react/src/Map.css';
 
 import ReactWheelmapMap from 'wheelmap-react/lib/components/Map/Map';
 import HighlightableMarker from 'wheelmap-react/lib/components/Map/HighlightableMarker';
@@ -6,16 +14,8 @@ import {yesNoLimitedUnknownArray, yesNoUnknownArray} from 'wheelmap-react/lib/li
 import {accessibilityCloudFeatureCache} from 'wheelmap-react/lib/lib/cache/AccessibilityCloudFeatureCache';
 import Categories from 'wheelmap-react/lib/lib/Categories';
 
-import * as L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
-import 'leaflet.locatecontrol/src/L.Control.Locate.scss';
-import 'wheelmap-react/src/Map.css';
-
-import styled from 'styled-components';
 import {IStyledComponent} from './IStyledComponent';
 import {IPlaceInfo} from '../../both/api/place-infos/place-infos';
-import {PropTypes} from 'react';
-import {isEqual} from 'lodash';
 
 interface IMapProps {
   children?: React.ReactNode;
@@ -43,7 +43,6 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
     leafletMap: null,
   };
   private leafletMap: L.Map;
-  private customLayer: L.LayerGroup | null;
   private currentMarkerIds: string[] = [];
 
   public componentWillReceiveProps(nextProps, nextContext) {
@@ -56,30 +55,20 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
       this.repositionMap(nextProps);
     }
 
-    Categories.fetchOnce(nextProps).then(() => {
-      if (this.leafletMap) {
-        const ids = nextProps.customPlaces ? nextProps.customPlaces.map(f => f._id) : [];
-        // this is a fairly stupid diff, remove all current elements, add all new elements
-        if (!isEqual(this.currentMarkerIds, ids)) {
-          if (this.customLayer) {
-            this.leafletMap.removeLayer(this.customLayer);
-            this.customLayer.clearLayers();
-            this.customLayer = null;
-          }
+    const ids = nextProps.customPlaces ? nextProps.customPlaces.map(f => f._id) : [];
+    // this is a fairly stupid diff, remove all current elements, add all new elements
+    if (!isEqual(this.currentMarkerIds, ids)) {
+      // TODO remove old features again?
 
-          if (nextProps.customPlaces) {
-            const markers = nextProps.customPlaces.map(
-              feature => {
-                feature.properties._id = feature._id;
-                return this.createMarkerFromFeature(feature, feature.geometry.coordinates.reverse());
-              });
-            this.customLayer = L.layerGroup(markers);
-            this.leafletMap.addLayer(this.customLayer);
-          }
-          this.currentMarkerIds = ids;
-        }
+      if (nextProps.customPlaces) {
+        nextProps.customPlaces.forEach(
+          feature => {
+            accessibilityCloudFeatureCache.cacheFeature({id: feature._id, ...feature});
+          },
+        );
       }
-    });
+      this.currentMarkerIds = ids;
+    }
   }
 
   public render(): JSX.Element {
