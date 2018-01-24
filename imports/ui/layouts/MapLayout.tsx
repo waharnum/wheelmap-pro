@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import {IStyledComponent} from '../components/IStyledComponent';
+import { IStyledComponent } from '../components/IStyledComponent';
 
 interface IScrollLayoutProps {
   children: React.ReactNode;
@@ -20,10 +20,15 @@ export default styled(MapLayout) `
   overflow: hidden;
   width: 100%;
   display: flex;
-  flex-direction: column;
-  
+  flex-direction: row;
+
+  .sidebar-area {
+    width:375px;
+  }
+
+  /** This normally includes the map-area on the right side. */
   .content-area {
-    flex-grow: 1;
+    flex:1;
     position: relative;
     
     justify-content: center;

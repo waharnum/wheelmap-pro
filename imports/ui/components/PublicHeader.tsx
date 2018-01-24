@@ -47,8 +47,12 @@ export const HeaderTitle = (props: IHeaderTitleProps) => {
 };
 
 const PublicHeader = (props: IPublicHeaderProps & IStyledComponent) => {
+  const allNames = [
+    props.className,
+    'sidebar-area',
+  ].join(' ');
   return (
-    <div className={props.className}>
+    <div className={allNames}>
       <header className="main-header on-white">
         <div className="wrapper on-white">
           <ol className="secondary-tools">
