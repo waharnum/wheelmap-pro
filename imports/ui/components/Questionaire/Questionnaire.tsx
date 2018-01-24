@@ -38,8 +38,16 @@ type Props = {
   onSubmit?: (model: any, field: string | null) => Promise<Mongo.ObjectID>,
 } & IStyledComponent;
 
-type ContentTypes = 'welcome' | 'enterArray' | 'addToArray' | 'chooseFromArray' | 'enterBlock' | 'valueEntry' | 'done';
-type NextFieldMode = 'nextIndex' | 'exitBlock' | 'skipBlock' | 'stop' | 'history';
+type ContentTypes =
+  'welcome'
+  | 'enterArray'
+  | 'addToArray'
+  | 'chooseFromArray'
+  | 'abort'
+  | 'enterBlock'
+  | 'valueEntry'
+  | 'done';
+type NextFieldMode = 'nextIndex' | 'exitBlock' | 'skipBlock' | 'stop' | 'abort' | 'history';
 
 type State = {
   history: Array<HistoryDataEntry>,
@@ -192,7 +200,18 @@ class Questionnaire extends React.Component<Props, State> {
         shouldCheckForArrayAgain = false;
         nextIndex = nextState.currentIndex;
         break;
+      case 'abort':
+        this.setState(extend(nextState, {
+          currentIndex: this.props.fields.length,
+          progress: 1,
+          activeField: null,
+          remainingDuration: 0,
+          mainContent: 'abort',
+          arrayIndexes: [],
+        }), this.scrollRefIntoView);
+        return;
     }
+
 
     let nextActiveField: string | null = this.props.fields[nextIndex];
 
@@ -636,6 +655,24 @@ class Questionnaire extends React.Component<Props, State> {
     );
   }
 
+  abortSection() {
+    return (
+      <section className="questionnaire-step done"
+               ref="latest-active-block">
+        <h3 className="question">{t`Discard changes?`}</h3>
+        <span className="call-to-action">
+          {t`We will discard your changes, do you really want to abort?`}
+          <div className="form">
+            <div className="form-group">
+              <button onClick={this.props.onExitSurvey} className="primary btn-danger">{t`Back to map`}</button>
+            </div>
+          </div>
+        </span>
+      </section>
+    );
+
+  }
+
   exitBlock = () => {
     const nextState = {
       history: concat(this.state.history, {
@@ -647,6 +684,26 @@ class Questionnaire extends React.Component<Props, State> {
         answer: sample(skipBlockAnswers),
       }),
     };
+
+    // when skipping out of an object, check if this would leave the object unusable
+    if (this.state.activeField) {
+      const parentIndex = this.state.activeField.lastIndexOf('.');
+      const parentFieldPath = this.state.activeField.substr(0, parentIndex);
+
+      const subSchema = pickFieldForAutoForm(this.props.schema, parentFieldPath);
+
+      const objectPath = simpleSchemaPathToObjectPath(parentFieldPath, this.state.arrayIndexes);
+      const subModel = set({}, objectPath, pick(this.state.model, objectPath));
+
+      const validator = subSchema.newContext();
+      const okay = validator.validate(subModel);
+      // object is invalid, warn the user about it
+      if (!okay) {
+        this.goToNextField('abort', nextState);
+        return;
+      }
+    }
+
     this.goToNextField('exitBlock', nextState);
   };
 
@@ -661,7 +718,15 @@ class Questionnaire extends React.Component<Props, State> {
         answer: sample(stopQuestionnaireAnswers),
       }),
     };
-    this.goToNextField('stop', nextState);
+
+    // when aborting editing, validate
+    const validator = this.props.schema.newContext();
+    const okay = validator.validate(this.state.model);
+    if (!okay) {
+      this.goToNextField('abort', nextState);
+    } else {
+      this.goToNextField('stop', nextState);
+    }
   };
 
   public render() {
@@ -682,6 +747,9 @@ class Questionnaire extends React.Component<Props, State> {
         break;
       case 'done':
         displayField = this.doneSection();
+        break;
+      case 'abort':
+        displayField = this.abortSection();
         break;
     }
 
