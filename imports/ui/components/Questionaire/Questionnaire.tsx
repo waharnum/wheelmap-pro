@@ -369,7 +369,12 @@ class Questionnaire extends React.Component<Props, State> {
     console.log('Submitted', JSON.stringify(resultObj), field, objectPath, question);
 
     const resultValue = get(resultObj, objectPath);
-    set(this.state.model, objectPath, resultValue);
+    let bareValue = resultValue;
+    if (typeof resultValue === 'object') {
+      const {toString, ...stripped} = resultValue;
+      bareValue = stripped;
+    }
+    set(this.state.model, objectPath, bareValue);
     const nextState = {
       history: concat(this.state.history, {
         goTo: {
