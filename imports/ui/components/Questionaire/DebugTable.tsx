@@ -104,14 +104,16 @@ class DebugTable extends React.Component<Props> {
       <div className={`questionnaire-area ${this.props.className}`}>
         <div className="questionnaire-column">
           <table>
+            <tbody>
             {fields.map((f, i) => {
               const data = this.retrieveQuestionData(i);
-              return (<tr>
+              return (<tr key={f}>
                 <td><code>{f.replace(/\./g, '.​')}</code></td>
                 <td>{data.mainContent}</td>
                 <td>{data.question}</td>
               </tr>);
             })}
+            </tbody>
           </table>
         </div>
       </div>
