@@ -43,6 +43,7 @@ class ShowOrganizationPage extends React.Component<Props> {
     let content: React.ReactNode = null;
     let header: React.ReactNode = null;
     let additionalMapPanel: React.ReactNode = null;
+    let forceSidePanelForMobile: boolean = false;
     if (this.props.params.place_id) {
       header = <LogoHeader link={`/new/organizations/${organization._id}`}
                            prefixTitle={organization.name}
@@ -77,6 +78,7 @@ class ShowOrganizationPage extends React.Component<Props> {
         const event = events[0];
         additionalMapPanel = <section>{event.name}</section>;
       }
+      forceSidePanelForMobile = true;
     }
 
     return (
@@ -85,6 +87,7 @@ class ShowOrganizationPage extends React.Component<Props> {
         header={header}
         contentPanel={content}
         additionalMapPanel={additionalMapPanel}
+        forceSidePanelForMobile={forceSidePanelForMobile}
         mapProperties={{
           onMarkerClick: (id) => {
             this.props.router.push(`/new/organizations/${organization._id}/place/${id}`);

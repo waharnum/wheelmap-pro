@@ -13,6 +13,7 @@ type Props = {
   contentPanel: React.ReactNode;
   additionalMapPanel?: React.ReactNode;
   forceSidePanelForMobile?: boolean;
+  canCloseSidePanelOnDesktop?: boolean;
   mapProperties: MapProps;
   id?: string;
 };
@@ -22,18 +23,24 @@ class NewMapLayout extends React.Component<IStyledComponent & Props> {
   public render() {
     const {id, className, contentPanel, header, mapProperties, additionalMapPanel, forceSidePanelForMobile} = this.props;
 
-    const isMobile = false;
-    const sidePanelOpen = false;
+    // aligned with wheelmap-react
+    const isMobile = window.screen.availWidth <= 512;
+    const sidePanelOpen = !isMobile; // TODO use state
+
+    // todo listen to window size
+    console.log(isMobile, window.screen.availWidth, window.screen.width);
 
     const useSidePanel = !isMobile || forceSidePanelForMobile;
     const useCardPanel = isMobile && !forceSidePanelForMobile;
-    const useAdditionalMapPanel = !useCardPanel && !sidePanelOpen;
+    const useAdditionalMapPanel = !useCardPanel && (!isMobile || !sidePanelOpen);
+
+    const displaySidePanel = contentPanel && useSidePanel && sidePanelOpen;
 
     return (
-      <div id={id} className={className + ' map-layout'}>
+      <div id={id} className={`${className} map-layout ${displaySidePanel ? 'with-side-panel' : '' }`}>
         <section className="side-panel">
           {header && <header>{header}</header>}
-          {contentPanel && useSidePanel && <section className="content">
+          {displaySidePanel && <section className="content">
             {contentPanel}
           </section>}
         </section>
@@ -55,30 +62,35 @@ export default styled(NewMapLayout) `
   overflow: hidden;
   width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   
   .side-panel {
-    width:375px;
-    display: flex;
-    flex-direction: column;
-    
     header {
       background: ${colors.bgWhite}
     }
-    
-    section.content {
-      flex: 1;
+  }
+  
+  &.with-side-panel {
+    flex-direction: row;
+  
+    .side-panel {
+      width:375px;
       display: flex;
-      background: ${colors.bgWhite}
+      flex-direction: column;
+     
+      section.content {
+        flex: 1;
+        display: flex;
+        background: ${colors.bgWhite}
+      }
+    }
+    .card-panel {
+      position: absolute;
+      top: unset;
+      bottom: 30px;
     }
   }
   
-  .card-panel {
-    position: absolute;
-    top: unset;
-    bottom: 30px;
-  }
-
   /** This normally includes the map-area on the right side. */
   .map {
     flex:1;
