@@ -14,6 +14,7 @@ import {IOrganization, Organizations} from '../../../both/api/organizations/orga
 import OrganizationAboutPanel from './panels/OrganizationAboutPanel';
 import PlaceDetailsPanel from '../../panels/PlaceDetailsPanel';
 import LogoHeader from '../../components/LogoHeader';
+import UserPanel from '../../panels/UserPanel';
 
 type PageModel = {
   organization: IOrganization;
@@ -47,8 +48,20 @@ class ShowOrganizationPage extends React.Component<Props> {
       // TODO async fetch feature
       const feature = accessibilityCloudFeatureCache.getCachedFeature(this.props.params.place_id);
       content = <PlaceDetailsPanel feature={feature}/>;
+      // TODO center map to POI on first render
+    } else if (this.props.location.pathname.endsWith('/user')) {
+      header = <LogoHeader link={`/new/organizations/${organization._id}`}
+                           prefixTitle={organization.name}
+                           logo={organization.logo}
+                           title="Login / Sign-In / Profile / Argh"/>;
+      content = <UserPanel/>;
     } else {
-      content = <OrganizationAboutPanel organization={organization}/>;
+      content = <OrganizationAboutPanel
+        organization={organization}
+        onGotoUserPanel={() => {
+          this.props.router.push(`/new/organizations/${organization._id}/user`);
+        }}
+      />;
     }
 
     return (

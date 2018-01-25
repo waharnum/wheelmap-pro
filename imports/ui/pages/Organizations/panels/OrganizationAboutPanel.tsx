@@ -1,19 +1,24 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import {Link} from 'react-router';
+import {t} from 'c-3po';
 
 import {IStyledComponent} from '../../../components/IStyledComponent';
 import {IOrganization} from '../../../../both/api/organizations/organizations';
-import UserMenu from '../../../components/UserMenu';
+import UserFooter from './UserFooter';
 
 
 type Props = {
   organization: IOrganization;
+  onGotoUserPanel: () => void;
 };
 
 class OrganizationAboutPanel extends React.Component<IStyledComponent & Props> {
 
   public render() {
-    const {className, organization} = this.props;
+    const {className, organization, onGotoUserPanel} = this.props;
+
+    const adminLink = organization.editableBy(Meteor.userId()) ? `/organizations/${organization._id}/organize` : undefined;
 
     return (
       <div className={className}>
@@ -31,11 +36,10 @@ class OrganizationAboutPanel extends React.Component<IStyledComponent & Props> {
             <li><a>Contact</a></li>
             <li><a>Imprint</a></li>
             <li><a>FAQ</a></li>
+            {adminLink && <li><Link to={adminLink}>{t`Administrate`}</Link></li>}
           </ul>
         </section>
-        <footer>
-          <UserMenu/>
-        </footer>
+        <UserFooter onClick={onGotoUserPanel}/>
       </div>
     );
   }

@@ -9,7 +9,6 @@ import {withTracker} from 'meteor/react-meteor-data';
 import {Accounts, STATES} from 'meteor/std:accounts-ui';
 import {T9n} from 'meteor/softwarerero:accounts-t9n';
 import {Meteor} from 'meteor/meteor';
-import {browserHistory} from 'react-router';
 import {AutoForm, SubmitField} from 'uniforms-bootstrap3';
 import {ClaimAccountSchema} from '../../both/api/users/accounts';
 
@@ -63,7 +62,7 @@ const GuestUserContent = () => {
         }}/>
     </div>
   );
-}
+};
 
 interface IState {
   forcedLoginFormState: any;
@@ -96,10 +95,10 @@ class UserMenu extends React.Component<IUserProps & IStyledComponent, IState> {
 
   private onSignInSelected = () => {
     this.setState({forcedLoginFormState: STATES.SIGN_IN});
-  }
+  };
   private onSignUpSelected = () => {
     this.setState({forcedLoginFormState: STATES.SIGN_UP});
-  }
+  };
 }
 
 const UserMenuContainer = withTracker(() => {
