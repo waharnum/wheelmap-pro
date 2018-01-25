@@ -16,6 +16,7 @@ import PlaceDetailsPanel from '../../panels/PlaceDetailsPanel';
 import LogoHeader from '../../components/LogoHeader';
 import UserPanel from '../../panels/UserPanel';
 import browserHistory from 'react-router/lib/browserHistory';
+import {t} from 'c-3po';
 
 type PageModel = {
   organization: IOrganization;
@@ -43,21 +44,19 @@ class ShowOrganizationPage extends React.Component<Props> {
     let header: React.ReactNode = null;
     let additionalMapPanel: React.ReactNode = null;
     if (this.props.params.place_id) {
-      // TODO get category of feature
       header = <LogoHeader link={`/new/organizations/${organization._id}`}
                            prefixTitle={organization.name}
                            logo={organization.logo}
-                           title="Restaurant"/>;
+                           title={t`Place`}/>;
       // TODO async fetch feature
       const feature = accessibilityCloudFeatureCache.getCachedFeature(this.props.params.place_id);
       content = <PlaceDetailsPanel feature={feature}/>;
       // TODO center map to POI on first render
     } else if (this.props.location.pathname.endsWith('/user')) {
-      // TODO get state of UserPanel component :(
       header = <LogoHeader link={`/new/organizations/${organization._id}`}
                            prefixTitle={organization.name}
                            logo={organization.logo}
-                           title="Login / Sign-In / Profile / Argh"/>;
+                           title={t`My account`}/>;
       content = <UserPanel
         onSignedInHook={() => {
           this.props.router.push(`/new/organizations/${organization._id}`);
