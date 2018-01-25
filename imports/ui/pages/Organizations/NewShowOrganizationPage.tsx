@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 import * as React from 'react';
+import {RouteComponentProps} from 'react-router';
+
+import {accessibilityCloudFeatureCache} from 'wheelmap-react/lib/lib/cache/AccessibilityCloudFeatureCache';
 
 import NewMapLayout from '../../layouts/NewMapLayout';
 import {IStyledComponent} from '../../components/IStyledComponent';
@@ -9,6 +12,8 @@ import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../component
 import {IEvent} from '../../../both/api/events/events';
 import {IOrganization, Organizations} from '../../../both/api/organizations/organizations';
 import OrganizationAboutPanel from './panels/OrganizationAboutPanel';
+import PlaceDetailsPanel from '../../panels/PlaceDetailsPanel';
+import LogoHeader from '../../components/LogoHeader';
 
 type PageModel = {
   organization: IOrganization;
@@ -16,31 +21,46 @@ type PageModel = {
 };
 
 type PageParams = {
-  params: {
-    _id: string,
-    event_id: string | undefined
-    place_id: string | undefined
-  }
-}
+  organization_id: string,
+  place_id: string | undefined
+};
 
-type PageProps = PageParams & IAsyncDataByIdProps<PageModel> & IStyledComponent;
+type Props = RouteComponentProps<PageParams, {}> & IAsyncDataByIdProps<PageModel> & IStyledComponent;
 
-class ShowOrganizationPage extends React.Component<PageProps> {
+class ShowOrganizationPage extends React.Component<Props> {
 
-  public componentWillMount() {
-  }
 
-  public componentWillReceiveProps(nextProps) {
-
+  public componentWillReceiveProps(nextProps: Props) {
   }
 
   public render() {
+    const {organization} = this.props.model;
+
+    let content: React.ReactNode = null;
+    let header: React.ReactNode = null;
+    if (this.props.params.place_id) {
+      // TODO get category of feature
+      header = <LogoHeader link={`/new/organizations/${organization._id}`}
+                           prefixTitle={organization.name}
+                           logo={organization.logo}
+                           title="Restaurant"/>;
+      // TODO async fetch feature
+      const feature = accessibilityCloudFeatureCache.getCachedFeature(this.props.params.place_id);
+      content = <PlaceDetailsPanel feature={feature}/>;
+    } else {
+      content = <OrganizationAboutPanel organization={organization}/>;
+    }
+
     return (
       <NewMapLayout
         className={this.props.className}
-        header={null}
-        contentPanel={<OrganizationAboutPanel organization={this.props.model.organization}/>}
-        mapProperties={{}}
+        header={header}
+        contentPanel={content}
+        mapProperties={{
+          onMarkerClick: (id) => {
+            this.props.router.push(`/new/organizations/${organization._id}/place/${id}`);
+          },
+        }}
       />
     );
   }

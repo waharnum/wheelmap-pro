@@ -1,9 +1,8 @@
 import * as React from 'react';
 
 import styled from 'styled-components';
-import {IStyledComponent} from './IStyledComponent';
+import {IStyledComponent} from '../components/IStyledComponent';
 
-import Toolbar from 'wheelmap-react/lib/components/Toolbar';
 import NodeHeader from 'wheelmap-react/lib/components/NodeToolbar/NodeHeader';
 import BasicAccessibility from 'wheelmap-react/lib/components/NodeToolbar/BasicAccessibility';
 import AccessibilityDetails from 'wheelmap-react/lib/components/NodeToolbar/AccessibilityDetails';
@@ -11,14 +10,12 @@ import AccessibilityExtraInfo from 'wheelmap-react/lib/components/NodeToolbar/Ac
 import NodeFooter from 'wheelmap-react/lib/components/NodeToolbar/NodeFooter';
 import LicenseHint from 'wheelmap-react/lib/components/NodeToolbar/LicenseHint';
 import Categories from 'wheelmap-react/lib/lib/Categories';
-import CloseIcon from 'wheelmap-react/lib/components/icons/actions/Close';
 import {IPlaceInfo} from '../../both/api/place-infos/place-infos';
 
 
-interface IPlaceDetailsContainerProps {
+type Props = {
   feature?: IPlaceInfo | null;
-  onClose: () => void;
-};
+} & IStyledComponent;
 
 function fetchCategory(feature: IPlaceInfo | undefined | null,
                        callback: (result: { category?: any, parentCategory?: any }) => void) {
@@ -48,7 +45,7 @@ function fetchCategory(feature: IPlaceInfo | undefined | null,
 }
 
 
-class PlaceDetailsContainer extends React.Component<IStyledComponent & IPlaceDetailsContainerProps> {
+class PlaceDetailsPanel extends React.Component<Props> {
   public state = {
     category: null,
     parentCategory: null,
@@ -64,27 +61,24 @@ class PlaceDetailsContainer extends React.Component<IStyledComponent & IPlaceDet
 
   public render(): JSX.Element | null {
     const feature = this.props.feature;
-    const featureId = 'my-id';
-    const properties = feature ? feature.properties : null;
-    const category = this.state.category;
-    const parentCategory = this.state.parentCategory;
-    const accessibility = properties ? properties.accessibility : null;
-
     if (!feature) {
       return null;
     }
 
+    const featureId = feature._id || 'unknown-id';
+    const properties = feature.properties;
+    const category = this.state.category;
+    const parentCategory = this.state.parentCategory;
+    const accessibility = properties ? properties.accessibility : null;
+
     return (
-      <Toolbar className={this.props.className}>
+      <section className={this.props.className}>
         <NodeHeader
           feature={feature}
           category={category}
           parentCategory={parentCategory}
 
         />
-        <a className="close-icon" onClick={() => this.props.onClose()}>
-          <CloseIcon/>
-        </a>
         <BasicAccessibility properties={properties}/>
         <AccessibilityDetails details={accessibility}/>
         <AccessibilityExtraInfo properties={properties}/>
@@ -95,25 +89,15 @@ class PlaceDetailsContainer extends React.Component<IStyledComponent & IPlaceDet
           parentCategory={parentCategory}
         />
         <LicenseHint properties={properties}/>
-      </Toolbar>
+      </section>
     );
   }
 };
 
-export default styled(PlaceDetailsContainer)`
-  .close-icon {
-    display: block;
-    position: absolute;
-    padding: 16px;
-    font-size: 30px;
-    color: rgba(0,0,0,0.3);
-    text-decoration: none;
-    text-align: center;
-    z-index: 1;
-    top: -5px;
-    right: 6px;
-    pointer-events: all;
-    cursor: pointer;
-  }
+export default styled(PlaceDetailsPanel)`  
+  // shared between all panels
+  padding: 10px;
+  flex: 1;
+  // custom styling
 `;
 

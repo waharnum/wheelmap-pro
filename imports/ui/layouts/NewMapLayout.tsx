@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {IStyledComponent} from '../components/IStyledComponent';
 
 import Map, {Props as MapProps} from '../components/Map';
+import {colors} from '../stylesheets/colors';
 
 type Props = {
   header: React.ReactNode;
@@ -22,7 +23,7 @@ class NewMapLayout extends React.Component<IStyledComponent & Props> {
       <div id={id} className={className + ' map-layout'}>
         <section className="side-panel">
           {header && <header>{header}</header>}
-          <section className="content">{contentPanel}</section>
+          {contentPanel && <section className="content">{contentPanel}</section>}
         </section>
         <section className="map">
           <Map {...mapProperties} />
@@ -44,12 +45,13 @@ export default styled(NewMapLayout) `
     flex-direction: column;
     
     header {
-    
+      background: ${colors.bgWhite}
     }
     
     section.content {
       flex: 1;
       display: flex;
+      background: ${colors.bgWhite}
     }
   }
 
