@@ -17,7 +17,7 @@ import {IPlaceInfo} from '../../both/api/place-infos/place-infos';
 import {PropTypes} from 'react';
 import {isEqual} from 'lodash';
 
-interface IMapProps {
+export type Props = {
   children?: React.ReactNode;
   accessibilityCloudTileUrlBuilder?: () => string | false;
   minZoom?: number;
@@ -34,12 +34,12 @@ interface IMapProps {
   customPlaces?: IPlaceInfo[];
 }
 
-interface IMapState {
+interface State {
   leafletMap: L.Map | null;
 }
 
-class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
-  state: IMapState = {
+class Map extends React.Component<IStyledComponent & Props, State> {
+  state: State = {
     leafletMap: null,
   };
   private leafletMap: L.Map;
@@ -133,7 +133,7 @@ class Map extends React.Component<IStyledComponent & IMapProps, IMapState> {
     this.repositionMap(this.props);
   };
 
-  private repositionMap(props: IMapProps) {
+  private repositionMap(props: Props) {
     if (props.bbox) {
       this.leafletMap.fitBounds(props.bbox, {animate: false});
       if (props.onBboxApplied) {

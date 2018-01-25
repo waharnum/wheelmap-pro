@@ -25,13 +25,14 @@ import ShowOrganizationPage from './pages/Organizations/ShowOrganizationPage';
 import EditOrganizationPage from './pages/Organizations/EditOrganizationPage';
 import EventParticipantsPage from './pages/Events/EventParticipantsPage';
 import ListOrganizationsPage from './pages/Organizations/ListOrganizationsPage';
+import AccessibilityCloudPage from './pages/Organizations/AccessibilityCloudPage';
 import CreateOrganizationPage from './pages/Organizations/CreateOrganizationPage';
 import OrganizationMembersPage from './pages/Organizations/OrganizationMembersPage';
+import NewShowOrganizationPage from './pages/Organizations/NewShowOrganizationPage';
 import PublicSignUpForEventPage from './pages/Events/PublicSignUpForEventPage';
 import OrganizeOrganizationPage from './pages/Organizations/OrganizeOrganizationPage';
 import SignUpForOrganizationPage from './pages/Organizations/SignUpForOrganizationPage';
 import OrganizationStatisticsPage from './pages/Organizations/OrganizationStatisticsPage';
-import AccessibilityCloudPage from './pages/Organizations/AccessibilityCloudPage';
 
 // Just for test purposes
 import QuestionaireTestPage from './pages/Questionaire/QuestionaireTest';
@@ -94,7 +95,7 @@ const AppRouter = (
         <Route path="/organizations/:_id/statistics" component={OrganizationStatisticsPage}/>
         <Route path="/organizations/:_id/organize" component={OrganizeOrganizationPage}
                onEnter={SaveActiveOrganization}/>
-        <Route path='/organizations/:_id/accloud' component={AccessibilityCloudPage}/>
+        <Route path="/organizations/:_id/accloud" component={AccessibilityCloudPage}/>
 
         <Route path="/events/create" component={CreateEventPage}/>
         <Route path="/events/:_id/edit" component={EditEventPage}/>
@@ -113,6 +114,8 @@ const AppRouter = (
       <Route path="/organizations/:_id/browse" component={ShowOrganizationPage}/>
       <Route path="/organizations/:_id/event/:event_id" component={ShowOrganizationPage}/>
       <Route path="/organizations/:_id/place/:place_id" component={ShowOrganizationPage}/>
+
+      <Route path="/new/organizations/:_id" component={NewShowOrganizationPage}/>
 
       <Route path="/events/:_id" component={ShowEventPage}/>
       <Route path="/events/:_id/mapping" component={MappingPage}/>
