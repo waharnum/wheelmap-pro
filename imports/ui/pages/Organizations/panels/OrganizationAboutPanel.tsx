@@ -25,7 +25,7 @@ class OrganizationAboutPanel extends React.Component<IStyledComponent & Props> {
         {organization.logo &&
         <div className="organization-logo" style={{backgroundImage: `url(${organization.logo})`}}/>}
         <h1>{organization.name}</h1>
-        <section>
+        <section className="organization-description">
           {organization.description}
         </section>
         <section className="organization-links">
@@ -53,9 +53,25 @@ export default styled(OrganizationAboutPanel) `
   display: flex;
   flex-direction: column;
   
+  h1 {
+    font-size: 32px;
+  }
+  
+  .organization-description {
+    font-size: 16px;
+    line-height: 21px;
+  }
+  
   .organization-links {
     flex: 1;
+    margin-top: 32px;
+    
+    li {
+      font-size: 24px;
+      margin-bottom: 19px;
+    }
   }
+ 
 
   .organization-logo {
     background-position: left center;
