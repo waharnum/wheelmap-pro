@@ -1,20 +1,20 @@
-import {gettext, t} from 'c-3po';
+import { gettext, t } from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
-import {Meteor} from 'meteor/meteor';
-import {Location} from 'history';
-import {Accounts, STATES} from 'meteor/std:accounts-ui';
-import {AutoForm, SubmitField} from 'uniforms-bootstrap3';
+import { Meteor } from 'meteor/meteor';
+import { Location } from 'history';
+import { Accounts, STATES } from 'meteor/std:accounts-ui';
+import { AutoForm, SubmitField } from 'uniforms-bootstrap3';
 
 import Button from '../../components/Button';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
-import {IOrganization} from '../../../both/api/organizations/organizations';
-import {Events, IEvent} from '../../../both/api/events/events';
-import {GuestUserSchema, loginGuestUser, setLoginRedirect} from '../../../both/api/users/accounts';
-import {IStyledComponent} from '../../components/IStyledComponent';
-import {wrapDataComponent} from '../../components/AsyncDataComponent';
-import PublicHeader, {HeaderTitle} from '../../components/PublicHeader';
-import {IAsyncDataByIdProps, reactiveSubscriptionByParams} from '../../components/reactiveModelSubscription';
+import { IOrganization } from '../../../both/api/organizations/organizations';
+import { Events, IEvent } from '../../../both/api/events/events';
+import { GuestUserSchema, loginGuestUser, setLoginRedirect } from '../../../both/api/users/accounts';
+import { IStyledComponent } from '../../components/IStyledComponent';
+import { wrapDataComponent } from '../../components/AsyncDataComponent';
+import SidePanel, { SidePanelTitle } from '../../components/SidePanel';
+import { IAsyncDataByIdProps, reactiveSubscriptionByParams } from '../../components/reactiveModelSubscription';
 
 interface IAcceptInviteParams {
   _id: Mongo.ObjectID;
@@ -36,10 +36,10 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
     error: string | null;
     guestMode: boolean;
   } = {
-    busy: false,
-    error: null,
-    guestMode: true,
-  };
+      busy: false,
+      error: null,
+      guestMode: true,
+    };
   private formRef: AutoForm;
 
   public componentWillReceiveProps(nextProps: InternalPageProperties) {
@@ -50,23 +50,6 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
     this.modelChanged(this.props);
   }
 
-  private onSubmit = (doc) => {
-    return new Promise((resolve: (user: Meteor.User) => void, reject: (error: Meteor.Error) => void) => {
-      loginGuestUser(doc.username, (error: Meteor.Error, result) => {
-        if (!error) {
-          resolve(result);
-        } else {
-          reject(error);
-        }
-      });
-    }).catch((error: Meteor.Error) => {
-      this.formRef.setState({error: new Error(error.reason)});
-    });
-  }
-
-  private storeFormReference = (ref: AutoForm) => {
-    this.formRef = ref;
-  }
 
   public render(): JSX.Element | null {
     const user = this.props.model.user;
@@ -103,8 +86,8 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
               showInlineError={true}
               schema={GuestUserSchema}
               ref={this.storeFormReference}
-              submitField={() => (<SubmitField value={t`Sign up as a guest`}/>)}
-              onSubmit={this.onSubmit}/>
+              submitField={() => (<SubmitField value={t`Sign up as a guest`} />)}
+              onSubmit={this.onSubmit} />
             <Button to="">{t`Sign-in/Sign-up with email`}</Button>
           </div>
         );
@@ -113,7 +96,7 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
           <div className="content-area scrollable">
             <h2>{t`Great to have you here!`}</h2>
             <div className="alert alert-info">{t`Please sign up with ${organization.name} to join ${event.name}.`}</div>
-            <Accounts.ui.LoginForm formState={STATES.SIGN_UP}/>
+            <Accounts.ui.LoginForm formState={STATES.SIGN_UP} />
             <Button to="">{t`Sign-up as a guest`}</Button>
           </div>
         );
@@ -131,9 +114,9 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
 
     return (
       <ScrollableLayout id="PublicSignUpForEventPage" className={this.props.className}>
-        <PublicHeader
+        <SidePanel
           titleComponent={(
-            <HeaderTitle
+            <SidePanelTitle
               title={event.name}
               description={event.description}
               prefixTitle={organization.name}
@@ -147,9 +130,27 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
     );
   }
 
+  private onSubmit = (doc) => {
+    return new Promise((resolve: (user: Meteor.User) => void, reject: (error: Meteor.Error) => void) => {
+      loginGuestUser(doc.username, (error: Meteor.Error, result) => {
+        if (!error) {
+          resolve(result);
+        } else {
+          reject(error);
+        }
+      });
+    }).catch((error: Meteor.Error) => {
+      this.formRef.setState({ error: new Error(error.reason) });
+    });
+  }
+
+  private storeFormReference = (ref: AutoForm) => {
+    this.formRef = ref;
+  }
+
   private modelChanged = (props: InternalPageProperties) => {
     if (!props.model.user) {
-      this.setState({busy: false, error: null});
+      this.setState({ busy: false, error: null });
       setLoginRedirect(this.props.location.pathname);
     } else {
       setLoginRedirect(null);
@@ -158,14 +159,14 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
   }
 
   private acceptInvite = () => {
-    this.setState({busy: true});
+    this.setState({ busy: true });
     Meteor.call('eventParticipants.acceptPublicInvitation',
-      {eventId: this.props.params._id, invitationToken: this.props.params.token},
+      { eventId: this.props.params._id, invitationToken: this.props.params.token },
       (error, result) => {
         if (error) {
-          this.setState({busy: false, error: t`Accepting invitation failed.` + gettext(error.reason)});
+          this.setState({ busy: false, error: t`Accepting invitation failed.` + gettext(error.reason) });
         } else {
-          this.setState({busy: false});
+          this.setState({ busy: false });
         }
       },
     );
@@ -181,7 +182,7 @@ const ReactiveSignUpForEventPage = reactiveSubscriptionByParams(
     const organization = event ? event.getOrganization() : null;
     const user = Meteor.user();
 
-    return event && organization ? {user, event, organization} : null;
+    return event && organization ? { user, event, organization } : null;
   }, 'events.by_id.public', 'organizations.by_eventId.public', 'users.my.private');
 
 export default styled(ReactiveSignUpForEventPage) `

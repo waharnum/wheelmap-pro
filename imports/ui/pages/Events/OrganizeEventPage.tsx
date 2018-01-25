@@ -148,30 +148,7 @@ class OrganizeEventPage extends React.Component
     });
   }
 
-  private publishEvent = () => {
-    Meteor.call('events.publish', { eventId: this.state.event._id }, (error, result) => {
-      if (error) {
-        toast.error(error.reason);
-      }
-    });
-  }
 
-  private cancelEvent = () => {
-    modalAppDialog.show({
-      title: t`Please confirm cancellation`,
-      body: t`This will cancel your event and send out cancellation emails to all invitees. You will not be able to undo this!`,
-      actions: [
-        Dialog.CancelAction(),
-        Dialog.OKAction(() => {
-          Meteor.call('events.cancel', { eventId: this.state.event._id }, (error, result) => {
-            if (error) {
-              toast.error(error.reason);
-            }
-          });
-        }),
-      ],
-    });
-  }
 
   public render(): JSX.Element {
     const event = this.state.event;
@@ -202,7 +179,7 @@ class OrganizeEventPage extends React.Component
             planned={true}
             achieved={true}
             countdown="full" />
-          <div className='content-hsplit'>
+          <div className="content-hsplit">
             <div className="content-left">
               <ol className="event-timeline before-event">
                 <li className={'event-timeline-step event-details ' + stepStates.createEvent}>
@@ -353,7 +330,36 @@ class OrganizeEventPage extends React.Component
       </ScrollableLayout>
     );
   }
-};
+
+  private publishEvent = () => {
+    Meteor.call('events.publish', { eventId: this.state.event._id }, (error, result) => {
+      if (error) {
+        toast.error(error.reason);
+      }
+    });
+  }
+
+  private cancelEvent = () => {
+    modalAppDialog.show({
+      title: t`Please confirm cancellation`,
+      body: t`This will cancel your event and send out cancellation emails to all invitees. You will not be able to undo this!`,
+      actions: [
+        Dialog.CancelAction(),
+        Dialog.OKAction(() => {
+          Meteor.call('events.cancel', { eventId: this.state.event._id }, (error, result) => {
+            if (error) {
+              toast.error(error.reason);
+            }
+          });
+        }),
+      ],
+    });
+  }
+}
+
+
+
+
 
 const ReactiveOrganizeOrganizationsPage = reactiveSubscriptionByParams(
   wrapDataComponent<IPageModel,

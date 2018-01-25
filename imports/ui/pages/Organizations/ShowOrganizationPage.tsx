@@ -14,7 +14,7 @@ import { reactiveSubscriptionByParams, IAsyncDataByIdProps } from '../../compone
 
 import { IEvent } from '../../../both/api/events/events';
 import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
-import { default as PublicHeader, HeaderTitle } from '../../components/PublicHeader';
+import { default as SidePanel, SidePanelTitle } from '../../components/SidePanel';
 import { regionToBbox } from '../../../both/lib/geo-bounding-box';
 import EventMiniMarker from '../Events/EventMiniMarker';
 import EventMapPopup from '../Events/EventMapPopup';
@@ -79,9 +79,9 @@ class ShowOrganizationPage extends React.Component<PageProps> {
 
     return (
       <MapLayout className={this.props.className}>
-        <PublicHeader
+        <SidePanel
           titleComponent={(
-            <HeaderTitle
+            <SidePanelTitle
               title={organization.name}
               logo={organization.logo}
               description={organization.description}

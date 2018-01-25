@@ -13,7 +13,7 @@ import { Events, IEvent } from '../../../both/api/events/events';
 import { setLoginRedirect } from '../../../both/api/users/accounts';
 import { IStyledComponent } from '../../components/IStyledComponent';
 import { wrapDataComponent } from '../../components/AsyncDataComponent';
-import PublicHeader, { HeaderTitle } from '../../components/PublicHeader';
+import SidePanel, { SidePanelTitle } from '../../components/SidePanel';
 import { EventParticipants, IEventParticipant } from '../../../both/api/event-participants/event-participants';
 import { IAsyncDataByIdProps, reactiveSubscriptionByParams } from '../../components/reactiveModelSubscription';
 
@@ -91,9 +91,9 @@ class SignUpForEventPage extends React.Component<InternalPageProperties> {
 
     return (
       <ScrollableLayout className={this.props.className}>
-        <PublicHeader
+        <SidePanel
           titleComponent={(
-            <HeaderTitle
+            <SidePanelTitle
               title={event.name}
               description={event.description}
               prefixTitle={organization.name}

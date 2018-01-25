@@ -9,13 +9,13 @@ import { t } from 'c-3po';
 import { colors } from '../stylesheets/colors';
 import { Link } from 'react-router';
 
-interface IPublicHeaderProps {
+interface ISidePanelProps {
   titleComponent: JSX.Element | string;
   organizeLink?: LocationDescriptor | null;
   action?: JSX.Element | null;
 }
 
-interface IHeaderTitleProps {
+interface ISidePanelTitleProps {
   title: string;
   subTitle?: string;
   prefixTitle?: string;
@@ -25,7 +25,7 @@ interface IHeaderTitleProps {
   titleLink?: LocationDescriptor;
 }
 
-export const HeaderTitle = (props: IHeaderTitleProps) => {
+export const SidePanelTitle = (props: ISidePanelTitleProps) => {
   return (
     <div className="title-bar">
       {props.logo ? (
@@ -33,12 +33,11 @@ export const HeaderTitle = (props: IHeaderTitleProps) => {
           <div className="organization-logo" style={{ backgroundImage: `url(${props.logo})` }} />
         </Link>)
         : null}
-      {props.prefixTitle ?
-        <h1 className='organization-title'><Link to={props.prefixLink || ''}>{props.prefixTitle}</Link></h1> : null}
+      {props.prefixTitle ? <h1 className="organization-title"><Link to={props.prefixLink || ''}>{props.prefixTitle}</Link></h1> : null}
       <div className="header-information">
         <div className="headline">
-          <h1 className='with-chevron-before'><Link to={props.titleLink || ''}>{props.title}</Link></h1>
-          <h2 className='event-date'>{props.subTitle || ''}</h2>
+          <h1 className="with-chevron-before"><Link to={props.titleLink || ''}>{props.title}</Link></h1>
+          <h2 className="event-date">{props.subTitle || ''}</h2>
         </div>
         <p>{props.description}</p>
       </div>
@@ -46,7 +45,7 @@ export const HeaderTitle = (props: IHeaderTitleProps) => {
   );
 };
 
-const PublicHeader = (props: IPublicHeaderProps & IStyledComponent) => {
+const SidePanel = (props: ISidePanelProps & IStyledComponent) => {
   const allNames = [
     props.className,
     'sidebar-area',
@@ -62,7 +61,7 @@ const PublicHeader = (props: IPublicHeaderProps & IStyledComponent) => {
           <div className="main-area">
             <div className="left-side">
               {props.titleComponent ||
-                <HeaderTitle title="Please specificy title component" description="Pretty please?!" />}
+                <SidePanelTitle title="Please specificy title component" description="Pretty please?!" />}
             </div>
             <div className="right-side">
               {props.action}
@@ -74,7 +73,7 @@ const PublicHeader = (props: IPublicHeaderProps & IStyledComponent) => {
   );
 };
 
-export default styled(PublicHeader) `
+export default styled(SidePanel) `
 
 /* ----------------------------- base header styles -----------------------------*/
 
@@ -142,9 +141,9 @@ export default styled(PublicHeader) `
 /* ----------------------------- white public version -----------------------*/
 
   header.main-header.on-white {
-    min-height: 128px;
+    /* min-height: 128px; */
     color: ${colors.bgAnthracite};
-    background-color: white;
+    /* background-color: white; */
 
     a {
       color: ${colors.bgAnthracite};
@@ -158,8 +157,8 @@ export default styled(PublicHeader) `
       background-image: url(/images/icon-admin-view@2x.png); 
     }
 
-    .main-area {
 
+    /* .main-area {
       .title-bar {
         display: flex;
 
@@ -233,6 +232,6 @@ export default styled(PublicHeader) `
           margin-top: 11px;
         }
       }
-    }
+    } */
   }
 `;

@@ -1,20 +1,20 @@
 import styled from 'styled-components';
 import * as L from 'leaflet';
-import {browserHistory, Link, WithRouterProps} from 'react-router';
+import { browserHistory, Link, WithRouterProps } from 'react-router';
 import * as React from 'react';
 
 import Map from '../../components/Map';
-import {colors} from '../../stylesheets/colors';
+import { colors } from '../../stylesheets/colors';
 import MapLayout from '../../layouts/MapLayout';
-import {regionToBbox} from '../../../both/lib/geo-bounding-box';
-import {IOrganization} from '../../../both/api/organizations/organizations';
-import {IEvent, Events} from '../../../both/api/events/events';
-import {IStyledComponent} from '../../components/IStyledComponent';
-import {wrapDataComponent} from '../../components/AsyncDataComponent';
-import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
-import {defaultRegion} from '../../../both/api/events/schema';
-import {HeaderTitle, default as PublicHeader} from '../../components/PublicHeader';
-import {IPlaceInfo} from '../../../both/api/place-infos/place-infos';
+import { regionToBbox } from '../../../both/lib/geo-bounding-box';
+import { IOrganization } from '../../../both/api/organizations/organizations';
+import { IEvent, Events } from '../../../both/api/events/events';
+import { IStyledComponent } from '../../components/IStyledComponent';
+import { wrapDataComponent } from '../../components/AsyncDataComponent';
+import { reactiveSubscriptionByParams, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
+import { defaultRegion } from '../../../both/api/events/schema';
+import { SidePanelTitle, default as SidePanel } from '../../components/SidePanel';
+import { IPlaceInfo } from '../../../both/api/place-infos/place-infos';
 
 interface IPageModel {
   organization: IOrganization;
@@ -38,9 +38,9 @@ class MappingPage extends React.Component<Props, State> {
 
     return (
       <MapLayout className={this.props.className}>
-        <PublicHeader
+        <SidePanel
           titleComponent={(
-            <HeaderTitle
+            <SidePanelTitle
               title={event.name}
               prefixTitle={organization.name}
               logo={organization.logo}
@@ -57,13 +57,13 @@ class MappingPage extends React.Component<Props, State> {
             onMarkerClick={(placeId) => {
               browserHistory.push({
                 pathname: `/events/${event._id}/edit-place/${placeId}`,
-                state: {mapPosition: this.queryToState(), historyBehavior: 'back'},
+                state: { mapPosition: this.queryToState(), historyBehavior: 'back' },
               });
             }}
             locateOnStart={!this.props.location.query}>
             <Link to={{
               pathname: `/events/${event._id}/create-place`,
-              state: {mapPosition: this.queryToState(), historyBehavior: 'back'},
+              state: { mapPosition: this.queryToState(), historyBehavior: 'back' },
             }} className="add-place">+</Link>
           </Map>
         </div>
@@ -73,7 +73,7 @@ class MappingPage extends React.Component<Props, State> {
 
   queryToState = () => {
     if (this.props.location.query) {
-      let {lat, lon, zoom} = this.props.location.query;
+      let { lat, lon, zoom } = this.props.location.query;
       if (lat) {
         lat = Number.parseFloat(lat);
       }
@@ -84,16 +84,16 @@ class MappingPage extends React.Component<Props, State> {
         zoom = Number.parseFloat(zoom);
       }
 
-      return {lat, lon, zoom};
+      return { lat, lon, zoom };
     }
   };
 
   private onMapMoveEnd = (params: MapParams) => {
-    const {lat, lon, zoom} = params;
+    const { lat, lon, zoom } = params;
     browserHistory.replace({
       pathname: this.props.location.pathname,
       state: this.props.location.state,
-      query: {lat: lat.toString(), lon: lon.toString(), zoom: zoom.toString()},
+      query: { lat: lat.toString(), lon: lon.toString(), zoom: zoom.toString() },
     });
   };
 };
@@ -107,7 +107,7 @@ const ReactiveMappingPage = reactiveSubscriptionByParams(
     const organization = event ? event.getOrganization() : null;
     const places = event ? event.getPlaces() : [];
     // fetch model with organization & events in one go
-    return event && organization ? {organization, event, places} : null;
+    return event && organization ? { organization, event, places } : null;
   }, 'events.by_id.public', 'organizations.by_eventId.public', 'placeInfos.by_eventId.public', 'users.my.private');
 
 export default styled(ReactiveMappingPage) `
