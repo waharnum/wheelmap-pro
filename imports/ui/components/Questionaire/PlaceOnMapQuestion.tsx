@@ -33,7 +33,13 @@ const PlaceOnMapQuestion = class extends React.Component<IStyledComponent & Prop
           });
         }}
         className={this.props.className}>
-        <div className="ac-big-icon-marker">*</div>
+        <div className="ac-big-icon-marker">
+          <span className="icon"/>
+          <span className="arrow arrow-left"/>
+          <span className="arrow arrow-top"/>
+          <span className="arrow arrow-right"/>
+          <span className="arrow arrow-bottom"/>
+        </div>
       </Map>
     );
   }
@@ -51,9 +57,44 @@ export default styled(PlaceOnMapQuestionField) `
     z-index: 10000;
     background: ${colors.linkBlueDarker};
     pointer-events: none;
-    color: white;
-    font-family: 'iconfield-V03';
-    font-size: 24px;
+    
+    span {
+      position: absolute;
+    }
+    
+    span.icon {
+      mask-image: url(/images/entrance.svg);
+      mask-repeat: no-repeat;
+      mask-size: contain;
+      background: ${colors.bgWhite};
+      left: 0px;
+      right: 0px;
+      top: 0px;
+      bottom: 0px;
+      margin: 10px;
+    }
+    
+    span.arrow {
+      width: 33px;
+      height: 33px;    
+      transform-origin: 82px 16.5px;
+      background: ${colors.linkBlueDarker};
+      mask-image: url(/images/back-arrow.svg);
+      left: -41px;
+    }
+    
+    span.arrow-left {
+      transform: translate(-16.5px, 0px) rotate(0deg);
+    }
+    span.arrow-top {
+      transform: translate(-16.5px, 0px) rotate(90deg);
+    }
+    span.arrow-right {
+      transform: translate(-16.5px, 0px) rotate(180deg);
+    }
+    span.arrow-bottom {
+      transform: translate(-16.5px, 0px) rotate(270deg);
+    }
     
     &:after {
       background: ${colors.linkBlueDarker};

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="33px" height="33px" viewBox="0 0 33 33" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>icon/back/blue</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon/back/blue">
+            <polyline id="Rectangle-6" stroke="#29A3CB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="translate(13.649873, 15.849926) rotate(-135.000000) translate(-13.649873, -15.849926) " points="7.67487354 9.87492609 19.6248734 9.87492609 19.6248734 21.8249259"></polyline>
+            <rect id="Rectangle-29" fill="#29A3CB" x="6" y="15" width="22" height="2"></rect>
+        </g>
+    </g>
+</svg>
