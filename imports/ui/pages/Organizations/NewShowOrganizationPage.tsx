@@ -37,10 +37,11 @@ class ShowOrganizationPage extends React.Component<Props> {
   }
 
   public render() {
-    const {organization} = this.props.model;
+    const {organization, events} = this.props.model;
 
     let content: React.ReactNode = null;
     let header: React.ReactNode = null;
+    let additionalMapPanel: React.ReactNode = null;
     if (this.props.params.place_id) {
       // TODO get category of feature
       header = <LogoHeader link={`/new/organizations/${organization._id}`}
@@ -73,6 +74,10 @@ class ShowOrganizationPage extends React.Component<Props> {
           this.props.router.push(`/new/organizations/${organization._id}/user`);
         }}
       />;
+      if (events.length > 0) {
+        const event = events[0];
+        additionalMapPanel = <section>{event.name}</section>;
+      }
     }
 
     return (
@@ -80,6 +85,7 @@ class ShowOrganizationPage extends React.Component<Props> {
         className={this.props.className}
         header={header}
         contentPanel={content}
+        additionalMapPanel={additionalMapPanel}
         mapProperties={{
           onMarkerClick: (id) => {
             this.props.router.push(`/new/organizations/${organization._id}/place/${id}`);

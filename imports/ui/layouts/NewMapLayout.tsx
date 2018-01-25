@@ -1,6 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
+import Toolbar from 'wheelmap-react/lib/components/Toolbar';
+
 import {IStyledComponent} from '../components/IStyledComponent';
 
 import Map, {Props as MapProps} from '../components/Map';
@@ -9,7 +11,8 @@ import {colors} from '../stylesheets/colors';
 type Props = {
   header: React.ReactNode;
   contentPanel: React.ReactNode;
-  // layoutMode: 'contentInSidePanel' | 'contentInCardPanel';
+  additionalMapPanel?: React.ReactNode;
+  forceSidePanelForMobile?: boolean;
   mapProperties: MapProps;
   id?: string;
 };
@@ -17,16 +20,31 @@ type Props = {
 class NewMapLayout extends React.Component<IStyledComponent & Props> {
 
   public render() {
-    const {id, className, contentPanel, header, mapProperties} = this.props;
+    const {id, className, contentPanel, header, mapProperties, additionalMapPanel, forceSidePanelForMobile} = this.props;
+
+    const isMobile = false;
+    const sidePanelOpen = false;
+
+    const useSidePanel = !isMobile || forceSidePanelForMobile;
+    const useCardPanel = isMobile && !forceSidePanelForMobile;
+    const useAdditionalMapPanel = !useCardPanel && !sidePanelOpen;
 
     return (
       <div id={id} className={className + ' map-layout'}>
         <section className="side-panel">
           {header && <header>{header}</header>}
-          {contentPanel && <section className="content">{contentPanel}</section>}
+          {contentPanel && useSidePanel && <section className="content">
+            {contentPanel}
+          </section>}
         </section>
         <section className="map">
           <Map {...mapProperties} />
+          {contentPanel && useCardPanel && <Toolbar className="card-panel">
+            {contentPanel}
+          </Toolbar>}
+          {additionalMapPanel && useAdditionalMapPanel && <Toolbar className="card-panel">
+            {additionalMapPanel}
+          </Toolbar>}
         </section>
       </div>
     );
@@ -53,6 +71,12 @@ export default styled(NewMapLayout) `
       display: flex;
       background: ${colors.bgWhite}
     }
+  }
+  
+  .card-panel {
+    position: absolute;
+    top: unset;
+    bottom: 30px;
   }
 
   /** This normally includes the map-area on the right side. */
