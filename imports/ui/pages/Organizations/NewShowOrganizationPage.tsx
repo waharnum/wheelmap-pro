@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import * as React from 'react';
-import {RouteComponentProps} from 'react-router';
+import {InjectedRouter, RouteComponentProps} from 'react-router';
 
 import {accessibilityCloudFeatureCache} from 'wheelmap-react/lib/lib/cache/AccessibilityCloudFeatureCache';
 
@@ -15,6 +15,7 @@ import OrganizationAboutPanel from './panels/OrganizationAboutPanel';
 import PlaceDetailsPanel from '../../panels/PlaceDetailsPanel';
 import LogoHeader from '../../components/LogoHeader';
 import UserPanel from '../../panels/UserPanel';
+import browserHistory from 'react-router/lib/browserHistory';
 
 type PageModel = {
   organization: IOrganization;
@@ -27,6 +28,7 @@ type PageParams = {
 };
 
 type Props = RouteComponentProps<PageParams, {}> & IAsyncDataByIdProps<PageModel> & IStyledComponent;
+
 
 class ShowOrganizationPage extends React.Component<Props> {
 
@@ -50,11 +52,20 @@ class ShowOrganizationPage extends React.Component<Props> {
       content = <PlaceDetailsPanel feature={feature}/>;
       // TODO center map to POI on first render
     } else if (this.props.location.pathname.endsWith('/user')) {
+      // TODO get state of UserPanel component :(
       header = <LogoHeader link={`/new/organizations/${organization._id}`}
                            prefixTitle={organization.name}
                            logo={organization.logo}
                            title="Login / Sign-In / Profile / Argh"/>;
-      content = <UserPanel/>;
+      content = <UserPanel
+        onSignedInHook={() => {
+          this.props.router.push(`/new/organizations/${organization._id}`);
+        }}
+        onSignedOutHook={() => {
+          this.props.router.push(`/new/organizations/${organization._id}`);
+        }
+        }
+      />;
     } else {
       content = <OrganizationAboutPanel
         organization={organization}

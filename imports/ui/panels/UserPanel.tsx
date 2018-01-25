@@ -9,8 +9,6 @@ import {Accounts, STATES} from 'meteor/std:accounts-ui';
 
 import {ClaimAccountSchema} from '../../both/api/users/accounts';
 
-type UserFooterProps = { className?: string };
-type UserFooterInternalProps = { ready: boolean, user: Meteor.User | null } & UserFooterProps;
 
 const GuestUserContent = () => {
   let form: AutoForm = null;
@@ -45,18 +43,21 @@ const GuestUserContent = () => {
   );
 };
 
-// TODO sign out returns to welcome page :(
-// TODO sign in returns to admin page :(
+type UserPanelProps = { className?: string, onSignedInHook?: () => void, onSignedOutHook?: () => void };
+type UserPanelInternalProps = { ready: boolean, user: Meteor.User | null } & UserPanelProps;
 
-const UserPanel = (props: UserFooterInternalProps) => (
+const UserPanel = (props: UserPanelInternalProps) => (
   <section className={props.className}>
-    <Accounts.ui.LoginForm/>
+    <Accounts.ui.LoginForm
+      onSignedInHook={props.onSignedInHook}
+      onSignedOutHook={props.onSignedOutHook}
+    />
     {(props.user && props.user.guest) ? <GuestUserContent/> : null}
   </section>
 );
 
 // listen to current user changes
-const UserFooterContainer = withTracker((props: UserFooterProps) => {
+const UserPanelContainer = withTracker((props: UserPanelProps) => {
   const handle = Meteor.subscribe('users.my.private');
   const ready = handle.ready();
   return {
@@ -66,7 +67,7 @@ const UserFooterContainer = withTracker((props: UserFooterProps) => {
   };
 })(UserPanel);
 
-export default styled(UserFooterContainer) `
+export default styled(UserPanelContainer) `
   padding: 10px 8px 10px 8px;
   text-decoration: none;
   display: inline-block;
