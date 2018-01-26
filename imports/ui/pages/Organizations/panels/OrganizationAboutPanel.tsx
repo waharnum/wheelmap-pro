@@ -77,7 +77,7 @@ export default styled(OrganizationAboutPanel) `
     background-position: left center;
     background-repeat: no-repeat;
     background-size: contain;
-    height: 50px;
+    min-height: 50px;
     
     a {
       text-overflow: ellipsis;
