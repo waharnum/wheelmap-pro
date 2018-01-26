@@ -33,10 +33,7 @@ type Props = RouteComponentProps<PageParams, {}> & IAsyncDataByIdProps<PageModel
 
 class ShowOrganizationPage extends React.Component<Props> {
 
-  public componentWillReceiveProps(nextProps: Props) {
-  }
-
-  public render() {
+  getPanelContent() {
     const {organization, events} = this.props.model;
 
     let content: React.ReactNode = null;
@@ -79,11 +76,24 @@ class ShowOrganizationPage extends React.Component<Props> {
       if (events.length > 0) {
         const event = events[0];
         additionalMapPanel = <EventPreviewPanel event={event} onClickPanel={() => {
-          this.props.router.push(`/new/organizations/${organization._id}/event/${event._id}`);
+          this.props.router.push(`/new/organizations/${organization._id}/events/${event._id}`);
         }}/>;
       }
       forceContentToSidePanel = true;
     }
+
+    return {
+      content,
+      header,
+      additionalMapPanel,
+      forceContentToSidePanel,
+      canDismissSidePanel,
+    };
+  }
+
+  public render() {
+    const {organization} = this.props.model;
+    const {content, header, additionalMapPanel, forceContentToSidePanel, canDismissSidePanel} = this.getPanelContent();
 
     return (
       <NewMapLayout
