@@ -14,12 +14,15 @@ class App extends React.Component<{ children: React.ReactNode }> {
           modalAppDialog = el;
         }}/>
         <ToastContainer
+          style={{
+            zIndex: 4000,
+          }}
           position="top-right"
           autoClose={5000}
           hideProgressBar={true}
           newestOnTop={false}
-          closeOnClick
-          pauseOnHover
+          closeOnClick={true}
+          pauseOnHover={true}
         />
         {this.props.children}
       </div>);
