@@ -16,6 +16,7 @@ import EditEventPage from './pages/Events/EditEventPage';
 import ShowEventPage from './pages/Events/ShowEventPage';
 import CreatePlacePage from './pages/Events/CreatePlacePage';
 import CreateEventPage from './pages/Events/CreateEventPage';
+import NewShowEventPage from './pages/Events/NewShowEventPage';
 import OrganizeEventPage from './pages/Events/OrganizeEventPage';
 import SignUpForEventPage from './pages/Events/SignUpForEventPage';
 import EventStatisticsPage from './pages/Events/EventStatisticsPage';
@@ -118,6 +119,7 @@ const AppRouter = (
       <Route path="/new/organizations/:_id" component={NewShowOrganizationPage}/>
       <Route path="/new/organizations/:_id/place/:place_id" component={NewShowOrganizationPage}/>
       <Route path="/new/organizations/:_id/user" component={NewShowOrganizationPage}/>
+      <Route path="/new/organizations/:organization_id/events/:_id" component={NewShowEventPage}/>
 
       <Route path="/events/:_id" component={ShowEventPage}/>
       <Route path="/events/:_id/mapping" component={MappingPage}/>
