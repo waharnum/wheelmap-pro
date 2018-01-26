@@ -16,6 +16,7 @@ import PlaceDetailsPanel from '../../panels/PlaceDetailsPanel';
 import LogoHeader from '../../components/LogoHeader';
 import UserPanel from '../../panels/UserPanel';
 import {t} from 'c-3po';
+import EventPreviewPanel from './panels/EventPreviewPanel';
 
 type PageModel = {
   organization: IOrganization;
@@ -77,7 +78,9 @@ class ShowOrganizationPage extends React.Component<Props> {
       />;
       if (events.length > 0) {
         const event = events[0];
-        additionalMapPanel = <section>{event.name}</section>;
+        additionalMapPanel = <EventPreviewPanel event={event} onClickPanel={() => {
+          this.props.router.push(`/new/organizations/${organization._id}/event/${event._id}`);
+        }}/>;
       }
       forceContentToSidePanel = true;
     }
