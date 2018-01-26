@@ -8,37 +8,21 @@ import * as moment from 'moment';
 import {Countdown} from '../../components/Countdown';
 import {IEvent} from '../../../both/api/events/events';
 
-interface IEventStatistics {
+type Props = {
   event: IEvent;
   action?: JSX.Element | null;
   countdown?: 'none' | 'full' | 'short';
   planned?: boolean;
   achieved?: boolean;
-};
+} & IStyledComponent;
 
-class EventStatistics extends React.Component<IEventStatistics & IStyledComponent> {
+class EventStatistics extends React.Component<Props> {
 
   public render(): JSX.Element | null {
     const event: IEvent = this.props.event;
 
     return (
       <div className={`${this.props.className} event-statistics`}>
-        {/* participants */}
-        <section className="participant-stats">
-          {this.props.planned ?
-            <span className="participants-invited">
-              {event.statistics ? event.statistics.invitedParticipantCount : 0}
-              <small>{t`invited`}</small>
-            </span> : null}
-          {this.props.achieved ?
-            <span className="participants-registered key-figure">
-              {event.statistics ? event.statistics.acceptedParticipantCount : 0}
-              <small>{t`accepted`}</small>
-            </span> : null}
-        </section>
-        {/* long countdown */}
-        {this.props.countdown == 'full' && event ?
-          <Countdown start={moment(event.startTime)}/> : null}
         {/* locations added */}
         <section className="location-stats">
           {this.props.planned ?
@@ -52,15 +36,31 @@ class EventStatistics extends React.Component<IEventStatistics & IStyledComponen
               <small>{t`mapped`}</small>
             </span> : null}
         </section>
+        {/* long countdown */}
+        {this.props.countdown === 'full' && event ?
+          <Countdown start={moment(event.startTime)}/> : null}
+        {/* participants */}
+        <section className="participant-stats">
+          {this.props.planned ?
+            <span className="participants-invited">
+              {event.statistics ? event.statistics.invitedParticipantCount : 0}
+              <small>{t`invited`}</small>
+            </span> : null}
+          {this.props.achieved ?
+            <span className="participants-registered key-figure">
+              {event.statistics ? event.statistics.acceptedParticipantCount : 0}
+              <small>{t`accepted`}</small>
+            </span> : null}
+        </section>
         {/* days ago / days until */}
-        {this.props.countdown == 'short' && event ?
+        {this.props.countdown === 'short' && event ?
           <section className="event-stats">
             {(event.startTime && event.startTime > new Date()) ?
-              (<span className="time-until-event key-figure">
+              (<span className="time-until-event">
                 {moment(event.startTime).diff(moment(), 'days')}
                 <small>{t`Days Left`}</small>
               </span>) :
-              (<span className="time-until-event key-figure">
+              (<span className="time-until-event">
                 {moment().diff(moment(event.startTime), 'days')}
                 <small>{t`Days Ago`}</small>
               </span>)
@@ -73,27 +73,25 @@ class EventStatistics extends React.Component<IEventStatistics & IStyledComponen
   }
 }
 
-export default styled<IEventStatistics & IStyledComponent>(EventStatistics) `
-
-padding-top: 20px;
-background-color: white;
+export default styled(EventStatistics) `
+background-color: ${colors.bgWhite};
 display: flex;
 justify-content: space-between;
 
 section {
   flex-grow:1;
-  padding: 0px 20px 0 20px;
+  padding: 0 3px;
   text-align: center;
-  // border-right: 1px solid ${colors.shadowGrey};
   display: flex;
+  justify-content: center;
 
   &:last-child {
     border-right: 0;
   }
 
   span {
-    position: relative;
-    padding: 0 10px 16px 10px;
+    position: relative;    
+    padding: 0 5px 16px 5px;
     font-size: 30px;
     line-height: 30px;
     font-weight: 200;
@@ -118,8 +116,8 @@ section {
     position: relative;
     top: 2px;
     left: 0;
-    width: 27px;
-    height: 27px;
+    width: 25px;
+    height: 25px;
     content: " ";
     background-position: center center;
     background-repeat: no-repeat;
@@ -133,13 +131,5 @@ section.participant-stats:before { background-image: url(/images/icon-person@2x.
 section.location-stats:before { background-image: url(/images/icon-location@2x.png); }
 section.event-stats:before { background-image: url(/images/icon-date@2x.png); }
 section.event-countdown { &:before { background-image: url(/images/icon-date@2x.png); } }
-
-section.event-countdown {
-  flex-grow: 0;
-}
-
-section.location-stats {
-  justify-content: flex-end; 
-}
 
 `;
