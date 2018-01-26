@@ -223,13 +223,7 @@ export default styled(NewMapLayout) `
       } 
     }
   }
-  
-  // card panels for all configurations
-  .card-panel {
-    top: unset;
-    bottom: 30px;
-  }
-  
+    
   // desktop mode, side panel moves map to the right
   &.fixed-side-panel {
     flex-direction: row;
@@ -239,7 +233,9 @@ export default styled(NewMapLayout) `
     }
      
     .card-panel {
-      position: absolute;
+      position: absolute; 
+      top: unset;
+      bottom: 30px;
     }
     
     .side-panel {
@@ -284,14 +280,6 @@ export default styled(NewMapLayout) `
     .card-panel {
       // allow overlapping header if card is swiped up
       z-index: 3000;
-    }
-    
-    .additional-card-panel {
-      // TODO bottom position comes from wheelmap beta and is well messed up
-      transform: translate3d(0px, 0px, 0px) !important;
-    }.toolbar {
-      width: unset;
-      max-width: 500px;
     }
   }
   
