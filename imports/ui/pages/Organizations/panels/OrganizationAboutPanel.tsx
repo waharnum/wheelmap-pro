@@ -47,7 +47,6 @@ class OrganizationAboutPanel extends React.Component<IStyledComponent & Props> {
 
 export default styled(OrganizationAboutPanel) `
   // shared between all panels
-  padding: 10px;
   flex: 1;
   // custom styling
   display: flex;

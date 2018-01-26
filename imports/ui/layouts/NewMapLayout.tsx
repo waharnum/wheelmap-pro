@@ -203,6 +203,7 @@ export default styled(NewMapLayout) `
       overflow-y: auto;    
       position: relative;
       pointer-events: auto;
+      padding: 10px;
       
       .dismiss-panel-button {
         position: absolute;
@@ -247,6 +248,12 @@ export default styled(NewMapLayout) `
         min-width: 0;
       }
     }
+    
+    // remove hard coded toolbar size
+    .toolbar {
+      width: unset;
+      max-width: 500px;
+    }
   }
   
   // mobile mode, side panel overlaps map
@@ -280,6 +287,9 @@ export default styled(NewMapLayout) `
     .additional-card-panel {
       // TODO bottom position comes from wheelmap beta and is well messed up
       transform: translate3d(0px, 0px, 0px) !important;
+    }.toolbar {
+      width: unset;
+      max-width: 500px;
     }
   }
   
