@@ -85,9 +85,11 @@ class NewMapLayout extends React.Component<Props, State> {
     const useCardPanel = preferContentInCard && !forceContentToSidePanel;
     const useAdditionalCardPanel = !useCardPanel && (!preferContentInCard || sidePanelHidden);
 
-    const displaySidePanel = contentPanel && useSidePanel && !sidePanelHidden;
     const displayAnyCardPanel = (!preferContentInCard || !useSidePanel || sidePanelHidden);
-    const displaySearchBar = (!preferContentInCard || !displaySidePanel && !useCardPanel);
+    const displayCardPanel = contentPanel && useCardPanel && displayAnyCardPanel;
+    const displaySidePanel = contentPanel && useSidePanel && !sidePanelHidden;
+    const displayAdditionalCardPanel = additionalMapPanel && useAdditionalCardPanel && displayAnyCardPanel;
+    const displaySearchBar = !(displaySidePanel || displayCardPanel);
 
     return (
       <div id={id}
@@ -116,10 +118,10 @@ class NewMapLayout extends React.Component<Props, State> {
               <SearchIcon className="search-icon"/>
             </div>
           </Toolbar>}
-          {contentPanel && useCardPanel && displayAnyCardPanel && <Toolbar className="card-panel">
+          {displayCardPanel && <Toolbar className="card-panel">
             {contentPanel}
           </Toolbar>}
-          {additionalMapPanel && useAdditionalCardPanel && displayAnyCardPanel &&
+          {displayAdditionalCardPanel &&
           <Toolbar className="card-panel additional-card-panel">
             {additionalMapPanel}
           </Toolbar>}
