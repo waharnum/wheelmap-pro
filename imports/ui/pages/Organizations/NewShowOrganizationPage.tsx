@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import * as React from 'react';
-import {InjectedRouter, RouteComponentProps} from 'react-router';
+import {RouteComponentProps} from 'react-router';
 
 import {accessibilityCloudFeatureCache} from 'wheelmap-react/lib/lib/cache/AccessibilityCloudFeatureCache';
 
@@ -15,7 +15,6 @@ import OrganizationAboutPanel from './panels/OrganizationAboutPanel';
 import PlaceDetailsPanel from '../../panels/PlaceDetailsPanel';
 import LogoHeader from '../../components/LogoHeader';
 import UserPanel from '../../panels/UserPanel';
-import browserHistory from 'react-router/lib/browserHistory';
 import {t} from 'c-3po';
 
 type PageModel = {
@@ -33,7 +32,6 @@ type Props = RouteComponentProps<PageParams, {}> & IAsyncDataByIdProps<PageModel
 
 class ShowOrganizationPage extends React.Component<Props> {
 
-
   public componentWillReceiveProps(nextProps: Props) {
   }
 
@@ -43,7 +41,8 @@ class ShowOrganizationPage extends React.Component<Props> {
     let content: React.ReactNode = null;
     let header: React.ReactNode = null;
     let additionalMapPanel: React.ReactNode = null;
-    let forceSidePanelForMobile: boolean = false;
+    let forceContentToSidePanel: boolean = false;
+    let canDismissSidePanel: boolean = true;
     if (this.props.params.place_id) {
       header = <LogoHeader link={`/new/organizations/${organization._id}`}
                            prefixTitle={organization.name}
@@ -52,6 +51,7 @@ class ShowOrganizationPage extends React.Component<Props> {
       // TODO async fetch feature
       const feature = accessibilityCloudFeatureCache.getCachedFeature(this.props.params.place_id);
       content = <PlaceDetailsPanel feature={feature}/>;
+      canDismissSidePanel = false;
       // TODO center map to POI on first render
     } else if (this.props.location.pathname.endsWith('/user')) {
       header = <LogoHeader link={`/new/organizations/${organization._id}`}
@@ -64,10 +64,10 @@ class ShowOrganizationPage extends React.Component<Props> {
         }}
         onSignedOutHook={() => {
           this.props.router.push(`/new/organizations/${organization._id}`);
-        }
-        }
+        }}
       />;
-    forceSidePanelForMobile = true;
+      forceContentToSidePanel = true;
+      canDismissSidePanel = false;
     } else {
       content = <OrganizationAboutPanel
         organization={organization}
@@ -79,7 +79,7 @@ class ShowOrganizationPage extends React.Component<Props> {
         const event = events[0];
         additionalMapPanel = <section>{event.name}</section>;
       }
-      forceSidePanelForMobile = true;
+      forceContentToSidePanel = true;
     }
 
     return (
@@ -88,7 +88,8 @@ class ShowOrganizationPage extends React.Component<Props> {
         header={header}
         contentPanel={content}
         additionalMapPanel={additionalMapPanel}
-        forceSidePanelForMobile={forceSidePanelForMobile}
+        forceContentToSidePanel={forceContentToSidePanel}
+        canDismissSidePanel={canDismissSidePanel}
         searchBarLogo={organization.logo}
         searchBarPrefix={organization.name}
         mapProperties={{

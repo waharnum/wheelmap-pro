@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {Link} from 'react-router';
 
 import Toolbar from 'wheelmap-react/lib/components/Toolbar';
 import SearchIcon from 'wheelmap-react/lib/components/SearchToolbar/SearchIcon';
@@ -15,76 +14,98 @@ type Props = {
   header: React.ReactNode;
   contentPanel: React.ReactNode;
   additionalMapPanel?: React.ReactNode;
-  forceSidePanelForMobile?: boolean;
+  forceContentToSidePanel?: boolean;
   canCloseSidePanelOnDesktop?: boolean;
   mapProperties: MapProps;
   searchBarPrefix?: string;
   searchBarLogo?: string;
+  canDismissSidePanel?: boolean;
   id?: string;
 } & IStyledComponent;
 
 type State = {
-  sidePanelHidden?: boolean;
-  isMobile?: boolean;
+  preferContentInCard: boolean;
+  sidePanelHidden: boolean;
 };
 
-
 class NewMapLayout extends React.Component<Props, State> {
-  state: State = {};
+  state: State = {
+    preferContentInCard: true,
+    sidePanelHidden: true,
+  };
 
   constructor(props: Props) {
     super(props);
     // aligned with wheelmap-react, but can this be css only?
     // todo listen to window size
-    const isMobile = window.screen.availWidth <= 512 || window.screen.availHeight <= 512;
-    console.log(isMobile, window.screen.availWidth, window.screen.width);
+    const lowResolution = window.screen.availWidth <= 512 || window.screen.availHeight <= 512;
 
     this.state = {
-      isMobile,
-      sidePanelHidden: isMobile,
+      preferContentInCard: lowResolution,
+      sidePanelHidden: lowResolution,
     };
   }
 
-  toggleSidePanel = () => {
-    this.setState({sidePanelHidden: !this.state.sidePanelHidden});
+  componentWillReceiveProps(newProps: Props) {
+    // sidePanel content has changed, but side-panel was hidden
+    if (this.state.sidePanelHidden && !this.state.preferContentInCard &&
+      newProps.contentPanel !== this.props.contentPanel) {
+      this.setState({
+        sidePanelHidden: false,
+      });
+    }
+  }
+
+  hideSidePanel = () => {
+    if (this.state.sidePanelHidden || !this.props.canDismissSidePanel) {
+      return;
+    }
+    this.setState({
+      sidePanelHidden: true,
+    });
+  };
+
+  showSidePanel = () => {
+    if (!this.state.sidePanelHidden) {
+      return;
+    }
+    this.setState({
+      sidePanelHidden: false,
+    });
   };
 
   public render() {
     const {
       id, className, contentPanel, header, mapProperties, additionalMapPanel,
-      forceSidePanelForMobile, searchBarPrefix, searchBarLogo,
+      forceContentToSidePanel, searchBarPrefix, searchBarLogo, canDismissSidePanel,
     } = this.props;
-    const {isMobile, sidePanelHidden} = this.state;
+    const {preferContentInCard, sidePanelHidden} = this.state;
 
-    const sidePanelOpen = !sidePanelHidden;
+    const useSidePanel = !preferContentInCard || forceContentToSidePanel;
+    const useCardPanel = preferContentInCard && !forceContentToSidePanel;
+    const useAdditionalCardPanel = !useCardPanel && (!preferContentInCard || sidePanelHidden);
 
-    // todo move to props
-    const canDismissPanel = true;
-
-    const useSidePanel = !isMobile || forceSidePanelForMobile;
-    const useCardPanel = isMobile && !forceSidePanelForMobile;
-    const useAdditionalCardPanel = !useCardPanel && (!isMobile || !sidePanelOpen);
-
-    const displaySidePanel = contentPanel && useSidePanel && sidePanelOpen;
-    const displayAnyCardPanel = (!isMobile || !useSidePanel || !sidePanelOpen);
-    const displaySearchBar = (!isMobile || !displaySidePanel && !useCardPanel);
+    const displaySidePanel = contentPanel && useSidePanel && !sidePanelHidden;
+    const displayAnyCardPanel = (!preferContentInCard || !useSidePanel || sidePanelHidden);
+    const displaySearchBar = (!preferContentInCard || !displaySidePanel && !useCardPanel);
 
     return (
-      <div id={id} className={`${className} map-layout ${isMobile ? 'overlap-side-panel' : 'fixed-side-panel' } `}>
+      <div id={id}
+           className={`${className} map-layout ${preferContentInCard ? 'overlap-side-panel' : 'fixed-side-panel' } `}>
         <section className={`side-panel ${displaySidePanel ? 'show-panel' : 'hide-panel'}`}>
           {header && <header>{header}</header>}
           {displaySidePanel && <section className="content">
-            {canDismissPanel && <a className="dismiss-panel-button" onClick={this.toggleSidePanel}>«</a>}
+            {canDismissSidePanel && <a className="dismiss-panel-button" onClick={this.hideSidePanel}>«</a>}
             {contentPanel}
           </section>}
         </section>
-        <section className="map" onTouchStart={displaySidePanel ? this.toggleSidePanel : undefined}>
+        <section className="map" onTouchStart={displaySidePanel ? this.hideSidePanel : undefined}>
           <Map {...mapProperties}/>
           {displaySearchBar &&
           <Toolbar className="search-toolbar"
                    isSwipeable={false}
                    minimalHeight={75}>
-            <a onClick={this.toggleSidePanel}>
+            <a onClick={this.showSidePanel}>
               {searchBarLogo &&
               <div className="small-logo" style={{backgroundImage: `url(${searchBarLogo})`}}/>}
               {(!searchBarLogo && searchBarPrefix) &&
@@ -98,7 +119,8 @@ class NewMapLayout extends React.Component<Props, State> {
           {contentPanel && useCardPanel && displayAnyCardPanel && <Toolbar className="card-panel">
             {contentPanel}
           </Toolbar>}
-          {additionalMapPanel && useAdditionalCardPanel && displayAnyCardPanel && <Toolbar className="card-panel">
+          {additionalMapPanel && useAdditionalCardPanel && displayAnyCardPanel &&
+          <Toolbar className="card-panel additional-card-panel">
             {additionalMapPanel}
           </Toolbar>}
         </section>
@@ -116,9 +138,8 @@ export default styled(NewMapLayout) `
   .search-toolbar {
     // TODO bottom position comes from wheelmap beta
     transform: translate3d(0px, 0px, 0px) !important;
-    top: 0px;
+    top: 0;
     left: 0;
-    width: calc(100% - 70px);
     display: flex;
     
     .small-logo {
@@ -165,7 +186,6 @@ export default styled(NewMapLayout) `
   
   // side panel for all configurations
   .side-panel {
-    width:375px;
     display: flex;
     flex-direction: column;
     pointer-events: none;
@@ -219,9 +239,13 @@ export default styled(NewMapLayout) `
       position: absolute;
     }
     
-    .side-panel.hide-panel {
-      width: 0;
-      min-width: 0;
+    .side-panel {
+      width:375px;
+      
+      &.hide-panel {
+        width: 0;
+        min-width: 0;
+      }
     }
   }
   
@@ -229,10 +253,15 @@ export default styled(NewMapLayout) `
   &.overlap-side-panel {
     flex-direction: row;
     
+    .search-toolbar {    
+      max-width: calc(100% - 70px);
+    }
+    
     .side-panel {
       position: fixed;
       z-index: 2000;
       height: 100%;
+      max-width: calc(100% - 70px);
     }
     
     .hide-panel {
@@ -246,6 +275,11 @@ export default styled(NewMapLayout) `
     .card-panel {
       // allow overlapping header if card is swiped up
       z-index: 3000;
+    }
+    
+    .additional-card-panel {
+      // TODO bottom position comes from wheelmap beta and is well messed up
+      transform: translate3d(0px, 0px, 0px) !important;
     }
   }
   
