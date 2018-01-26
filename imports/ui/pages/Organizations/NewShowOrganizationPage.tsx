@@ -67,6 +67,7 @@ class ShowOrganizationPage extends React.Component<Props> {
         }
         }
       />;
+    forceSidePanelForMobile = true;
     } else {
       content = <OrganizationAboutPanel
         organization={organization}
@@ -88,6 +89,8 @@ class ShowOrganizationPage extends React.Component<Props> {
         contentPanel={content}
         additionalMapPanel={additionalMapPanel}
         forceSidePanelForMobile={forceSidePanelForMobile}
+        searchBarLogo={organization.logo}
+        searchBarPrefix={organization.name}
         mapProperties={{
           onMarkerClick: (id) => {
             this.props.router.push(`/new/organizations/${organization._id}/place/${id}`);
