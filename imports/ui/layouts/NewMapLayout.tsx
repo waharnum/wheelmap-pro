@@ -18,6 +18,7 @@ type Props = {
   forceContentToSidePanel?: boolean;
   canCloseSidePanelOnDesktop?: boolean;
   mapProperties: MapProps;
+  allowSearchBar?: boolean;
   searchBarPrefix?: string;
   searchBarLogo?: string;
   canDismissSidePanel?: boolean;
@@ -77,7 +78,7 @@ class NewMapLayout extends React.Component<Props, State> {
 
   public render() {
     const {
-      id, className, contentPanel, header, mapProperties, additionalMapPanel,
+      id, className, contentPanel, header, mapProperties, additionalMapPanel, allowSearchBar,
       forceContentToSidePanel, searchBarPrefix, searchBarLogo, canDismissSidePanel, mapChildren,
     } = this.props;
     const {preferContentInCard, sidePanelHidden} = this.state;
@@ -90,7 +91,7 @@ class NewMapLayout extends React.Component<Props, State> {
     const displayCardPanel = contentPanel && useCardPanel && displayAnyCardPanel;
     const displaySidePanel = contentPanel && useSidePanel && !sidePanelHidden;
     const displayAdditionalCardPanel = additionalMapPanel && useAdditionalCardPanel && displayAnyCardPanel;
-    const displaySearchBar = !(displaySidePanel || displayCardPanel);
+    const displaySearchBar = (preferContentInCard ? !(displaySidePanel || displayCardPanel) : true) && allowSearchBar;
 
     return (
       <div id={id}

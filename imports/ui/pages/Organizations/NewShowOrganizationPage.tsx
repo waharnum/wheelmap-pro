@@ -106,6 +106,7 @@ class ShowOrganizationPage extends React.Component<Props> {
         additionalMapPanel={additionalMapPanel}
         forceContentToSidePanel={forceContentToSidePanel}
         canDismissSidePanel={canDismissSidePanel}
+        allowSearchBar={true}
         searchBarLogo={organization.logo}
         searchBarPrefix={organization.name}
         mapProperties={{
