@@ -12,6 +12,8 @@ import {t} from 'c-3po';
 import LogoHeader from '../../components/LogoHeader';
 import {defaultRegion} from '../../../both/api/events/schema';
 import {regionToBbox} from '../../../both/lib/geo-bounding-box';
+import * as L from 'leaflet';
+import EventMiniMarker from './EventMiniMarker';
 
 
 type PageModel = {
@@ -72,6 +74,13 @@ class ShowEventPage extends React.Component<Props> {
         mapProperties={{
           bbox,
         }}
+        mapChildren={<EventMiniMarker
+          event={event}
+          additionalLeafletLayers={[L.rectangle(bbox, {
+            className: 'event-bounds-polygon',
+            interactive: false,
+          })]}
+        />}
       />
     );
   }
