@@ -27,14 +27,22 @@ const ShareAction = (props: { event: IEvent }) => (
 
 function actionFromEventStatus(event: IEvent) {
   switch (event.status) {
+    case 'completed':
+      return <ShareAction event={event}/>;
     case 'planned':
-      return <Button className="join-button btn-primary"
-                     to="">{t`Join`}</Button>;
+      return [
+        <ShareAction event={event}/>,
+        <Button className="join-button btn-primary"
+                to="">{t`Join Us`}</Button>];
     case 'ongoing':
-      return <Button className="join-button btn-primary"
-                     to={`/new/organization/${event.organizationId}/events/${event._id}/mapping`}>
-        {t`Start mapping`}
-      </Button>;
+      return [
+        <ShareAction event={event}/>,
+        <Button className="join-button btn-primary"
+                to={`/new/organization/${event.organizationId}/events/${event._id}/mapping`}>
+          {t`Start mapping`}
+        </Button>];
+    case 'canceled':
+      return <span className="canceled-label">{getLabelForEventStatus(event.status)}</span>;
   }
 
   return null;
@@ -49,27 +57,30 @@ class EventPanel extends React.Component<IStyledComponent & Props> {
   public render() {
     const {className, event} = this.props;
 
+    const isPlanned = ['draft', 'planned', 'canceled'].indexOf(event.status) >= 0;
+
     return (
-      <div className={className}>
+      <div className={`${className} event-status-${event.status}`}>
         <CornerRibbon title={getLabelForEventStatus(event.status)} color={getColorForEventStatus(event.status)}/>
+        {event.photoUrl ? <img src={event.photoUrl} alt={t`Event picture`}/> : null}
         <section className="header-section">
           <div>
             <h3>{event.name}</h3>
-            <h4>{moment(event.startTime).format('LLLL')}</h4>
+            <h4 className="event-date">{moment(event.startTime).format('LLLL')}</h4>
           </div>
           <div className="event-actions">
-            <ShareAction event={event}/>
             {actionFromEventStatus(event)}
           </div>
         </section>
         <section className="statistics-section">
           <EventStatistics
             event={event}
-            planned={true}
+            achieved={!isPlanned}
+            planned={isPlanned}
             countdown="short"/>
         </section>
         <section className="details-section">
-          <div>{event.regionName}</div>
+          <h4>{event.regionName}</h4>
           <div>{event.description}</div>
         </section>
         <section className="countdown-section">
@@ -84,6 +95,13 @@ export default styled(EventPanel) `
   // shared between all panels
   flex: 1;
   
+  img {
+    min-height: 88px;
+    max-height: 200px;
+    width: 100%;
+    object-fit: cover;
+  }
+    
   h3 {
     font-size: 22px;
     margin: 0;
@@ -105,10 +123,22 @@ export default styled(EventPanel) `
   }
   
   .event-actions {
-    padding: 15px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    padding: 0 35px 0 15px;
+    margin-top: 15px;
     display: flex;
     justify-content: space-between;
   }
+  
+  &.event-status-canceled {
+    // canceled event
+    span.canceled-label {
+      color: ${colors.errorRed};
+      text-transform: uppercase;
+    }
+    
+    .event-date {
+      text-decoration: line-through;
+    }
+  }
+  
 `;
