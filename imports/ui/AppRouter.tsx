@@ -122,19 +122,21 @@ const AppRouter = (
       <Route path="/new/organizations/:_id/about" component={NewShowOrganizationPage}/>
 
       <Route path="/new/organizations/:organization_id/events/:_id" component={NewShowEventPage}/>
-      <Route path="/new/organizations/:organization_id/events/:_id/user" component={NewShowEventPage}/>
-      <Route path="/new/organizations/:organization_id/events/:_id/event-organization" component={NewShowEventPage}/>
-      <Route path="/new/organizations/:organization_id/events/:_id/mapping-organization" component={NewShowEventPage}/>
+      <Route path="/new/organizations/:organization_id/events/:_id/organization" component={NewShowEventPage}/>
+      <Route path="/new/organizations/:organization_id/events/:_id/event-info" component={NewShowEventPage}/>
+      <Route path="/new/organizations/:organization_id/events/:_id/mapping/user" component={NewShowEventPage}/>
 
       {/* mapping only works with signed in user */}
       <Route component={(route) => <EnsureUserLoggedIn {...route} signInRoute={(p) => {
         const params = p.params as { _id: string, organization_id: string };
-        return `/new/organizations/${params.organization_id}/events/${params._id}/user`;
+        return `/new/organizations/${params.organization_id}/events/${params._id}/mapping/user`;
       }}/>}>
+        <Route path="/new/organizations/:organization_id/events/:_id/mapping/organization"
+               component={NewShowEventPage}/>
         <Route path="/new/organizations/:organization_id/events/:_id/mapping" component={NewShowEventPage}/>
-        <Route path="/new/organizations/:organization_id/events/:_id/event-info" component={NewShowEventPage}/>
-        <Route path="/new/organizations/:organization_id/events/:_id/create-place" component={NewShowEventPage}/>
-        <Route path="/new/organizations/:organization_id/events/:_id/edit-place/:place_id"
+        <Route path="/new/organizations/:organization_id/events/:_id/mapping/create-place"
+               component={NewShowEventPage}/>
+        <Route path="/new/organizations/:organization_id/events/:_id/mapping/edit-place/:place_id"
                component={NewShowEventPage}/>
       </Route>
 

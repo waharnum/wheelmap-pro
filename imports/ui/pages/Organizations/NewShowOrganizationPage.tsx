@@ -49,7 +49,7 @@ class ShowOrganizationPage extends React.Component<Props, State> {
     let additionalMapPanel: React.ReactNode = null;
     let forceContentToSidePanel: boolean = false;
     let forceSidePanelOpen: boolean | undefined = undefined;
-    let canDismissSidePanel: boolean = true;
+    let canDismissFromSidePanel: boolean = true;
     let canDismissCardPanel: boolean = false;
     let canDismissAdditionalCardPanel: boolean = false;
     let onDismissSidePanel: undefined | (() => void);
@@ -64,7 +64,7 @@ class ShowOrganizationPage extends React.Component<Props, State> {
       // TODO async fetch feature
       const feature = accessibilityCloudFeatureCache.getCachedFeature(params.place_id);
       content = <PlaceDetailsPanel feature={feature}/>;
-      canDismissSidePanel = false;
+      canDismissFromSidePanel = false;
       canDismissCardPanel = true;
       forceSidePanelOpen = true;
       // TODO center map to POI on first render
@@ -83,7 +83,7 @@ class ShowOrganizationPage extends React.Component<Props, State> {
         }}
       />;
       forceContentToSidePanel = true;
-      canDismissSidePanel = false;
+      canDismissFromSidePanel = false;
       forceSidePanelOpen = true;
     } else {
       // about organization panel
@@ -113,7 +113,7 @@ class ShowOrganizationPage extends React.Component<Props, State> {
       additionalMapPanel,
       forceContentToSidePanel,
       forceSidePanelOpen,
-      canDismissSidePanel,
+      canDismissFromSidePanel,
       canDismissCardPanel,
       canDismissAdditionalCardPanel,
       onDismissSidePanel,
@@ -128,7 +128,7 @@ class ShowOrganizationPage extends React.Component<Props, State> {
     const {organization} = this.props.model;
     const {
       content, header, additionalMapPanel, forceContentToSidePanel, canDismissCardPanel,
-      forceSidePanelOpen, canDismissSidePanel, canDismissAdditionalCardPanel,
+      forceSidePanelOpen, canDismissFromSidePanel, canDismissAdditionalCardPanel,
     } = this.getPanelContent();
 
     return (
@@ -141,7 +141,7 @@ class ShowOrganizationPage extends React.Component<Props, State> {
         onSearchBarLogoClicked={() => {
           router.push(`/new/organizations/${organization._id}/about`);
         }}
-        canDismissSidePanel={canDismissSidePanel}
+        canDismissFromSidePanel={canDismissFromSidePanel}
         onDismissSidePanel={() => {
           this.setState({sidePanelDismissed: true});
           router.push(`/new/organizations/${organization._id}`);
