@@ -16,7 +16,7 @@ import PlaceDetailsPanel from '../../panels/PlaceDetailsPanel';
 import LogoHeader from '../../components/LogoHeader';
 import UserPanel from '../../panels/UserPanel';
 import {t} from 'c-3po';
-import EventPreviewPanel from './panels/EventPreviewPanel';
+import EventPreviewPanel from '../Events/panels/EventPreviewPanel';
 
 type PageModel = {
   organization: IOrganization;
