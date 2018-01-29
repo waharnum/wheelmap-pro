@@ -1,12 +1,12 @@
-import {t} from 'c-3po';
+import { t } from 'c-3po';
 import styled from 'styled-components';
 import * as React from 'react';
 
-import {colors} from '../../stylesheets/colors';
-import {IStyledComponent} from '../../components/IStyledComponent';
+import { colors } from '../../stylesheets/colors';
+import { IStyledComponent } from '../../components/IStyledComponent';
 import * as moment from 'moment';
 import Countdown from '../../components/Countdown';
-import {IEvent} from '../../../both/api/events/events';
+import { IEvent } from '../../../both/api/events/events';
 
 type Props = {
   event: IEvent;
@@ -38,7 +38,7 @@ class EventStatistics extends React.Component<Props> {
         </section>
         {/* long countdown */}
         {this.props.countdown === 'full' && event ?
-          <Countdown start={moment(event.startTime)}/> : null}
+          <Countdown start={moment(event.startTime)} /> : null}
         {/* participants */}
         <section className="participant-stats">
           {this.props.planned ?
@@ -77,6 +77,9 @@ export default styled(EventStatistics) `
 background-color: ${colors.bgWhite};
 display: flex;
 justify-content: space-between;
+
+padding-top: 10px;
+padding-bottom: 10px;
 
 section {
   flex-grow:1;
