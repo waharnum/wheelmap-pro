@@ -12,6 +12,7 @@ import EventStatistics from '../../Events/EventStatistics';
 import CornerRibbon from '../../../components/CornerRibbon';
 import Button from '../../../components/Button';
 import Countdown from '../../../components/Countdown';
+import {colors} from '../../../stylesheets/colors';
 
 
 const ShareAction = (props: { event: IEvent }) => (
@@ -51,24 +52,27 @@ class EventPanel extends React.Component<IStyledComponent & Props> {
     return (
       <div className={className}>
         <CornerRibbon title={getLabelForEventStatus(event.status)} color={getColorForEventStatus(event.status)}/>
-        <div className="event-information">
-          <div className="event-description">
+        <section className="header-section">
+          <div>
             <h3>{event.name}</h3>
             <h4>{moment(event.startTime).format('LLLL')}</h4>
-            <p>{event.description}</p>
           </div>
-        </div>
-        <section className="event-actions">
-          <ShareAction event={event}/>
-          {actionFromEventStatus(event)}
+          <div className="event-actions">
+            <ShareAction event={event}/>
+            {actionFromEventStatus(event)}
+          </div>
         </section>
-        <EventStatistics
-          event={event}
-          planned={true}
-          countdown="short"/>
-        <section className="event-details">
+        <section className="statistics-section">
+          <EventStatistics
+            event={event}
+            planned={true}
+            countdown="short"/>
+        </section>
+        <section className="details-section">
           <div>{event.regionName}</div>
           <div>{event.description}</div>
+        </section>
+        <section className="countdown-section">
           <Countdown start={moment(event.startTime)}/>
         </section>
       </div>
@@ -90,6 +94,14 @@ export default styled(EventPanel) `
     font-size: 16px;
     margin: 0;
     opacity: 0.6;
+  }
+  
+  .header-section, .statistics-section, .details-section {
+    border-bottom: 1px solid ${colors.shadowGrey};
+  }
+  
+  .header-section, .statistics-section, .details-section, .countdown-section {
+    padding: 10px;
   }
   
   .event-actions {

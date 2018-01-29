@@ -48,6 +48,7 @@ class OrganizationAboutPanel extends React.Component<IStyledComponent & Props> {
 export default styled(OrganizationAboutPanel) `
   // shared between all panels
   flex: 1;
+  padding: 10px;
   // custom styling
   display: flex;
   flex-direction: column;

@@ -186,6 +186,11 @@ export default styled(NewMapLayout) `
     }
   }
   
+  .card-panel {
+    // only pad to the top, needed to show slide indicator
+    padding: 12px 0 0 0;
+  }
+  
   // side panel for all configurations
   .side-panel {
     display: flex;
@@ -205,7 +210,6 @@ export default styled(NewMapLayout) `
       overflow-y: auto;    
       position: relative;
       pointer-events: auto;
-      padding: 10px;
       
       .dismiss-panel-button {
         position: absolute;

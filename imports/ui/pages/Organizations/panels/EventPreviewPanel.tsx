@@ -47,6 +47,7 @@ class EventPreviewPanel extends React.Component<IStyledComponent & Props> {
 export default styled(EventPreviewPanel) `
   // shared between all panels
   flex: 1;
+  padding: 10px;
   
   .close-icon {
     display: block;
