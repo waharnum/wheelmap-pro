@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Meteor} from 'meteor/meteor';
 import {t} from 'c-3po';
-import {browserHistory} from 'react-router';
+import {browserHistory, RouteComponentProps} from 'react-router';
 import {withTracker} from 'meteor/react-meteor-data';
 import {LocationDescriptor} from 'history';
 
@@ -16,10 +16,12 @@ interface IUserProps {
 
 interface IEnsureUserLoggedInProps {
   roles?: string[];
+  signInRoute?: LocationDescriptor | ((props: Props) => LocationDescriptor);
 }
 
-class EnsureUserLoggedIn extends React.Component<IUserProps & IEnsureUserLoggedInProps> {
+type Props = IUserProps & IEnsureUserLoggedInProps & RouteComponentProps<{}, {}>;
 
+class EnsureUserLoggedIn extends React.Component<Props> {
   public componentWillMount() {
     this.redirectIfReady();
   }
@@ -28,7 +30,7 @@ class EnsureUserLoggedIn extends React.Component<IUserProps & IEnsureUserLoggedI
     this.redirectIfReady();
   }
 
-  public componentWillReceiveProps(nextProps) {
+  public componentWillReceiveProps(nextProps: Props) {
     if (!nextProps.user) {
       // save page to go back to
       setLoginRedirect(nextProps.location || '/');
@@ -37,7 +39,7 @@ class EnsureUserLoggedIn extends React.Component<IUserProps & IEnsureUserLoggedI
 
   public render(): JSX.Element | null {
     if (!this.props.ready) {
-      return (<p>{t`Loading...`}</p>);
+      return <p>{t`Loading...`}</p>;
     }
 
     if (this.userAuthorized()) {
@@ -52,10 +54,17 @@ class EnsureUserLoggedIn extends React.Component<IUserProps & IEnsureUserLoggedI
       return;
     }
     if (!this.isSignedIn()) {
-      browserHistory.replace('/signup');
+      let signInRoute: LocationDescriptor | undefined;
+      if (typeof this.props.signInRoute === 'function') {
+        signInRoute = this.props.signInRoute(this.props);
+      } else {
+        signInRoute = this.props.signInRoute;
+      }
+      browserHistory.replace(signInRoute || '/signup');
       return;
     }
     if (!this.hasMatchingRole()) {
+      // TODO handle no access page?
       browserHistory.replace('/');
       return;
     }
@@ -69,7 +78,7 @@ class EnsureUserLoggedIn extends React.Component<IUserProps & IEnsureUserLoggedI
     let isAuthorized = true;
     if (this.props.roles) {
       const userRoles = (this.props.user.roles || []) as string[];
-      isAuthorized = this.props.roles.every((role) => userRoles.includes(role));
+      isAuthorized = this.props.roles.every(role => userRoles.includes(role));
     }
     return isAuthorized;
   }
@@ -79,7 +88,7 @@ class EnsureUserLoggedIn extends React.Component<IUserProps & IEnsureUserLoggedI
   }
 }
 
-export default withTracker(() => {
+const TrackedEnsureUserLoggedIn = withTracker(() => {
   const handle = Meteor.subscribe('users.my.private');
   const ready = handle.ready();
   return {
@@ -87,3 +96,5 @@ export default withTracker(() => {
     user: ready ? Meteor.user() : null,
   };
 })(EnsureUserLoggedIn);
+
+export default TrackedEnsureUserLoggedIn as React.StatelessComponent<IEnsureUserLoggedInProps>;
