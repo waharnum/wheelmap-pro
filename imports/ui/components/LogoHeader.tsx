@@ -12,6 +12,7 @@ type Props = {
   prefixTitle: string;
   logo?: string;
   link?: LocationDescriptor;
+  children?: React.ReactNode;
 } & IStyledComponent;
 
 const LogoHeader = (props: Props) => {
@@ -24,6 +25,7 @@ const LogoHeader = (props: Props) => {
         <h1>{props.prefixTitle}</h1>}
       </Link>
       <h1 className="with-chevron-before">{props.title}</h1>
+      {props.children}
     </div>
   );
 };
@@ -31,7 +33,8 @@ const LogoHeader = (props: Props) => {
 
 export default styled(LogoHeader) `
   display: flex;
-  padding: 0px 10px;
+  padding: 0px 10px;    
+  align-items: center;
   
   border-bottom: solid 1px ${colors.shadowGrey};
     
@@ -41,7 +44,7 @@ export default styled(LogoHeader) `
     background-repeat: no-repeat;
     background-size: contain;
     background-color:  white;
-    height: 100%;
+    height: 50px;
     width: 75px;
 
     a {
