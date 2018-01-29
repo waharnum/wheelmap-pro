@@ -24,7 +24,7 @@ type PageModel = {
 };
 
 type PageParams = {
-  organization_id: string,
+  _id: string,  // organization id
   place_id: string | undefined
 };
 
@@ -42,6 +42,7 @@ class ShowOrganizationPage extends React.Component<Props> {
     let forceContentToSidePanel: boolean = false;
     let canDismissSidePanel: boolean = true;
     if (this.props.params.place_id) {
+      // place details
       header = <LogoHeader link={`/new/organizations/${organization._id}`}
                            prefixTitle={organization.name}
                            logo={organization.logo}
@@ -52,6 +53,7 @@ class ShowOrganizationPage extends React.Component<Props> {
       canDismissSidePanel = false;
       // TODO center map to POI on first render
     } else if (this.props.location.pathname.endsWith('/user')) {
+      // user panel
       header = <LogoHeader link={`/new/organizations/${organization._id}`}
                            prefixTitle={organization.name}
                            logo={organization.logo}
@@ -67,6 +69,7 @@ class ShowOrganizationPage extends React.Component<Props> {
       forceContentToSidePanel = true;
       canDismissSidePanel = false;
     } else {
+      // about organization panel
       content = <OrganizationAboutPanel
         organization={organization}
         onGotoUserPanel={() => {

@@ -15,14 +15,12 @@ type Props = {
   event: IEvent;
   onClickPanel?: () => void;
   onClose?: () => void;
-  onPrimaryAction?: () => void;
-  primaryAction?: React.ReactNode;
 };
 
 class EventPreviewPanel extends React.Component<IStyledComponent & Props> {
 
   public render() {
-    const {className, event, primaryAction, onPrimaryAction, onClickPanel, onClose} = this.props;
+    const {className, event, onClickPanel, onClose} = this.props;
 
     return (
       <div className={className}>
@@ -36,8 +34,6 @@ class EventPreviewPanel extends React.Component<IStyledComponent & Props> {
             <h4>{moment(event.startTime).format('LLLL')}</h4>
             <p>{event.description}</p>
           </div>
-          {primaryAction &&
-          <button className="btn btn-primary" onClick={onPrimaryAction}>{primaryAction}</button>}
         </div>
         <EventStatistics
           event={event}
