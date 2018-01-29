@@ -198,14 +198,14 @@ function actionFromEventStatus(event: IEvent) {
       return <ShareAction event={event}/>;
     case 'planned':
       return [
-        <ShareAction event={event}/>,
-        <Button className="join-button btn-primary"
+        <ShareAction key="share" event={event}/>,
+        <Button key="join" className="join-button btn-primary"
                 to="">{t`Join Us`}</Button>];
     case 'ongoing':
       return [
-        <ShareAction event={event}/>,
-        <Button className="join-button btn-primary"
-                to={`/new/organization/${event.organizationId}/events/${event._id}/mapping`}>
+        <ShareAction key="share" event={event}/>,
+        <Button key="map" className="map-button btn-primary"
+                to={`/new/organizations/${event.organizationId}/events/${event._id}/mapping`}>
           {t`Start mapping`}
         </Button>];
     case 'canceled':
