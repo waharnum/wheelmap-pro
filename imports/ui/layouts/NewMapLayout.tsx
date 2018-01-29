@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Toolbar from 'wheelmap-react/lib/components/Toolbar';
 import SearchIcon from 'wheelmap-react/lib/components/SearchToolbar/SearchIcon';
 import SearchInputField from 'wheelmap-react/lib/components/SearchToolbar/SearchInputField';
+import CloseIcon from 'wheelmap-react/lib/components/icons/actions/Close';
 
 import {IStyledComponent} from '../components/IStyledComponent';
 
@@ -22,18 +23,25 @@ type Props = {
   searchBarPrefix?: string;
   searchBarLogo?: string;
   canDismissSidePanel?: boolean;
+  canDismissCardPanel?: boolean;
+  canDismissAdditionalCardPanel?: boolean;
+  onSearchBarLogoClicked?: () => void;
+  onDismissSidePanel?: () => void;
+  onDismissCardPanel?: () => void;
+  onDismissAdditionalCardPanel?: () => void;
+  sidePanelHidden?: boolean;
   id?: string;
 } & IStyledComponent;
 
 type State = {
   preferContentInCard: boolean;
-  sidePanelHidden: boolean;
+  initialSidePanelHidden: boolean;
 };
 
 class NewMapLayout extends React.Component<Props, State> {
   state: State = {
     preferContentInCard: true,
-    sidePanelHidden: true,
+    initialSidePanelHidden: true,
   };
 
   constructor(props: Props) {
@@ -44,52 +52,61 @@ class NewMapLayout extends React.Component<Props, State> {
 
     this.state = {
       preferContentInCard: lowResolution,
-      sidePanelHidden: lowResolution,
+      initialSidePanelHidden: lowResolution,
     };
   }
 
   componentWillReceiveProps(newProps: Props) {
     // sidePanel content has changed, but side-panel was hidden
-    if (this.state.sidePanelHidden && !this.state.preferContentInCard &&
+    if (this.state.initialSidePanelHidden && !this.state.preferContentInCard &&
       newProps.contentPanel !== this.props.contentPanel) {
       this.setState({
-        sidePanelHidden: false,
+        initialSidePanelHidden: false,
       });
     }
   }
 
-  hideSidePanel = () => {
-    if (this.state.sidePanelHidden || !this.props.canDismissSidePanel) {
-      return;
+  dismissAdditionalCardPanel = () => {
+    if (this.props.canDismissAdditionalCardPanel && this.props.onDismissAdditionalCardPanel) {
+      this.props.onDismissAdditionalCardPanel();
     }
-    this.setState({
-      sidePanelHidden: true,
-    });
   };
 
-  showSidePanel = () => {
-    if (!this.state.sidePanelHidden) {
-      return;
+  dismissCardPanel = () => {
+    if (this.props.canDismissCardPanel && this.props.onDismissCardPanel) {
+      this.props.onDismissCardPanel();
     }
-    this.setState({
-      sidePanelHidden: false,
-    });
+  };
+
+  dismissSidePanel = () => {
+    if (this.props.canDismissSidePanel && this.props.onDismissSidePanel) {
+      this.props.onDismissSidePanel();
+    }
+  };
+
+  searchBarLogoClicked = () => {
+    if (this.props.onSearchBarLogoClicked) {
+      this.props.onSearchBarLogoClicked();
+    }
   };
 
   public render() {
     const {
       id, className, contentPanel, header, mapProperties, additionalMapPanel, allowSearchBar,
       forceContentToSidePanel, searchBarPrefix, searchBarLogo, canDismissSidePanel, mapChildren,
+      sidePanelHidden, canDismissAdditionalCardPanel, canDismissCardPanel, onSearchBarLogoClicked,
     } = this.props;
-    const {preferContentInCard, sidePanelHidden} = this.state;
+    const {preferContentInCard, initialSidePanelHidden} = this.state;
 
+
+    const effectiveSidePanelHidden = sidePanelHidden === undefined ? initialSidePanelHidden : sidePanelHidden;
     const useSidePanel = !preferContentInCard || forceContentToSidePanel;
     const useCardPanel = preferContentInCard && !forceContentToSidePanel;
-    const useAdditionalCardPanel = !useCardPanel && (!preferContentInCard || sidePanelHidden);
+    const useAdditionalCardPanel = !useCardPanel && (!preferContentInCard || effectiveSidePanelHidden);
 
-    const displayAnyCardPanel = (!preferContentInCard || !useSidePanel || sidePanelHidden);
+    const displayAnyCardPanel = (!preferContentInCard || !useSidePanel || effectiveSidePanelHidden);
     const displayCardPanel = contentPanel && useCardPanel && displayAnyCardPanel;
-    const displaySidePanel = contentPanel && useSidePanel && !sidePanelHidden;
+    const displaySidePanel = contentPanel && useSidePanel && !effectiveSidePanelHidden;
     const displayAdditionalCardPanel = additionalMapPanel && useAdditionalCardPanel && displayAnyCardPanel;
     const displaySearchBar = (preferContentInCard ? !(displaySidePanel || displayCardPanel) : true) && allowSearchBar;
 
@@ -99,11 +116,11 @@ class NewMapLayout extends React.Component<Props, State> {
         <section className={`side-panel ${displaySidePanel ? 'show-panel' : 'hide-panel'}`}>
           {header && <header>{header}</header>}
           {displaySidePanel && <section className="content">
-            {canDismissSidePanel && <a className="dismiss-panel-button" onClick={this.hideSidePanel}>«</a>}
+            {canDismissSidePanel && <a className="dismiss-panel-button" onClick={this.dismissSidePanel}>«</a>}
             {contentPanel}
           </section>}
         </section>
-        <section className="map" onTouchStart={displaySidePanel ? this.hideSidePanel : undefined}>
+        <section className="map" onTouchStart={displaySidePanel ? this.dismissSidePanel : undefined}>
           <Map {...mapProperties}>
             {mapChildren}
           </Map>
@@ -111,7 +128,8 @@ class NewMapLayout extends React.Component<Props, State> {
           <Toolbar className="search-toolbar"
                    isSwipeable={false}
                    minimalHeight={75}>
-            <a onClick={this.showSidePanel}>
+            <a onClick={this.searchBarLogoClicked}
+               className={onSearchBarLogoClicked ? 'organization-logo' : 'organization-logo disabled'}>
               {searchBarLogo &&
               <div className="small-logo" style={{backgroundImage: `url(${searchBarLogo})`}}/>}
               {(!searchBarLogo && searchBarPrefix) &&
@@ -123,10 +141,16 @@ class NewMapLayout extends React.Component<Props, State> {
             </div>
           </Toolbar>}
           {displayCardPanel && <Toolbar className="card-panel">
+            {canDismissCardPanel && <a className="close-icon" onClick={this.dismissCardPanel}>
+              <CloseIcon/>
+            </a>}
             {contentPanel}
           </Toolbar>}
           {displayAdditionalCardPanel &&
           <Toolbar className="card-panel additional-card-panel">
+            {canDismissAdditionalCardPanel && <a className="close-icon" onClick={this.dismissAdditionalCardPanel}>
+              <CloseIcon/>
+            </a>}
             {additionalMapPanel}
           </Toolbar>}
         </section>
@@ -148,21 +172,35 @@ export default styled(NewMapLayout) `
     left: 0;
     display: flex;
     
-    .small-logo {
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-size: contain;
-      background-color: ${colors.bgWhite};
-      min-height: 32px;
-      width: 50px;
-      margin-right: 8px;
+    a.organization-logo {
+      cursor: pointer;
+      
+      .small-logo {
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-color: ${colors.bgWhite};
+        min-height: 32px;
+        width: 50px;
+        margin-right: 8px;
+      }
   
-      a {
+      h1 {
         text-overflow: ellipsis;
         display: block;
         overflow: hidden;
         white-space: nowrap;
-      }      
+      }
+      
+      &:hover {
+       .small-logo, h1 {
+          background-color: ${colors.linkBlue};
+       }
+      }
+      
+      &.disabled {
+        pointer-events: none;
+      }
     }
     
     h1 {
@@ -194,6 +232,20 @@ export default styled(NewMapLayout) `
     // only pad to the top, needed to show slide indicator
     padding: 12px 0 0 0;
     min-height: 120px;
+    
+    .close-icon {
+      display: block;
+      position: absolute;
+      padding: 6px 8px 0 0;
+      color: rgba(0,0,0,0.3);
+      text-decoration: none;
+      text-align: center;
+      z-index: 1;
+      top: 0px;
+      right: 0px;
+      pointer-events: all;
+      cursor: pointer;
+    }
   }
   
   // side panel for all configurations
@@ -217,12 +269,18 @@ export default styled(NewMapLayout) `
       pointer-events: auto;
       
       .dismiss-panel-button {
+        cursor: pointer;
         position: absolute;
         top: 5px;
         right: 10px;
         font-size: 32px;
         opacity: 0.35;
         color: black;
+        user-select: none;
+        
+        &:hover {
+          opacity: 1.0;
+        }
       }    
     }
     
