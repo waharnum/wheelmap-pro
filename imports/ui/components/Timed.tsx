@@ -1,8 +1,16 @@
 import * as moment from 'moment';
 import * as React from 'react';
 
-export const withTime = (WrappedComponent, interval: number = 1000) => {
-  return class extends React.Component<any, { now: moment.Moment }> {
+// Helper types
+type Diff<T extends string, U extends string> = ({ [P in T]: P } & { [P in U]: never } & { [x: string]: never })[T];
+type Minus<T, U> = Pick<T, Diff<keyof T, keyof U>>;
+
+type MomentProps = { now: moment.Moment };
+type ResultProps<P> = Minus<P, MomentProps>;
+
+export function withTime<P>(WrappedComponent: React.StatelessComponent<P & MomentProps>,
+                            interval: number = 1000): React.ComponentClass<ResultProps<P>> {
+  return class extends React.Component<ResultProps<P>, { now: moment.Moment }> {
     public state = {
       now: moment(),
     };
@@ -10,7 +18,7 @@ export const withTime = (WrappedComponent, interval: number = 1000) => {
     private intervalId;
 
     public render() {
-      return <WrappedComponent moment={this.state.now} {...this.props} />;
+      return <WrappedComponent now={this.state.now} {...this.props} />;
     }
 
     public componentDidMount() {
@@ -25,9 +33,6 @@ export const withTime = (WrappedComponent, interval: number = 1000) => {
 
     private tick = () => {
       this.setState({now: moment()});
-    }
+    };
   };
-};
-
-// We need two exports to count as a module
-export const foo = 1;
+}

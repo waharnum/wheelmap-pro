@@ -5,7 +5,7 @@ import * as React from 'react';
 import {colors} from '../../stylesheets/colors';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import * as moment from 'moment';
-import {Countdown} from '../../components/Countdown';
+import Countdown from '../../components/Countdown';
 import {IEvent} from '../../../both/api/events/events';
 
 type Props = {
