@@ -14,6 +14,7 @@ import {defaultRegion} from '../../../both/api/events/schema';
 import {regionToBbox} from '../../../both/lib/geo-bounding-box';
 import * as L from 'leaflet';
 import EventMiniMarker from './EventMiniMarker';
+import UserPanel from '../../panels/UserPanel';
 
 
 type PageModel = {
@@ -39,13 +40,27 @@ class ShowEventPage extends React.Component<Props> {
     let forceContentToSidePanel: boolean = false;
     let canDismissSidePanel: boolean = true;
 
-    content = <EventPanel event={event}/>;
-    header = <LogoHeader link={`/new/organizations/${organization._id}`}
-                         prefixTitle={organization.name}
-                         logo={organization.logo}
-                         title={t`Event`}/>;
-    canDismissSidePanel = false;
-
+    if (this.props.location.pathname.endsWith('/user')) {
+      // user panel
+      header = <LogoHeader link={`/new/organizations/${organization._id}/events/${event._id}`}
+                           prefixTitle={organization.name}
+                           logo={organization.logo}
+                           title={event.name}/>;
+      content = <UserPanel
+        onSignedOutHook={() => {
+          this.props.router.push(`/new/organizations/${organization._id}/events/${event._id}`);
+        }}
+      />;
+      forceContentToSidePanel = true;
+      canDismissSidePanel = false;
+    } else {
+      content = <EventPanel event={event}/>;
+      header = <LogoHeader link={`/new/organizations/${organization._id}`}
+                           prefixTitle={organization.name}
+                           logo={organization.logo}
+                           title={t`Event`}/>;
+      canDismissSidePanel = false;
+    }
     return {
       content,
       header,

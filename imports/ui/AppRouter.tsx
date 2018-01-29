@@ -119,7 +119,18 @@ const AppRouter = (
       <Route path="/new/organizations/:_id" component={NewShowOrganizationPage}/>
       <Route path="/new/organizations/:_id/place/:place_id" component={NewShowOrganizationPage}/>
       <Route path="/new/organizations/:_id/user" component={NewShowOrganizationPage}/>
+
       <Route path="/new/organizations/:organization_id/events/:_id" component={NewShowEventPage}/>
+      <Route path="/new/organizations/:organization_id/events/:_id/user" component={NewShowEventPage}/>
+
+      {/* mapping only works with signed in user */}
+      <Route component={(route) => <EnsureUserLoggedIn {...route} signInRoute={(p) => {
+        const params = p.params as { _id: string, organization_id: string };
+        return `/new/organizations/${params.organization_id}/events/${params._id}/user`;
+      }}/>}>
+        <Route path="/new/organizations/:organization_id/events/:_id/mapping" component={NewShowEventPage}/>
+      </Route>
+
 
       <Route path="/events/:_id" component={ShowEventPage}/>
       <Route path="/events/:_id/mapping" component={MappingPage}/>
