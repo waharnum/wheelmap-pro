@@ -20,6 +20,7 @@ import {accessibilityCloudFeatureCache} from 'wheelmap-react/lib/lib/cache/Acces
 import PlaceDetailsPanel from '../../panels/PlaceDetailsPanel';
 import {Link} from 'react-router';
 import {colors} from '../../stylesheets/colors';
+import SurveyPanel from './panels/SurveyPanel';
 
 
 type PageModel = {
@@ -48,12 +49,12 @@ class ShowEventPage extends React.Component<Props> {
     let onDismissSidePanel: undefined | (() => void) = undefined;
 
     if (location.pathname.endsWith('/create-place') || location.pathname.includes('/edit-place/')) {
-      content = <EventPanel event={event}/>;
-      header = <LogoHeader link={`/new/organizations/${organization._id}/events/${event._id}/mapping/organization`}
-                           prefixTitle={organization.name}
-                           logo={organization.logo}
-                           title={event.name}/>;
+      content = <SurveyPanel event={event} place={null} onExitSurvey={() => {
+        router.push(`/new/organizations/${organization._id}/events/${event._id}/mapping`);
+      }}/>;
+      header = null;
       forceContentToSidePanel = true;
+      forceSidePanelOpen = true;
     } else if (params.place_id) {
       const target = isMappingFlow ?
         `/new/organizations/${organization._id}/events/${event._id}/mapping` :
