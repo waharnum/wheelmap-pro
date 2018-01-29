@@ -30,6 +30,7 @@ type Props = {
   onDismissCardPanel?: () => void;
   onDismissAdditionalCardPanel?: () => void;
   sidePanelHidden?: boolean;
+  overlapSidePanelTakeFullWidth?: boolean;
   id?: string;
 } & IStyledComponent;
 
@@ -93,8 +94,8 @@ class NewMapLayout extends React.Component<Props, State> {
 
   public render() {
     const {
-      id, className, contentPanel, header, mapProperties, additionalMapPanel, allowSearchBar,
-      forceContentToSidePanel, searchBarPrefix, searchBarLogo, canDismissFromSidePanel, mapChildren,
+      id, className, contentPanel, header, mapProperties, additionalMapPanel, allowSearchBar, mapChildren,
+      forceContentToSidePanel, searchBarPrefix, searchBarLogo, canDismissFromSidePanel, overlapSidePanelTakeFullWidth,
       sidePanelHidden, canDismissAdditionalCardPanel, canDismissCardPanel, onSearchBarLogoClicked,
     } = this.props;
     const {preferContentInCard, initialSidePanelHidden} = this.state;
@@ -111,9 +112,22 @@ class NewMapLayout extends React.Component<Props, State> {
     const displayAdditionalCardPanel = additionalMapPanel && useAdditionalCardPanel && displayAnyCardPanel;
     const displaySearchBar = (preferContentInCard ? !(displaySidePanel || displayCardPanel) : true) && allowSearchBar;
 
+    console.log({
+      preferContentInCard,
+      effectiveSidePanelHidden,
+      useSidePanel,
+      useCardPanel,
+      useAdditionalCardPanel,
+      displayAnyCardPanel,
+      displaySidePanel,
+      displayCardPanel,
+      displaySearchBar,
+    });
+
     return (
       <div id={id}
-           className={`${className} map-layout ${preferContentInCard ? 'overlap-side-panel' : 'fixed-side-panel' } `}>
+           className={`${className} map-layout ${preferContentInCard ? 'overlap-side-panel' : 'fixed-side-panel' }
+           ${(displaySidePanel && overlapSidePanelTakeFullWidth) ? 'overlap-side-panel-full-width' : '' } `}>
         <section className={`side-panel ${displaySidePanel ? 'show-panel' : 'hide-panel'}`}>
           {header && <header>{header}</header>}
           {displaySidePanel && <section className="content">
@@ -247,6 +261,14 @@ export default styled(NewMapLayout) `
       pointer-events: all;
       cursor: pointer;
     }
+  }  
+  
+  // map area
+  .map {
+    flex:1;
+    position: relative;
+    display: flex;
+    overflow: hidden;
   }
   
   // side panel for all configurations
@@ -350,13 +372,18 @@ export default styled(NewMapLayout) `
       z-index: 3000;
     }
   }
-  
-  
-  /** This normally includes the map-area on the right side. */
-  .map {
-    flex:1;
-    position: relative;
-    display: flex;
-    overflow: hidden;
+ 
+  // mobile
+  &.overlap-side-panel-full-width {
+    .map {
+      display: none;
+    }    
+    
+    .side-panel {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      max-width: unset;
+    }
   }
-  `;
+`;

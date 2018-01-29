@@ -46,6 +46,7 @@ class ShowEventPage extends React.Component<Props> {
     let header: React.ReactNode = null;
     let forceContentToSidePanel: boolean = false;
     let forceSidePanelOpen: boolean = false;
+    let overlapSidePanelTakeFullWidth: boolean = false;
     let onDismissSidePanel: undefined | (() => void) = undefined;
 
     if (location.pathname.endsWith('/create-place') || location.pathname.includes('/edit-place/')) {
@@ -55,6 +56,7 @@ class ShowEventPage extends React.Component<Props> {
       header = null;
       forceContentToSidePanel = true;
       forceSidePanelOpen = true;
+      overlapSidePanelTakeFullWidth = true;
     } else if (params.place_id) {
       const target = isMappingFlow ?
         `/new/organizations/${organization._id}/events/${event._id}/mapping` :
@@ -126,6 +128,7 @@ class ShowEventPage extends React.Component<Props> {
       forceSidePanelOpen,
       forceContentToSidePanel,
       onDismissSidePanel,
+      overlapSidePanelTakeFullWidth,
     };
   }
 
@@ -138,7 +141,7 @@ class ShowEventPage extends React.Component<Props> {
     const isPlaceDetails = location.pathname.includes('/place/');
 
     const {
-      content, header, forceSidePanelOpen, forceContentToSidePanel, onDismissSidePanel,
+      content, header, forceSidePanelOpen, forceContentToSidePanel, onDismissSidePanel, overlapSidePanelTakeFullWidth,
     } = this.getPanelContent(isMappingFlow);
 
     const bbox = regionToBbox(event.region || defaultRegion);
@@ -150,6 +153,7 @@ class ShowEventPage extends React.Component<Props> {
         contentPanel={content}
         sidePanelHidden={forceSidePanelOpen ? false : undefined}
         forceContentToSidePanel={forceContentToSidePanel}
+        overlapSidePanelTakeFullWidth={overlapSidePanelTakeFullWidth}
         canDismissFromSidePanel={false}
         onDismissSidePanel={onDismissSidePanel}
         canDismissCardPanel={isPlaceDetails}
