@@ -113,8 +113,23 @@ class ShowEventPage extends React.Component<Props> {
       header = <LogoHeader link={`/new/organizations/${organization._id}/events/${event._id}/mapping/organization`}
                            prefixTitle={organization.name}
                            logo={organization.logo}
-                           title={event.name}/>;
+                           title={event.name}>
+        <Link className="event-info"
+              to={`/new/organizations/${organization._id}/events/${event._id}/mapping/event-info`}></Link>
+      </LogoHeader>;
       forceContentToSidePanel = true;
+    } else if (location.pathname.endsWith('/event-info')) {
+      const target = `/new/organizations/${organization._id}/events/${event._id}/mapping`;
+      onDismissSidePanel = () => {
+        router.push(target);
+      };
+      content = <EventPanel event={event}/>;
+      header = <LogoHeader link={target}
+                           prefixTitle={organization.name}
+                           logo={organization.logo}
+                           title={t`Event`}/>;
+      forceContentToSidePanel = true;
+      forceSidePanelOpen = true;
     } else {
       content = <EventPanel event={event}/>;
       header = <LogoHeader link={`/new/organizations/${organization._id}/events/${event._id}/organization`}
@@ -219,5 +234,16 @@ export default styled(ReactiveShowEventPage) `
     line-height: 65px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     font-family: 'iconfield-V03';
+  }
+  
+  a.event-info {
+    font-size: 30px;
+    font-family: 'iconfield-V03';
+  }
+  
+  &.fixed-side-panel {
+    a.event-info {
+      display: none;
+    }
   }
 `;

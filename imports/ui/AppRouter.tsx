@@ -123,7 +123,6 @@ const AppRouter = (
 
       <Route path="/new/organizations/:organization_id/events/:_id" component={NewShowEventPage}/>
       <Route path="/new/organizations/:organization_id/events/:_id/organization" component={NewShowEventPage}/>
-      <Route path="/new/organizations/:organization_id/events/:_id/event-info" component={NewShowEventPage}/>
       <Route path="/new/organizations/:organization_id/events/:_id/mapping/user" component={NewShowEventPage}/>
       <Route path="/new/organizations/:organization_id/events/:_id/place/:place_id" component={NewShowEventPage}/>
 
@@ -132,6 +131,7 @@ const AppRouter = (
         const params = p.params as { _id: string, organization_id: string };
         return `/new/organizations/${params.organization_id}/events/${params._id}/mapping/user`;
       }}/>}>
+        <Route path="/new/organizations/:organization_id/events/:_id/mapping/event-info" component={NewShowEventPage}/>
         <Route path="/new/organizations/:organization_id/events/:_id/mapping/organization"
                component={NewShowEventPage}/>
         <Route path="/new/organizations/:organization_id/events/:_id/mapping" component={NewShowEventPage}/>
