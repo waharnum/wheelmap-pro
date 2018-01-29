@@ -20,11 +20,7 @@ export default styled(MapLayout) `
   overflow: hidden;
   width: 100%;
   display: flex;
-  flex-direction: row;
-
-  .sidebar-area {
-    width:375px;
-  }
+  flex-direction: column;
 
   /** This normally includes the map-area on the right side. */
   .content-area {
