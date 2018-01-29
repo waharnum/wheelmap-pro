@@ -45,6 +45,153 @@ const BringEquipmentBlock = (props: {}) => (
   </section>
 );
 
+const FinishedEventContent = styled((props: { event: IEvent, className?: string }) => {
+  const {event, className} = props;
+
+  const barGraphAchieved =
+    event.statistics && event.targets &&
+    event.targets.mappedPlacesCount && event.targets.mappedPlacesCount > 0 ?
+      Math.floor(100 * event.statistics.mappedPlacesCount / event.targets.mappedPlacesCount) : null;
+
+  return (
+    <section className={`details-section ${className}`}>
+      <section className="graphical-stats">
+        <div className="participant-count">
+          {event.statistics ? event.statistics.acceptedParticipantCount : 0}
+        </div>
+        <div className="participants-block">
+          <section className="participants-label">
+            {t`Participants`}
+          </section>
+          <section className="participants-icons">
+            {Array(event.statistics ? (event.statistics.acceptedParticipantCount + 1) : 0).join('p ­')}
+          </section>
+        </div>
+      </section>
+      <div className="stats-box">
+        <div className="places-block">
+          <section className="poi-icon"/>
+          <section className="planned-label">
+            <p>{event.targets ? event.targets.mappedPlacesCount : 0}</p>
+            <small>{t`Planned`}</small>
+          </section>
+          <section className="achieved-label">
+            <p>{event.statistics ? event.statistics.mappedPlacesCount : 0}</p>
+            <small>{t`Achieved`}</small>
+          </section>
+        </div>
+        {barGraphAchieved !== null ?
+          <div className="places-graph">
+            <section style={{width: `${barGraphAchieved}%`}} className="bar-graph-achieved"/>
+            <section style={{width: `${100 - barGraphAchieved}%`}} className="bar-graph-planned"/>
+          </div>
+          : null
+        }
+      </div>
+    </section>
+  );
+})`
+  padding: 10px;
+
+  .places-block {
+    display: flex;
+    justify-content: space-between;
+    
+    .poi-icon {
+      content: " ";
+      width: 42px;
+      height: 42px;
+      background-image: url(/images/icon-location@2x.png); 
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+    
+    section {
+      text-align: center;
+
+      p {
+        margin: 0;
+        padding-top: 4px;
+        font-size: 32px;
+        line-height: 28px;
+        font-weight: 200;
+      }
+
+      small {
+        font-size: 11px;
+        line-height: 11px;
+        font-weight: 300;
+        text-transform: uppercase;
+      }
+    }
+
+    section.achieved-label p {
+      font-weight: 800;
+    }
+  }
+
+  .places-graph {
+    margin-top: 4px;
+    border: 1px black solid;
+    line-height: 0;
+    
+    section {
+      width: 30%;
+      height: 18px;      
+      padding-right: 4px;
+      line-height: 18px;
+      display: inline-block;
+      text-align: right;
+      font-weight: 400;
+    }
+    
+    .bar-graph-achieved {
+      background-color: ${colors.ctaGreen};
+      color: white;
+      padding: 0;
+    }
+    .bar-graph-remaining {
+      background-color: ${colors.errorRed};
+      color: white;
+      padding: 0;
+    }
+  }
+
+  section.graphical-stats {
+    padding: 10px;
+    width: 100%;
+    
+    .participant-count {
+      font-size: 42px;
+      font-weight: 800;
+      line-height: 36px;
+    }
+    
+    .participants-block {
+      margin-right: 10px;
+      display: flex;
+      justify-content: flex-start;
+      
+      section.participants-label {
+        margin-right: 10px;
+        margin-top: 4px;
+        font-weight: 400;
+        font-size: 11px;
+        line-height: 14px;
+        text-transform: uppercase;
+      }
+  
+      section.participants-icons {          
+        margin-right: 10px;
+        font-family: 'iconfield-v03';
+        font-size: 11px;
+      }
+    }
+  }
+`;
+
+
 function actionFromEventStatus(event: IEvent) {
   switch (event.status) {
     case 'completed':
@@ -70,12 +217,12 @@ function actionFromEventStatus(event: IEvent) {
 
 function detailsFromEventStatus(event: IEvent) {
   switch (event.status) {
-    case 'completed':
-      return <ShareAction event={event}/>;
     case 'draft':
     case 'planned':
     case 'ongoing':
       return <BringEquipmentBlock/>;
+    case 'completed':
+      return <FinishedEventContent event={event}/>;
   }
 
   return null;
