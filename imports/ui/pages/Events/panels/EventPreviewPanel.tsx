@@ -14,19 +14,15 @@ import CloseIcon from 'wheelmap-react/lib/components/icons/actions/Close';
 type Props = {
   event: IEvent;
   onClickPanel?: () => void;
-  onClose?: () => void;
 };
 
 class EventPreviewPanel extends React.Component<IStyledComponent & Props> {
 
   public render() {
-    const {className, event, onClickPanel, onClose} = this.props;
+    const {className, event, onClickPanel} = this.props;
 
     return (
       <div className={className}>
-        <a className="close-icon" onClick={() => onClose && onClose()}>
-          <CloseIcon/>
-        </a>
         <CornerRibbon title={getLabelForEventStatus(event.status)} color={getColorForEventStatus(event.status)}/>
         <div className="event-information" onClick={onClickPanel}>
           <div className="event-description">
@@ -47,20 +43,6 @@ export default styled(EventPreviewPanel) `
   // shared between all panels
   flex: 1;
   padding: 0 10px;
-  
-  .close-icon {
-    display: block;
-    position: absolute;
-    padding: 6px 8px 0 0;
-    color: rgba(0,0,0,0.3);
-    text-decoration: none;
-    text-align: center;
-    z-index: 1;
-    top: 0px;
-    right: 0px;
-    pointer-events: all;
-    cursor: pointer;
-  }
   
   // custom styles
   .event-information {

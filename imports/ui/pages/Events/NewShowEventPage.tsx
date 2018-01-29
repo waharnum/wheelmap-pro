@@ -15,6 +15,7 @@ import {regionToBbox} from '../../../both/lib/geo-bounding-box';
 import * as L from 'leaflet';
 import EventMiniMarker from './EventMiniMarker';
 import UserPanel from '../../panels/UserPanel';
+import OrganizationAboutPanel from '../Organizations/panels/OrganizationAboutPanel';
 
 
 type PageModel = {
@@ -32,30 +33,65 @@ type Props = RouteComponentProps<PageParams, {}> & IAsyncDataByIdProps<PageModel
 class ShowEventPage extends React.Component<Props> {
 
   getPanelContent() {
+    const {location, router} = this.props;
     const {organization, event} = this.props.model;
 
     let content: React.ReactNode = null;
     let header: React.ReactNode = null;
-    let additionalMapPanel: React.ReactNode = null;
     let forceContentToSidePanel: boolean = false;
     let canDismissSidePanel: boolean = true;
+    let forceSidePanelOpen: boolean = false;
+    let onDismissSidePanel: undefined | (() => void) = undefined;
 
-    if (this.props.location.pathname.endsWith('/user')) {
+    if (location.pathname.endsWith('/user')) {
+      const target = `/new/organizations/${organization._id}/events/${event._id}/mapping`;
+      onDismissSidePanel = () => {
+        router.push(target);
+      };
       // user panel
-      header = <LogoHeader link={`/new/organizations/${organization._id}/events/${event._id}`}
+      header = <LogoHeader link={target}
                            prefixTitle={organization.name}
                            logo={organization.logo}
                            title={event.name}/>;
       content = <UserPanel
         onSignedOutHook={() => {
-          this.props.router.push(`/new/organizations/${organization._id}/events/${event._id}`);
+          router.push(`/new/organizations/${organization._id}/events/${event._id}/user`);
         }}
       />;
+      forceContentToSidePanel = true;
+      forceSidePanelOpen = true;
+      canDismissSidePanel = false;
+    } else if (location.pathname.endsWith('/event-organization') || location.pathname.endsWith('/mapping-organization')) {
+      const target = location.pathname.endsWith('/mapping-organization') ?
+        `/new/organizations/${organization._id}/events/${event._id}/mapping` :
+        `/new/organizations/${organization._id}/events/${event._id}`;
+      onDismissSidePanel = () => {
+        router.push(target);
+      };
+      // user panel
+      header = <LogoHeader link={target}
+                           prefixTitle={organization.name}
+                           logo={organization.logo}
+                           title={event.name}/>;
+      content = <OrganizationAboutPanel organization={organization} onGotoUserPanel={
+        () => {
+          router.push(`/new/organizations/${organization._id}/events/${event._id}/user`);
+        }
+      }/>;
+      forceContentToSidePanel = true;
+      forceSidePanelOpen = true;
+      canDismissSidePanel = false;
+    } else if (location.pathname.endsWith('/mapping')) {
+      content = <EventPanel event={event}/>;
+      header = <LogoHeader link={`/new/organizations/${organization._id}/events/${event._id}/mapping-organization`}
+                           prefixTitle={organization.name}
+                           logo={organization.logo}
+                           title={event.name}/>;
       forceContentToSidePanel = true;
       canDismissSidePanel = false;
     } else {
       content = <EventPanel event={event}/>;
-      header = <LogoHeader link={`/new/organizations/${organization._id}`}
+      header = <LogoHeader link={`/new/organizations/${organization._id}/events/${event._id}/event-organization`}
                            prefixTitle={organization.name}
                            logo={organization.logo}
                            title={t`Event`}/>;
@@ -64,15 +100,19 @@ class ShowEventPage extends React.Component<Props> {
     return {
       content,
       header,
-      additionalMapPanel,
+      forceSidePanelOpen,
       forceContentToSidePanel,
       canDismissSidePanel,
+      onDismissSidePanel,
     };
   }
 
   public render() {
     const {organization, event} = this.props.model;
-    const {content, header, additionalMapPanel, forceContentToSidePanel, canDismissSidePanel} = this.getPanelContent();
+    const {
+      content, header, forceSidePanelOpen, forceContentToSidePanel,
+      canDismissSidePanel, onDismissSidePanel,
+    } = this.getPanelContent();
 
     const bbox = regionToBbox(event.region || defaultRegion);
 
@@ -81,9 +121,10 @@ class ShowEventPage extends React.Component<Props> {
         className={this.props.className}
         header={header}
         contentPanel={content}
-        additionalMapPanel={additionalMapPanel}
+        sidePanelHidden={forceSidePanelOpen ? false : undefined}
         forceContentToSidePanel={forceContentToSidePanel}
         canDismissSidePanel={canDismissSidePanel}
+        onDismissSidePanel={onDismissSidePanel}
         searchBarLogo={organization.logo}
         searchBarPrefix={organization.name}
         mapProperties={{

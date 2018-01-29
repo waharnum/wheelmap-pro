@@ -42,6 +42,7 @@ class ShowOrganizationPage extends React.Component<Props, State> {
 
   getPanelContent() {
     const {organization, events} = this.props.model;
+    const {router, params, location} = this.props;
 
     let content: React.ReactNode = null;
     let header: React.ReactNode = null;
@@ -54,20 +55,20 @@ class ShowOrganizationPage extends React.Component<Props, State> {
     let onDismissSidePanel: undefined | (() => void);
     let onDismissCardPanel: undefined | (() => void);
     let onDismissAdditionalCardPanel: undefined | (() => void);
-    if (this.props.params.place_id) {
+    if (params.place_id) {
       // place details
       header = <LogoHeader link={`/new/organizations/${organization._id}/about`}
                            prefixTitle={organization.name}
                            logo={organization.logo}
                            title={t`Place`}/>;
       // TODO async fetch feature
-      const feature = accessibilityCloudFeatureCache.getCachedFeature(this.props.params.place_id);
+      const feature = accessibilityCloudFeatureCache.getCachedFeature(params.place_id);
       content = <PlaceDetailsPanel feature={feature}/>;
       canDismissSidePanel = false;
       canDismissCardPanel = true;
       forceSidePanelOpen = true;
       // TODO center map to POI on first render
-    } else if (this.props.location.pathname.endsWith('/user')) {
+    } else if (location.pathname.endsWith('/user')) {
       // user panel
       header = <LogoHeader link={`/new/organizations/${organization._id}/about`}
                            prefixTitle={organization.name}
@@ -75,10 +76,10 @@ class ShowOrganizationPage extends React.Component<Props, State> {
                            title={t`My account`}/>;
       content = <UserPanel
         onSignedInHook={() => {
-          this.props.router.push(`/new/organizations/${organization._id}/about`);
+          router.push(`/new/organizations/${organization._id}/about`);
         }}
         onSignedOutHook={() => {
-          this.props.router.push(`/new/organizations/${organization._id}/about`);
+          router.push(`/new/organizations/${organization._id}/about`);
         }}
       />;
       forceContentToSidePanel = true;
@@ -89,19 +90,19 @@ class ShowOrganizationPage extends React.Component<Props, State> {
       content = <OrganizationAboutPanel
         organization={organization}
         onGotoUserPanel={() => {
-          this.props.router.push(`/new/organizations/${organization._id}/user`);
+          router.push(`/new/organizations/${organization._id}/user`);
         }}
       />;
       if (events.length > 0) {
         const event = events[0];
         additionalMapPanel = <EventPreviewPanel event={event} onClickPanel={() => {
-          this.props.router.push(`/new/organizations/${organization._id}/events/${event._id}`);
+          router.push(`/new/organizations/${organization._id}/events/${event._id}`);
         }}/>;
         canDismissAdditionalCardPanel = true;
       }
       forceContentToSidePanel = true;
 
-      if (this.props.location.pathname.endsWith('/about')) {
+      if (location.pathname.endsWith('/about')) {
         forceSidePanelOpen = true;
       }
     }
@@ -123,6 +124,7 @@ class ShowOrganizationPage extends React.Component<Props, State> {
 
 
   public render() {
+    const {router, className} = this.props;
     const {organization} = this.props.model;
     const {
       content, header, additionalMapPanel, forceContentToSidePanel, canDismissCardPanel,
@@ -131,22 +133,22 @@ class ShowOrganizationPage extends React.Component<Props, State> {
 
     return (
       <NewMapLayout
-        className={this.props.className}
+        className={className}
         header={header}
         contentPanel={content}
         additionalMapPanel={this.state.additionalCardPanelDismissed ? null : additionalMapPanel}
         forceContentToSidePanel={forceContentToSidePanel}
         onSearchBarLogoClicked={() => {
-          this.props.router.push(`/new/organizations/${organization._id}/about`);
+          router.push(`/new/organizations/${organization._id}/about`);
         }}
         canDismissSidePanel={canDismissSidePanel}
         onDismissSidePanel={() => {
           this.setState({sidePanelDismissed: true});
-          this.props.router.push(`/new/organizations/${organization._id}`);
+          router.push(`/new/organizations/${organization._id}`);
         }}
         canDismissCardPanel={canDismissCardPanel}
         onDismissCardPanel={() => {
-          this.props.router.push(`/new/organizations/${organization._id}`);
+          router.push(`/new/organizations/${organization._id}`);
         }}
         canDismissAdditionalCardPanel={canDismissAdditionalCardPanel}
         onDismissAdditionalCardPanel={() => this.setState({additionalCardPanelDismissed: true})}
@@ -156,7 +158,7 @@ class ShowOrganizationPage extends React.Component<Props, State> {
         sidePanelHidden={forceSidePanelOpen ? false : this.state.sidePanelDismissed}
         mapProperties={{
           onMarkerClick: (id) => {
-            this.props.router.push(`/new/organizations/${organization._id}/place/${id}`);
+            router.push(`/new/organizations/${organization._id}/place/${id}`);
           },
         }}
       />

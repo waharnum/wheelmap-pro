@@ -79,7 +79,8 @@ class NewMapLayout extends React.Component<Props, State> {
   };
 
   dismissSidePanel = () => {
-    if (this.props.canDismissSidePanel && this.props.onDismissSidePanel) {
+    // no check here, on map dismissing is separate
+    if (this.props.onDismissSidePanel) {
       this.props.onDismissSidePanel();
     }
   };
