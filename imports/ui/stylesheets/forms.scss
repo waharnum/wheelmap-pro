@@ -180,10 +180,13 @@ form {
   flex-direction: column;
   align-items: flex-start;
 
+  fieldset {
+    width:100%;
+  }
+
   .form-group,
   .input {
     margin-top: 16px;
-    width: 26em;
     max-width: 90 vv;
 
     input,
@@ -215,6 +218,7 @@ form {
         margin-right: 10px;
       }
     }
+
 
     input,
     textarea {
