@@ -14,6 +14,7 @@ type Props = {
   header: React.ReactNode;
   contentPanel: React.ReactNode;
   additionalMapPanel?: React.ReactNode;
+  mapChildren?: React.ReactNode;
   forceContentToSidePanel?: boolean;
   canCloseSidePanelOnDesktop?: boolean;
   mapProperties: MapProps;
@@ -77,7 +78,7 @@ class NewMapLayout extends React.Component<Props, State> {
   public render() {
     const {
       id, className, contentPanel, header, mapProperties, additionalMapPanel,
-      forceContentToSidePanel, searchBarPrefix, searchBarLogo, canDismissSidePanel,
+      forceContentToSidePanel, searchBarPrefix, searchBarLogo, canDismissSidePanel, mapChildren,
     } = this.props;
     const {preferContentInCard, sidePanelHidden} = this.state;
 
@@ -102,7 +103,9 @@ class NewMapLayout extends React.Component<Props, State> {
           </section>}
         </section>
         <section className="map" onTouchStart={displaySidePanel ? this.hideSidePanel : undefined}>
-          <Map {...mapProperties}/>
+          <Map {...mapProperties}>
+            {mapChildren}
+          </Map>
           {displaySearchBar &&
           <Toolbar className="search-toolbar"
                    isSwipeable={false}
