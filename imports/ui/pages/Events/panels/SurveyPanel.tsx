@@ -84,6 +84,8 @@ class SurveyPanel extends React.Component<Props> {
 
   onSubmit = (model: IPlaceInfo, field: string | null): Promise<Mongo.ObjectID> => {
     return new Promise((resolve, reject) => {
+      // FIXME enforce a address.text field
+      model.properties.address = Object.assign({text: ''}, model.properties.address);
       Meteor.call('placeInfos.insertForEvent', {
         eventId: this.props.event._id,
         place: model,

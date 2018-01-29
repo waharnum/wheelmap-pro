@@ -9,7 +9,10 @@ export interface IPlaceInfo {
     originalId: string;
     category: string;
     name: string;
-    address: string;
+    address: string | {
+      text: string,
+
+    };
     originalData: any;
     sourceId: Mongo.ObjectID;
     sourceImportId?: Mongo.ObjectID;
