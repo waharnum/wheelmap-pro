@@ -22,7 +22,7 @@ type Props = {
   allowSearchBar?: boolean;
   searchBarPrefix?: string;
   searchBarLogo?: string;
-  canDismissSidePanel?: boolean;
+  canDismissFromSidePanel?: boolean;
   canDismissCardPanel?: boolean;
   canDismissAdditionalCardPanel?: boolean;
   onSearchBarLogoClicked?: () => void;
@@ -94,7 +94,7 @@ class NewMapLayout extends React.Component<Props, State> {
   public render() {
     const {
       id, className, contentPanel, header, mapProperties, additionalMapPanel, allowSearchBar,
-      forceContentToSidePanel, searchBarPrefix, searchBarLogo, canDismissSidePanel, mapChildren,
+      forceContentToSidePanel, searchBarPrefix, searchBarLogo, canDismissFromSidePanel, mapChildren,
       sidePanelHidden, canDismissAdditionalCardPanel, canDismissCardPanel, onSearchBarLogoClicked,
     } = this.props;
     const {preferContentInCard, initialSidePanelHidden} = this.state;
@@ -117,7 +117,7 @@ class NewMapLayout extends React.Component<Props, State> {
         <section className={`side-panel ${displaySidePanel ? 'show-panel' : 'hide-panel'}`}>
           {header && <header>{header}</header>}
           {displaySidePanel && <section className="content">
-            {canDismissSidePanel && <a className="dismiss-panel-button" onClick={this.dismissSidePanel}>«</a>}
+            {canDismissFromSidePanel && <a className="dismiss-panel-button" onClick={this.dismissSidePanel}>«</a>}
             {contentPanel}
           </section>}
         </section>

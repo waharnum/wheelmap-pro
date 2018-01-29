@@ -125,6 +125,7 @@ const AppRouter = (
       <Route path="/new/organizations/:organization_id/events/:_id/organization" component={NewShowEventPage}/>
       <Route path="/new/organizations/:organization_id/events/:_id/event-info" component={NewShowEventPage}/>
       <Route path="/new/organizations/:organization_id/events/:_id/mapping/user" component={NewShowEventPage}/>
+      <Route path="/new/organizations/:organization_id/events/:_id/place/:place_id" component={NewShowEventPage}/>
 
       {/* mapping only works with signed in user */}
       <Route component={(route) => <EnsureUserLoggedIn {...route} signInRoute={(p) => {
@@ -137,6 +138,8 @@ const AppRouter = (
         <Route path="/new/organizations/:organization_id/events/:_id/mapping/create-place"
                component={NewShowEventPage}/>
         <Route path="/new/organizations/:organization_id/events/:_id/mapping/edit-place/:place_id"
+               component={NewShowEventPage}/>
+        <Route path="/new/organizations/:organization_id/events/:_id/mapping/place/:place_id"
                component={NewShowEventPage}/>
       </Route>
 

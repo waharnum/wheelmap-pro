@@ -16,6 +16,8 @@ import * as L from 'leaflet';
 import EventMiniMarker from './EventMiniMarker';
 import UserPanel from '../../panels/UserPanel';
 import OrganizationAboutPanel from '../Organizations/panels/OrganizationAboutPanel';
+import {accessibilityCloudFeatureCache} from 'wheelmap-react/lib/lib/cache/AccessibilityCloudFeatureCache';
+import PlaceDetailsPanel from '../../panels/PlaceDetailsPanel';
 
 
 type PageModel = {
@@ -25,25 +27,39 @@ type PageModel = {
 
 type PageParams = {
   organization_id: string,
-  _id: string, // event id
+  _id: string, // event id,
+  place_id: string,
 };
 
 type Props = RouteComponentProps<PageParams, {}> & IAsyncDataByIdProps<PageModel> & IStyledComponent;
 
 class ShowEventPage extends React.Component<Props> {
 
-  getPanelContent() {
-    const {location, router} = this.props;
+  getPanelContent(isMappingFlow: boolean) {
+    const {location, router, params} = this.props;
     const {organization, event} = this.props.model;
 
     let content: React.ReactNode = null;
     let header: React.ReactNode = null;
     let forceContentToSidePanel: boolean = false;
-    let canDismissFromSidePanel: boolean = true;
     let forceSidePanelOpen: boolean = false;
     let onDismissSidePanel: undefined | (() => void) = undefined;
 
-    if (location.pathname.endsWith('/mapping/user')) {
+    if (params.place_id) {
+      const target = isMappingFlow ?
+        `/new/organizations/${organization._id}/events/${event._id}/mapping` :
+        `/new/organizations/${organization._id}/events/${event._id}`;
+      // place details
+      header = <LogoHeader link={target}
+                           prefixTitle={organization.name}
+                           logo={organization.logo}
+                           title={t`Place`}/>;
+      // TODO async fetch feature
+      const feature = accessibilityCloudFeatureCache.getCachedFeature(params.place_id);
+      content = <PlaceDetailsPanel feature={feature}/>;
+      forceSidePanelOpen = true;
+      // TODO center map to POI on first render
+    } else if (location.pathname.endsWith('/mapping/user')) {
       const target = `/new/organizations/${organization._id}/events/${event._id}/mapping`;
       onDismissSidePanel = () => {
         router.push(target);
@@ -60,9 +76,9 @@ class ShowEventPage extends React.Component<Props> {
       />;
       forceContentToSidePanel = true;
       forceSidePanelOpen = true;
-      canDismissFromSidePanel = false;
-    } else if (location.pathname.endsWith('/organization') || location.pathname.endsWith('/mapping/organization')) {
-      const target = location.pathname.endsWith('/mapping/organization') ?
+    } else if (location.pathname.endsWith('/organization') ||
+      location.pathname.endsWith('/mapping/organization')) {
+      const target = isMappingFlow ?
         `/new/organizations/${organization._id}/events/${event._id}/mapping` :
         `/new/organizations/${organization._id}/events/${event._id}`;
       onDismissSidePanel = () => {
@@ -80,7 +96,6 @@ class ShowEventPage extends React.Component<Props> {
       }/>;
       forceContentToSidePanel = true;
       forceSidePanelOpen = true;
-      canDismissFromSidePanel = false;
     } else if (location.pathname.endsWith('/mapping')) {
       content = <EventPanel event={event}/>;
       header = <LogoHeader link={`/new/organizations/${organization._id}/events/${event._id}/mapping/organization`}
@@ -88,31 +103,33 @@ class ShowEventPage extends React.Component<Props> {
                            logo={organization.logo}
                            title={event.name}/>;
       forceContentToSidePanel = true;
-      canDismissFromSidePanel = false;
     } else {
       content = <EventPanel event={event}/>;
       header = <LogoHeader link={`/new/organizations/${organization._id}/events/${event._id}/organization`}
                            prefixTitle={organization.name}
                            logo={organization.logo}
                            title={t`Event`}/>;
-      canDismissFromSidePanel = false;
     }
     return {
       content,
       header,
       forceSidePanelOpen,
       forceContentToSidePanel,
-      canDismissFromSidePanel,
       onDismissSidePanel,
     };
   }
 
   public render() {
+    const {router} = this.props;
     const {organization, event} = this.props.model;
+
+    const isMappingFlow = location.pathname.endsWith('/mapping') ||
+      location.pathname.includes('/mapping/');
+    const isPlaceDetails = location.pathname.includes('/place/');
+
     const {
-      content, header, forceSidePanelOpen, forceContentToSidePanel,
-      canDismissFromSidePanel, onDismissSidePanel,
-    } = this.getPanelContent();
+      content, header, forceSidePanelOpen, forceContentToSidePanel, onDismissSidePanel,
+    } = this.getPanelContent(isMappingFlow);
 
     const bbox = regionToBbox(event.region || defaultRegion);
 
@@ -123,12 +140,25 @@ class ShowEventPage extends React.Component<Props> {
         contentPanel={content}
         sidePanelHidden={forceSidePanelOpen ? false : undefined}
         forceContentToSidePanel={forceContentToSidePanel}
-        canDismissFromSidePanel={canDismissFromSidePanel}
+        canDismissFromSidePanel={false}
         onDismissSidePanel={onDismissSidePanel}
-        searchBarLogo={organization.logo}
-        searchBarPrefix={organization.name}
+        canDismissCardPanel={isPlaceDetails}
+        onDismissCardPanel={() => {
+          if (isMappingFlow) {
+            router.push(`/new/organizations/${organization._id}/events/${event._id}/mapping`);
+          } else {
+            router.push(`/new/organizations/${organization._id}/events/${event._id}`);
+          }
+        }}
         mapProperties={{
-          bbox,
+          bbox: isMappingFlow ? undefined : bbox,
+          onMarkerClick: (id) => {
+            if (isMappingFlow) {
+              router.push(`/new/organizations/${organization._id}/events/${event._id}/mapping/place/${id}`);
+            } else {
+              router.push(`/new/organizations/${organization._id}/events/${event._id}/place/${id}`);
+            }
+          },
         }}
         mapChildren={<EventMiniMarker
           event={event}
