@@ -74,7 +74,6 @@ class EventStatistics extends React.Component<Props> {
 }
 
 export default styled(EventStatistics) `
-background-color: ${colors.bgWhite};
 display: flex;
 justify-content: space-between;
 

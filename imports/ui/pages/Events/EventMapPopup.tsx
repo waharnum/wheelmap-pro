@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import * as React from 'react';
 import * as moment from 'moment';
 
-import {CustomMapPopup} from '../../components/MapPopup';
-import {IEvent} from '../../../both/api/events/events';
+import { CustomMapPopup } from '../../components/MapPopup';
+import { IEvent } from '../../../both/api/events/events';
 import EventStatistics from '../Events/EventStatistics';
-import {regionToBbox} from '../../../both/lib/geo-bounding-box';
-import {colors} from '../../stylesheets/colors';
-import {IStyledComponent} from '../../components/IStyledComponent';
-import {getLabelForEventStatus} from '../../../both/api/events/eventStatus';
-import {defaultRegion} from '../../../both/api/events/schema';
+import { regionToBbox } from '../../../both/lib/geo-bounding-box';
+import { colors } from '../../stylesheets/colors';
+import { IStyledComponent } from '../../components/IStyledComponent';
+import { getLabelForEventStatus } from '../../../both/api/events/eventStatus';
+import { defaultRegion } from '../../../both/api/events/schema';
 
 interface IEventMapPopupProps {
   event: IEvent;
@@ -40,7 +40,7 @@ class EventMapPopup extends React.Component<IEventMapPopupProps & IStyledCompone
       >
         {this.props.hasMore ?
           <button className='btn btn-primary btn-prev-event'
-                  onClick={this.props.onPrevSelected}>{' '}</button> : null}
+            onClick={this.props.onPrevSelected}>{' '}</button> : null}
         <div className="event-information">
           <div className="event-description">
             <h3>{event.name} ({getLabelForEventStatus(event.status)})</h3>
@@ -50,15 +50,15 @@ class EventMapPopup extends React.Component<IEventMapPopupProps & IStyledCompone
           </div>
           {this.props.primaryAction ?
             <button className='btn btn-primary'
-                    onClick={this.props.onPrimaryAction}>{this.props.primaryAction}</button> : null}
+              onClick={this.props.onPrimaryAction}>{this.props.primaryAction}</button> : null}
         </div>
         <EventStatistics
           event={event}
           achieved={true}
-          countdown={'short'}/>
+          countdown={'short'} />
         {this.props.hasMore ?
           <button className='btn btn-primary btn-next-event'
-                  onClick={this.props.onNextSelected}>{' '}</button> : null}
+            onClick={this.props.onNextSelected}>{' '}</button> : null}
       </CustomMapPopup>);
   }
 }
@@ -201,6 +201,7 @@ text-align: left;
   .event-statistics {
     padding-top: 20px;
     background-color: #fbfaf9;
+    /* background-color:orange; */
     display: flex;
     justify-content: flex-start;
     z-index: 100;

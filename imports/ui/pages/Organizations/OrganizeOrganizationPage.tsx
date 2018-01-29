@@ -1,4 +1,4 @@
-import {t} from 'c-3po';
+import { t } from 'c-3po';
 import * as L from 'leaflet';
 import styled from 'styled-components';
 import * as React from 'react';
@@ -7,20 +7,20 @@ import * as moment from 'moment';
 import Button from '../../components/Button';
 import Map from '../../components/Map';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
-import {IStyledComponent} from '../../components/IStyledComponent';
-import {wrapDataComponent} from '../../components/AsyncDataComponent';
-import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
+import { IStyledComponent } from '../../components/IStyledComponent';
+import { wrapDataComponent } from '../../components/AsyncDataComponent';
+import { reactiveSubscriptionByParams, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
 
-import {IEvent} from '../../../both/api/events/events';
-import {IOrganization, Organizations} from '../../../both/api/organizations/organizations';
-import {colors} from '../../stylesheets/colors';
+import { IEvent } from '../../../both/api/events/events';
+import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
+import { colors } from '../../stylesheets/colors';
 import OrganizationAdminHeader from './OrganizationAdminHeader';
 import OrganizationStatistics from './OrganizationStatistics';
 import EventStatistics from '../Events/EventStatistics';
-import {regionToBbox} from '../../../both/lib/geo-bounding-box';
-import {getLabelForEventStatus} from '../../../both/api/events/eventStatus';
-import {defaultRegion} from '../../../both/api/events/schema';
-import {CustomMapIcon} from '../../components/MapIcon';
+import { regionToBbox } from '../../../both/lib/geo-bounding-box';
+import { getLabelForEventStatus } from '../../../both/api/events/eventStatus';
+import { defaultRegion } from '../../../both/api/events/schema';
+import { CustomMapIcon } from '../../components/MapIcon';
 
 interface IPageModel {
   organization: IOrganization;
@@ -39,6 +39,7 @@ const EventListEntry = (props: { model: IEvent }) => {
             <h3>{event.name}</h3>
             <h4>{moment(event.startTime).format('LLLL')}</h4>
             <p className="event-region">{event.regionName}</p>
+            <Button to={`/events/${event._id}/organize`}>{t`Show details`}</Button>
           </div>
           {
             (event.startTime && event.startTime > new Date()) ?
@@ -53,10 +54,10 @@ const EventListEntry = (props: { model: IEvent }) => {
           }
         </div>
         <EventStatistics className="event-footer"
-                         event={event}
-                         planned={true}
-                         achieved={true}
-                         action={<Button to={`/events/${event._id}/organize`}>{t`Show details`}</Button>}/>
+          event={event}
+          planned={true}
+          achieved={true}
+        />
       </div>
       <div className="corner-ribbon">
         <section>{getLabelForEventStatus(event.status)}</section>
@@ -80,14 +81,14 @@ const EventListEntry = (props: { model: IEvent }) => {
 const EventList = (props: { model: IEvent[] }) => (
   <div>
     {props.model.map((event) => (
-      <EventListEntry key={String(event._id)} model={event}/>
+      <EventListEntry key={String(event._id)} model={event} />
     ))}
   </div>
 );
 
 const OrganizeOrganizationsPage = (props: IStyledComponent & IAsyncDataByIdProps<IPageModel>) => (
   <ScrollableLayout id="OrganizeOrganizationPage" className={props.className}>
-    <OrganizationAdminHeader organization={props.model.organization}/>
+    <OrganizationAdminHeader organization={props.model.organization} />
     <div className="content-area scrollable">
       <OrganizationStatistics
         className="fill-header-bar"
@@ -98,7 +99,7 @@ const OrganizeOrganizationsPage = (props: IStyledComponent & IAsyncDataByIdProps
           </section>
         )}
       />
-      <EventList model={props.model.events}/>
+      <EventList model={props.model.events} />
     </div>
   </ScrollableLayout>
 );
@@ -114,7 +115,7 @@ const ReactiveOrganizeOrganizationsPage = reactiveSubscriptionByParams(
     }
     const events = organization.getEvents();
     // pass model with organization & events in one go
-    return {organization, events};
+    return { organization, events };
   },
   'organizations.by_id.private', 'events.by_organizationId.private');
 
@@ -185,7 +186,7 @@ const StyledReactiveOrganizeOrganizationsPage = styled(ReactiveOrganizeOrganizat
     .event-body {
       padding: 20px;
       padding-bottom: 0;
-      flex-basis: 70%;
+      flex:1;
       border-right: 1px solid rgba(0, 0, 0, 0.2);
       display: flex;
       flex-direction: column;
@@ -246,6 +247,7 @@ const StyledReactiveOrganizeOrganizationsPage = styled(ReactiveOrganizeOrganizat
     }
 
     .event-mini-map {
+      max-width:340px;      
       pointer-events: none;
       touch-action: none;
       
