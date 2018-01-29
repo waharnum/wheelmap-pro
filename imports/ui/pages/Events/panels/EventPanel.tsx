@@ -236,6 +236,10 @@ class EventPanel extends React.Component<IStyledComponent & Props> {
 
   public render() {
     const { className, event } = this.props;
+    const showCountDown = event.status !== 'canceled' && event.status !== 'completed';
+    const countDownSection = showCountDown ? <section className="countdown-section">;
+      <Countdown start={moment(event.startTime)} />
+    </section> : null;
 
     const isPlanned = ['draft', 'planned', 'canceled'].indexOf(event.status) >= 0;
 
@@ -264,13 +268,12 @@ class EventPanel extends React.Component<IStyledComponent & Props> {
           <div>{event.description}</div>
         </section>
         {detailsFromEventStatus(event)}
-        <section className="countdown-section">
-          <Countdown start={moment(event.startTime)} />
-        </section>
+        {countDownSection}
+
       </div>
     );
   }
-};
+}
 
 export default styled(EventPanel) `
   // shared between all panels
