@@ -32,7 +32,6 @@ class EventPreviewPanel extends React.Component<IStyledComponent & Props> {
           <div className="event-description">
             <h3>{event.name}</h3>
             <h4>{moment(event.startTime).format('LLLL')}</h4>
-            <p>{event.description}</p>
           </div>
         </div>
         <EventStatistics
@@ -47,7 +46,7 @@ class EventPreviewPanel extends React.Component<IStyledComponent & Props> {
 export default styled(EventPreviewPanel) `
   // shared between all panels
   flex: 1;
-  padding: 10px;
+  padding: 0 10px;
   
   .close-icon {
     display: block;
@@ -66,6 +65,10 @@ export default styled(EventPreviewPanel) `
   // custom styles
   .event-information {
     cursor: pointer;
+  }
+  
+  .event-statistics {
+    margin-top: 15px; 
   }
   
   h3 {

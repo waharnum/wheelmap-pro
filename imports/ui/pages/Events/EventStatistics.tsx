@@ -90,8 +90,8 @@ section {
   }
 
   span {
-    position: relative;    
-    padding: 0 5px 16px 5px;
+    position: relative;        
+    padding: 0 5px 0 5px;
     font-size: 30px;
     line-height: 30px;
     font-weight: 200;

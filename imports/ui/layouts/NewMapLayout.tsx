@@ -189,6 +189,7 @@ export default styled(NewMapLayout) `
   .card-panel {
     // only pad to the top, needed to show slide indicator
     padding: 12px 0 0 0;
+    min-height: 120px;
   }
   
   // side panel for all configurations
