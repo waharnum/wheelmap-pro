@@ -1,26 +1,26 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {t} from 'c-3po';
-import {toast} from 'react-toastify';
+import { t } from 'c-3po';
+import { toast } from 'react-toastify';
 import ClipboardButton from 'react-clipboard.js';
 import * as moment from 'moment';
 
-import {IStyledComponent} from '../../../components/IStyledComponent';
-import {getColorForEventStatus, getLabelForEventStatus} from '../../../../both/api/events/eventStatus';
-import {IEvent} from '../../../../both/api/events/events';
+import { IStyledComponent } from '../../../components/IStyledComponent';
+import { getColorForEventStatus, getLabelForEventStatus } from '../../../../both/api/events/eventStatus';
+import { IEvent } from '../../../../both/api/events/events';
 import EventStatistics from '../../Events/EventStatistics';
 import CornerRibbon from '../../../components/CornerRibbon';
 import Button from '../../../components/Button';
 import Countdown from '../../../components/Countdown';
-import {colors} from '../../../stylesheets/colors';
+import { colors } from '../../../stylesheets/colors';
 
 
 const ShareAction = (props: { event: IEvent }) => (
   <ClipboardButton className="btn btn-dark"
-                   data-clipboard-text={window.location.href}
-                   onSuccess={() => {
-                     toast.success(t`Link copied to clipboard`);
-                   }}>
+    data-clipboard-text={window.location.href}
+    onSuccess={() => {
+      toast.success(t`Link copied to clipboard`);
+    }}>
     {t`Share Link`}
   </ClipboardButton>
 );
@@ -46,11 +46,11 @@ const BringEquipmentBlock = (props: {}) => (
 );
 
 const FinishedEventContent = styled((props: { event: IEvent, className?: string }) => {
-  const {event, className} = props;
+  const { event, className } = props;
 
   const barGraphAchieved =
     event.statistics && event.targets &&
-    event.targets.mappedPlacesCount && event.targets.mappedPlacesCount > 0 ?
+      event.targets.mappedPlacesCount && event.targets.mappedPlacesCount > 0 ?
       Math.floor(100 * event.statistics.mappedPlacesCount / event.targets.mappedPlacesCount) : null;
 
   return (
@@ -70,7 +70,7 @@ const FinishedEventContent = styled((props: { event: IEvent, className?: string 
       </section>
       <div className="stats-box">
         <div className="places-block">
-          <section className="poi-icon"/>
+          <section className="poi-icon" />
           <section className="planned-label">
             <p>{event.targets ? event.targets.mappedPlacesCount : 0}</p>
             <small>{t`Planned`}</small>
@@ -82,15 +82,15 @@ const FinishedEventContent = styled((props: { event: IEvent, className?: string 
         </div>
         {barGraphAchieved !== null ?
           <div className="places-graph">
-            <section style={{width: `${barGraphAchieved}%`}} className="bar-graph-achieved"/>
-            <section style={{width: `${100 - barGraphAchieved}%`}} className="bar-graph-planned"/>
+            <section style={{ width: `${barGraphAchieved}%` }} className="bar-graph-achieved" />
+            <section style={{ width: `${100 - barGraphAchieved}%` }} className="bar-graph-planned" />
           </div>
           : null
         }
       </div>
     </section>
   );
-})`
+}) `
   padding: 10px;
 
   .places-block {
@@ -195,17 +195,17 @@ const FinishedEventContent = styled((props: { event: IEvent, className?: string 
 function actionFromEventStatus(event: IEvent) {
   switch (event.status) {
     case 'completed':
-      return <ShareAction event={event}/>;
+      return <ShareAction event={event} />;
     case 'planned':
       return [
-        <ShareAction key="share" event={event}/>,
+        <ShareAction key="share" event={event} />,
         <Button key="join" className="join-button btn-primary"
-                to="">{t`Join Us`}</Button>];
+          to="">{t`Join Us`}</Button>];
     case 'ongoing':
       return [
-        <ShareAction key="share" event={event}/>,
+        <ShareAction key="share" event={event} />,
         <Button key="map" className="map-button btn-primary"
-                to={`/new/organizations/${event.organizationId}/events/${event._id}/mapping`}>
+          to={`/new/organizations/${event.organizationId}/events/${event._id}/mapping`}>
           {t`Start mapping`}
         </Button>];
     case 'canceled':
@@ -220,9 +220,9 @@ function detailsFromEventStatus(event: IEvent) {
     case 'draft':
     case 'planned':
     case 'ongoing':
-      return <BringEquipmentBlock/>;
+      return <BringEquipmentBlock />;
     case 'completed':
-      return <FinishedEventContent event={event}/>;
+      return <FinishedEventContent event={event} />;
   }
 
   return null;
@@ -235,14 +235,14 @@ type Props = {
 class EventPanel extends React.Component<IStyledComponent & Props> {
 
   public render() {
-    const {className, event} = this.props;
+    const { className, event } = this.props;
 
     const isPlanned = ['draft', 'planned', 'canceled'].indexOf(event.status) >= 0;
 
     return (
       <div className={`${className} event-status-${event.status}`}>
-        <CornerRibbon title={getLabelForEventStatus(event.status)} color={getColorForEventStatus(event.status)}/>
-        {event.photoUrl ? <img src={event.photoUrl} alt={t`Event picture`}/> : null}
+        <CornerRibbon title={getLabelForEventStatus(event.status)} color={getColorForEventStatus(event.status)} />
+        {event.photoUrl ? <img src={event.photoUrl} alt={t`Event picture`} /> : null}
         <section className="header-section">
           <div>
             <h3>{event.name}</h3>
@@ -257,7 +257,7 @@ class EventPanel extends React.Component<IStyledComponent & Props> {
             event={event}
             achieved={!isPlanned}
             planned={isPlanned}
-            countdown="short"/>
+            countdown="short" />
         </section>
         <section className="details-section">
           <h4>{event.regionName}</h4>
@@ -265,7 +265,7 @@ class EventPanel extends React.Component<IStyledComponent & Props> {
         </section>
         {detailsFromEventStatus(event)}
         <section className="countdown-section">
-          <Countdown start={moment(event.startTime)}/>
+          <Countdown start={moment(event.startTime)} />
         </section>
       </div>
     );
@@ -310,17 +310,41 @@ export default styled(EventPanel) `
     justify-content: space-between;
   }
   
+
+li.icon {
+  &::before {
+    content:" ";
+    height: 33px;
+    width: 33px;
+    display:block;
+    position:absolute;
+    left:9px;
+    mask-image: url(/images/icons/beverage.svg);
+    mask-size: cover;
+    background-color: #888;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+}
+
   .equipment-block {
     ul {
       padding: 10px 10px 10px 40px;
       
       li {
+        &.icon-ruler::before {
+          mask-image: url(/images/icons/ruler.svg);
+        }
+        &.icon-smartphone::before {
+          mask-image: url(/images/icons/smartphone.svg);
+        }
+
         display: flex;
         flex-direction: column;
         font-size: 24px;
         font-weight: 200;
         margin-top: 10px;
-        
+     
         small {
           font-size: 14px;
           font-weight: 300;

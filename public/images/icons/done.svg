@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="33px" height="33px" viewBox="0 0 33 33" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>icon/done-normal</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon/done-normal">
+            <polyline id="Path-2" stroke="#4D4E54" stroke-linecap="round" stroke-linejoin="round" points="11.0584608 16.6835013 14.9667708 21.2819851 21.9415392 11"></polyline>
+            <circle id="Oval-3" stroke="#37404D" cx="16.5" cy="16.5" r="11"></circle>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="33px" height="33px" viewBox="0 0 33 33" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>icon/clipboard-normal</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M4,0 L4,5 L15,5 L15,0 L19,0 L19,27 L0,27 L0,0 L4,0 Z" id="path-1"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon/clipboard-normal">
+            <g id="Group" transform="translate(7.000000, 3.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Combined-Shape"></g>
+                <rect id="Rectangle-3" stroke="#37404D" mask="url(#mask-2)" x="0.5" y="2.5" width="18" height="22"></rect>
+                <path d="M9.5,8.5 L16,8.5 L15.5,8 L15.5,9 L16,8.5 L9.5,8.5 Z M9.5,8.5 L3,8.5 L3.5,9 L3.5,8 L3,8.5 L9.5,8.5 Z M9.5,14.5 L16,14.5 L15.5,14 L15.5,15 L16,14.5 L9.5,14.5 Z M9.5,14.5 L3,14.5 L3.5,15 L3.5,14 L3,14.5 L9.5,14.5 Z M9.5,11.5 L16,11.5 L15.5,11 L15.5,12 L16,11.5 L9.5,11.5 Z M9.5,11.5 L3,11.5 L3.5,12 L3.5,11 L3,11.5 L9.5,11.5 Z M9.5,17.5 L16,17.5 L15.5,17 L15.5,18 L16,17.5 L9.5,17.5 Z M9.5,17.5 L3,17.5 L3.5,18 L3.5,17 L3,17.5 L9.5,17.5 Z M9.5,20.5 L16,20.5 L15.5,20 L15.5,21 L16,20.5 L9.5,20.5 Z M9.5,20.5 L3,20.5 L3.5,21 L3.5,20 L3,20.5 L9.5,20.5 Z" id="Combined-Shape" stroke="#37404D" mask="url(#mask-2)"></path>
+            </g>
+            <rect id="Rectangle-3-Copy-2" stroke="#37404D" x="12.5" y="4.5" width="8" height="4"></rect>
+        </g>
+    </g>
+</svg>

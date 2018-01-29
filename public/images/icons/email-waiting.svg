@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="33px" height="33px" viewBox="0 0 33 33" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>icon/email-waiting-normal</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon/email-waiting-normal" stroke="#37404D">
+            <rect id="Rectangle-3" x="4.5" y="7.5" width="24" height="18"></rect>
+            <polyline id="Path-7" stroke-linecap="round" points="4.5 7.6500001 15.9277344 19.3394532 28.3183594 7.6500001"></polyline>
+            <g id="Group" transform="translate(19.000000, 19.000000)">
+                <circle id="Oval-3" cx="6" cy="6" r="5.5"></circle>
+                <polyline id="Path-9" stroke-linecap="round" stroke-linejoin="round" points="5.69836957 1.88773777 5.69836957 6.59119002 9.5246827 6.59119002"></polyline>
+            </g>
+        </g>
+    </g>
+</svg>
