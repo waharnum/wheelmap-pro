@@ -25,6 +25,26 @@ const ShareAction = (props: { event: IEvent }) => (
   </ClipboardButton>
 );
 
+const BringEquipmentBlock = (props: {}) => (
+  <section className="details-section equipment-block">
+    <span>{t`If possible can you bring the following items…`}</span>
+    <ul>
+      <li className="icon icon-ruler">
+        {t`A Ruler`}
+        <small>{t`or other tools to measure door widths and step heights.`}</small>
+      </li>
+      <li className="icon icon-smartphone">
+        {t`A Smartphone`}
+        <small>{t`or tablet with internet connection.`}</small>
+      </li>
+      <li className="icon icon-beverages">
+        {t`Some Beverages`}
+        <small>{t`snacks will be provided by us.`}</small>
+      </li>
+    </ul>
+  </section>
+);
+
 function actionFromEventStatus(event: IEvent) {
   switch (event.status) {
     case 'completed':
@@ -43,6 +63,19 @@ function actionFromEventStatus(event: IEvent) {
         </Button>];
     case 'canceled':
       return <span className="canceled-label">{getLabelForEventStatus(event.status)}</span>;
+  }
+
+  return null;
+}
+
+function detailsFromEventStatus(event: IEvent) {
+  switch (event.status) {
+    case 'completed':
+      return <ShareAction event={event}/>;
+    case 'draft':
+    case 'planned':
+    case 'ongoing':
+      return <BringEquipmentBlock/>;
   }
 
   return null;
@@ -83,6 +116,7 @@ class EventPanel extends React.Component<IStyledComponent & Props> {
           <h4>{event.regionName}</h4>
           <div>{event.description}</div>
         </section>
+        {detailsFromEventStatus(event)}
         <section className="countdown-section">
           <Countdown start={moment(event.startTime)}/>
         </section>
@@ -129,8 +163,27 @@ export default styled(EventPanel) `
     justify-content: space-between;
   }
   
+  .equipment-block {
+    ul {
+      padding: 10px 10px 10px 40px;
+      
+      li {
+        display: flex;
+        flex-direction: column;
+        font-size: 24px;
+        font-weight: 200;
+        margin-top: 10px;
+        
+        small {
+          font-size: 14px;
+          font-weight: 300;
+        }
+      }  
+    }
+  }
+  
+  // canceled event
   &.event-status-canceled {
-    // canceled event
     span.canceled-label {
       color: ${colors.errorRed};
       text-transform: uppercase;
