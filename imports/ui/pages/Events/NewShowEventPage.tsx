@@ -10,6 +10,8 @@ import {IOrganization} from '../../../both/api/organizations/organizations';
 import EventPanel from './panels/EventPanel';
 import {t} from 'c-3po';
 import LogoHeader from '../../components/LogoHeader';
+import {defaultRegion} from '../../../both/api/events/schema';
+import {regionToBbox} from '../../../both/lib/geo-bounding-box';
 
 
 type PageModel = {
@@ -25,7 +27,6 @@ type PageParams = {
 type Props = RouteComponentProps<PageParams, {}> & IAsyncDataByIdProps<PageModel> & IStyledComponent;
 
 class ShowEventPage extends React.Component<Props> {
-
 
   getPanelContent() {
     const {organization, event} = this.props.model;
@@ -53,8 +54,10 @@ class ShowEventPage extends React.Component<Props> {
   }
 
   public render() {
-    const {organization} = this.props.model;
+    const {organization, event} = this.props.model;
     const {content, header, additionalMapPanel, forceContentToSidePanel, canDismissSidePanel} = this.getPanelContent();
+
+    const bbox = regionToBbox(event.region || defaultRegion);
 
     return (
       <NewMapLayout
@@ -66,7 +69,9 @@ class ShowEventPage extends React.Component<Props> {
         canDismissSidePanel={canDismissSidePanel}
         searchBarLogo={organization.logo}
         searchBarPrefix={organization.name}
-        mapProperties={{}}
+        mapProperties={{
+          bbox,
+        }}
       />
     );
   }
