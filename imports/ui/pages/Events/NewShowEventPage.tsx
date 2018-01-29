@@ -7,6 +7,9 @@ import {wrapDataComponent} from '../../components/AsyncDataComponent';
 import NewMapLayout from '../../layouts/NewMapLayout';
 import {IStyledComponent} from '../../components/IStyledComponent';
 import {IOrganization} from '../../../both/api/organizations/organizations';
+import EventPanel from './panels/EventPanel';
+import {t} from 'c-3po';
+import LogoHeader from '../../components/LogoHeader';
 
 
 type PageModel = {
@@ -16,24 +19,42 @@ type PageModel = {
 
 type PageParams = {
   organization_id: string,
-  place_id: string | undefined
+  _id: string, // event id
 };
 
 type Props = RouteComponentProps<PageParams, {}> & IAsyncDataByIdProps<PageModel> & IStyledComponent;
 
 class ShowEventPage extends React.Component<Props> {
 
-  public componentWillReceiveProps(nextProps: Props) {
-  }
 
-  public render() {
-    const {organization} = this.props.model;
+  getPanelContent() {
+    const {organization, event} = this.props.model;
 
     let content: React.ReactNode = null;
     let header: React.ReactNode = null;
     let additionalMapPanel: React.ReactNode = null;
     let forceContentToSidePanel: boolean = false;
     let canDismissSidePanel: boolean = true;
+
+    content = <EventPanel event={event}/>;
+    header = <LogoHeader link={`/new/organizations/${organization._id}`}
+                         prefixTitle={organization.name}
+                         logo={organization.logo}
+                         title={t`Event`}/>;
+    canDismissSidePanel = false;
+
+    return {
+      content,
+      header,
+      additionalMapPanel,
+      forceContentToSidePanel,
+      canDismissSidePanel,
+    };
+  }
+
+  public render() {
+    const {organization} = this.props.model;
+    const {content, header, additionalMapPanel, forceContentToSidePanel, canDismissSidePanel} = this.getPanelContent();
 
     return (
       <NewMapLayout
