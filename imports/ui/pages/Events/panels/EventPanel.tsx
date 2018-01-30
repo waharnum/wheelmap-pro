@@ -337,7 +337,8 @@ export default styled(EventPanel) `
     padding: 0 35px 0 15px;
     margin-top: 15px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between;    
+    flex-wrap: wrap;
   }
   
   .remove-participation-button {

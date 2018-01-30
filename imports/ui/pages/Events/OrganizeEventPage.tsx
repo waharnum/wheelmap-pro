@@ -1,23 +1,23 @@
-import { t } from 'c-3po';
+import {t} from 'c-3po';
 import styled from 'styled-components';
-import { toast } from 'react-toastify';
-import { colors } from '../../stylesheets/colors';
+import {toast} from 'react-toastify';
+import {colors} from '../../stylesheets/colors';
 import * as React from 'react';
 import * as moment from 'moment';
 
 import Button from '../../components/Button';
 import EventTabs from './EventTabs';
 import EventStatistics from './EventStatistics';
-import { IOrganization } from '../../../both/api/organizations/organizations';
-import { Hint, HintBox } from '../../components/HintBox';
+import {IOrganization} from '../../../both/api/organizations/organizations';
+import {Hint, HintBox} from '../../components/HintBox';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
-import { Events, IEvent } from '../../../both/api/events/events';
-import { IStyledComponent } from '../../components/IStyledComponent';
-import { wrapDataComponent } from '../../components/AsyncDataComponent';
-import { IEventParticipant } from '../../../both/api/event-participants/event-participants';
-import { default as AdminHeader, HeaderTitle } from '../../components/AdminHeader';
-import { IAsyncDataByIdProps, reactiveSubscriptionByParams } from '../../components/reactiveModelSubscription';
-import { modalAppDialog } from '../../App';
+import {Events, IEvent} from '../../../both/api/events/events';
+import {IStyledComponent} from '../../components/IStyledComponent';
+import {wrapDataComponent} from '../../components/AsyncDataComponent';
+import {IEventParticipant} from '../../../both/api/event-participants/event-participants';
+import {default as AdminHeader, HeaderTitle} from '../../components/AdminHeader';
+import {IAsyncDataByIdProps, reactiveSubscriptionByParams} from '../../components/reactiveModelSubscription';
+import {modalAppDialog} from '../../App';
 import * as Dialog from 'react-bootstrap-dialog';
 
 interface IPageModel {
@@ -41,7 +41,7 @@ const determineCssClassesFromState = (state: IOrganizeEventPageState) => {
           createEvent: 'finished',
           inviteParticipants: 'finished',
           organizerTips: 'finished-last',
-          startEvent: 'todo',
+          runEvent: 'todo',
           setEventPicture: 'disabled',
           shareResults: 'disabled',
         };
@@ -50,7 +50,7 @@ const determineCssClassesFromState = (state: IOrganizeEventPageState) => {
         createEvent: 'finished',
         inviteParticipants: 'todo',
         organizerTips: 'enabled',
-        startEvent: 'disabled',
+        runEvent: 'disabled',
         setEventPicture: 'disabled',
         shareResults: 'disabled',
       };
@@ -59,7 +59,7 @@ const determineCssClassesFromState = (state: IOrganizeEventPageState) => {
         createEvent: 'finished',
         inviteParticipants: 'finished',
         organizerTips: 'finished',
-        startEvent: 'active',
+        runEvent: 'active',
         setEventPicture: 'disabled',
         shareResults: 'disabled',
       };
@@ -68,7 +68,7 @@ const determineCssClassesFromState = (state: IOrganizeEventPageState) => {
         createEvent: 'finished',
         inviteParticipants: 'finished',
         organizerTips: 'finished',
-        startEvent: 'finished-last',
+        runEvent: 'finished',
         setEventPicture: 'disabled',
         shareResults: 'disabled',
       };
@@ -78,7 +78,7 @@ const determineCssClassesFromState = (state: IOrganizeEventPageState) => {
           createEvent: 'finished',
           inviteParticipants: 'finished',
           organizerTips: 'finished',
-          startEvent: 'finished',
+          runEvent: 'finished',
           setEventPicture: 'finished',
           shareResults: 'finished-last',
         };
@@ -88,7 +88,7 @@ const determineCssClassesFromState = (state: IOrganizeEventPageState) => {
           createEvent: 'finished',
           inviteParticipants: 'finished',
           organizerTips: 'finished',
-          startEvent: 'finished',
+          runEvent: 'finished',
           setEventPicture: 'finished-last',
           shareResults: 'todo',
         };
@@ -97,7 +97,7 @@ const determineCssClassesFromState = (state: IOrganizeEventPageState) => {
         createEvent: 'finished',
         inviteParticipants: 'finished',
         organizerTips: 'finished',
-        startEvent: 'finished-last',
+        runEvent: 'finished',
         setEventPicture: 'todo',
         shareResults: 'disabled',
       };
@@ -106,7 +106,7 @@ const determineCssClassesFromState = (state: IOrganizeEventPageState) => {
         createEvent: 'disabled',
         inviteParticipants: 'disabled',
         organizerTips: 'disabled',
-        startEvent: 'disabled',
+        runEvent: 'disabled',
         setEventPicture: 'disabled',
         shareResults: 'disabled',
       };
@@ -148,8 +148,6 @@ class OrganizeEventPage extends React.Component
     });
   }
 
-
-
   public render(): JSX.Element {
     const event = this.state.event;
     const organization = this.state.organization;
@@ -169,7 +167,7 @@ class OrganizeEventPage extends React.Component
               prefixLink={`/organizations/${organization._id}/organize`}
             />
           )}
-          tabs={(<EventTabs id={event._id} />)}
+          tabs={(<EventTabs id={event._id}/>)}
           publicLink={`/events/${event._id}`}
         />
         <div className="content-area scrollable hsplitWithStats">
@@ -178,7 +176,7 @@ class OrganizeEventPage extends React.Component
             event={event}
             planned={true}
             achieved={true}
-            countdown="full" />
+            countdown="full"/>
           <div className="content-hsplit">
             <div className="content-left">
               <ol className="event-timeline before-event">
@@ -203,7 +201,7 @@ class OrganizeEventPage extends React.Component
                     </div>
                     <div className="publishing-actions">
                       <Button className="btn-primary"
-                        to={`/events/${event._id}/participants`}>{t`Invite participants`}</Button>
+                              to={`/events/${event._id}/participants`}>{t`Invite participants`}</Button>
                     </div>
                   </div>
                   {event.status == 'draft' ?
@@ -227,13 +225,13 @@ class OrganizeEventPage extends React.Component
                   <div className="step-status">
                     <h3>{t`Tips for event organizers`}</h3>
                     <a className="btn" target="_blank"
-                      href="https://developmentseed.org/blog/2015/06/07/organizing-mapathons/">{t`Learn more`}</a>
+                       href="https://developmentseed.org/blog/2015/06/07/organizing-mapathons/">{t`Learn more`}</a>
                   </div>
                 </li>
               </ol>
               <ol className="event-timeline during-event">
                 <h2>{t`Publish event`}</h2>
-                <li className={'event-timeline-step publish-event ' + stepStates.startEvent}>
+                <li className={'event-timeline-step run-event ' + stepStates.runEvent}>
                   {/* Before event was published */}
                   <div className="step-status step-todo">
                     <div className="step-information">
@@ -248,33 +246,70 @@ class OrganizeEventPage extends React.Component
                   <div className="notification-completed step-active">
                     {t`Congratulations! Your event has been published`}
                   </div>
-                  <div className="step-status step-active">
+                  <div className="step-status step-multi-line step-active">
                     <div className="first-row">
                       <div className="step-information">
                         <h3>{t`Mapping event published`}</h3>
                       </div>
                       <div className="publishing-actions">
                         <Button to={`/events/${event._id}`}>{t`View event`}</Button>
-                        <button className="btn btn-danger"
-                          onClick={this.cancelEvent}>{t`Cancel event`}</button>
                       </div>
                     </div>
                     <div className="second-row">
-                      <p>{t`Your event is now online. It will be closed the day after it finishes. Be careful when cancelling your event:
+                      <div className="publishing-actions">
+                        <button className="btn btn-primary"
+                                onClick={this.startEvent}>{t`Start event`}</button>
+                        <button className="btn btn-danger"
+                                onClick={this.cancelEvent}>{t`Cancel event`}</button>
+                      </div>
+                    </div>
+                    <div className="second-row">
+                      <p>{t`Your event is now online. It will be started when its start time is due. Be careful when cancelling your event:
                     you can not undo this.`}</p>
                     </div>
                   </div>
+                  {/* When event is ongoing */}
+                  {event.status === 'ongoing' &&
+                  (<section>
+                    <div className="notification-completed step-completed">{t`Your event is ongoing`}</div>
+                    <div className="step-status step-multi-line step-completed">
+                      <div className="first-row">
+                        <div className="step-information">
+                          <h3>{t`Mapping event ongoing`}</h3>
+                          <p>{t`Your event is currently in progress.`}</p>
+                        </div>
+                        <div className="publishing-actions">
+                          <Button to={`/events/${event._id}`}>{t`View event`}</Button>
+                        </div>
+                      </div>
+                      <div className="second-row">
+                        <div className="publishing-actions">
+                          <button className="btn btn-primary"
+                                  onClick={this.completeEvent}>{t`Complete event`}</button>
+                          <button className="btn btn-danger"
+                                  onClick={this.cancelEvent}>{t`Cancel event`}</button>
+                        </div>
+                      </div>
+                      <div className="second-row">
+                        <p>{t`Your event is now running. It will be closed the day after it finishes. Be careful when cancelling your event:
+                    you can not undo this.`}</p>
+                      </div>
+                    </div>
+                  </section>)}
                   {/* After event was completed */}
-                  <div className="notification-completed step-completed">{t`Your event has been completed`}</div>
-                  <div className="step-status step-completed">
-                    <div className="step-information">
-                      <h3>{t`Mapping event finished`}</h3>
-                      <p>{t`Your event is over now.`}</p>
+                  {event.status === 'completed' &&
+                  (<section>
+                    <div className="notification-completed step-completed">{t`Your event has been completed`}</div>
+                    <div className="step-status step-completed">
+                      <div className="step-information">
+                        <h3>{t`Mapping event finished`}</h3>
+                        <p>{t`Your event is over now.`}</p>
+                      </div>
+                      <div className="publishing-actions">
+                        <Button to={`/events/${event._id}`}>{t`View event`}</Button>
+                      </div>
                     </div>
-                    <div className="publishing-actions">
-                      <Button to={`/events/${event._id}`}>{t`View event`}</Button>
-                    </div>
-                  </div>
+                  </section>)}
                 </li>
               </ol>
               <ol className="event-timeline after-event">
@@ -293,7 +328,7 @@ class OrganizeEventPage extends React.Component
                       <h3>{t`Event picture was set`}</h3>
                       <Button to={`/events/${event._id}/edit`}>{t`Edit`}</Button>
                     </section>
-                    <img src={event.photoUrl} />
+                    <img src={event.photoUrl}/>
                   </div>
                 </li>
                 <li className={'event-timeline-step share-results ' + stepStates.shareResults}>
@@ -332,12 +367,28 @@ class OrganizeEventPage extends React.Component
   }
 
   private publishEvent = () => {
-    Meteor.call('events.publish', { eventId: this.state.event._id }, (error, result) => {
+    Meteor.call('events.publish', {eventId: this.state.event._id}, (error, result) => {
       if (error) {
         toast.error(error.reason);
       }
     });
-  }
+  };
+
+  private startEvent = () => {
+    Meteor.call('events.start', {eventId: this.state.event._id}, (error, result) => {
+      if (error) {
+        toast.error(error.reason);
+      }
+    });
+  };
+
+  private completeEvent = () => {
+    Meteor.call('events.complete', {eventId: this.state.event._id}, (error, result) => {
+      if (error) {
+        toast.error(error.reason);
+      }
+    });
+  };
 
   private cancelEvent = () => {
     modalAppDialog.show({
@@ -346,7 +397,7 @@ class OrganizeEventPage extends React.Component
       actions: [
         Dialog.CancelAction(),
         Dialog.OKAction(() => {
-          Meteor.call('events.cancel', { eventId: this.state.event._id }, (error, result) => {
+          Meteor.call('events.cancel', {eventId: this.state.event._id}, (error, result) => {
             if (error) {
               toast.error(error.reason);
             }
@@ -354,11 +405,8 @@ class OrganizeEventPage extends React.Component
         }),
       ],
     });
-  }
+  };
 }
-
-
-
 
 
 const ReactiveOrganizeOrganizationsPage = reactiveSubscriptionByParams(
@@ -369,7 +417,7 @@ const ReactiveOrganizeOrganizationsPage = reactiveSubscriptionByParams(
     const event = Events.findOne(id);
     const participants = event ? event.getParticipants() : [];
     const organization = event ? event.getOrganization() : null;
-    return event && organization ? { event, participants, organization } : null;
+    return event && organization ? {event, participants, organization} : null;
   },
   'events.by_id.private', 'eventParticipants.by_eventId.private', 'organizations.by_eventId.private');
 
@@ -505,7 +553,7 @@ ol.event-timeline {
     }
   }
 
-  li.publish-event.disabled {
+  li.run-event.disabled {
     .step-todo {
 
       button,
@@ -554,8 +602,9 @@ ol.event-timeline {
     }
   }
 
-  li.active { /* allow description to use complete width when event is published */
-    .step-active {
+  li {
+    /* allow description to use complete width when event is published */
+    .step-multi-line {
       flex-direction: column;
 
       .first-row {
@@ -581,6 +630,9 @@ ol.event-timeline {
 
       .second-row {
         padding-top: 10px;
+        text-align: right;
+        display: flex;
+        justify-content: flex-end;
       }
     }
   }
@@ -591,9 +643,9 @@ ol.event-timeline {
   li.event-details .step-status:before {content: " "; }
   li.invite-participants .step-status:before {content: "∏"; }
   li.organizer-tips .step-status:before {content: ""; }
-  li.publish-event .step-todo:before {content: ""; }
-  li.publish-event .step-active:before {content: ""; }
-  li.publish-event .step-completed:before {content: ""; }
+  li.run-event .step-todo:before {content: ""; }
+  li.run-event .step-active:before {content: ""; }
+  li.run-event .step-completed:before {content: ""; }
   li.set-event-picture .step-status:before{content: "π"; }
   li.share-results .step-todo:before  {content: ""; }
   li.share-results .step-active:before  {content: ""; }
@@ -675,7 +727,6 @@ ol.event-timeline {
       font-weight: 400 !important;
     }
   }
-
 
   li.finished,
   li.finished-last {
@@ -786,7 +837,7 @@ ol.event-timeline {
     }
   }
 
-  li.publish-event.todo .step-status.step-todo {
+  li.run-event.todo .step-status.step-todo {
     a.btn { /*white button with outline */
       padding: 0 16px;
       font-size: 16px;

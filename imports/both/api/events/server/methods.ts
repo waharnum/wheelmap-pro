@@ -80,6 +80,50 @@ export const publish = new ValidatedMethod({
   },
 });
 
+export const start = new ValidatedMethod({
+  name: 'events.start',
+  validate: new SimpleSchema({
+    eventId: {
+      type: String,
+      regEx: SimpleSchema.RegEx.Id,
+    },
+  }).validator(),
+  run({eventId}) {
+    const event = Events.findOne(eventId);
+
+    if (!event) {
+      throw new Meteor.Error(404, 'Event not found.');
+    }
+    if (!event.editableBy(this.userId)) {
+      throw new Meteor.Error(403, 'You don\'t have permission to start this event.');
+    }
+
+    Events.update(eventId, {$set: {status: 'ongoing'}});
+  },
+});
+
+export const complete = new ValidatedMethod({
+  name: 'events.complete',
+  validate: new SimpleSchema({
+    eventId: {
+      type: String,
+      regEx: SimpleSchema.RegEx.Id,
+    },
+  }).validator(),
+  run({eventId}) {
+    const event = Events.findOne(eventId);
+
+    if (!event) {
+      throw new Meteor.Error(404, 'Event not found.');
+    }
+    if (!event.editableBy(this.userId)) {
+      throw new Meteor.Error(403, 'You don\'t have permission to complete this event.');
+    }
+
+    Events.update(eventId, {$set: {status: 'completed'}});
+  },
+});
+
 export const cancel = new ValidatedMethod({
   name: 'events.cancel',
   validate: new SimpleSchema({
