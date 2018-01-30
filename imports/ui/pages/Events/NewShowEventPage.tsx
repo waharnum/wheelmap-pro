@@ -22,12 +22,14 @@ import PlaceDetailsPanel from '../../panels/PlaceDetailsPanel';
 import {colors} from '../../stylesheets/colors';
 import SurveyPanel from './panels/SurveyPanel';
 import PublicEventInvitePanel from './panels/PublicEventInvitePanel';
+import {EventParticipants, IEventParticipant} from '../../../both/api/event-participants/event-participants';
 
 
 type PageModel = {
   organization: IOrganization,
   event: IEvent,
-  user: Meteor.User,
+  user: Meteor.User | null,
+  participant: IEventParticipant | null,
 };
 
 type PageParams = {
@@ -43,7 +45,7 @@ class ShowEventPage extends React.Component<Props> {
 
   getPanelContent(isMappingFlow: boolean) {
     const {location, router, params} = this.props;
-    const {organization, event, user} = this.props.model;
+    const {organization, event, user, participant} = this.props.model;
 
     let content: React.ReactNode = null;
     let header: React.ReactNode = null;
@@ -84,6 +86,7 @@ class ShowEventPage extends React.Component<Props> {
                            title={event.name}/>;
       content =
         <PublicEventInvitePanel user={user} event={event} organization={organization} token={params.token}
+                                participant={participant}
                                 onJoinedEvent={() => {
                                   router.push(`/new/organizations/${organization._id}/events/${event._id}/mapping`);
                                 }}/>;
@@ -235,9 +238,11 @@ const ReactiveShowEventPage = reactiveSubscriptionByParams(
     const event = Events.findOne(id);
     const organization = event ? event.getOrganization() : null;
     const user = Meteor.user();
+    const participant = user ? EventParticipants.findOne({userId: user._id, eventId: id}) : null;
     // fetch model with organization & events in one go
-    return event && organization ? {organization, event, user} : null;
-  }, 'events.by_id.public', 'organizations.by_eventId.public', 'users.my.private');
+    return event && organization ? {organization, event, user, participant} : null;
+  }, 'events.by_id.public', 'organizations.by_eventId.public',
+  'eventParticipants.my_byEventId.private', 'users.my.private');
 
 
 export default styled(ReactiveShowEventPage) `  
