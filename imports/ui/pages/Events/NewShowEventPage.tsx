@@ -115,6 +115,9 @@ class ShowEventPage extends React.Component<Props> {
                            logo={organization.logo}
                            title={event.name}/>;
       content = <UserPanel
+        onSignedInHook={() => {
+          router.push(`/new/organizations/${organization._id}/events/${event._id}/mapping`);
+        }}
         onSignedOutHook={() => {
           router.push(`/new/organizations/${organization._id}/events/${event._id}`);
         }}
