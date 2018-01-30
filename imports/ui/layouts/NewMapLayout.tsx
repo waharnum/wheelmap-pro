@@ -359,19 +359,21 @@ export default styled(NewMapLayout) `
       // allow overlapping header if card is swiped up
       z-index: 3000;
     }
-  }
- 
-  // mobile
-  &.overlap-side-panel-full-width {
-    .map {
-      display: none;
-    }    
     
-    .side-panel {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      max-width: unset;
+    // mobile
+    &.overlap-side-panel-full-width {
+      .map {
+        display: none;
+      }    
+      
+      .side-panel {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        max-width: unset;
+      }
     }
   }
+ 
+
 `;
