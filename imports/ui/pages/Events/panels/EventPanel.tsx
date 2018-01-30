@@ -4,6 +4,7 @@ import {gettext, t} from 'c-3po';
 import {toast} from 'react-toastify';
 import ClipboardButton from 'react-clipboard.js';
 import * as moment from 'moment';
+import {browserHistory} from 'react-router';
 
 import {IStyledComponent} from '../../../components/IStyledComponent';
 import {getColorForEventStatus, getLabelForEventStatus} from '../../../../both/api/events/eventStatus';
@@ -202,15 +203,30 @@ const removeEventParticipation = (participant?: IEventParticipant | null) => {
   }
 };
 
-function actionFromEventStatus(event: IEvent, user?: Meteor.User | null, participant?: IEventParticipant | null) {
+const addEventParticipation = (user: Meteor.User | null, event: IEvent) => {
+  if (user) {
+    Meteor.call('eventParticipants.acceptPublicInvitation',
+      {eventId: event._id, invitationToken: event.invitationToken},
+      (error) => {
+        if (error) {
+          toast.error(error.reason);
+        }
+      },
+    );
+  } else {
+    browserHistory.push(
+      `/new/organizations/${event.organizationId}/events/${event._id}/public-invitation/${event.invitationToken}`);
+  }
+};
 
+function actionFromEventStatus(event: IEvent, user?: Meteor.User | null, participant?: IEventParticipant | null) {
   const shareAction = <ShareAction key="share" event={event}/>;
   const joinAction = (
-    <Button key="join"
-            className="join-button btn-primary"
-            to={`/new/organizations/${event.organizationId}/events/${event._id}/public-invitation/${event.invitationToken}`}>
+    <button key="join"
+            className="join-button btn btn-primary"
+            onClick={addEventParticipation.bind(this, user, event)}>
       {t`Join Us`}
-    </Button>);
+    </button>);
   const mappingAction = (<Button key="map" className="map-button btn-primary"
                                  to={`/new/organizations/${event.organizationId}/events/${event._id}/mapping`}>
     {t`Start mapping`}
