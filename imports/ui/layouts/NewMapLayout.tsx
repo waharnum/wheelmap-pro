@@ -112,18 +112,6 @@ class NewMapLayout extends React.Component<Props, State> {
     const displayAdditionalCardPanel = additionalMapPanel && useAdditionalCardPanel && displayAnyCardPanel;
     const displaySearchBar = (preferContentInCard ? !(displaySidePanel || displayCardPanel) : true) && allowSearchBar;
 
-    console.log({
-      preferContentInCard,
-      effectiveSidePanelHidden,
-      useSidePanel,
-      useCardPanel,
-      useAdditionalCardPanel,
-      displayAnyCardPanel,
-      displaySidePanel,
-      displayCardPanel,
-      displaySearchBar,
-    });
-
     return (
       <div id={id}
            className={`${className} map-layout ${preferContentInCard ? 'overlap-side-panel' : 'fixed-side-panel' }
