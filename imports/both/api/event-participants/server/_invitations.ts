@@ -190,9 +190,13 @@ export function acceptPublicEventInvitation(userId: string, eventId: Mongo.Objec
     throw new Meteor.Error(404, t`No invitation in ${eventId} found with token ${token}.`);
   }
 
-  const existingParticipation = EventParticipants.findOne({eventId, userId, invitationState: 'accepted'});
-  if (existingParticipation) {
-    console.log(`${userId} accepted invitation to ${eventId} already.`);
+  const existingParticipation = EventParticipants.findOne({eventId, userId, invitationState: {$ne: 'accepted'}});
+  if (existingParticipation && existingParticipation._id) {
+    EventParticipants.update(existingParticipation._id, {
+      $set: {
+        invitationState: 'accepted',
+      },
+    });
     return existingParticipation;
   }
 
