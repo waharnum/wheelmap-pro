@@ -1,28 +1,28 @@
 import styled from 'styled-components';
 import * as React from 'react';
-import {Link, RouteComponentProps} from 'react-router';
+import { Link, RouteComponentProps } from 'react-router';
 
-import {Events, IEvent} from '../../../both/api/events/events';
-import {IAsyncDataByIdProps, reactiveSubscriptionByParams} from '../../components/reactiveModelSubscription';
-import {wrapDataComponent} from '../../components/AsyncDataComponent';
+import { Events, IEvent } from '../../../both/api/events/events';
+import { IAsyncDataByIdProps, reactiveSubscriptionByParams } from '../../components/reactiveModelSubscription';
+import { wrapDataComponent } from '../../components/AsyncDataComponent';
 import NewMapLayout from '../../layouts/NewMapLayout';
-import {IStyledComponent} from '../../components/IStyledComponent';
-import {IOrganization} from '../../../both/api/organizations/organizations';
+import { IStyledComponent } from '../../components/IStyledComponent';
+import { IOrganization } from '../../../both/api/organizations/organizations';
 import EventPanel from './panels/EventPanel';
-import {t} from 'c-3po';
+import { t } from 'c-3po';
 import LogoHeader from '../../components/LogoHeader';
-import {defaultRegion} from '../../../both/api/events/schema';
-import {regionToBbox} from '../../../both/lib/geo-bounding-box';
+import { defaultRegion } from '../../../both/api/events/schema';
+import { regionToBbox } from '../../../both/lib/geo-bounding-box';
 import * as L from 'leaflet';
 import EventMiniMarker from './EventMiniMarker';
 import UserPanel from '../../panels/UserPanel';
 import OrganizationAboutPanel from '../Organizations/panels/OrganizationAboutPanel';
-import {accessibilityCloudFeatureCache} from 'wheelmap-react/lib/lib/cache/AccessibilityCloudFeatureCache';
+import { accessibilityCloudFeatureCache } from 'wheelmap-react/lib/lib/cache/AccessibilityCloudFeatureCache';
 import PlaceDetailsPanel from '../../panels/PlaceDetailsPanel';
-import {colors} from '../../stylesheets/colors';
+import { colors } from '../../stylesheets/colors';
 import SurveyPanel from './panels/SurveyPanel';
 import EventInvitationPanel from './panels/EventInvitationPanel';
-import {EventParticipants, IEventParticipant} from '../../../both/api/event-participants/event-participants';
+import { EventParticipants, IEventParticipant } from '../../../both/api/event-participants/event-participants';
 
 
 type PageModel = {
@@ -44,8 +44,8 @@ type Props = RouteComponentProps<PageParams, {}> & IAsyncDataByIdProps<PageModel
 class ShowEventPage extends React.Component<Props> {
 
   getPanelContent(isMappingFlow: boolean) {
-    const {location, router, params} = this.props;
-    const {organization, event, user, participant} = this.props.model;
+    const { location, router, params } = this.props;
+    const { organization, event, user, participant } = this.props.model;
 
     let content: React.ReactNode = null;
     let header: React.ReactNode = null;
@@ -59,7 +59,7 @@ class ShowEventPage extends React.Component<Props> {
       // survey
       content = <SurveyPanel event={event} place={null} onExitSurvey={() => {
         router.push(`/new/organizations/${organization._id}/events/${event._id}/mapping`);
-      }}/>;
+      }} />;
       header = null;
       forceContentToSidePanel = true;
       forceSidePanelOpen = true;
@@ -70,32 +70,32 @@ class ShowEventPage extends React.Component<Props> {
         `/new/organizations/${organization._id}/events/${event._id}/mapping` :
         `/new/organizations/${organization._id}/events/${event._id}`;
       header = <LogoHeader link={target}
-                           prefixTitle={organization.name}
-                           logo={organization.logo}
-                           title={t`Place`}/>;
+        prefixTitle={organization.name}
+        logo={organization.logo}
+        title={t`Place`} />;
       // TODO async fetch feature
       const feature = accessibilityCloudFeatureCache.getCachedFeature(params.place_id);
-      content = <PlaceDetailsPanel feature={feature}/>;
+      content = <PlaceDetailsPanel feature={feature} />;
       forceSidePanelOpen = true;
       // TODO center map to POI on first render
     } else if (params.token && (
-        location.pathname.includes('/public-invitation/') ||
-        location.pathname.includes('/private-invitation/'))) {
+      location.pathname.includes('/public-invitation/') ||
+      location.pathname.includes('/private-invitation/'))) {
       // public-invitation
       header = <LogoHeader link={`/new/organizations/${organization._id}/events/${event._id}`}
-                           prefixTitle={organization.name}
-                           logo={organization.logo}
-                           title={event.name}/>;
+        prefixTitle={organization.name}
+        logo={organization.logo}
+        title={event.name} />;
       content =
         <EventInvitationPanel user={user}
-                              event={event}
-                              organization={organization}
-                              token={params.token}
-                              participant={participant}
-                              privateInvite={location.pathname.includes('/private-invitation/')}
-                              onJoinedEvent={() => {
-                                router.push(`/new/organizations/${organization._id}/events/${event._id}/mapping`);
-                              }}/>;
+          event={event}
+          organization={organization}
+          token={params.token}
+          participant={participant}
+          privateInvite={location.pathname.includes('/private-invitation/')}
+          onJoinedEvent={() => {
+            router.push(`/new/organizations/${organization._id}/events/${event._id}/mapping`);
+          }} />;
       forceSidePanelOpen = true;
     } else if (location.pathname.endsWith('/mapping/user')) {
       // user panel
@@ -104,9 +104,9 @@ class ShowEventPage extends React.Component<Props> {
         router.push(target);
       };
       header = <LogoHeader link={target}
-                           prefixTitle={organization.name}
-                           logo={organization.logo}
-                           title={event.name}/>;
+        prefixTitle={organization.name}
+        logo={organization.logo}
+        title={event.name} />;
       content = <UserPanel
         onSignedOutHook={() => {
           router.push(`/new/organizations/${organization._id}/events/${event._id}`);
@@ -126,23 +126,23 @@ class ShowEventPage extends React.Component<Props> {
       canDismissFromSidePanel = true;
       header = null;
       content = <OrganizationAboutPanel organization={organization}
-                                        organizationLink={`/new/organizations/${organization._id}`}
-                                        onGotoUserPanel={
-                                          () => {
-                                            router.push(`/new/organizations/${organization._id}/events/${event._id}/mapping/user`);
-                                          }
-                                        }/>;
+        organizationLink={`/new/organizations/${organization._id}`}
+        onGotoUserPanel={
+          () => {
+            router.push(`/new/organizations/${organization._id}/events/${event._id}/mapping/user`);
+          }
+        } />;
       forceContentToSidePanel = true;
       forceSidePanelOpen = true;
     } else if (location.pathname.endsWith('/mapping')) {
       // mapping flow
-      content = <EventPanel participant={participant} user={user} event={event} showActions={false}/>;
+      content = <EventPanel participant={participant} user={user} event={event} showActions={false} />;
       header = <LogoHeader link={`/new/organizations/${organization._id}/events/${event._id}/mapping/organization`}
-                           prefixTitle={organization.name}
-                           logo={organization.logo}
-                           title={event.name}>
+        prefixTitle={organization.name}
+        logo={organization.logo}
+        title={event.name}>
         <Link className="event-info"
-              to={`/new/organizations/${organization._id}/events/${event._id}/mapping/event-info`}></Link>
+          to={`/new/organizations/${organization._id}/events/${event._id}/mapping/event-info`}></Link>
       </LogoHeader>;
       forceContentToSidePanel = true;
     } else if (location.pathname.endsWith('/event-info')) {
@@ -151,20 +151,20 @@ class ShowEventPage extends React.Component<Props> {
       onDismissSidePanel = () => {
         router.push(target);
       };
-      content = <EventPanel participant={participant} user={user} event={event} showActions={false}/>;
+      content = <EventPanel participant={participant} user={user} event={event} showActions={false} />;
       header = <LogoHeader link={target}
-                           prefixTitle={organization.name}
-                           logo={organization.logo}
-                           title={t`Event`}/>;
+        prefixTitle={organization.name}
+        logo={organization.logo}
+        title={t`Event`} />;
       forceContentToSidePanel = true;
       forceSidePanelOpen = true;
     } else {
       // default view
-      content = <EventPanel participant={participant} user={user} event={event}/>;
+      content = <EventPanel participant={participant} user={user} event={event} />;
       header = <LogoHeader link={`/new/organizations/${organization._id}/events/${event._id}/organization`}
-                           prefixTitle={organization.name}
-                           logo={organization.logo}
-                           title={t`Event`}/>;
+        prefixTitle={organization.name}
+        logo={organization.logo}
+        title={t`Event`} />;
     }
     return {
       content,
@@ -178,8 +178,8 @@ class ShowEventPage extends React.Component<Props> {
   }
 
   public render() {
-    const {router} = this.props;
-    const {organization, event} = this.props.model;
+    const { router } = this.props;
+    const { organization, event } = this.props.model;
 
     const isMappingFlow = location.pathname.endsWith('/mapping') ||
       location.pathname.includes('/mapping/');
@@ -222,7 +222,7 @@ class ShowEventPage extends React.Component<Props> {
         }}
         mapChildren={isMappingFlow ? (<Link to={{
           pathname: `/new/organizations/${organization._id}/events/${event._id}/mapping/create-place`,
-          state: {mapPosition: {}, historyBehavior: 'back'},
+          state: { mapPosition: {}, historyBehavior: 'back' },
         }} className="add-place">+</Link>) : (<EventMiniMarker
           event={event}
           additionalLeafletLayers={[L.rectangle(bbox, {
@@ -244,9 +244,9 @@ const ReactiveShowEventPage = reactiveSubscriptionByParams(
     const event = Events.findOne(id);
     const organization = event ? event.getOrganization() : null;
     const user = Meteor.user();
-    const participant = user ? EventParticipants.findOne({userId: user._id, eventId: id}) : null;
+    const participant = user ? EventParticipants.findOne({ userId: user._id, eventId: id }) : null;
     // fetch model with organization & events in one go
-    return event && organization ? {organization, event, user, participant} : null;
+    return event && organization ? { organization, event, user, participant } : null;
   }, 'events.by_id.public', 'organizations.by_eventId.public',
   'eventParticipants.my_byEventId.private', 'users.my.private');
 
@@ -257,7 +257,7 @@ export default styled(ReactiveShowEventPage) `
     height: 65px;
     position: absolute;
     background-color: ${colors.linkBlue};
-    z-index: 10000;
+    z-index: 400; /* above map but below CardPanel */
     border-radius: 65px;
     right: 10px;
     bottom: 20px;
