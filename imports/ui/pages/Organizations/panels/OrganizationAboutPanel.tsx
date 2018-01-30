@@ -11,20 +11,23 @@ import UserFooter from './UserFooter';
 type Props = {
   organization: IOrganization;
   onGotoUserPanel: () => void;
+  organizationLink?: string;
 };
 
 class OrganizationAboutPanel extends React.Component<IStyledComponent & Props> {
 
   public render() {
-    const {className, organization, onGotoUserPanel} = this.props;
+    const {className, organization, onGotoUserPanel, organizationLink} = this.props;
 
     const adminLink = organization.editableBy(Meteor.userId()) ? `/organizations/${organization._id}/organize` : undefined;
 
     return (
       <div className={className}>
-        {organization.logo &&
-        <div className="organization-logo" style={{backgroundImage: `url(${organization.logo})`}}/>}
-        <h1>{organization.name}</h1>
+        <Link to={organizationLink || ''}>
+          {organization.logo &&
+          <div className="organization-logo" style={{backgroundImage: `url(${organization.logo})`}}/>}
+          <h1>{organization.name}</h1>
+        </Link>
         <section className="organization-description">
           {organization.description}
         </section>

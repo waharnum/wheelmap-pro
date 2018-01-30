@@ -51,8 +51,10 @@ class ShowEventPage extends React.Component<Props> {
     let forceSidePanelOpen: boolean = false;
     let overlapSidePanelTakeFullWidth: boolean = false;
     let onDismissSidePanel: undefined | (() => void) = undefined;
+    let canDismissFromSidePanel: boolean = false;
 
     if (location.pathname.endsWith('/create-place') || location.pathname.includes('/edit-place/')) {
+      // survey
       content = <SurveyPanel event={event} place={null} onExitSurvey={() => {
         router.push(`/new/organizations/${organization._id}/events/${event._id}/mapping`);
       }}/>;
@@ -61,10 +63,10 @@ class ShowEventPage extends React.Component<Props> {
       forceSidePanelOpen = true;
       overlapSidePanelTakeFullWidth = true;
     } else if (params.place_id) {
+      // place details
       const target = isMappingFlow ?
         `/new/organizations/${organization._id}/events/${event._id}/mapping` :
         `/new/organizations/${organization._id}/events/${event._id}`;
-      // place details
       header = <LogoHeader link={target}
                            prefixTitle={organization.name}
                            logo={organization.logo}
@@ -87,11 +89,11 @@ class ShowEventPage extends React.Component<Props> {
                                 }}/>;
       forceSidePanelOpen = true;
     } else if (location.pathname.endsWith('/mapping/user')) {
+      // user panel
       const target = `/new/organizations/${organization._id}/events/${event._id}/mapping`;
       onDismissSidePanel = () => {
         router.push(target);
       };
-      // user panel
       header = <LogoHeader link={target}
                            prefixTitle={organization.name}
                            logo={organization.logo}
@@ -104,6 +106,7 @@ class ShowEventPage extends React.Component<Props> {
       forceContentToSidePanel = true;
       forceSidePanelOpen = true;
     } else if (location.pathname.endsWith('/organization') ||
+      // about-organization
       location.pathname.endsWith('/mapping/organization')) {
       const target = isMappingFlow ?
         `/new/organizations/${organization._id}/events/${event._id}/mapping` :
@@ -111,19 +114,19 @@ class ShowEventPage extends React.Component<Props> {
       onDismissSidePanel = () => {
         router.push(target);
       };
-      // user panel
-      header = <LogoHeader link={target}
-                           prefixTitle={organization.name}
-                           logo={organization.logo}
-                           title={event.name}/>;
-      content = <OrganizationAboutPanel organization={organization} onGotoUserPanel={
-        () => {
-          router.push(`/new/organizations/${organization._id}/events/${event._id}/mapping/user`);
-        }
-      }/>;
+      canDismissFromSidePanel = true;
+      header = null;
+      content = <OrganizationAboutPanel organization={organization}
+                                        organizationLink={`/new/organizations/${organization._id}`}
+                                        onGotoUserPanel={
+                                          () => {
+                                            router.push(`/new/organizations/${organization._id}/events/${event._id}/mapping/user`);
+                                          }
+                                        }/>;
       forceContentToSidePanel = true;
       forceSidePanelOpen = true;
     } else if (location.pathname.endsWith('/mapping')) {
+      // mapping flow
       content = <EventPanel event={event}/>;
       header = <LogoHeader link={`/new/organizations/${organization._id}/events/${event._id}/mapping/organization`}
                            prefixTitle={organization.name}
@@ -134,6 +137,7 @@ class ShowEventPage extends React.Component<Props> {
       </LogoHeader>;
       forceContentToSidePanel = true;
     } else if (location.pathname.endsWith('/event-info')) {
+      // event info while mapping
       const target = `/new/organizations/${organization._id}/events/${event._id}/mapping`;
       onDismissSidePanel = () => {
         router.push(target);
@@ -146,6 +150,7 @@ class ShowEventPage extends React.Component<Props> {
       forceContentToSidePanel = true;
       forceSidePanelOpen = true;
     } else {
+      // default view
       content = <EventPanel event={event}/>;
       header = <LogoHeader link={`/new/organizations/${organization._id}/events/${event._id}/organization`}
                            prefixTitle={organization.name}
@@ -159,6 +164,7 @@ class ShowEventPage extends React.Component<Props> {
       forceContentToSidePanel,
       onDismissSidePanel,
       overlapSidePanelTakeFullWidth,
+      canDismissFromSidePanel,
     };
   }
 
@@ -171,7 +177,8 @@ class ShowEventPage extends React.Component<Props> {
     const isPlaceDetails = location.pathname.includes('/place/');
 
     const {
-      content, header, forceSidePanelOpen, forceContentToSidePanel, onDismissSidePanel, overlapSidePanelTakeFullWidth,
+      content, header, forceSidePanelOpen, forceContentToSidePanel, canDismissFromSidePanel,
+      onDismissSidePanel, overlapSidePanelTakeFullWidth,
     } = this.getPanelContent(isMappingFlow);
 
     const bbox = regionToBbox(event.region || defaultRegion);
@@ -184,7 +191,7 @@ class ShowEventPage extends React.Component<Props> {
         sidePanelHidden={forceSidePanelOpen ? false : undefined}
         forceContentToSidePanel={forceContentToSidePanel}
         overlapSidePanelTakeFullWidth={overlapSidePanelTakeFullWidth}
-        canDismissFromSidePanel={false}
+        canDismissFromSidePanel={canDismissFromSidePanel}
         onDismissSidePanel={onDismissSidePanel}
         canDismissCardPanel={isPlaceDetails}
         onDismissCardPanel={() => {
