@@ -10,13 +10,15 @@ import {IEvent} from '../../../../both/api/events/events';
 import {GuestUserSchema, loginGuestUser} from '../../../../both/api/users/accounts';
 import {IStyledComponent} from '../../../components/IStyledComponent';
 import {getDisplayedNameForUser} from '../../../../both/lib/user-name';
+import {IEventParticipant} from '../../../../both/api/event-participants/event-participants';
 
 
 type Props = {
   token: string,
   event: IEvent,
+  participant: IEventParticipant | null,
   organization: IOrganization,
-  user?: Meteor.User,
+  user: Meteor.User | null,
   onJoinedEvent?: () => void,
 } & IStyledComponent;
 
@@ -43,7 +45,7 @@ class PublicEventInvitePanel extends React.Component<Props, State> {
   }
 
   public render(): JSX.Element | null {
-    const {user, event, className} = this.props;
+    const {user, event, participant, className} = this.props;
 
     let content: JSX.Element | null = null;
     if (this.state.error) {
@@ -87,11 +89,18 @@ class PublicEventInvitePanel extends React.Component<Props, State> {
           </div>
         );
       }
+    } else if (participant && participant.invitationState === 'accepted') {
+      content = (
+        <div className={`${className}`}>
+          <h2>{t`${getDisplayedNameForUser(user)}, you are already a participant of ${event.name}.`}</h2>
+          <button className="btn btn-primary" onClick={this.props.onJoinedEvent}>{t`Start mapping`}</button>
+        </div>
+      );
     } else {
       content = (
         <div className={`${className}`}>
           <h2>{t`${getDisplayedNameForUser(user)}, great that you are joining ${event.name}.`}</h2>
-          <button className="btn btn-primary" onClick={this.acceptInvite}>{t`Start mapping`}</button>
+          <button className="btn btn-primary" onClick={this.acceptInvite}>{t`Join event`}</button>
         </div>
       );
     }
