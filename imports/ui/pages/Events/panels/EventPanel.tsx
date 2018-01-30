@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {t} from 'c-3po';
+import {gettext, t} from 'c-3po';
 import {toast} from 'react-toastify';
 import ClipboardButton from 'react-clipboard.js';
 import * as moment from 'moment';
@@ -192,30 +192,45 @@ const FinishedEventContent = styled((props: { event: IEvent, className?: string 
   }
 `;
 
+const removeEventParticipation = (participant?: IEventParticipant | null) => {
+  if (participant) {
+    Meteor.call('eventParticipants.remove', participant._id, (error, result) => {
+      if (error) {
+        toast.error(gettext(error.reason));
+      }
+    });
+  }
+};
 
 function actionFromEventStatus(event: IEvent, user?: Meteor.User | null, participant?: IEventParticipant | null) {
 
   const shareAction = <ShareAction key="share" event={event}/>;
-  const joinAction = <Button key="join" className="join-button btn-primary"
-                             to={`/new/organizations/${event.organizationId}/events/${event._id}/public-invitation/${event.invitationToken}`}>
-    {t`Join Us`}</Button>;
-  const mappingAction = <Button key="map" className="map-button btn-primary"
-                                to={`/new/organizations/${event.organizationId}/events/${event._id}/mapping`}>
+  const joinAction = (
+    <Button key="join"
+            className="join-button btn-primary"
+            to={`/new/organizations/${event.organizationId}/events/${event._id}/public-invitation/${event.invitationToken}`}>
+      {t`Join Us`}
+    </Button>);
+  const mappingAction = (<Button key="map" className="map-button btn-primary"
+                                 to={`/new/organizations/${event.organizationId}/events/${event._id}/mapping`}>
     {t`Start mapping`}
-  </Button>;
+  </Button>);
   const canceledLabel = <span className="canceled-label">{getLabelForEventStatus(event.status)}</span>;
+  const removeParticipationAction = (
+    <button key="remove-participation" className="remove-participation-button btn btn-primary"
+            onClick={removeEventParticipation.bind(this, participant)}>
+      {t`Going`}</button>);
 
 
   const userHasJoined = participant && participant.invitationState === 'accepted';
-
 
   switch (event.status) {
     case 'completed':
       return shareAction;
     case 'planned':
-      return [shareAction, userHasJoined ? mappingAction : joinAction];
+      return [shareAction, userHasJoined ? removeParticipationAction : joinAction];
     case 'ongoing':
-      return [shareAction, userHasJoined ? mappingAction : joinAction];
+      return [shareAction, userHasJoined ? removeParticipationAction : joinAction, userHasJoined && mappingAction];
     case 'canceled':
       return canceledLabel;
   }
@@ -325,22 +340,53 @@ export default styled(EventPanel) `
     justify-content: space-between;
   }
   
+  .remove-participation-button {
+    background: ${colors.bgGreyDarker};
+    padding-right: 35px;
+    position: relative;
+    color: rgba(0,0,0,0.8);
+    
+    &:after {
+      content: '';
+      position: absolute;
+      font-weight: 200;
+      color: black;
+      opacity: 0.5;
+      font-family: 'iconfield-v03';
+      width: 24px;
+      line-height: 24px;
+      height: 24px;
+      text-align: center;
+      top: 6px;
+      right: 7px;
+    }
+    
+    &:hover, :focus, :focus:hover  {
+      background: ${colors.errorRed};
+      
+      &:after {
+        content: '';
+      }
+    }
+    
 
-li.icon {
-  &::before {
-    content:" ";
-    height: 33px;
-    width: 33px;
-    display:block;
-    position:absolute;
-    left:9px;
-    mask-image: url(/images/icons/beverage.svg);
-    mask-size: cover;
-    background-color: #888;
-    background-repeat: no-repeat;
-    background-position: center center;
   }
-}
+
+  li.icon {
+    &::before {
+      content:" ";
+      height: 33px;
+      width: 33px;
+      display:block;
+      position:absolute;
+      left:9px;
+      mask-image: url(/images/icons/beverage.svg);
+      mask-size: cover;
+      background-color: #888;
+      background-repeat: no-repeat;
+      background-position: center center;
+    }
+  }
 
   .equipment-block {
     ul {
