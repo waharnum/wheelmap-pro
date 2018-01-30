@@ -21,7 +21,7 @@ import {accessibilityCloudFeatureCache} from 'wheelmap-react/lib/lib/cache/Acces
 import PlaceDetailsPanel from '../../panels/PlaceDetailsPanel';
 import {colors} from '../../stylesheets/colors';
 import SurveyPanel from './panels/SurveyPanel';
-import PublicEventInvitePanel from './panels/PublicEventInvitePanel';
+import EventInvitationPanel from './panels/EventInvitationPanel';
 import {EventParticipants, IEventParticipant} from '../../../both/api/event-participants/event-participants';
 
 
@@ -78,18 +78,24 @@ class ShowEventPage extends React.Component<Props> {
       content = <PlaceDetailsPanel feature={feature}/>;
       forceSidePanelOpen = true;
       // TODO center map to POI on first render
-    } else if (params.token && location.pathname.includes('/public-invitation/')) {
+    } else if (params.token && (
+        location.pathname.includes('/public-invitation/') ||
+        location.pathname.includes('/private-invitation/'))) {
       // public-invitation
       header = <LogoHeader link={`/new/organizations/${organization._id}/events/${event._id}`}
                            prefixTitle={organization.name}
                            logo={organization.logo}
                            title={event.name}/>;
       content =
-        <PublicEventInvitePanel user={user} event={event} organization={organization} token={params.token}
-                                participant={participant}
-                                onJoinedEvent={() => {
-                                  router.push(`/new/organizations/${organization._id}/events/${event._id}/mapping`);
-                                }}/>;
+        <EventInvitationPanel user={user}
+                              event={event}
+                              organization={organization}
+                              token={params.token}
+                              participant={participant}
+                              privateInvite={location.pathname.includes('/private-invitation/')}
+                              onJoinedEvent={() => {
+                                router.push(`/new/organizations/${organization._id}/events/${event._id}/mapping`);
+                              }}/>;
       forceSidePanelOpen = true;
     } else if (location.pathname.endsWith('/mapping/user')) {
       // user panel

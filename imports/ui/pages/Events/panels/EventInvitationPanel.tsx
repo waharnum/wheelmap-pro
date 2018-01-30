@@ -16,6 +16,7 @@ import {IEventParticipant} from '../../../../both/api/event-participants/event-p
 type Props = {
   token: string,
   event: IEvent,
+  privateInvite?: boolean,
   participant: IEventParticipant | null,
   organization: IOrganization,
   user: Meteor.User | null,
@@ -28,7 +29,7 @@ type State = {
   guestMode: boolean;
 };
 
-class PublicEventInvitePanel extends React.Component<Props, State> {
+class EventInvitationPanel extends React.Component<Props, State> {
   public state: State = {
     busy: false,
     error: null,
@@ -45,28 +46,30 @@ class PublicEventInvitePanel extends React.Component<Props, State> {
   }
 
   public render(): JSX.Element | null {
-    const {user, event, participant, className} = this.props;
+    const {user, event, participant, className, privateInvite} = this.props;
+    const {error, busy, guestMode} = this.state;
 
     let content: JSX.Element | null = null;
-    if (this.state.error) {
+    if (error) {
       content = (
         <div className={`${className}`}>
           <h2>
             {t`Something went wrong`}
           </h2>
           <div className="alert alert-danger">
-            {this.state.error}
+            {error}
           </div>
+          <button className="btn btn-primary" onClick={() => this.setState({error: null})}>{t`Okay`}</button>
         </div>
       );
-    } else if (this.state.busy) {
+    } else if (busy) {
       content = (
         <div className={`${className} busy`}>
           <div className="loading-area">{t`Accepting invitation`}</div>
         </div>
       );
     } else if (!user) {
-      if (this.state.guestMode) {
+      if (guestMode && !privateInvite) {
         content = (
           <div className={`${className}`}>
             <h2>{t`Great that you are joining ${event.name}.`}</h2>
@@ -85,7 +88,8 @@ class PublicEventInvitePanel extends React.Component<Props, State> {
           <div className={`${className}`}>
             <h2>{t`Great that you are joining ${event.name}.`}</h2>
             <Accounts.ui.LoginForm formState={STATES.SIGN_UP} onSignedInHook={this.acceptInvite}/>
-            <a onClick={() => this.setState({guestMode: true, error: null})}>{t`Sign-up as a guest`}</a>
+            {!privateInvite &&
+            <a onClick={() => this.setState({guestMode: true, error: null})}>{t`Sign-up as a guest`}</a>}
           </div>
         );
       }
@@ -133,10 +137,19 @@ class PublicEventInvitePanel extends React.Component<Props, State> {
   };
 
   private acceptInvite = () => {
+    if (this.props.privateInvite) {
+      this.acceptPrivateInvite();
+    } else {
+      this.acceptPublicInvite();
+    }
+  };
+
+
+  private acceptPublicInvite = () => {
     this.setState({busy: true});
     Meteor.call('eventParticipants.acceptPublicInvitation',
       {eventId: this.props.event._id, invitationToken: this.props.token},
-      (error, result) => {
+      (error) => {
         if (error) {
           this.setState({busy: false, error: t`Accepting invitation failed.` + gettext(error.reason)});
         } else {
@@ -148,9 +161,23 @@ class PublicEventInvitePanel extends React.Component<Props, State> {
       },
     );
   };
+
+  private acceptPrivateInvite = () => {
+    this.setState({busy: true});
+    Meteor.call('eventParticipants.acceptInvitation',
+      {eventId: this.props.event._id, invitationToken: this.props.token},
+      (error) => {
+        if (error) {
+          this.setState({busy: false, error: t`Accepting invitation failed.` + gettext(error.reason)});
+        } else {
+          this.setState({busy: false});
+        }
+      },
+    );
+  };
 }
 
-export default styled(PublicEventInvitePanel) `
+export default styled(EventInvitationPanel) `
   padding: 10px;
   
   h2 {

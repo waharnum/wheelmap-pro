@@ -127,6 +127,8 @@ const AppRouter = (
       <Route path="/new/organizations/:organization_id/events/:_id/place/:place_id" component={NewShowEventPage}/>
       <Route path="/new/organizations/:organization_id/events/:_id/public-invitation/:token"
              component={NewShowEventPage}/>
+      <Route path="/new/organizations/:organization_id/events/:_id/private-invitation/:token"
+             component={NewShowEventPage}/>
 
       {/* mapping only works with signed in user */}
       <Route component={(route) => <EnsureUserLoggedIn {...route} signInRoute={(p) => {
