@@ -123,9 +123,11 @@ class ShowEventPage extends React.Component<Props> {
       onDismissSidePanel = () => {
         router.push(`/new/organizations/${organization._id}/events/${event._id}`);
       };
-    } else if (location.pathname.endsWith('/mapping/user')) {
+    } else if (location.pathname.endsWith('/user')) {
       // user panel
-      const target = `/new/organizations/${organization._id}/events/${event._id}/mapping`;
+      const target = isMappingFlow ?
+        `/new/organizations/${organization._id}/events/${event._id}/mapping` :
+        `/new/organizations/${organization._id}/events/${event._id}`;
       onDismissSidePanel = () => {
         router.push(target);
       };
@@ -135,7 +137,7 @@ class ShowEventPage extends React.Component<Props> {
                            title={event.name}/>;
       content = <UserPanel
         onSignedInHook={() => {
-          router.push(`/new/organizations/${organization._id}/events/${event._id}/mapping`);
+          router.push(target);
         }}
         onSignedOutHook={() => {
           router.push(`/new/organizations/${organization._id}/events/${event._id}`);
@@ -149,6 +151,9 @@ class ShowEventPage extends React.Component<Props> {
       const target = isMappingFlow ?
         `/new/organizations/${organization._id}/events/${event._id}/mapping` :
         `/new/organizations/${organization._id}/events/${event._id}`;
+      const userTarget = isMappingFlow ?
+        `/new/organizations/${organization._id}/events/${event._id}/mapping/user` :
+        `/new/organizations/${organization._id}/events/${event._id}/user`;
       onDismissSidePanel = () => {
         router.push(target);
       };
@@ -158,7 +163,7 @@ class ShowEventPage extends React.Component<Props> {
                                         organizationLink={`/new/organizations/${organization._id}`}
                                         onGotoUserPanel={
                                           () => {
-                                            router.push(`/new/organizations/${organization._id}/events/${event._id}/mapping/user`);
+                                            router.push(userTarget);
                                           }
                                         }/>;
       forceContentToSidePanel = true;
