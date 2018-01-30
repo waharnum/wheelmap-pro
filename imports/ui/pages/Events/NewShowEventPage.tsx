@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import * as React from 'react';
-import {RouteComponentProps} from 'react-router';
+import {Link, RouteComponentProps} from 'react-router';
+
 import {Events, IEvent} from '../../../both/api/events/events';
 import {IAsyncDataByIdProps, reactiveSubscriptionByParams} from '../../components/reactiveModelSubscription';
 import {wrapDataComponent} from '../../components/AsyncDataComponent';
@@ -18,20 +19,22 @@ import UserPanel from '../../panels/UserPanel';
 import OrganizationAboutPanel from '../Organizations/panels/OrganizationAboutPanel';
 import {accessibilityCloudFeatureCache} from 'wheelmap-react/lib/lib/cache/AccessibilityCloudFeatureCache';
 import PlaceDetailsPanel from '../../panels/PlaceDetailsPanel';
-import {Link} from 'react-router';
 import {colors} from '../../stylesheets/colors';
 import SurveyPanel from './panels/SurveyPanel';
+import PublicEventInvitePanel from './panels/PublicEventInvitePanel';
 
 
 type PageModel = {
-  organization: IOrganization;
-  event: IEvent;
+  organization: IOrganization,
+  event: IEvent,
+  user: Meteor.User,
 };
 
 type PageParams = {
   organization_id: string,
   _id: string, // event id,
-  place_id: string,
+  place_id?: string,
+  token?: string,
 };
 
 type Props = RouteComponentProps<PageParams, {}> & IAsyncDataByIdProps<PageModel> & IStyledComponent;
@@ -40,7 +43,7 @@ class ShowEventPage extends React.Component<Props> {
 
   getPanelContent(isMappingFlow: boolean) {
     const {location, router, params} = this.props;
-    const {organization, event} = this.props.model;
+    const {organization, event, user} = this.props.model;
 
     let content: React.ReactNode = null;
     let header: React.ReactNode = null;
@@ -71,6 +74,18 @@ class ShowEventPage extends React.Component<Props> {
       content = <PlaceDetailsPanel feature={feature}/>;
       forceSidePanelOpen = true;
       // TODO center map to POI on first render
+    } else if (params.token && location.pathname.includes('/public-invitation/')) {
+      // public-invitation
+      header = <LogoHeader link={`/new/organizations/${organization._id}/events/${event._id}`}
+                           prefixTitle={organization.name}
+                           logo={organization.logo}
+                           title={event.name}/>;
+      content =
+        <PublicEventInvitePanel user={user} event={event} organization={organization} token={params.token}
+                                onJoinedEvent={() => {
+                                  router.push(`/new/organizations/${organization._id}/events/${event._id}/mapping`);
+                                }}/>;
+      forceSidePanelOpen = true;
     } else if (location.pathname.endsWith('/mapping/user')) {
       const target = `/new/organizations/${organization._id}/events/${event._id}/mapping`;
       onDismissSidePanel = () => {
@@ -212,8 +227,9 @@ const ReactiveShowEventPage = reactiveSubscriptionByParams(
   (id): PageModel | null => {
     const event = Events.findOne(id);
     const organization = event ? event.getOrganization() : null;
+    const user = Meteor.user();
     // fetch model with organization & events in one go
-    return event && organization ? {organization, event} : null;
+    return event && organization ? {organization, event, user} : null;
   }, 'events.by_id.public', 'organizations.by_eventId.public', 'users.my.private');
 
 

@@ -108,10 +108,10 @@ export const GuestUserSchema = new SimpleSchema({
     },
   },
   toc: {
-    label: t`Terms and Conditions`,
+    label: t`Accept Terms & Conditions`,
     type: Boolean,
     uniforms: {
-      help: t`Provide link to t&c here`,
+      help: t`TODO Provide link to t&c here`,
       component: BoolField,
     },
     allowedValues: [true],
