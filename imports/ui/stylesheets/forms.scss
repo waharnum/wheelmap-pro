@@ -171,8 +171,9 @@ a.btn-sm { /* e.g. forgot password */
 
 .panel.panel-danger,
 form .panel-danger .panel-body {
-  color: $error-red;
-  font-weight: 400;
+  display:none; /* WARNING: Hiding the autoform error-panel might also hide server-errors that are not shown inline */
+  // color: $error-red;
+  // font-weight: 400;
 }
 
 form {
@@ -271,12 +272,12 @@ form {
       content: "A";
     }
 
-    &.has-feedback.has-error,
+    &.has-error,
     .panel-danger {
       transition: 0.5s;
 
       label {
-        color: $error-red;
+        color: $bg-anthracite;
       }
 
       input.form-control.form-control-danger,

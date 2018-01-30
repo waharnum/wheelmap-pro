@@ -23,5 +23,6 @@ export const colors = {
 
   shadowGrey: '#DEE1E7',            // used for embossed boxes
   boxShadow: 'rgba(55,64,77,0.40)',  // event timeline icons
+  textNormal: '#37404D',             // eg. for normal text like form labels
   textMuted: 'rgba(0,0,0,0.4)'      // eg. form help text
 };
