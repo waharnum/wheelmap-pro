@@ -193,24 +193,31 @@ const FinishedEventContent = styled((props: { event: IEvent, className?: string 
 `;
 
 
-function actionFromEventStatus(event: IEvent) {
+function actionFromEventStatus(event: IEvent, user?: Meteor.User | null, participant?: IEventParticipant | null) {
+
+  const shareAction = <ShareAction key="share" event={event}/>;
+  const joinAction = <Button key="join" className="join-button btn-primary"
+                             to={`/new/organizations/${event.organizationId}/events/${event._id}/public-invitation/${event.invitationToken}`}>
+    {t`Join Us`}</Button>;
+  const mappingAction = <Button key="map" className="map-button btn-primary"
+                                to={`/new/organizations/${event.organizationId}/events/${event._id}/mapping`}>
+    {t`Start mapping`}
+  </Button>;
+  const canceledLabel = <span className="canceled-label">{getLabelForEventStatus(event.status)}</span>;
+
+
+  const userHasJoined = participant && participant.invitationState === 'accepted';
+
+
   switch (event.status) {
     case 'completed':
-      return <ShareAction event={event}/>;
+      return shareAction;
     case 'planned':
-      return [
-        <ShareAction key="share" event={event}/>,
-        <Button key="join" className="join-button btn-primary"
-                to={`/new/organizations/${event.organizationId}/events/${event._id}/public-invitation/${event.invitationToken}`}>{t`Join Us`}</Button>];
+      return [shareAction, userHasJoined ? mappingAction : joinAction];
     case 'ongoing':
-      return [
-        <ShareAction key="share" event={event}/>,
-        <Button key="map" className="map-button btn-primary"
-                to={`/new/organizations/${event.organizationId}/events/${event._id}/mapping`}>
-          {t`Start mapping`}
-        </Button>];
+      return [shareAction, userHasJoined ? mappingAction : joinAction];
     case 'canceled':
-      return <span className="canceled-label">{getLabelForEventStatus(event.status)}</span>;
+      return canceledLabel;
   }
 
   return null;
@@ -233,12 +240,13 @@ type Props = {
   event: IEvent;
   user?: Meteor.User | null;
   participant?: IEventParticipant | null;
+  showActions?: boolean;
 };
 
 class EventPanel extends React.Component<IStyledComponent & Props> {
 
   public render() {
-    const {className, event, participant} = this.props;
+    const {className, event, user, participant, showActions} = this.props;
     const showCountDown = event.status !== 'canceled' && event.status !== 'completed';
     const countDownSection = showCountDown ? (<section className="countdown-section">
       <Countdown start={moment(event.startTime)}/>
@@ -257,7 +265,7 @@ class EventPanel extends React.Component<IStyledComponent & Props> {
             <h4 className="event-date">{moment(event.startTime).format('LLLL')}</h4>
           </div>
           <div className="event-actions">
-            {actionFromEventStatus(event)}
+            {(showActions !== false) && actionFromEventStatus(event, user, participant)}
           </div>
         </section>
         <section className="statistics-section">
