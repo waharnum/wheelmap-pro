@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import * as React from 'react';
-import {Link, RouteComponentProps} from 'react-router';
+import {Redirect, Link, RouteComponentProps} from 'react-router';
 
 import {Events, IEvent} from '../../../both/api/events/events';
 import {IAsyncDataByIdProps, reactiveSubscriptionByParams} from '../../components/reactiveModelSubscription';
@@ -42,6 +42,25 @@ type PageParams = {
 type Props = RouteComponentProps<PageParams, {}> & IAsyncDataByIdProps<PageModel> & IStyledComponent;
 
 class ShowEventPage extends React.Component<Props> {
+
+  constructor(props: Props) {
+    super(props);
+    this.handleInvalidData(props);
+  }
+
+  componentWillReceiveProps(props: Props) {
+    this.handleInvalidData(props);
+  }
+
+  handleInvalidData(props: Props) {
+    const {router, location} = props;
+    const {participant, event, organization} = props.model;
+
+    const isMappingFlow = location.pathname.endsWith('/mapping') || location.pathname.includes('/mapping/');
+    if (isMappingFlow && (!participant || event.status !== 'ongoing')) {
+      return router.replace(`/new/organizations/${organization._id}/events/${event._id}`);
+    }
+  }
 
   getPanelContent(isMappingFlow: boolean) {
     const {location, router, params} = this.props;
@@ -191,7 +210,7 @@ class ShowEventPage extends React.Component<Props> {
   }
 
   public render() {
-    const {router} = this.props;
+    const {router, location} = this.props;
     const {organization, event} = this.props.model;
 
     const isMappingFlow = location.pathname.endsWith('/mapping') ||
