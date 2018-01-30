@@ -762,7 +762,6 @@ class Questionnaire extends React.Component<Props, State> {
       <div className={`questionnaire-area ${this.props.className}`}>
         <header className="questionnaire-progress">
           <span className="progress-information">
-            <figure className="progress-done">{Math.floor(this.state.progress * 100)}</figure>
             <h1 className={`place-name ${headers.path ? '' : 'no-block'}`}>{headers.title}</h1>
             {headers.path ? <h2>{headers.path}</h2> : null}
             <span className="header-actions">
@@ -786,14 +785,17 @@ class Questionnaire extends React.Component<Props, State> {
                 </span>
               </div>
             </span>
+          </span>
+          <div className="progress-section">
+            <figure className="progress-done">{Math.floor(this.state.progress * 100)}</figure>
+            <div className="progress-bar">
+              <div className="progress-done" style={{ width: `${this.state.progress * 100}%` }} />
+            </div>
             <span className="time-left">
-              <figure className="duration">{stringifyDuration(this.state.remainingDuration)}</figure>
-              <small>left</small>
+              {stringifyDuration(this.state.remainingDuration)}
+              {' ' + t`left`}
             </span>
-          </span>
-          <span className="progress-bar">
-            <div className="progress-done" style={{ width: `${this.state.progress * 100}%` }} />
-          </span>
+          </div>
         </header>
         <div className="history-column">
           {this.historySection()}
@@ -1103,29 +1105,19 @@ export default styled(Questionnaire) `
   }
 
   header.questionnaire-progress {
-    height: 40px;
     padding: 4px 16px;
     display: flex;
     flex-direction: column;
+    box-shadow:0 0 3px ${colors.boxShadow};
 
     span.progress-information {
+      flex:1;
       font-size: 18px;
       font-weight: 800;
       line-height: 24px;
       display: flex;
 
-      figure.progress-done {
-        color: ${colors.linkBlue};
-        padding-right: 10px;
-
-        &:after {
-          content: '%';
-          right: 0;
-          font-size: 12px;
-          letter-spacing: 0;
-        }
-      }
-
+      
       h1.place-name {
         font-weight: 800;
         line-height: 24px;
@@ -1140,34 +1132,46 @@ export default styled(Questionnaire) `
         flex: 1;
       }
     }
-
-    span.progress-bar {
-      height: 3px;
-      width: 100%;
-      background-color: ${colors.shadowGrey};
-      box-shadow: none;
-
-      .progress-done {
-        content: ' ';
-        height: 4px;
-        font-size: 2px;
-        background-color: ${colors.linkBlue};
+    
+    .progress-section {
+      flex:1;
+      padding-top:5px;
+      display:flex;
+      flex-direction:row;
+      align-items: center;
+      
+      figure.progress-done {
+        color: ${colors.linkBlue};
+        padding-right: 10px;
+  
+        &:after {
+          content: '%';
+          right: 0;
+          font-size: 12px;
+          letter-spacing: 0;
+        }
       }
-    }
+      .progress-bar {
+        height: 3px;
+        width: 100%;
+        background-color: ${colors.shadowGrey};
+        box-shadow: none;
+        flex:1;
+  
+        .progress-done {
+          content: ' ';
+          height: 4px;
+          font-size: 2px;
+          background-color: ${colors.linkBlue};
+          min-width:2px;
+        }
+      }
 
-    span.time-left {
-      display: flex;
-      opacity: 0.5;        
-
-      figure.duration {
+      span.time-left {
+        color: ${colors.textMuted};  
         padding-right: 4px;
-        font-weight: 800;
         white-space: nowrap;
-      }
-
-      small {
-        flex-shrink: 0;
-        font-weight: 400;
+        padding-left: 8px;
       }
     }
 
