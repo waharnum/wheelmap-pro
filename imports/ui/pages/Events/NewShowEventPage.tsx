@@ -136,7 +136,7 @@ class ShowEventPage extends React.Component<Props> {
       forceSidePanelOpen = true;
     } else if (location.pathname.endsWith('/mapping')) {
       // mapping flow
-      content = <EventPanel event={event}/>;
+      content = <EventPanel participant={participant} user={user} event={event}/>;
       header = <LogoHeader link={`/new/organizations/${organization._id}/events/${event._id}/mapping/organization`}
                            prefixTitle={organization.name}
                            logo={organization.logo}
@@ -151,7 +151,7 @@ class ShowEventPage extends React.Component<Props> {
       onDismissSidePanel = () => {
         router.push(target);
       };
-      content = <EventPanel event={event}/>;
+      content = <EventPanel participant={participant} user={user} event={event}/>;
       header = <LogoHeader link={target}
                            prefixTitle={organization.name}
                            logo={organization.logo}
@@ -160,7 +160,7 @@ class ShowEventPage extends React.Component<Props> {
       forceSidePanelOpen = true;
     } else {
       // default view
-      content = <EventPanel event={event}/>;
+      content = <EventPanel participant={participant} user={user} event={event}/>;
       header = <LogoHeader link={`/new/organizations/${organization._id}/events/${event._id}/organization`}
                            prefixTitle={organization.name}
                            logo={organization.logo}

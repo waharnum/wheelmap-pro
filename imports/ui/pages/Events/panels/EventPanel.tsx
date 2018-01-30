@@ -13,6 +13,7 @@ import CornerRibbon from '../../../components/CornerRibbon';
 import Button from '../../../components/Button';
 import Countdown from '../../../components/Countdown';
 import {colors} from '../../../stylesheets/colors';
+import {IEventParticipant} from '../../../../both/api/event-participants/event-participants';
 
 
 const ShareAction = (props: { event: IEvent }) => (
@@ -200,7 +201,7 @@ function actionFromEventStatus(event: IEvent) {
       return [
         <ShareAction key="share" event={event}/>,
         <Button key="join" className="join-button btn-primary"
-                to="">{t`Join Us`}</Button>];
+                to={`/new/organizations/${event.organizationId}/events/${event._id}/public-invitation/${event.invitationToken}`}>{t`Join Us`}</Button>];
     case 'ongoing':
       return [
         <ShareAction key="share" event={event}/>,
@@ -230,18 +231,21 @@ function detailsFromEventStatus(event: IEvent) {
 
 type Props = {
   event: IEvent;
+  user?: Meteor.User | null;
+  participant?: IEventParticipant | null;
 };
 
 class EventPanel extends React.Component<IStyledComponent & Props> {
 
   public render() {
-    const {className, event} = this.props;
+    const {className, event, participant} = this.props;
     const showCountDown = event.status !== 'canceled' && event.status !== 'completed';
     const countDownSection = showCountDown ? (<section className="countdown-section">
       <Countdown start={moment(event.startTime)}/>
     </section>) : null;
 
-    const isPlanned = ['draft', 'planned', 'canceled'].indexOf(event.status) >= 0;
+    const hasResults = ['draft', 'planned', 'canceled'].indexOf(event.status) < 0;
+    const userHasJoined = participant && participant.invitationState === 'accepted';
 
     return (
       <div className={`${className} event-status-${event.status}`}>
@@ -259,8 +263,9 @@ class EventPanel extends React.Component<IStyledComponent & Props> {
         <section className="statistics-section">
           <EventStatistics
             event={event}
-            achieved={!isPlanned}
-            planned={isPlanned}
+            userHasJoined={!!userHasJoined}
+            achieved={hasResults}
+            planned={!hasResults}
             countdown="short"/>
         </section>
         <section className="details-section">
