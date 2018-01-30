@@ -5,8 +5,6 @@ import {browserHistory, RouteComponentProps} from 'react-router';
 import {withTracker} from 'meteor/react-meteor-data';
 import {LocationDescriptor} from 'history';
 
-import {setLoginRedirect} from '../../both/api/users/accounts';
-
 interface IUserProps {
   user: Meteor.User;
   ready: boolean;
@@ -30,13 +28,6 @@ class EnsureUserLoggedIn extends React.Component<Props> {
     this.redirectIfReady();
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
-    if (!nextProps.user) {
-      // save page to go back to
-      setLoginRedirect(nextProps.location || '/');
-    }
-  }
-
   public render(): JSX.Element | null {
     if (!this.props.ready) {
       return <p>{t`Loading...`}</p>;
@@ -55,12 +46,13 @@ class EnsureUserLoggedIn extends React.Component<Props> {
     }
     if (!this.isSignedIn()) {
       let signInRoute: LocationDescriptor | undefined;
+      const state = {afterSignIn: this.props.location || '/'};
       if (typeof this.props.signInRoute === 'function') {
         signInRoute = this.props.signInRoute(this.props);
       } else {
         signInRoute = this.props.signInRoute;
       }
-      browserHistory.replace(signInRoute || '/signup');
+      browserHistory.replace(signInRoute || {pathname: '/signup', state});
       return;
     }
     if (!this.hasMatchingRole()) {

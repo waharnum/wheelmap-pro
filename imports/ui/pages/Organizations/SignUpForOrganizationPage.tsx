@@ -1,20 +1,19 @@
 import styled from 'styled-components';
 import * as React from 'react';
-import { t, gettext } from 'c-3po';
-import { Meteor } from 'meteor/meteor';
-import { Location } from 'history';
-import { Accounts, STATES } from 'meteor/std:accounts-ui';
+import {t, gettext} from 'c-3po';
+import {Meteor} from 'meteor/meteor';
+import {Location} from 'history';
+import {Accounts, STATES} from 'meteor/std:accounts-ui';
 
 import Button from '../../components/Button';
 import ScrollableLayout from '../../layouts/ScrollableLayout';
-import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
-import { setLoginRedirect } from '../../../both/api/users/accounts';
-import { IStyledComponent } from '../../components/IStyledComponent';
-import { wrapDataComponent } from '../../components/AsyncDataComponent';
-import SidePanel, { SidePanelTitle } from '../../components/SidePanel';
-import { IAsyncDataByIdProps, reactiveSubscriptionByParams } from '../../components/reactiveModelSubscription';
-import { IOrganizationMember, OrganizationMembers } from '../../../both/api/organization-members/organization-members';
-import { browserHistory } from 'react-router';
+import {IOrganization, Organizations} from '../../../both/api/organizations/organizations';
+import {IStyledComponent} from '../../components/IStyledComponent';
+import {wrapDataComponent} from '../../components/AsyncDataComponent';
+import SidePanel, {SidePanelTitle} from '../../components/SidePanel';
+import {IAsyncDataByIdProps, reactiveSubscriptionByParams} from '../../components/reactiveModelSubscription';
+import {IOrganizationMember, OrganizationMembers} from '../../../both/api/organization-members/organization-members';
+import {browserHistory} from 'react-router';
 
 interface IAcceptInviteParams {
   _id: Mongo.ObjectID;
@@ -35,9 +34,9 @@ class SignUpForOrganizationPage extends React.Component<InternalPageProperties> 
     busy: boolean;
     error: string | null;
   } = {
-      busy: false,
-      error: null,
-    };
+    busy: false,
+    error: null,
+  };
 
   public componentWillReceiveProps(nextProps: InternalPageProperties) {
     this.modelChanged(nextProps);
@@ -72,7 +71,7 @@ class SignUpForOrganizationPage extends React.Component<InternalPageProperties> 
         <div className="content-area scrollable">
           <h2>{t`Great to have you here!`}</h2>
           <div className="alert alert-info">{t`Please sign up to join "${organization.name}".`}</div>
-          <Accounts.ui.LoginForm formState={STATES.SIGN_UP} />
+          <Accounts.ui.LoginForm formState={STATES.SIGN_UP}/>
         </div>
       );
     } else {
@@ -81,7 +80,7 @@ class SignUpForOrganizationPage extends React.Component<InternalPageProperties> 
           <h2>{t`Welcome to our community!`}</h2>
           <div className="alert alert-success">{t`Thanks for signing up with ${organization.name}!`}</div>
           <Button className="btn-primary"
-            to={`/organizations/${organization._id}/organize`}>{t`Organize events now!`}</Button>
+                  to={`/organizations/${organization._id}/organize`}>{t`Organize events now!`}</Button>
         </div>
       );
     }
@@ -112,11 +111,9 @@ class SignUpForOrganizationPage extends React.Component<InternalPageProperties> 
     }
 
     if (!props.model.user) {
-      this.setState({ busy: false, error: null });
-      setLoginRedirect(this.props.location.pathname);
+      this.setState({busy: false, error: null});
     } else {
-      this.setState({ busy: false, error: null });
-      setLoginRedirect(null);
+      this.setState({busy: false, error: null});
 
       if (!props.model.member.invitationState ||
         props.model.member.invitationState === 'accepted') {
@@ -129,9 +126,9 @@ class SignUpForOrganizationPage extends React.Component<InternalPageProperties> 
   };
 
   private acceptInvite = () => {
-    this.setState({ busy: true });
+    this.setState({busy: true});
     Meteor.call('organizationMembers.acceptInvitation',
-      { organizationId: this.props.params._id, invitationToken: this.props.params.token },
+      {organizationId: this.props.params._id, invitationToken: this.props.params.token},
       (error: Meteor.Error | null) => {
         if (error) {
           this.setState({
@@ -156,11 +153,11 @@ const ReactiveSignUpForOrganizationPage = reactiveSubscriptionByParams(
     // find either if current user is a member, or there is an invitation with the given token
     const member = organization ? OrganizationMembers.findOne({
       $or: [
-        { organizationId: organization._id, invitationToken: params.token },
-        { organizationId: organization._id, userId: user ? user._id : -1 },
+        {organizationId: organization._id, invitationToken: params.token},
+        {organizationId: organization._id, userId: user ? user._id : -1},
       ],
     }) : null;
-    return organization ? { user, organization, member } : null;
+    return organization ? {user, organization, member} : null;
   }, 'organizations.by_id.public', 'organizationMembers.by_eventIdAndToken.public', 'users.my.private');
 
 export default styled(ReactiveSignUpForOrganizationPage) `

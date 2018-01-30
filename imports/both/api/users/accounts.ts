@@ -9,10 +9,6 @@ import {BoolField} from 'uniforms-bootstrap3';
 import {t} from 'c-3po';
 import {registerSchemaForI18n} from '../../i18n/i18n';
 
-export function setLoginRedirect(redirect: LocationDescriptor | null) {
-  Session.set('loginRedirect', redirect);
-};
-
 Accounts.config({
   sendVerificationEmail: true,
   forbidClientAccountCreation: false,
@@ -25,20 +21,6 @@ Accounts.ui.config({
   resetPasswordPath: '/reset-password',
   profilePath: '/profile',
   requireEmailVerification: true,
-  onSignedInHook: () => {
-    const redirect = Session.get('loginRedirect');
-    setLoginRedirect(null);
-    redirect ? browserHistory.replace(redirect) : browserHistory.push('/');
-  },
-  onSignedOutHook: () => {
-    setLoginRedirect(null);
-    browserHistory.push('/');
-  },
-  onPostSignUpHook: () => {
-    const redirect = Session.get('loginRedirect');
-    setLoginRedirect(null);
-    redirect ? browserHistory.replace(redirect) : browserHistory.push('/');
-  },
   minimumPasswordLength: 6,
 });
 

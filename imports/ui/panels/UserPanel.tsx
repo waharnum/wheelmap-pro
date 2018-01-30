@@ -50,6 +50,7 @@ const UserPanel = (props: UserPanelInternalProps) => (
   <section className={props.className}>
     <Accounts.ui.LoginForm
       onSignedInHook={props.onSignedInHook}
+      onPostSignUpHook={props.onSignedInHook}
       onSignedOutHook={props.onSignedOutHook}
     />
     {(props.user && props.user.guest) ? <GuestUserContent/> : null}
