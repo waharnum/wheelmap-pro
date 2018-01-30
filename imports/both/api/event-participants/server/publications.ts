@@ -1,8 +1,7 @@
-import {Meteor} from 'meteor/meteor';
-
-import { EventParticipants } from '../event-participants';
-import { publishAndLog, publishFields } from '../../../../server/publish';
+import {EventParticipants} from '../event-participants';
+import {publishFields} from '../../../../server/publish';
 import {
+  buildByEventIdForCurrentUserSelector,
   buildByEventIdAndTokenSelector,
   buildVisibleForUserByEventIdSelector,
   EventParticipationPrivateFields,
@@ -19,4 +18,11 @@ publishFields('eventParticipants.by_eventIdAndToken.public',
   EventParticipants,
   EventParticipationPublicFields,
   buildByEventIdAndTokenSelector,
+);
+
+
+publishFields('eventParticipants.my_byEventId.private',
+  EventParticipants,
+  EventParticipationPrivateFields,
+  buildByEventIdForCurrentUserSelector,
 );

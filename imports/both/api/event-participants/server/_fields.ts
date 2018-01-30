@@ -84,3 +84,9 @@ export function buildByEventIdAndTokenSelector(userId: Mongo.ObjectID,
   check(eventId, String);
   return {eventId, invitationToken: params.token};
 };
+
+export function buildByEventIdForCurrentUserSelector(userId: Mongo.ObjectID,
+                                                     eventId: Mongo.ObjectID): Mongo.Selector {
+  check(eventId, String);
+  return {userId, eventId};
+};
