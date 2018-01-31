@@ -222,7 +222,7 @@ class ShowEventPage extends React.Component<Props> {
 
   public render() {
     const {router, location} = this.props;
-    const {organization, event} = this.props.model;
+    const {organization, event, places} = this.props.model;
 
     const isMappingFlow = location.pathname.endsWith('/mapping') ||
       location.pathname.includes('/mapping/');
@@ -254,6 +254,7 @@ class ShowEventPage extends React.Component<Props> {
           }
         }}
         mapProperties={{
+          customPlaces: places,
           bbox: isMappingFlow ? undefined : bbox,
           onMarkerClick: (id) => {
             if (isMappingFlow) {

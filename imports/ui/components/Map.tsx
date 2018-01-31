@@ -71,6 +71,7 @@ class Map extends React.Component<IStyledComponent & Props, State> {
             const markers = nextProps.customPlaces.map(
               feature => {
                 feature.properties._id = feature._id;
+                accessibilityCloudFeatureCache.cacheFeature(feature);
                 return this.createMarkerFromFeature(feature, feature.geometry.coordinates.reverse());
               });
             this.customLayer = L.layerGroup(markers);
