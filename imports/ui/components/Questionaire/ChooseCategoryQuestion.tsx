@@ -81,7 +81,8 @@ const CategoryChooserQuestion = class extends React.Component<IStyledComponent &
                       name="selectCategory"
                       value={currentSelected ? currentSelected._id : ''}
                       onChange={itemSelected}>
-                <option value="" disabled>{t`Please select`}</option>
+                <option value=""
+                        disabled>{currentLevel === 0 ? t`Please select category` : t`Please select sub-category`}</option>
                 {
                   level.map((category) => {
                     return (
