@@ -17,8 +17,8 @@ const PlaceOnMapQuestion = class extends React.Component<IStyledComponent & Prop
   public render() {
     return (
       <Map
-        lon={this.props.value.coordinates && this.props.value.coordinates[0]}
-        lat={this.props.value.coordinates && this.props.value.coordinates[1]}
+        lat={this.props.value.coordinates && this.props.value.coordinates[0]}
+        lon={this.props.value.coordinates && this.props.value.coordinates[1]}
         accessibilityCloudTileUrlBuilder={() => false}
         zoom={19}
         onMoveEnd={(options: { zoom: number, lat: number, lon: number, bbox: L.LatLngBounds }) => {
@@ -26,7 +26,7 @@ const PlaceOnMapQuestion = class extends React.Component<IStyledComponent & Prop
           const asString = `Lat ${options.lat.toFixed(4)} Lon ${options.lon.toFixed(4)}`;
           this.props.onChange({
             type: 'Point',
-            coordinates: [options.lon, options.lat],
+            coordinates: [options.lat, options.lon],
             toString: () => {
               return asString;
             },

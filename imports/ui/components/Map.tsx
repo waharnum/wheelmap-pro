@@ -1,4 +1,7 @@
+import styled from 'styled-components';
 import * as React from 'react';
+import {PropTypes} from 'react';
+import {isEqual, reverse} from 'lodash';
 
 import ReactWheelmapMap from 'wheelmap-react/lib/components/Map/Map';
 import HighlightableMarker from 'wheelmap-react/lib/components/Map/HighlightableMarker';
@@ -11,11 +14,8 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet.locatecontrol/src/L.Control.Locate.scss';
 import 'wheelmap-react/src/Map.css';
 
-import styled from 'styled-components';
-import {IStyledComponent} from './IStyledComponent';
 import {IPlaceInfo} from '../../both/api/place-infos/place-infos';
-import {PropTypes} from 'react';
-import {isEqual} from 'lodash';
+import {IStyledComponent} from './IStyledComponent';
 
 export type Props = {
   children?: React.ReactNode;
@@ -72,7 +72,7 @@ class Map extends React.Component<IStyledComponent & Props, State> {
               feature => {
                 feature.properties._id = feature._id;
                 accessibilityCloudFeatureCache.cacheFeature(feature);
-                return this.createMarkerFromFeature(feature, feature.geometry.coordinates.reverse());
+                return this.createMarkerFromFeature(feature, feature.geometry.coordinates);
               });
             this.customLayer = L.layerGroup(markers);
             this.leafletMap.addLayer(this.customLayer);
