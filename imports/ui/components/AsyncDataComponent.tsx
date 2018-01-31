@@ -1,15 +1,14 @@
 import {t} from 'c-3po';
 import * as React from 'react';
 import {Dots} from 'react-activity';
-import {ComponentConstructor} from 'meteor/react-meteor-data';
 
 import {IAsyncDataProps} from './reactiveModelSubscription';
 
-const Loading = (props: any) => {
-  return (<div className="loading-box"><Dots/>Loading</div>);
+export const Loading = (props: { children?: React.ReactNode }) => {
+  return (<div className="loading-box">{props.children}<Dots/>{t`Loading`}</div>);
 };
 
-const DataNotFound = (props: any) => {
+export const DataNotFound = (props: any) => {
   return (<p>{t`Missing data`}</p>);
 };
 
