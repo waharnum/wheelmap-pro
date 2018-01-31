@@ -4,7 +4,7 @@ import {Mongo} from 'meteor/mongo';
 export interface IPlaceInfo {
   _id: Mongo.ObjectID;
   properties: {
-    _id: Mongo.ObjectID;
+    _id?: Mongo.ObjectID; // received from rest api
     infoPageUrl: string;
     originalId: string;
     category: string;

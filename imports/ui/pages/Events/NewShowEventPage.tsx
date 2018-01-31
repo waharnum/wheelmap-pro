@@ -1,30 +1,66 @@
-import styled from 'styled-components';
-import * as React from 'react';
-import {Redirect, Link, RouteComponentProps} from 'react-router';
-
-import {Events, IEvent} from '../../../both/api/events/events';
-import {IAsyncDataByIdProps, reactiveSubscriptionByParams} from '../../components/reactiveModelSubscription';
-import {wrapDataComponent} from '../../components/AsyncDataComponent';
-import NewMapLayout from '../../layouts/NewMapLayout';
-import {IStyledComponent} from '../../components/IStyledComponent';
-import {IOrganization} from '../../../both/api/organizations/organizations';
-import EventPanel from './panels/EventPanel';
 import {t} from 'c-3po';
-import LogoHeader from '../../components/LogoHeader';
-import {defaultRegion} from '../../../both/api/events/schema';
-import {regionToBbox} from '../../../both/lib/geo-bounding-box';
 import * as L from 'leaflet';
-import EventMiniMarker from './EventMiniMarker';
-import UserPanel from '../../panels/UserPanel';
-import OrganizationAboutPanel from '../Organizations/panels/OrganizationAboutPanel';
-import {accessibilityCloudFeatureCache} from 'wheelmap-react/lib/lib/cache/AccessibilityCloudFeatureCache';
-import PlaceDetailsPanel from '../../panels/PlaceDetailsPanel';
-import {colors} from '../../stylesheets/colors';
-import SurveyPanel from './panels/SurveyPanel';
-import EventInvitationPanel from './panels/EventInvitationPanel';
-import {EventParticipants, IEventParticipant} from '../../../both/api/event-participants/event-participants';
-import {IPlaceInfo} from '../../../both/api/place-infos/place-infos';
+import styled from 'styled-components';
+import {toast} from 'react-toastify';
+import * as React from 'react';
+import {Link, RouteComponentProps, InjectedRouter} from 'react-router';
 
+import {accessibilityCloudFeatureCache} from 'wheelmap-react/lib/lib/cache/AccessibilityCloudFeatureCache';
+
+import {IPlaceInfo} from '../../../both/api/place-infos/place-infos';
+import {IOrganization} from '../../../both/api/organizations/organizations';
+import {defaultRegion} from '../../../both/api/events/schema';
+import {Events, IEvent} from '../../../both/api/events/events';
+import {EventParticipants, IEventParticipant} from '../../../both/api/event-participants/event-participants';
+
+import {regionToBbox} from '../../../both/lib/geo-bounding-box';
+
+import {colors} from '../../stylesheets/colors';
+import NewMapLayout from '../../layouts/NewMapLayout';
+
+import LogoHeader from '../../components/LogoHeader';
+import {IStyledComponent} from '../../components/IStyledComponent';
+import {Loading, wrapDataComponent} from '../../components/AsyncDataComponent';
+import {IAsyncDataByIdProps, reactiveSubscriptionByParams} from '../../components/reactiveModelSubscription';
+
+import UserPanel from '../../panels/UserPanel';
+import EventPanel from './panels/EventPanel';
+import SurveyPanel from './panels/SurveyPanel';
+import PlaceDetailsPanel from '../../panels/PlaceDetailsPanel';
+import EventInvitationPanel from './panels/EventInvitationPanel';
+import OrganizationAboutPanel from '../Organizations/panels/OrganizationAboutPanel';
+
+import EventMiniMarker from './EventMiniMarker';
+import {PlaceInfoSchema} from '@sozialhelden/ac-format';
+
+const EditPlaceAction = (router: InjectedRouter, organization: IOrganization, event: IEvent, feature: IPlaceInfo) => {
+  return (<button className="btn btn-primary" onClick={() => {
+    let clonedFeature = Object.assign({}, feature);
+    // wheelmap react requires an _id in properties, db does not want this, so lets remove it
+    const {_id, ...properties} = clonedFeature.properties;
+    clonedFeature.properties = properties;
+
+    if (clonedFeature._id && clonedFeature.properties && clonedFeature.properties.eventId === event._id) {
+      // was part of this event/source, just edit right away
+      router.push({
+        pathname: `/new/organizations/${organization._id}/events/${event._id}/mapping/edit-place/${clonedFeature._id}`,
+        state: {feature: clonedFeature},
+      });
+    } else {
+      // was part of another event/source, needs clean up
+      // remove id, so place is saved as a new place!
+      delete clonedFeature._id;
+      // remove all invalid fields
+      clonedFeature = PlaceInfoSchema.clean(clonedFeature);
+
+      router.push({
+        pathname: `/new/organizations/${organization._id}/events/${event._id}/mapping/create-place`,
+        state: {feature: clonedFeature},
+      });
+    }
+
+  }}>{t`Edit place`}</button>);
+};
 
 type PageModel = {
   organization: IOrganization,
@@ -47,14 +83,14 @@ class ShowEventPage extends React.Component<Props> {
 
   constructor(props: Props) {
     super(props);
-    this.handleInvalidData(props);
+    ShowEventPage.handleInvalidData(props);
   }
 
   componentWillReceiveProps(props: Props) {
-    this.handleInvalidData(props);
+    ShowEventPage.handleInvalidData(props);
   }
 
-  handleInvalidData(props: Props) {
+  static handleInvalidData(props: Props) {
     const {router, location} = props;
     const {participant, event, organization} = props.model;
 
@@ -80,7 +116,9 @@ class ShowEventPage extends React.Component<Props> {
 
     if (location.pathname.endsWith('/create-place') || location.pathname.includes('/edit-place/')) {
       // survey
-      content = <SurveyPanel event={event} place={null} onExitSurvey={() => {
+      const place = (location.state && location.state.feature as IPlaceInfo) || null;
+
+      content = <SurveyPanel event={event} place={place} onExitSurvey={() => {
         router.push(`/new/organizations/${organization._id}/events/${event._id}/mapping`);
       }}/>;
       header = null;
@@ -92,13 +130,16 @@ class ShowEventPage extends React.Component<Props> {
       const target = isMappingFlow ?
         `/new/organizations/${organization._id}/events/${event._id}/mapping` :
         `/new/organizations/${organization._id}/events/${event._id}`;
+
       header = <LogoHeader link={target}
                            prefixTitle={organization.name}
                            logo={organization.logo}
                            title={t`Place`}/>;
       // TODO async fetch feature
       const feature = accessibilityCloudFeatureCache.getCachedFeature(params.place_id);
-      content = <PlaceDetailsPanel feature={feature}/>;
+      const actions = (isMappingFlow && feature) ? EditPlaceAction(router, organization, event, feature) : null;
+      content = feature ? <PlaceDetailsPanel feature={feature} actions={actions}/> :
+        <Loading>{t`Place not found…`}</Loading>;
       forceSidePanelOpen = true;
       canDismissCardPanel = true;
       // TODO center map to POI on first render
