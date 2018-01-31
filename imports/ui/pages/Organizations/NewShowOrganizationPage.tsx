@@ -87,8 +87,12 @@ class ShowOrganizationPage extends React.Component<Props, State> {
       forceSidePanelOpen = true;
     } else {
       // about organization panel
+      const adminLink = organization.editableBy(Meteor.userId()) ?
+        `/organizations/${organization._id}/organize` : undefined;
+
       content = <OrganizationAboutPanel
         organization={organization}
+        adminLink={adminLink}
         onGotoUserPanel={() => {
           router.push(`/new/organizations/${organization._id}/user`);
         }}

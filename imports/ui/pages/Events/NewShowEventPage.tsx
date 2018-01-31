@@ -23,6 +23,7 @@ import {colors} from '../../stylesheets/colors';
 import SurveyPanel from './panels/SurveyPanel';
 import EventInvitationPanel from './panels/EventInvitationPanel';
 import {EventParticipants, IEventParticipant} from '../../../both/api/event-participants/event-participants';
+import {IPlaceInfo} from '../../../both/api/place-infos/place-infos';
 
 
 type PageModel = {
@@ -30,6 +31,7 @@ type PageModel = {
   event: IEvent,
   user: Meteor.User | null,
   participant: IEventParticipant | null,
+  places: IPlaceInfo[],
 };
 
 type PageParams = {
@@ -159,7 +161,11 @@ class ShowEventPage extends React.Component<Props> {
       };
       canDismissFromSidePanel = true;
       header = null;
+
+      const adminLink = event.editableBy(Meteor.userId()) ?
+        `/events/${event._id}/organize` : undefined;
       content = <OrganizationAboutPanel organization={organization}
+                                        adminLink={adminLink}
                                         organizationLink={`/new/organizations/${organization._id}`}
                                         onGotoUserPanel={
                                           () => {
@@ -282,10 +288,11 @@ const ReactiveShowEventPage = reactiveSubscriptionByParams(
     const organization = event ? event.getOrganization() : null;
     const user = Meteor.user();
     const participant = user ? EventParticipants.findOne({userId: user._id, eventId: id}) : null;
+    const places = event ? event.getPlaces() : [];
     // fetch model with organization & events in one go
-    return event && organization ? {organization, event, user, participant} : null;
+    return event && organization ? {organization, event, user, participant, places} : null;
   }, 'events.by_id.public', 'organizations.by_eventId.public',
-  'eventParticipants.my_byEventId.private', 'users.my.private');
+  'eventParticipants.my_byEventId.private', 'placeInfos.by_eventId.public', 'users.my.private');
 
 
 export default styled(ReactiveShowEventPage) `  

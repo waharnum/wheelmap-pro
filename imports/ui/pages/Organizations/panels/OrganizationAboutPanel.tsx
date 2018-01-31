@@ -10,6 +10,7 @@ import UserFooter from './UserFooter';
 
 type Props = {
   organization: IOrganization;
+  adminLink?: string;
   onGotoUserPanel: () => void;
   organizationLink?: string;
 };
@@ -17,9 +18,7 @@ type Props = {
 class OrganizationAboutPanel extends React.Component<IStyledComponent & Props> {
 
   public render() {
-    const {className, organization, onGotoUserPanel, organizationLink} = this.props;
-
-    const adminLink = organization.editableBy(Meteor.userId()) ? `/organizations/${organization._id}/organize` : undefined;
+    const {className, organization, onGotoUserPanel, organizationLink, adminLink} = this.props;
 
     return (
       <div className={className}>
