@@ -1,8 +1,12 @@
-import * as React from 'react';
-import styled from 'styled-components';
-import {AutoForm, AutoField, ErrorsField, SubmitField} from 'uniforms-bootstrap3';
 import {t} from 'c-3po';
+import styled from 'styled-components';
+import {toast} from 'react-toastify';
+import * as React from 'react';
+import {AutoForm, AutoField, ErrorsField, SubmitField} from 'uniforms-bootstrap3';
 import {extend, get, pick, set, concat, sample, isEqual} from 'lodash';
+
+
+import AccessibilityDetails from 'wheelmap-react/lib/components/NodeToolbar/AccessibilityDetails';
 
 import {colors} from '../../stylesheets/colors';
 import {IStyledComponent} from '../IStyledComponent';
@@ -11,8 +15,6 @@ import HistoryEntry from './HistoryEntry';
 import {forEachKeyInSchemas, isEqualSchema} from '../../../both/lib/ac-format-uniforms-bridge';
 import {determineDuration, newBlockSwitchOverhead} from '../../../both/lib/estimate-schema-duration';
 import {stringifyDuration} from '../../../both/i18n/duration';
-import {toast} from 'react-toastify';
-
 
 const affirmativeAnswers: ReadonlyArray<string> = Object.freeze([t`Yes!`, t`Okay!`, t`Sure!`, t`Let's do this!`, t`I'm ready!`]);
 const skipAnswers: ReadonlyArray<string> = Object.freeze([t`I'm not sure.`, t`I'll skip this one.`, t`No idea.`, t`Ask me next time.`, t`Phew, I couldn't tell.`]);
@@ -639,11 +641,15 @@ class Questionnaire extends React.Component<Props, State> {
   }
 
   doneSection() {
+    const details = get(this.state.model, 'properties.accessibility') || {};
     return (
       <section className="questionnaire-step done"
                ref="latest-active-block">
         <h3 className="question">{t`Well done, you made it through!`}</h3>
-        <code>{JSON.stringify(this.state.model, null, 2)}</code>
+        <section className="survey-results">
+          {/*<code>{JSON.stringify(this.state.model, null, 2)}</code>*/}
+          <AccessibilityDetails details={details}/>
+        </section>
         <span className="call-to-action">
           <div className="form">
             <div className="form-group">
@@ -932,7 +938,7 @@ export default styled(Questionnaire) `
       &:hover,
       &:active,
       &:hover label,
-      &:active label, {
+      &:active label {
         opacity: 1;
         color: white;
         background: ${colors.bgAnthracite};
@@ -983,11 +989,19 @@ export default styled(Questionnaire) `
       line-height: 1.25em;
     }
 
-    input::placeholder,
-    ::-webkit-input-placeholder, /* Chrome/Opera/Safari */
-    ::-moz-placeholder, /* Firefox 19+ */
-    :-ms-input-placeholder, /* Internet Explorer 10-11 */
-    ::-ms-input-placeholder  /* Microsoft Edge */
+    input::placeholder
+    {
+      font-weight: 300;
+    }
+    ::-webkit-input-placeholder /* Chrome/Opera/Safari */
+    {
+      font-weight: 300;
+    }
+    ::-moz-placeholder /* Firefox 19+ */
+    {
+      font-weight: 300;
+    }
+    :-ms-input-placeholder /* Internet Explorer 10-11 */
     {
       font-weight: 300;
     }
