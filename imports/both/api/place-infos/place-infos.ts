@@ -26,4 +26,4 @@ export interface IPlaceInfo {
   };
 }
 
-export const PlaceInfos = new Mongo.Collection<IPlaceInfo>('PlaceInfosNew');
+export const PlaceInfos = new Mongo.Collection<IPlaceInfo>('PlaceInfos');
