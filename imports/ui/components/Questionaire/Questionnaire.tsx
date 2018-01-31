@@ -1,20 +1,20 @@
-import {t} from 'c-3po';
+import { t } from 'c-3po';
 import styled from 'styled-components';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 import * as React from 'react';
-import {AutoForm, AutoField, ErrorsField, SubmitField} from 'uniforms-bootstrap3';
+import { AutoForm, AutoField, ErrorsField, SubmitField } from 'uniforms-bootstrap3';
 import {extend, get, pick, set, concat, sample, isEqual, reduce} from 'lodash';
 
 
 import AccessibilityDetails from 'wheelmap-react/lib/components/NodeToolbar/AccessibilityDetails';
 
-import {colors} from '../../stylesheets/colors';
-import {IStyledComponent} from '../IStyledComponent';
-import {pickFieldForAutoForm} from '../../../both/lib/simpl-schema-filter';
+import { colors } from '../../stylesheets/colors';
+import { IStyledComponent } from '../IStyledComponent';
+import { pickFieldForAutoForm } from '../../../both/lib/simpl-schema-filter';
 import HistoryEntry from './HistoryEntry';
-import {forEachKeyInSchemas, isEqualSchema} from '../../../both/lib/ac-format-uniforms-bridge';
-import {determineDuration, newBlockSwitchOverhead} from '../../../both/lib/estimate-schema-duration';
-import {stringifyDuration} from '../../../both/i18n/duration';
+import { forEachKeyInSchemas, isEqualSchema } from '../../../both/lib/ac-format-uniforms-bridge';
+import { determineDuration, newBlockSwitchOverhead } from '../../../both/lib/estimate-schema-duration';
+import { stringifyDuration } from '../../../both/i18n/duration';
 
 const affirmativeAnswers: ReadonlyArray<string> = Object.freeze([t`Yes!`, t`Okay!`, t`Sure!`, t`Let's do this!`, t`I'm ready!`]);
 const skipAnswers: ReadonlyArray<string> = Object.freeze([t`I'm not sure.`, t`I'll skip this one.`, t`No idea.`, t`Ask me next time.`, t`Phew, I couldn't tell.`]);
@@ -76,11 +76,11 @@ type State = {
  * simpleSchemaPathToObjectPath( 'a.$.b.$.c.e.f', [4, 2], 0, {wrapInArray: false} ) returns 'a4.b2.c.e.f'.
  */
 const simpleSchemaPathToObjectPath = (simpleSchemaPath: string,
-                                      arrayIndexes: Array<number> = [],
-                                      options: { wrapInArray?: boolean, defaultValue?: number } = {
-                                        wrapInArray: true,
-                                        defaultValue: 0,
-                                      }): string => {
+  arrayIndexes: Array<number> = [],
+  options: { wrapInArray?: boolean, defaultValue?: number } = {
+    wrapInArray: true,
+    defaultValue: 0,
+  }): string => {
   if (!simpleSchemaPath) {
     return '';
   }
@@ -281,9 +281,9 @@ class Questionnaire extends React.Component<Props, State> {
             // store id for next update
             this.state.model._id = result;
           }).catch((error) => {
-          console.error(error);
-          toast.error(error);
-        });
+            console.error(error);
+            toast.error(error);
+          });
       }
     }
 
@@ -300,7 +300,7 @@ class Questionnaire extends React.Component<Props, State> {
       mainContent,
       arrayIndexes,
     }), this.scrollRefIntoView);
-  };
+  }
 
   determineQuestion(type: ContentTypes, field: string | null): string | string[] {
     if (!field) {
@@ -359,7 +359,7 @@ class Questionnaire extends React.Component<Props, State> {
       }
     }
 
-    return {title, path};
+    return { title, path };
   }
 
   historySection() {
@@ -378,12 +378,12 @@ class Questionnaire extends React.Component<Props, State> {
 
       return (
         <HistoryEntry key={index}
-                      question={entry.question}
-                      value={entry.answer}
-                      className={entry.className}
+          question={entry.question}
+          value={entry.answer}
+          className={entry.className}
                       blockLabel={entry.blockLabel}
                       duration={entry.duration}
-                      onClick={callback}/>
+          onClick={callback} />
       );
     });
   }
@@ -396,7 +396,7 @@ class Questionnaire extends React.Component<Props, State> {
     const resultValue = get(resultObj, objectPath);
     let bareValue = resultValue;
     if (typeof resultValue === 'object') {
-      const {toString, ...stripped} = resultValue;
+      const { toString, ...stripped } = resultValue;
       bareValue = stripped;
     }
     set(this.state.model, objectPath, bareValue);
@@ -414,7 +414,7 @@ class Questionnaire extends React.Component<Props, State> {
     };
 
     this.goToNextField('nextIndex', nextState);
-  };
+  }
 
   skipField = (field: string, question: string) => {
     const nextState = {
@@ -430,13 +430,13 @@ class Questionnaire extends React.Component<Props, State> {
     };
 
     this.goToNextField('nextIndex', nextState);
-  };
+  }
 
   scrollRefIntoView = () => {
     if (this.refs['latest-active-block'] && !this.hasFocus) {
-      (this.refs['latest-active-block'] as HTMLElement).scrollIntoView({block: 'end', behavior: 'smooth'});
+      (this.refs['latest-active-block'] as HTMLElement).scrollIntoView({ block: 'end', behavior: 'smooth' });
     }
-  };
+  }
 
   valueEntrySection(field: string) {
     const definition = this.props.schema.getDefinition(field);
@@ -457,7 +457,7 @@ class Questionnaire extends React.Component<Props, State> {
     /* specify key on AutoForm, so that the form is not reused between fields, otherwise the state persists */
     return (
       <section className={`questionnaire-step ${isOptional ? 'questionnaire-optional' : 'questionnaire-mandatory'}`}
-               ref="latest-active-block">
+        ref="latest-active-block">
         <AutoForm
           action="#"
           key={field}
@@ -480,17 +480,17 @@ class Questionnaire extends React.Component<Props, State> {
                 }
               }}
               label={false}
-              name={simpleSchemaPathToObjectPath(field, this.state.arrayIndexes, {wrapInArray: false})}>
+              name={simpleSchemaPathToObjectPath(field, this.state.arrayIndexes, { wrapInArray: false })}>
             </AutoField>
             <span className={isSelfSubmitting ? 'call-to-action' : 'call-to-action cta-full-width'}>
               <div className="form">
                 <div className="form-group">
                   {!isSelfSubmitting ?
-                    <SubmitField className={t`primary-action`} value={t`Next`}/> : null}
+                    <SubmitField className={t`primary-action`} value={t`Next`} /> : null}
                   {isOptional ?
                     <button className="secondary"
-                            onClick={this.skipField.bind(this, field, this.state.question)}>{t`Skip`}</button> : null}
-                  <ErrorsField/>
+                      onClick={this.skipField.bind(this, field, this.state.question)}>{t`Skip`}</button> : null}
+                  <ErrorsField />
                 </div>
               </div>
             </span>
@@ -522,7 +522,7 @@ class Questionnaire extends React.Component<Props, State> {
     };
 
     this.goToNextField('nextIndex', nextState);
-  };
+  }
 
   enterBlockSection(field: string) {
     const definition = this.props.schema.getDefinition(field);
@@ -537,7 +537,7 @@ class Questionnaire extends React.Component<Props, State> {
     const duration = stringifyDuration(blockDuration);
     return (
       <section className="questionnaire-step enter-block"
-               ref="latest-active-block">
+        ref="latest-active-block">
         <section className="block-header">
           <h3>{definition.label}</h3>
           <span className="time-left">{duration}</span>
@@ -549,8 +549,8 @@ class Questionnaire extends React.Component<Props, State> {
               {isOptional ?
                 [<button key="yes" className="primary"
                          onClick={this.enterBlock.bind(this, field, this.state.question, definition.label, duration)}>{t`Yes`}</button>,
-                  <button key="no" className="primary"
-                          onClick={this.skipBlock.bind(this, field, this.state.question)}>{t`No`}</button>] :
+                <button key="no" className="primary"
+                  onClick={this.skipBlock.bind(this, field, this.state.question)}>{t`No`}</button>] :
                 <button className="primary"
                         onClick={this.enterBlock.bind(this, field, this.state.question, definition.label, duration)}>{t`Okay`}</button>
               }
@@ -585,7 +585,7 @@ class Questionnaire extends React.Component<Props, State> {
     };
 
     this.goToNextField('nextIndex', nextState);
-  };
+  }
 
   skipBlock = (field: string, question: string) => {
     const nextState = {
@@ -601,7 +601,7 @@ class Questionnaire extends React.Component<Props, State> {
       model: this.state.model,
     };
     this.goToNextField('skipBlock', nextState);
-  };
+  }
 
   enterArraySection(field: string) {
     const definition = this.props.schema.getDefinition(field);
@@ -620,7 +620,7 @@ class Questionnaire extends React.Component<Props, State> {
     const duration = stringifyDuration(blockDuration);
     return (
       <section className="questionnaire-step enter-array"
-               ref="latest-active-block">
+        ref="latest-active-block">
         <section className="array-header">
           <h3>label</h3>
           <span className="time-left">{duration}</span>
@@ -632,8 +632,8 @@ class Questionnaire extends React.Component<Props, State> {
               {isOptional ?
                 [<button key="yes" className="primary"
                          onClick={this.enterArray.bind(this, field, this.state.question, arrayIndex, label, duration)}>{t`Yes`}</button>,
-                  <button key="no" className="primary"
-                          onClick={this.skipBlock.bind(this, field, this.state.question, arrayIndex)}>{t`No`}</button>] :
+                <button key="no" className="primary"
+                  onClick={this.skipBlock.bind(this, field, this.state.question, arrayIndex)}>{t`No`}</button>] :
                 <button className="primary"
                         onClick={this.enterArray.bind(this, field, this.state.question, arrayIndex, label, duration)}>{t`Okay`}</button>
               }
@@ -664,7 +664,7 @@ class Questionnaire extends React.Component<Props, State> {
     const question = newPlace ? t`Let’s go, we need more data on places!` : t`Let’s update this place!`;
     return (
       <section className="questionnaire-step welcome"
-               ref="latest-active-block">
+        ref="latest-active-block">
         <h3 className="question">{question}</h3>
         <span className="call-to-action">
           <div className="form">
@@ -681,11 +681,11 @@ class Questionnaire extends React.Component<Props, State> {
     const details = get(this.state.model, 'properties.accessibility') || {};
     return (
       <section className="questionnaire-step done"
-               ref="latest-active-block">
+        ref="latest-active-block">
         <h3 className="question">{t`Well done, you made it through!`}</h3>
         <section className="survey-results">
           {/*<code>{JSON.stringify(this.state.model, null, 2)}</code>*/}
-          <AccessibilityDetails details={details}/>
+          <AccessibilityDetails details={details} />
         </section>
         <span className="call-to-action">
           <div className="form">
@@ -701,7 +701,7 @@ class Questionnaire extends React.Component<Props, State> {
   abortSection() {
     return (
       <section className="questionnaire-step done"
-               ref="latest-active-block">
+        ref="latest-active-block">
         <h3 className="question">{t`Discard changes?`}</h3>
         <span className="call-to-action">
           {t`We will discard your changes, do you really want to abort?`}
@@ -748,7 +748,7 @@ class Questionnaire extends React.Component<Props, State> {
     }
 
     this.goToNextField('exitBlock', nextState);
-  };
+  }
 
   stopSurvey = () => {
     const nextState = {
@@ -770,7 +770,7 @@ class Questionnaire extends React.Component<Props, State> {
     } else {
       this.goToNextField('stop', nextState);
     }
-  };
+  }
 
   public render() {
     let displayField: JSX.Element | null = null;
@@ -804,15 +804,15 @@ class Questionnaire extends React.Component<Props, State> {
 
     return (
       <div className={`questionnaire-area ${this.props.className}`}>
-        <header className="questionnaire-progress">
-          <span className="progress-information">
+        <header>
+          <span className="survey-status-and-actions">
             <h1 className={`place-name ${headers.path ? '' : 'no-block'}`}>{headers.title}</h1>
             {headers.path ? <h2>{headers.path}</h2> : null}
             <span className="header-actions">
               {canSkip ?
                 <button className="btn btn-sm dropdown-toggle" type="button"
-                        id={`tiredDropdown`}
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{t`I'm tired`}
+                  id={`tiredDropdown`}
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{t`I'm tired`}
                 </button> :
                 <button className="btn" type="button" onClick={this.props.onExitSurvey}>{t`Cancel`}</button>
               }
@@ -820,20 +820,20 @@ class Questionnaire extends React.Component<Props, State> {
                 <h3>{t`Tired? What do you want to do now?`}</h3>
                 <span className="dropdown-actions">
                   <button className="complete-block"
-                          disabled={this.state.activeField ? this.state.activeField.lastIndexOf('.') <= 0 : true}
-                          onClick={this.exitBlock}>{t`Complete ${pathName}`}</button>
+                    disabled={this.state.activeField ? this.state.activeField.lastIndexOf('.') <= 0 : true}
+                    onClick={this.exitBlock}>{t`Complete ${pathName}`}</button>
                   <button className="stop-survey"
-                          disabled={this.state.currentIndex >= this.props.fields.length}
-                          onClick={this.stopSurvey}>{t`Stop here`}</button>
+                    disabled={this.state.currentIndex >= this.props.fields.length}
+                    onClick={this.stopSurvey}>{t`Stop here`}</button>
                   <button className="secondary">{t`I'm fine`}</button>
                 </span>
               </div>
             </span>
           </span>
-          <div className="progress-section">
+          <div className="survey-progress">
             <figure className="progress-done">{Math.floor(this.state.progress * 100)}</figure>
             <div className="progress-bar">
-              <div className="progress-done" style={{width: `${this.state.progress * 100}%`}}/>
+              <div className="progress-done" style={{ width: `${this.state.progress * 100}%` }} />
             </div>
             <span className="time-left">
               {stringifyDuration(this.state.remainingDuration)}
@@ -841,11 +841,13 @@ class Questionnaire extends React.Component<Props, State> {
             </span>
           </div>
         </header>
-        <div className="history-column">
-          {this.historySection()}
-        </div>
-        <div className="questionnaire-column">
-          {displayField}
+        <div className="content">
+          <div className="history">
+            {this.historySection()}
+          </div>
+          <div className="current-question">
+            {displayField}
+          </div>
         </div>
       </div>
     );
@@ -854,9 +856,9 @@ class Questionnaire extends React.Component<Props, State> {
 
 export default styled(Questionnaire) `
 
-  background-color: ${colors.bgGrey};
-
+  /** Additional nesting to override bootstrap styling */
   &.questionnaire-area {
+    background-color: ${colors.bgGrey};
     color: ${colors.bgAnthracite};
     width:100%;
 
@@ -1159,202 +1161,212 @@ export default styled(Questionnaire) `
         }
       }
     }
-  }
 
-  header.questionnaire-progress {
-    padding: 4px 16px;
-    display: flex;
-    flex-direction: column;
-    box-shadow:0 0 3px ${colors.boxShadow};
+    &>.content {
+      padding-top:90px; /* leave space below header */
+    }
 
-    span.progress-information {
-      flex:1;
-      font-size: 18px;
-      font-weight: 800;
-      line-height: 24px;
+    
+    &>header {
+      padding: 4px 16px;
       display: flex;
+      flex-direction: column;
+      box-shadow:0 0 3px ${colors.boxShadow};
 
-      
-      h1.place-name {
+      /* make sticky on top */
+      position: fixed;
+      width: 100%;
+      z-index: 10;
+
+      .survey-status-and-actions {
+        flex:1;
+        font-size: 18px;
         font-weight: 800;
         line-height: 24px;
-        margin: 0;
-      }
-      
-      h1.no-block {      
-        flex: 1;
-      }
-      
-      h2 {      
-        flex: 1;
-      }
-    }
-    
-    .progress-section {
-      flex:1;
-      padding-top:5px;
-      display:flex;
-      flex-direction:row;
-      align-items: center;
-      
-      figure.progress-done {
-        color: ${colors.linkBlue};
-        padding-right: 10px;
-  
-        &:after {
-          content: '%';
-          right: 0;
-          font-size: 12px;
-          letter-spacing: 0;
-        }
-      }
-      .progress-bar {
-        height: 3px;
-        width: 100%;
-        background-color: ${colors.shadowGrey};
-        box-shadow: none;
-        flex:1;
-  
-        .progress-done {
-          content: ' ';
-          height: 4px;
-          font-size: 2px;
-          background-color: ${colors.linkBlue};
-          min-width:2px;
-        }
-      }
-
-      span.time-left {
-        color: ${colors.textMuted};  
-        padding-right: 4px;
-        white-space: nowrap;
-        padding-left: 8px;
-      }
-    }
-
-    span.header-actions {
-      display: flex;
-      position: relative;
-
-      &> button {
-        padding: 0px 8px;
-        margin-right: 0px;
-        font-size: 14px;
-        letter-spacing: -0.33px;
-        border: none;
-        transition: color 0.25s, background-color 0.25s;
-
-        &:hover,
-        &:active {
-          color: ${colors.linkBlueDarker};
-          background: none;
-          transition: color 0.25s, background-color 0.25s;
-        }
-        
-        &[disabled] {
-          color: ${colors.ctaDisabledGrey};        
-        }
-      }
-      
-      .dropdown-menu {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        border: none;
-        flex-direction: column;
-        align-items: left;
-        padding: 16px;
-        margin: 0;
-        border-radius: 0;
-        
-        span.dropdown-actions {
-          margin-top: 24px;
-        }
-      }
-    
-      &.open > .dropdown-menu {
         display: flex;
-      }
-      
-    }
-  }
 
-  section.questionnaire-step,
-  section.questionnaire-history-entry {
-    padding: 16px;
-  }
-
-  section.questionnaire-step {
-    box-shadow: inset 0 -1px 0 0 ${colors.shadowGrey};
-
-    section.value-entry-section {
-      width: 100%;
-      
-      &.ves-inline-field {
-        display: flex;
-        flex-wrap: wrap;
-      }
-    } 
-    
-    span.call-to-action {    
-      &.cta-full-width {
-        display: block;
-        width: 100%;
         
-        .form .form-group > * {
+        h1.place-name {
+          font-weight: 800;
+          line-height: 24px;
+          margin: 0;
+        }
+        
+        h1.no-block {      
           flex: 1;
-
         }
-        .form .form-group > button.secondary {
-          flex-grow:0;
+        
+        h2 {      
+          flex: 1;
         }
       }
       
-      .form .form-group {
-        margin-top: 1em;
-        margin-bottom: 0;
-        display: flex;
+      .survey-progress {
+        flex:1;
+        padding-top:5px;
+        display:flex;
+        flex-direction:row;
         align-items: center;
-        justify-content: flex-end;
+        
+        figure.progress-done {
+          color: ${colors.linkBlue};
+          padding-right: 10px;
+
+          &:after {
+            content: '%';
+            right: 0;
+            font-size: 12px;
+            letter-spacing: 0;
+          }
+        }
+        .progress-bar {
+          height: 3px;
+          width: 100%;
+          background-color: ${colors.shadowGrey};
+          box-shadow: none;
+          flex:1;
+
+          .progress-done {
+            content: ' ';
+            height: 4px;
+            font-size: 2px;
+            background-color: ${colors.linkBlue};
+            min-width:2px;
+          }
+        }
+
+        span.time-left {
+          color: ${colors.textMuted};  
+          padding-right: 4px;
+          white-space: nowrap;
+          padding-left: 8px;
+        }
+      }
+
+      span.header-actions {
+        display: flex;
+        position: relative;
+
+        &> button {
+          padding: 0px 8px;
+          margin-right: 0px;
+          font-size: 14px;
+          letter-spacing: -0.33px;
+          border: none;
+          transition: color 0.25s, background-color 0.25s;
+
+          &:hover,
+          &:active {
+            color: ${colors.linkBlueDarker};
+            background: none;
+            transition: color 0.25s, background-color 0.25s;
+          }
+          
+          &[disabled] {
+            color: ${colors.ctaDisabledGrey};        
+          }
+        }
+        
+        .dropdown-menu {
+          position: fixed;
+          top: 0;
+          width: 100%;
+          border: none;
+          flex-direction: column;
+          align-items: left;
+          padding: 16px;
+          margin: 0;
+          border-radius: 0;
+          
+          span.dropdown-actions {
+            margin-top: 24px;
+          }
+        }
+      
+        &.open > .dropdown-menu {
+          display: flex;
+        }
+        
       }
     }
-  }
 
-  section.questionnaire-step.enter-block,
-  section.questionnaire-step.enter-array,
-  section.questionnaire-history-entry.enter-block-history,
-  section.questionnaire-history-entry.enter-array-history {
-
-    h3 {
-      opacity: 0.75;
-      font-size: 14px;
-      line-height: 14px;
-      font-weight: 400;
-      letter-spacing: -0.25px;
-      text-transform: uppercase;
-    }
-  } 
-
-  section.questionnaire-history-entry {
-    background-color: ${colors.bgGreyLighter};
-
-    h3 {
-      font-size: 21px;
-      line-height: 29px;
-      font-weight: 800;
-      opacity: 0.75;
+    section.questionnaire-step,
+    section.questionnaire-history-entry {
+      padding: 16px;
     }
 
-    q {
-      font-weight: 400;
+    section.questionnaire-step {
+      box-shadow: inset 0 -1px 0 0 ${colors.shadowGrey};
+
+      section.value-entry-section {
+        width: 100%;
+        
+        &.ves-inline-field {
+          display: flex;
+          flex-wrap: wrap;
+        }
+      } 
+      
+      span.call-to-action {    
+        &.cta-full-width {
+          display: block;
+          width: 100%;
+          
+          .form .form-group > * {
+            flex: 1;
+
+          }
+          .form .form-group > button.secondary {
+            flex-grow:0;
+          }
+        }
+        
+        .form .form-group {
+          margin-top: 1em;
+          margin-bottom: 0;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+        }
+      }
+
+      section.questionnaire-step.enter-block,
+      section.questionnaire-step.enter-array,
+      section.questionnaire-history-entry.enter-block-history,
+      section.questionnaire-history-entry.enter-array-history {
+
+        h3 {
+          opacity: 0.75;
+          font-size: 14px;
+          line-height: 14px;
+          font-weight: 400;
+          letter-spacing: -0.25px;
+          text-transform: uppercase;
+        }
+      } 
+
+      section.questionnaire-history-entry {
+        background-color: ${colors.bgGreyLighter};
+
+        h3 {
+          font-size: 21px;
+          line-height: 29px;
+          font-weight: 800;
+          opacity: 0.75;
+        }
+
+        q {
+          font-weight: 400;
+        }
+      }
+
+      section.questionnaire-step.next-block {
+        display: none;
+      }
+
+      form .form-group span.help-block {
+        line-height: 18px;
+      }
     }
-  }
-
-  section.questionnaire-step.next-block {
-    display: none;
-  }
-
-  form .form-group span.help-block {
-    line-height: 18px;
   }
 `;
