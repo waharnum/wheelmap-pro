@@ -1226,8 +1226,8 @@ export default styled(Questionnaire) `
 
       span.time-left {
         color: ${colors.textMuted};  
-        padding-right: 4px;
         white-space: nowrap;
+        padding-right: 4px;
         padding-left: 8px;
       }
     }
@@ -1319,12 +1319,11 @@ export default styled(Questionnaire) `
       }
     }
   }
-
-  section.questionnaire-step.enter-block,
-  section.questionnaire-step.enter-array,
-  section.questionnaire-history-entry.enter-block-history,
-  section.questionnaire-history-entry.enter-array-history {
-
+  
+  .block-header, .array-header {
+    display: flex;
+    justify-content: space-between;
+  
     h3 {
       opacity: 0.75;
       font-size: 14px;
@@ -1333,25 +1332,10 @@ export default styled(Questionnaire) `
       letter-spacing: -0.25px;
       text-transform: uppercase;
     }
-  } 
-
-  section.questionnaire-history-entry {
-    background-color: ${colors.bgGreyLighter};
-
-    h3 {
-      font-size: 21px;
-      line-height: 29px;
-      font-weight: 800;
-      opacity: 0.75;
+    
+    span {    
+      padding-right: 18px;
     }
-
-    q {
-      font-weight: 400;
-    }
-  }
-
-  section.questionnaire-step.next-block {
-    display: none;
   }
 
   form .form-group span.help-block {
