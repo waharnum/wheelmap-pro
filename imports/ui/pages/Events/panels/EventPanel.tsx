@@ -1,28 +1,28 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {gettext, t} from 'c-3po';
-import {toast} from 'react-toastify';
+import { gettext, t } from 'c-3po';
+import { toast } from 'react-toastify';
 import ClipboardButton from 'react-clipboard.js';
 import * as moment from 'moment';
-import {browserHistory} from 'react-router';
+import { browserHistory } from 'react-router';
 
-import {IStyledComponent} from '../../../components/IStyledComponent';
-import {getColorForEventStatus, getLabelForEventStatus} from '../../../../both/api/events/eventStatus';
-import {IEvent} from '../../../../both/api/events/events';
+import { IStyledComponent } from '../../../components/IStyledComponent';
+import { getColorForEventStatus, getLabelForEventStatus } from '../../../../both/api/events/eventStatus';
+import { IEvent } from '../../../../both/api/events/events';
 import EventStatistics from '../../Events/EventStatistics';
 import CornerRibbon from '../../../components/CornerRibbon';
 import Button from '../../../components/Button';
 import Countdown from '../../../components/Countdown';
-import {colors} from '../../../stylesheets/colors';
-import {IEventParticipant} from '../../../../both/api/event-participants/event-participants';
+import { colors } from '../../../stylesheets/colors';
+import { IEventParticipant } from '../../../../both/api/event-participants/event-participants';
 
 
 const ShareAction = (props: { event: IEvent }) => (
   <ClipboardButton className="btn btn-dark"
-                   data-clipboard-text={window.location.href}
-                   onSuccess={() => {
-                     toast.success(t`Link copied to clipboard`);
-                   }}>
+    data-clipboard-text={window.location.href}
+    onSuccess={() => {
+      toast.success(t`Link copied to clipboard`);
+    }}>
     {t`Share Link`}
   </ClipboardButton>
 );
@@ -48,11 +48,11 @@ const BringEquipmentBlock = (props: {}) => (
 );
 
 const FinishedEventContent = styled((props: { event: IEvent, className?: string }) => {
-  const {event, className} = props;
+  const { event, className } = props;
 
   const barGraphAchieved =
     event.statistics && event.targets &&
-    event.targets.mappedPlacesCount && event.targets.mappedPlacesCount > 0 ?
+      event.targets.mappedPlacesCount && event.targets.mappedPlacesCount > 0 ?
       Math.floor(100 * event.statistics.mappedPlacesCount / event.targets.mappedPlacesCount) : null;
 
   return (
@@ -72,7 +72,7 @@ const FinishedEventContent = styled((props: { event: IEvent, className?: string 
       </section>
       <div className="stats-box">
         <div className="places-block">
-          <section className="poi-icon"/>
+          <section className="poi-icon" />
           <section className="planned-label">
             <p>{event.targets ? event.targets.mappedPlacesCount : 0}</p>
             <small>{t`Planned`}</small>
@@ -84,8 +84,8 @@ const FinishedEventContent = styled((props: { event: IEvent, className?: string 
         </div>
         {barGraphAchieved !== null ?
           <div className="places-graph">
-            <section style={{width: `${barGraphAchieved}%`}} className="bar-graph-achieved"/>
-            <section style={{width: `${100 - barGraphAchieved}%`}} className="bar-graph-planned"/>
+            <section style={{ width: `${barGraphAchieved}%` }} className="bar-graph-achieved" />
+            <section style={{ width: `${100 - barGraphAchieved}%` }} className="bar-graph-planned" />
           </div>
           : null
         }
@@ -206,7 +206,7 @@ const removeEventParticipation = (participant?: IEventParticipant | null) => {
 const addEventParticipation = (user: Meteor.User | null, event: IEvent) => {
   if (user) {
     Meteor.call('eventParticipants.acceptPublicInvitation',
-      {eventId: event._id, invitationToken: event.invitationToken},
+      { eventId: event._id, invitationToken: event.invitationToken },
       (error) => {
         if (error) {
           toast.error(error.reason);
@@ -220,21 +220,21 @@ const addEventParticipation = (user: Meteor.User | null, event: IEvent) => {
 };
 
 function actionFromEventStatus(event: IEvent, user?: Meteor.User | null, participant?: IEventParticipant | null) {
-  const shareAction = <ShareAction key="share" event={event}/>;
+  const shareAction = <ShareAction key="share" event={event} />;
   const joinAction = event.invitationToken ? (
     <button key="join"
-            className="join-button btn btn-primary"
-            onClick={addEventParticipation.bind(this, user, event)}>
+      className="join-button btn btn-primary"
+      onClick={addEventParticipation.bind(this, user, event)}>
       {t`Join Us`}
     </button>) : null;
   const mappingAction = (<Button key="map" className="map-button btn-primary"
-                                 to={`/organizations/${event.organizationId}/events/${event._id}/mapping`}>
+    to={`/organizations/${event.organizationId}/events/${event._id}/mapping`}>
     {t`Start mapping`}
   </Button>);
   const canceledLabel = <span className="canceled-label">{getLabelForEventStatus(event.status)}</span>;
   const removeParticipationAction = (
     <button key="remove-participation" className="remove-participation-button btn btn-primary"
-            onClick={removeEventParticipation.bind(this, participant)}>
+      onClick={removeEventParticipation.bind(this, participant)}>
       {t`Going`}</button>);
 
 
@@ -259,9 +259,9 @@ function detailsFromEventStatus(event: IEvent) {
     case 'draft':
     case 'planned':
     case 'ongoing':
-      return (<BringEquipmentBlock/>);
+      return (<BringEquipmentBlock />);
     case 'completed':
-      return (<FinishedEventContent event={event}/>);
+      return (<FinishedEventContent event={event} />);
   }
 
   return null;
@@ -277,10 +277,10 @@ type Props = {
 class EventPanel extends React.Component<IStyledComponent & Props> {
 
   public render() {
-    const {className, event, user, participant, showActions} = this.props;
+    const { className, event, user, participant, showActions } = this.props;
     const showCountDown = event.status !== 'canceled' && event.status !== 'completed';
     const countDownSection = showCountDown ? (<section className="countdown-section">
-      <Countdown start={moment(event.startTime)}/>
+      <Countdown start={moment(event.startTime)} />
     </section>) : null;
 
     const hasResults = ['draft', 'planned', 'canceled'].indexOf(event.status) < 0;
@@ -288,8 +288,8 @@ class EventPanel extends React.Component<IStyledComponent & Props> {
 
     return (
       <div className={`${className} event-status-${event.status}`}>
-        <CornerRibbon title={getLabelForEventStatus(event.status)} color={getColorForEventStatus(event.status)}/>
-        {event.photoUrl ? <img src={event.photoUrl} alt={t`Event picture`}/> : null}
+        <CornerRibbon title={getLabelForEventStatus(event.status)} color={getColorForEventStatus(event.status)} />
+        {event.photoUrl ? <img src={event.photoUrl} alt={t`Event picture`} /> : null}
         <section className="header-section">
           <div>
             <h3>{event.name}</h3>
@@ -305,7 +305,7 @@ class EventPanel extends React.Component<IStyledComponent & Props> {
             userHasJoined={!!userHasJoined}
             achieved={hasResults}
             planned={!hasResults}
-            countdown="short"/>
+            countdown="short" />
         </section>
         <section className="details-section">
           <h4>{event.regionName}</h4>
@@ -346,7 +346,7 @@ export default styled(EventPanel) `
   }
   
   .header-section, .statistics-section, .details-section, .countdown-section {
-    padding: 10px;
+    padding: 10px 10px 10px 20px;
   }
   
   .event-actions {

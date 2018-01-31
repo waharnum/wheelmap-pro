@@ -68,7 +68,7 @@ const HomePage = (props) => (
 );
 
 export default styled(HomePage) `
-
+  -webkit-overflow-scrolling: touch;
   overflow: auto;
   width: 100%;
 
@@ -88,6 +88,25 @@ export default styled(HomePage) `
     font-size: 28px;
   }
 
+  span.logo {
+    content: " ";
+    width: 309px;
+    min-width: 309px;
+    height: 82px;
+    background-image: url(/images/logo-wheelmappro@2x.png); 
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    h1 {
+      visibility: hidden;
+      font-size: 24px;
+      line-height: 24px !important;
+      font-weight: 800 !important;
+      letter-spacing: -1px;
+    }
+  }
+
   header,
   section {
     max-width: 1260px;
@@ -99,24 +118,7 @@ export default styled(HomePage) `
     display: flex;
     justify-content: space-between;
 
-    span.logo {
-      content: " ";
-      width: 309px;
-      min-width: 309px;
-      height: 82px;
-      background-image: url(/images/logo-wheelmappro@2x.png); 
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-size: 100% 100%;     
 
-      h1 {
-        visibility: hidden;
-        font-size: 24px;
-        line-height: 24px !important;
-        font-weight: 800 !important;
-        letter-spacing: -1px;
-      }
-    }
 
     .dropdown {
       right: 10px;
@@ -155,12 +157,12 @@ export default styled(HomePage) `
 
       .hero-image {
         content: " ";
-        width: 512px;
-        height: 216.5px;
+        width:100%;
+        height: 20vh;
         background-image: url(/images/comic-hero.png); 
         background-position: center center;
         background-repeat: no-repeat;
-        background-size: 100% 100%;
+        background-size: contain;
       }
 
       p {
@@ -182,7 +184,7 @@ export default styled(HomePage) `
       display: flex;
       flex-wrap: wrap; 
       
-      &:last-child: {
+      &:last-child {
         border: none;
       }
       
@@ -219,7 +221,8 @@ export default styled(HomePage) `
       }
 
       article {
-        flex-basis: 33.33%;
+        /* //flex-basis: 33.33%; */
+        flex:1;
         padding: 0 20px 20px 20px;
         position: relative;
       }
@@ -364,9 +367,23 @@ export default styled(HomePage) `
     }
   }
 
-  @media only screen and (max-width: 1285px) {
+  /* responsively adjust content for low res */
+  @media (max-width: 500px) {
+    header.onHomepage {
+      flex-direction:column;
+      padding:10px;
+      align-items: center;
 
-    
+      span.logo{
+        width:100%;
+        min-width:0px;
+      }
+
+      /* Position relative to centered login-menu */
+      ul.dropdown-menu {
+        left:-50%;
+        right:unset;
+        width:200%;
+      }
   }
-
 `;
