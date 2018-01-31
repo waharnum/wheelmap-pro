@@ -1,7 +1,7 @@
 import {find} from 'lodash';
 import {isAdmin} from '../../lib/is-admin';
 
-import {Licenses} from '../../api/licenses/licenses';
+import {Licenses} from '../licenses/licenses';
 import {IOrganization, Organizations} from '../organizations/organizations';
 import {SourceImports} from '../../api/source-imports/source-imports';
 

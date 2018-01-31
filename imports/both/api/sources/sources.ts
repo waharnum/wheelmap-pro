@@ -1,6 +1,6 @@
 import {Mongo} from 'meteor/mongo';
 
-import {Licenses} from '../../api/licenses/licenses';
+import {Licenses} from '../licenses/licenses';
 
 import {ISourceMixin, SourceMixin} from './mixins';
 import {SourcesSchema} from './schema';

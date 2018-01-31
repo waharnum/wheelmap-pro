@@ -34,6 +34,11 @@ import '../imports/both/api/sources/server/indexing';
 import '../imports/both/api/sources/server/privileges';
 import '../imports/both/api/sources/server/methods';
 
+// register licenses
+import '../imports/both/api/licenses/server/publications';
+import '../imports/both/api/licenses/server/indexing';
+import '../imports/both/api/licenses/server/privileges';
+
 // register place-infos
 import '../imports/both/api/place-infos/server/publications';
 import '../imports/both/api/place-infos/server/indexing';
