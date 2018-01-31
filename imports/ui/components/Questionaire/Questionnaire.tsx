@@ -482,7 +482,7 @@ class Questionnaire extends React.Component<Props, State> {
               <div className="form">
                 <div className="form-group">
                   {!isSelfSubmitting ?
-                    <SubmitField className={t`primary-action`} value={t`Submit`}/> : null}
+                    <SubmitField className={t`primary-action`} value={t`Next`}/> : null}
                   {isOptional ?
                     <button className="secondary"
                             onClick={this.skipField.bind(this, field, this.state.question)}>{t`Skip`}</button> : null}
