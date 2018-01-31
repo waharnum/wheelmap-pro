@@ -6,10 +6,10 @@ import SearchIcon from 'wheelmap-react/lib/components/SearchToolbar/SearchIcon';
 import SearchInputField from 'wheelmap-react/lib/components/SearchToolbar/SearchInputField';
 import CloseIcon from 'wheelmap-react/lib/components/icons/actions/Close';
 
-import {IStyledComponent} from '../components/IStyledComponent';
+import { IStyledComponent } from '../components/IStyledComponent';
 
-import Map, {Props as MapProps} from '../components/Map';
-import {colors} from '../stylesheets/colors';
+import Map, { Props as MapProps } from '../components/Map';
+import { colors } from '../stylesheets/colors';
 
 type Props = {
   header: React.ReactNode;
@@ -99,7 +99,7 @@ class NewMapLayout extends React.Component<Props, State> {
       forceContentToSidePanel, searchBarPrefix, searchBarLogo, canDismissFromSidePanel, overlapSidePanelTakeFullWidth,
       sidePanelHidden, canDismissAdditionalCardPanel, canDismissCardPanel, onSearchBarLogoClicked, mapChildren,
     } = this.props;
-    const {preferContentInCard, initialSidePanelHidden} = this.state;
+    const { preferContentInCard, initialSidePanelHidden } = this.state;
 
 
     const effectiveSidePanelHidden = sidePanelHidden === undefined ? initialSidePanelHidden : sidePanelHidden;
@@ -115,8 +115,8 @@ class NewMapLayout extends React.Component<Props, State> {
 
     return (
       <div id={id}
-           className={`${className} map-layout ${preferContentInCard ? 'overlap-side-panel' : 'fixed-side-panel' }
-           ${(displaySidePanel && overlapSidePanelTakeFullWidth) ? 'overlap-side-panel-full-width' : '' } `}>
+        className={`${className} map-layout ${preferContentInCard ? 'overlap-side-panel' : 'fixed-side-panel'}
+           ${(displaySidePanel && overlapSidePanelTakeFullWidth) ? 'overlap-side-panel-full-width' : ''} `}>
         <section className={`side-panel ${displaySidePanel ? 'show-panel' : 'hide-panel'}`}>
           {header && <header>{header}</header>}
           {displaySidePanel && <section className="content">
@@ -129,34 +129,34 @@ class NewMapLayout extends React.Component<Props, State> {
             {mapChildren}
           </Map>
           {displaySearchBar &&
-          <Toolbar className="search-toolbar"
-                   isSwipeable={false}
-                   minimalHeight={75}>
-            <a onClick={this.searchBarLogoClicked}
-               className={onSearchBarLogoClicked ? 'organization-logo' : 'organization-logo disabled'}>
-              {searchBarLogo &&
-              <div className="small-logo" style={{backgroundImage: `url(${searchBarLogo})`}}/>}
-              {(!searchBarLogo && searchBarPrefix) &&
-              <h1>{searchBarPrefix}</h1>}
-            </a>
-            <div className="search-input">
-              <SearchInputField/>
-              <SearchIcon className="search-icon"/>
-            </div>
-          </Toolbar>}
+            <Toolbar className="search-toolbar"
+              isSwipeable={false}
+              minimalHeight={75}>
+              <a onClick={this.searchBarLogoClicked}
+                className={onSearchBarLogoClicked ? 'organization-logo' : 'organization-logo disabled'}>
+                {searchBarLogo &&
+                  <div className="small-logo" style={{ backgroundImage: `url(${searchBarLogo})` }} />}
+                {(!searchBarLogo && searchBarPrefix) &&
+                  <h1>{searchBarPrefix}</h1>}
+              </a>
+              <div className="search-input">
+                <SearchInputField />
+                <SearchIcon className="search-icon" />
+              </div>
+            </Toolbar>}
           {displayCardPanel && <Toolbar className="card-panel">
             {canDismissCardPanel && <a className="close-icon" onClick={this.dismissCardPanel}>
-              <CloseIcon/>
+              <CloseIcon />
             </a>}
             {contentPanel}
           </Toolbar>}
           {displayAdditionalCardPanel &&
-          <Toolbar className="card-panel additional-card-panel">
-            {canDismissAdditionalCardPanel && <a className="close-icon" onClick={this.dismissAdditionalCardPanel}>
-              <CloseIcon/>
-            </a>}
-            {additionalMapPanel}
-          </Toolbar>}
+            <Toolbar className="card-panel additional-card-panel">
+              {canDismissAdditionalCardPanel && <a className="close-icon" onClick={this.dismissAdditionalCardPanel}>
+                <CloseIcon />
+              </a>}
+              {additionalMapPanel}
+            </Toolbar>}
         </section>
       </div>
     );
@@ -279,6 +279,7 @@ export default styled(NewMapLayout) `
       overflow-y: auto;    
       position: relative;
       pointer-events: auto;
+      -webkit-overflow-scrolling: touch;
       
       .dismiss-panel-button {
         cursor: pointer;
