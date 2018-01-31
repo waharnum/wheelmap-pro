@@ -72,7 +72,7 @@ class Map extends React.Component<IStyledComponent & Props, State> {
               feature => {
                 feature.properties._id = feature._id;
                 accessibilityCloudFeatureCache.cacheFeature(feature);
-                return this.createMarkerFromFeature(feature, feature.geometry.coordinates);
+                return this.createMarkerFromFeature(feature, [feature.geometry.coordinates[1], feature.geometry.coordinates[0]]);
               });
             this.customLayer = L.layerGroup(markers);
             this.leafletMap.addLayer(this.customLayer);

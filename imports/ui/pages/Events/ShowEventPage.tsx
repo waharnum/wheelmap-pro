@@ -52,7 +52,8 @@ const EditPlaceAction = (router: InjectedRouter, organization: IOrganization, ev
       delete clonedFeature._id;
       // remove all invalid fields
       clonedFeature = PlaceInfoSchema.clean(clonedFeature);
-
+      // flip lat & lon
+      clonedFeature.geometry = Object.assign({}, clonedFeature.geometry);
       router.push({
         pathname: `/organizations/${organization._id}/events/${event._id}/mapping/create-place`,
         state: {feature: clonedFeature},
