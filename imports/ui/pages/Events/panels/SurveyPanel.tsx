@@ -23,7 +23,7 @@ class SurveyPanel extends React.Component<Props> {
 
     // TODO read from event, hard coded wheelmap schema
     const selectedFields = [
-      'properties',
+      // 'properties',
       'properties.name',
       'properties.category',
       'properties.address',
@@ -32,7 +32,7 @@ class SurveyPanel extends React.Component<Props> {
       'properties.address.postalCode',
       'properties.address.city',
       'geometry',
-      'properties.accessibility',
+      // 'properties.accessibility',
       'properties.accessibility.entrances',
       'properties.accessibility.entrances.$.isLevel',
       'properties.accessibility.entrances.$.hasSlope',
