@@ -54,14 +54,18 @@ class ImageLinkUrl extends React.Component<any, { validImage: boolean, proposedU
     if (!this.image)
       return;
     this.setState({validImage: false});
-    this.props.onChange(this.state.proposedUrl);
+    this.props.onChange(undefined);
   };
 
   private imageOkay = () => {
     if (!this.image)
       return;
     this.setState({validImage: true});
-    this.props.onChange(this.image.src);
+    if (this.image.src.length > 0) {
+      this.props.onChange(this.image.src);
+    } else {
+      this.props.onChange(undefined);
+    }
   };
 };
 
