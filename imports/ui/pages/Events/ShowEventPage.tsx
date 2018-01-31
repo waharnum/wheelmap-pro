@@ -80,6 +80,7 @@ type PageParams = {
 type Props = RouteComponentProps<PageParams, {}> & IAsyncDataByIdProps<PageModel> & IStyledComponent;
 
 class ShowEventPage extends React.Component<Props> {
+  private mapOptions: undefined | { zoom: number; lat: number; lon: number; bbox: L.LatLngBounds };
 
   constructor(props: Props) {
     super(props);
@@ -114,11 +115,12 @@ class ShowEventPage extends React.Component<Props> {
     let canDismissCardPanel: boolean = false;
     let hideContentFromCardPanel: boolean = false;
 
-    if (location.pathname.endsWith('/create-place') || location.pathname.includes('/edit-place/')) {
+    if (location.pathname.endsWith('/create-place') ||
+      location.pathname.includes('/edit-place/')) {
       // survey
       const place = (location.state && location.state.feature as IPlaceInfo) || null;
 
-      content = <SurveyPanel event={event} place={place} onExitSurvey={() => {
+      content = <SurveyPanel event={event} place={place} initialPosition={this.mapOptions} onExitSurvey={() => {
         router.push(`/organizations/${organization._id}/events/${event._id}/mapping`);
       }}/>;
       header = null;
@@ -303,6 +305,9 @@ class ShowEventPage extends React.Component<Props> {
             } else {
               router.push(`/organizations/${organization._id}/events/${event._id}/place/${id}`);
             }
+          },
+          onMoveEnd: (options: { zoom: number, lat: number, lon: number, bbox: L.LatLngBounds }) => {
+            this.mapOptions = options;
           },
         }}
         mapChildren={isMappingFlow ? (<Link to={{

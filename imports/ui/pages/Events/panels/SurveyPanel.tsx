@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import * as React from 'react';
 
-import {PlaceInfoSchema} from '@sozialhelden/ac-format';
+import {PlaceInfoSchema, PointGeometry} from '@sozialhelden/ac-format';
 import {t} from 'c-3po';
 import {IEvent} from '../../../../both/api/events/events';
 import {IPlaceInfo} from '../../../../both/api/place-infos/place-infos';
@@ -14,6 +14,7 @@ type Props = {
   event: IEvent;
   place: IPlaceInfo | null;
   onExitSurvey: (model: IPlaceInfo) => void;
+  initialPosition?: { lat: number; lon: number; }
 } & IStyledComponent;
 
 class SurveyPanel extends React.Component<Props> {
@@ -66,8 +67,10 @@ class SurveyPanel extends React.Component<Props> {
       console.log('Editing existing place!', place._id);
       initialModel = place;
     } else {
-      // TODO receive from map
-      const geometry = undefined;
+      const geometry: PointGeometry | undefined = this.props.initialPosition ? {
+        type: 'Point',
+        coordinates: [this.props.initialPosition.lat, this.props.initialPosition.lon],
+      } : undefined;
       initialModel = {geometry};
     }
 
