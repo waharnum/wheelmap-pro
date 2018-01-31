@@ -5,8 +5,31 @@ import {ValidatedMethod} from 'meteor/mdg:validated-method';
 
 import {IEvent, Events} from '../events';
 import {EventParticipants} from '../../event-participants/event-participants';
-import {Organizations} from '../../organizations/organizations';
+import {IOrganization, Organizations} from '../../organizations/organizations';
 import {sendEventInvitationEmailTo} from '../../event-participants/server/_invitations';
+import {ISource, Sources} from '../../sources/sources';
+
+
+const createSourceForEvent = (organization: IOrganization, doc: IEvent): Mongo.ObjectID | null => {
+  if (!doc.sourceId) {
+    const newDoc = {
+      organizationId: organization._id as Mongo.ObjectID,
+      name: `Event source ${doc.name}`,
+      shortName: 'Event source',
+      licenseId: 'R6Lneq4ZL2uMausHZ' as any as Mongo.ObjectID, // hard coded osm license
+      streamChain: [],
+      accessRestrictedTo: [],
+      isRequestable: true,
+      isFreelyAccessible: false,
+      isDraft: false,
+      placeInfoCount: 0,
+    };
+
+    const sourceId = Sources.insert(newDoc as any as ISource);
+    return sourceId as any as Mongo.ObjectID;
+  }
+  return null;
+};
 
 export const insert = new ValidatedMethod({
   name: 'events.insert',
@@ -23,6 +46,13 @@ export const insert = new ValidatedMethod({
 
     // assign invitation token
     doc.invitationToken = Random.secret();
+    // ensure nobody can force a source from the outside
+    delete doc.sourceId;
+    // create the source for this event
+    const sourceIdSet = createSourceForEvent(organization, doc);
+    if (sourceIdSet) {
+      doc.sourceId = sourceIdSet;
+    }
 
     return Events.insert(doc);
   },
@@ -44,6 +74,10 @@ export const remove = new ValidatedMethod({
     }
     if (!event.editableBy(this.userId)) {
       throw new Meteor.Error(403, 'You don\'t have permission to remove this event.');
+    }
+    if (event.sourceId) {
+      // TODO remove all places as well???
+      // Sources.remove(event.sourceId);
     }
     Events.remove(eventId);
   },

@@ -17,6 +17,12 @@ export const EventSchema = new SimpleSchema({
   'organizationId': {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
+
+  },
+  'sourceId': {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    optional: true, // is set automatically by insertion
   },
   'name': {
     label: t`Name`,
@@ -97,7 +103,7 @@ export const EventSchema = new SimpleSchema({
     label: t`Invitation token`,
     type: String,
     max: 50,
-    optional: true,
+    optional: true, // is set automatically by insertion
   },
   'verifyGpsPositionsOfEdits': {
     label: t`Verify GPS position of edits`,
@@ -144,7 +150,6 @@ export const EventSchema = new SimpleSchema({
   'statistics.draftParticipantCount': Number,
   'statistics.acceptedParticipantCount': Number,
   'statistics.mappedPlacesCount': Number,
-
 });
 
 registerSchemaForI18n(EventSchema);

@@ -26,11 +26,10 @@ export interface ISource extends ISourceMixin {
   isShownOnStartPage?: boolean;
 };
 
-export const Sources = new Mongo.Collection<ISource>('Sources');
+export const Sources = new Mongo.Collection<ISource & ISourceMixin>('Sources');
 
 Sources.schema = SourcesSchema;
 Sources.attachSchema(SourcesSchema);
-
 Sources.helpers(SourceMixin);
 
 export const SourcesRelationships = {

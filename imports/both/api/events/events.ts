@@ -23,6 +23,7 @@ export interface IEvent extends IEventMixin {
   _id?: Mongo.ObjectID;
   // fields
   organizationId: Mongo.ObjectID;
+  sourceId: Mongo.ObjectID;
   name: string;
   description?: string;
   regionName?: string;
