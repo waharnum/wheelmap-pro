@@ -221,12 +221,12 @@ const addEventParticipation = (user: Meteor.User | null, event: IEvent) => {
 
 function actionFromEventStatus(event: IEvent, user?: Meteor.User | null, participant?: IEventParticipant | null) {
   const shareAction = <ShareAction key="share" event={event}/>;
-  const joinAction = (
+  const joinAction = event.invitationToken ? (
     <button key="join"
             className="join-button btn btn-primary"
             onClick={addEventParticipation.bind(this, user, event)}>
       {t`Join Us`}
-    </button>);
+    </button>) : null;
   const mappingAction = (<Button key="map" className="map-button btn-primary"
                                  to={`/new/organizations/${event.organizationId}/events/${event._id}/mapping`}>
     {t`Start mapping`}
