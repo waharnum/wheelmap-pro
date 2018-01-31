@@ -215,7 +215,7 @@ const addEventParticipation = (user: Meteor.User | null, event: IEvent) => {
     );
   } else {
     browserHistory.push(
-      `/new/organizations/${event.organizationId}/events/${event._id}/public-invitation/${event.invitationToken}`);
+      `/organizations/${event.organizationId}/events/${event._id}/public-invitation/${event.invitationToken}`);
   }
 };
 
@@ -228,7 +228,7 @@ function actionFromEventStatus(event: IEvent, user?: Meteor.User | null, partici
       {t`Join Us`}
     </button>) : null;
   const mappingAction = (<Button key="map" className="map-button btn-primary"
-                                 to={`/new/organizations/${event.organizationId}/events/${event._id}/mapping`}>
+                                 to={`/organizations/${event.organizationId}/events/${event._id}/mapping`}>
     {t`Start mapping`}
   </Button>);
   const canceledLabel = <span className="canceled-label">{getLabelForEventStatus(event.status)}</span>;

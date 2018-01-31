@@ -1,224 +1,184 @@
-import { t } from 'c-3po';
 import styled from 'styled-components';
-import { Meteor } from 'meteor/meteor';
 import * as React from 'react';
-import { browserHistory } from 'react-router';
+import {RouteComponentProps} from 'react-router';
 
-import { accessibilityCloudFeatureCache } from 'wheelmap-react/lib/lib/cache/AccessibilityCloudFeatureCache';
+import {accessibilityCloudFeatureCache} from 'wheelmap-react/lib/lib/cache/AccessibilityCloudFeatureCache';
 
-import Map from '../../components/Map';
-import MapLayout from '../../layouts/MapLayout';
-import { IStyledComponent } from '../../components/IStyledComponent';
-import { wrapDataComponent } from '../../components/AsyncDataComponent';
-import { reactiveSubscriptionByParams, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
+import NewMapLayout from '../../layouts/NewMapLayout';
+import {IStyledComponent} from '../../components/IStyledComponent';
+import {wrapDataComponent} from '../../components/AsyncDataComponent';
+import {reactiveSubscriptionByParams, IAsyncDataByIdProps} from '../../components/reactiveModelSubscription';
 
-import { IEvent } from '../../../both/api/events/events';
-import { IOrganization, Organizations } from '../../../both/api/organizations/organizations';
-import { default as SidePanel, SidePanelTitle } from '../../components/SidePanel';
-import { regionToBbox } from '../../../both/lib/geo-bounding-box';
-import EventMiniMarker from '../Events/EventMiniMarker';
-import EventMapPopup from '../Events/EventMapPopup';
-import { defaultRegion } from '../../../both/api/events/schema';
-import { IPlaceInfo } from '../../../both/api/place-infos/place-infos';
-import PlaceDetailsContainer from '../../components/PlaceDetailsContainer';
+import {IEvent} from '../../../both/api/events/events';
+import {IOrganization, Organizations} from '../../../both/api/organizations/organizations';
+import OrganizationAboutPanel from './panels/OrganizationAboutPanel';
+import PlaceDetailsPanel from '../../panels/PlaceDetailsPanel';
+import LogoHeader from '../../components/LogoHeader';
+import UserPanel from '../../panels/UserPanel';
+import {t} from 'c-3po';
+import EventPreviewPanel from '../Events/panels/EventPreviewPanel';
 
-interface IPageModel {
+type PageModel = {
   organization: IOrganization;
   events: Array<IEvent>;
-}
+};
 
 type PageParams = {
-  params: {
-    _id: string,
-    event_id: string | undefined
-    place_id: string | undefined
-  }
-}
-type PageProps = PageParams & IAsyncDataByIdProps<IPageModel> & IStyledComponent;
+  _id: string,  // organization id
+  place_id: string | undefined
+};
 
-class ShowOrganizationPage extends React.Component<PageProps> {
-  ignoreMapMovement: boolean;
-  state: {
-    selectedPlace: IPlaceInfo | null,
-    mapWasMovedManually: false,
-  } = {
-      selectedPlace: null,
-      mapWasMovedManually: false,
-    };
+type Props = RouteComponentProps<PageParams, {}> & IAsyncDataByIdProps<PageModel> & IStyledComponent;
+type State = {
+  sidePanelDismissed?: boolean,
+  additionalCardPanelDismissed: boolean
+};
 
-  public componentWillMount() {
-    this.redirectToCorrectRoute(this.props, true);
-  }
+class ShowOrganizationPage extends React.Component<Props, State> {
+  state: State = {
+    sidePanelDismissed: undefined,
+    additionalCardPanelDismissed: false,
+  };
 
-  public componentWillReceiveProps(nextProps) {
-    if (this.props.params.event_id !== nextProps.params.event_id ||
-      this.props.params.place_id !== nextProps.params.place_id) {
-      this.ignoreMapMovement = true;
-      this.redirectToCorrectRoute(nextProps, false);
-      this.setState({ mapWasMovedManually: false }, () => {
-        this.ignoreMapMovement = false;
-      });
+  getPanelContent() {
+    const {organization, events} = this.props.model;
+    const {router, params, location} = this.props;
+
+    let content: React.ReactNode = null;
+    let header: React.ReactNode = null;
+    let additionalMapPanel: React.ReactNode = null;
+    let forceContentToSidePanel: boolean = false;
+    let forceSidePanelOpen: boolean | undefined = undefined;
+    let canDismissFromSidePanel: boolean = true;
+    let canDismissCardPanel: boolean = false;
+    let canDismissAdditionalCardPanel: boolean = false;
+    let onDismissSidePanel: undefined | (() => void);
+    let onDismissCardPanel: undefined | (() => void);
+    let onDismissAdditionalCardPanel: undefined | (() => void);
+    if (params.place_id) {
+      // place details
+      header = <LogoHeader link={`/organizations/${organization._id}/about`}
+                           prefixTitle={organization.name}
+                           logo={organization.logo}
+                           title={t`Place`}/>;
+      // TODO async fetch feature
+      const feature = accessibilityCloudFeatureCache.getCachedFeature(params.place_id);
+      content = <PlaceDetailsPanel feature={feature}/>;
+      canDismissFromSidePanel = false;
+      canDismissCardPanel = true;
+      forceSidePanelOpen = true;
+      // TODO center map to POI on first render
+    } else if (location.pathname.endsWith('/user')) {
+      // user panel
+      header = <LogoHeader link={`/organizations/${organization._id}/about`}
+                           prefixTitle={organization.name}
+                           logo={organization.logo}
+                           title={t`My account`}/>;
+      content = <UserPanel
+        onSignedInHook={() => {
+          router.push(`/organizations/${organization._id}/about`);
+        }}
+        onSignedOutHook={() => {
+          router.push(`/organizations/${organization._id}/about`);
+        }}
+      />;
+      forceContentToSidePanel = true;
+      canDismissFromSidePanel = false;
+      forceSidePanelOpen = true;
+    } else {
+      // about organization panel
+      const adminLink = organization.editableBy(Meteor.userId()) ?
+        `/organizations/${organization._id}/organize` : undefined;
+
+      content = <OrganizationAboutPanel
+        organization={organization}
+        adminLink={adminLink}
+        onGotoUserPanel={() => {
+          router.push(`/organizations/${organization._id}/user`);
+        }}
+      />;
+      if (events.length > 0) {
+        const event = events[0];
+        additionalMapPanel = <EventPreviewPanel event={event} onClickPanel={() => {
+          router.push(`/organizations/${organization._id}/events/${event._id}`);
+        }}/>;
+        canDismissAdditionalCardPanel = true;
+      }
+      forceContentToSidePanel = true;
+
+      if (location.pathname.endsWith('/about')) {
+        forceSidePanelOpen = true;
+      }
     }
+
+    return {
+      content,
+      header,
+      additionalMapPanel,
+      forceContentToSidePanel,
+      forceSidePanelOpen,
+      canDismissFromSidePanel,
+      canDismissCardPanel,
+      canDismissAdditionalCardPanel,
+      onDismissSidePanel,
+      onDismissCardPanel,
+      onDismissAdditionalCardPanel,
+    };
   }
+
 
   public render() {
-    const organization = this.props.model.organization;
-    const events = this.props.model.events;
-
-    let eventIndex = 0;
-    let selectedEvent, nextEvent, prevEvent;
-
-    if (this.props.params.event_id) {
-      eventIndex = events.findIndex((e) => {
-        return e._id == this.props.params.event_id;
-      });
-      selectedEvent = events[eventIndex];
-      nextEvent = events[(eventIndex + 1) % events.length];
-      prevEvent = events[(eventIndex + events.length - 1) % events.length];
-    }
+    const {router, className} = this.props;
+    const {organization} = this.props.model;
+    const {
+      content, header, additionalMapPanel, forceContentToSidePanel, canDismissCardPanel,
+      forceSidePanelOpen, canDismissFromSidePanel, canDismissAdditionalCardPanel,
+    } = this.getPanelContent();
 
     return (
-      <MapLayout className={this.props.className}>
-        <SidePanel
-          titleComponent={(
-            <SidePanelTitle
-              title={organization.name}
-              logo={organization.logo}
-              description={organization.description}
-            />
-          )}
-          organizeLink={organization.editableBy(Meteor.userId()) ? `/organizations/${organization._id}/organize` : undefined}
-        />
-        <div className="content-area">
-          <Map
-            {...this.determineMapPosition(selectedEvent, this.state.selectedPlace) }
-            onBboxApplied={this.onMapBboxApplied}
-            onMoveEnd={this.onMapMoveEnd}
-            onMarkerClick={this.onMarkerClick}
-            selectedPlace={this.state.selectedPlace}
-          >
-            {events.map((event: IEvent) => {
-              if (selectedEvent && event._id === selectedEvent._id) {
-                return (<EventMapPopup event={event}
-                  key={String(event._id)}
-                  primaryAction={event.status === 'ongoing' || event.status === 'planned' ?
-                    t`View Event` : t`View Event`}
-                  onPrimaryAction={() => {
-                    browserHistory.push(`/events/${event._id}`);
-                  }}
-                  onPrevSelected={() => {
-                    browserHistory.replace(`/organizations/${organization._id}/event/${prevEvent._id}`);
-                  }}
-                  onNextSelected={() => {
-                    browserHistory.replace(`/organizations/${organization._id}/event/${nextEvent._id}`);
-                  }}
-                  hasMore={events.length > 1} />);
-              }
-              else {
-                return (
-                  <EventMiniMarker
-                    event={event}
-                    key={String(event._id)}
-                    onClick={() => {
-                      this.setState({ selectedPlace: null });
-                      browserHistory.replace(`/organizations/${organization._id}/event/${event._id}`);
-                    }}
-                  />);
-              }
-            })}
-
-            <PlaceDetailsContainer
-              className="place-details-container"
-              feature={this.state.selectedPlace}
-              onClose={this.dismissPlaceDetails}
-            />
-          </Map>
-        </div>
-      </MapLayout>
+      <NewMapLayout
+        className={className}
+        header={header}
+        contentPanel={content}
+        additionalMapPanel={this.state.additionalCardPanelDismissed ? null : additionalMapPanel}
+        forceContentToSidePanel={forceContentToSidePanel}
+        onSearchBarLogoClicked={() => {
+          router.push(`/organizations/${organization._id}/about`);
+        }}
+        canDismissFromSidePanel={canDismissFromSidePanel}
+        onDismissSidePanel={() => {
+          this.setState({sidePanelDismissed: true});
+          router.push(`/organizations/${organization._id}`);
+        }}
+        canDismissCardPanel={canDismissCardPanel}
+        onDismissCardPanel={() => {
+          router.push(`/organizations/${organization._id}`);
+        }}
+        canDismissAdditionalCardPanel={canDismissAdditionalCardPanel}
+        onDismissAdditionalCardPanel={() => this.setState({additionalCardPanelDismissed: true})}
+        allowSearchBar={true}
+        searchBarLogo={organization.logo}
+        searchBarPrefix={organization.name}
+        sidePanelHidden={forceSidePanelOpen ? false : this.state.sidePanelDismissed}
+        mapProperties={{
+          onMarkerClick: (id) => {
+            router.push(`/organizations/${organization._id}/place/${id}`);
+          },
+        }}
+      />
     );
-  }
-
-  private onMarkerClick = (featureId) => {
-    const organization = this.props.model.organization;
-    browserHistory.replace(`/organizations/${organization._id}/place/${featureId}`);
-  }
-
-  private dismissPlaceDetails = () => {
-    this.setState({ selectedPlace: null });
-
-    const organization = this.props.model.organization;
-    browserHistory.replace(`/organizations/${organization._id}/browse`);
-  }
-
-  private determineMapPosition(selectedEvent: IEvent | null, selectedPlace: IPlaceInfo | null) {
-    if (this.state.mapWasMovedManually) {
-      return {};
-    }
-
-    if (selectedPlace) {
-      const coordinates = selectedPlace.geometry.coordinates;
-      return { lat: coordinates[1], lon: coordinates[0], zoom: 17 };
-    }
-
-    if (selectedEvent) {
-      return { bbox: regionToBbox(selectedEvent.region || defaultRegion) };
-    }
-
-    return {};
-  }
-
-  private onMapMoveEnd = () => {
-    if (!this.ignoreMapMovement) {
-      this.setState({ mapWasMovedManually: true });
-    }
-  }
-
-  private onMapBboxApplied = () => {
-  }
-
-  private redirectToCorrectRoute(props: PageProps, isInitialMount: boolean) {
-    // decide if the url is correct and matches our event
-    const organization = props.model.organization;
-    const events = props.model.events;
-
-    if (props.params.event_id) {
-      const eventIndex = events.findIndex((e) => {
-        return e._id === props.params.event_id;
-      });
-
-      // current url is pointing to a missing key
-      if (eventIndex === -1) {
-        if (events.length > 0) {
-          // take alternative first event
-          browserHistory.replace(`/organizations/${organization._id}/event/${events[0]._id}`);
-        } else {
-          // take no event organization page
-          browserHistory.replace(`/organizations/${organization._id}`);
-        }
-      }
-    } else if (props.params.place_id) {
-      accessibilityCloudFeatureCache.getFeature(props.params.place_id).then((feature: IPlaceInfo) => {
-        this.setState({ selectedPlace: feature });
-      }, (reason) => {
-        console.error('Failed loading feature', reason);
-      });
-    } else if (events.length > 0 && isInitialMount) {
-      // select first event url
-      browserHistory.replace(`/organizations/${organization._id}/event/${events[0]._id}`);
-    }
-
   }
 };
 
 const ReactiveShowOrganizationPage = reactiveSubscriptionByParams(
-  wrapDataComponent<IPageModel,
-    IAsyncDataByIdProps<IPageModel | null>,
-    IAsyncDataByIdProps<IPageModel>>(ShowOrganizationPage),
-  (id): IPageModel | null => {
+  wrapDataComponent<PageModel,
+    IAsyncDataByIdProps<PageModel | null>,
+    IAsyncDataByIdProps<PageModel>>(ShowOrganizationPage),
+  (id): PageModel | null => {
     const organization = Organizations.findOne(id);
     const events = organization ? organization.getEvents() : null;
     // fetch model with organization & events in one go
-    return organization && events ? { organization, events: events || [] } : null;
+    return organization && events ? {organization, events: events || []} : null;
   },
   'organizations.by_id.public', 'events.by_organizationId.public', 'users.my.private');
 

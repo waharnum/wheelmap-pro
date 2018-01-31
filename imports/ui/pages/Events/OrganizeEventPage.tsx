@@ -168,7 +168,7 @@ class OrganizeEventPage extends React.Component
             />
           )}
           tabs={(<EventTabs id={event._id}/>)}
-          publicLink={`/events/${event._id}`}
+          publicLink={`/organizations/${organization._id}/events/${event._id}`}
         />
         <div className="content-area scrollable hsplitWithStats">
           <EventStatistics
@@ -252,7 +252,7 @@ class OrganizeEventPage extends React.Component
                         <h3>{t`Mapping event published`}</h3>
                       </div>
                       <div className="publishing-actions">
-                        <Button to={`/events/${event._id}`}>{t`View event`}</Button>
+                        <Button to={`/organizations/${organization._id}/events/${event._id}`}>{t`View event`}</Button>
                       </div>
                     </div>
                     <div className="second-row">
@@ -279,7 +279,7 @@ class OrganizeEventPage extends React.Component
                           <p>{t`Your event is currently in progress.`}</p>
                         </div>
                         <div className="publishing-actions">
-                          <Button to={`/events/${event._id}`}>{t`View event`}</Button>
+                          <Button to={`/organizations/${organization._id}/events/${event._id}`}>{t`View event`}</Button>
                         </div>
                       </div>
                       <div className="second-row">
@@ -306,7 +306,7 @@ class OrganizeEventPage extends React.Component
                         <p>{t`Your event is over now.`}</p>
                       </div>
                       <div className="publishing-actions">
-                        <Button to={`/events/${event._id}`}>{t`View event`}</Button>
+                        <Button to={`/organizations/${organization._id}/events/${event._id}`}>{t`View event`}</Button>
                       </div>
                     </div>
                   </section>)}
@@ -338,11 +338,11 @@ class OrganizeEventPage extends React.Component
                   </div>
                   <div className="step-status step-active">
                     <h3>{t`Share results`}</h3>
-                    <Button to={`/events/${event._id}`}>{t`Share`}</Button>
+                    <Button to={`/organizations/${organization._id}/events/${event._id}`}>{t`Share`}</Button>
                   </div>
                   <div className="step-status step-completed">
                     <h3>{t`Results have been shared`}</h3>
-                    <Button to={`/events/${event._id}`}>{t`View`}</Button>
+                    <Button to={`/organizations/${organization._id}/events/${event._id}`}>{t`View`}</Button>
                   </div>
                 </li>
               </ol>

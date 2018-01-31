@@ -21,7 +21,7 @@ type State = {
   selectedFields: Array<string>,
 };
 
-class MappingTestPage extends React.Component<Props, State> {
+class SurveyDebugPage extends React.Component<Props, State> {
   state = {selectedFields: []};
 
   public render() {
@@ -83,7 +83,7 @@ class MappingTestPage extends React.Component<Props, State> {
   }
 };
 
-export default styled(MappingTestPage) `
+export default styled(SurveyDebugPage) `
 .content-left {
   max-width: 375px;
 }

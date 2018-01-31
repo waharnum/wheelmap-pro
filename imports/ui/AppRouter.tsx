@@ -10,34 +10,25 @@ import EnsureUserLoggedIn from './components/EnsureUserLoggedIn';
 import HomePage from './pages/Home/HomePage';
 import SignUpPage from './pages/Users/SignUpPage';
 import ProfilePage from './pages/Users/ProfilePage';
-import MappingPage from './pages/Events/MappingPage';
 import NotFoundPage from './pages/NotFound/NotFoundPage';
 import EditEventPage from './pages/Events/EditEventPage';
 import ShowEventPage from './pages/Events/ShowEventPage';
-import CreatePlacePage from './pages/Events/CreatePlacePage';
+import SurveyDebugPage from './pages/Survey/SurveyDebugPage';
 import CreateEventPage from './pages/Events/CreateEventPage';
-import NewShowEventPage from './pages/Events/NewShowEventPage';
 import OrganizeEventPage from './pages/Events/OrganizeEventPage';
-import SignUpForEventPage from './pages/Events/SignUpForEventPage';
 import EventStatisticsPage from './pages/Events/EventStatisticsPage';
 import AccessForbiddenPage from './pages/NotFound/AccessForbiddenPage';
 import NoOrganizationsPage from './pages/Organizations/NoOrganizationsPage';
-import ShowOrganizationPage from './pages/Organizations/ShowOrganizationPage';
 import EditOrganizationPage from './pages/Organizations/EditOrganizationPage';
+import ShowOrganizationPage from './pages/Organizations/ShowOrganizationPage';
 import EventParticipantsPage from './pages/Events/EventParticipantsPage';
 import ListOrganizationsPage from './pages/Organizations/ListOrganizationsPage';
 import AccessibilityCloudPage from './pages/Organizations/AccessibilityCloudPage';
 import CreateOrganizationPage from './pages/Organizations/CreateOrganizationPage';
 import OrganizationMembersPage from './pages/Organizations/OrganizationMembersPage';
-import NewShowOrganizationPage from './pages/Organizations/NewShowOrganizationPage';
-import PublicSignUpForEventPage from './pages/Events/PublicSignUpForEventPage';
 import OrganizeOrganizationPage from './pages/Organizations/OrganizeOrganizationPage';
 import SignUpForOrganizationPage from './pages/Organizations/SignUpForOrganizationPage';
 import OrganizationStatisticsPage from './pages/Organizations/OrganizationStatisticsPage';
-
-// Just for test purposes
-import QuestionaireTestPage from './pages/Questionaire/QuestionaireTest';
-import MappingTest from './pages/PlaceInfos/MappingTest';
 
 
 const RedirectAccordingToUser = () => {
@@ -68,8 +59,6 @@ const SaveActiveOrganization = (nextState) => {
   Meteor.call('users.updateActiveOrganization', activeOrganizationId);
 };
 
-// tslint:disable:jsx-no-lambda
-// tslint:disable:max-line-length
 const AppRouter = (
   <Router>
     <Route component={App}>
@@ -81,10 +70,7 @@ const AppRouter = (
         <Route path="/organizations/list" component={ListOrganizationsPage}/>
       </Route>
 
-      {/* Invitations */}
-      <Route path="/organizations/:_id/accept-invitation/:token" component={SignUpForOrganizationPage}/>
-      <Route path="/events/:_id/accept-invitation/:token" component={SignUpForEventPage}/>
-      <Route path="/events/:_id/public-invitation/:token" component={PublicSignUpForEventPage}/>
+      {/* signup */}
       <Route path="/signup" component={SignUpPage}/>
 
       {/* organize pages */}
@@ -105,54 +91,46 @@ const AppRouter = (
         <Route path="/events/:_id/participants" component={EventParticipantsPage}/>
 
 
-        <Route path="/places" component={MappingTest}/>
+        <Route path="/places" component={SurveyDebugPage}/>
 
         <Route path="/profile" component={ProfilePage}/>
       </Route>
 
-      {/* public pages  */}
+      {/* public organization pages  */}
+      <Route path="/organizations/:_id/accept-invitation/:token" component={SignUpForOrganizationPage}/>
+
       <Route path="/organizations/:_id" component={ShowOrganizationPage}/>
-      <Route path="/organizations/:_id/browse" component={ShowOrganizationPage}/>
-      <Route path="/organizations/:_id/event/:event_id" component={ShowOrganizationPage}/>
       <Route path="/organizations/:_id/place/:place_id" component={ShowOrganizationPage}/>
+      <Route path="/organizations/:_id/user" component={ShowOrganizationPage}/>
+      <Route path="/organizations/:_id/about" component={ShowOrganizationPage}/>
 
-      <Route path="/new/organizations/:_id" component={NewShowOrganizationPage}/>
-      <Route path="/new/organizations/:_id/place/:place_id" component={NewShowOrganizationPage}/>
-      <Route path="/new/organizations/:_id/user" component={NewShowOrganizationPage}/>
-      <Route path="/new/organizations/:_id/about" component={NewShowOrganizationPage}/>
-
-      <Route path="/new/organizations/:organization_id/events/:_id" component={NewShowEventPage}/>
-      <Route path="/new/organizations/:organization_id/events/:_id/organization" component={NewShowEventPage}/>
-      <Route path="/new/organizations/:organization_id/events/:_id/mapping/user" component={NewShowEventPage}/>
-      <Route path="/new/organizations/:organization_id/events/:_id/user" component={NewShowEventPage}/>
-      <Route path="/new/organizations/:organization_id/events/:_id/place/:place_id" component={NewShowEventPage}/>
-      <Route path="/new/organizations/:organization_id/events/:_id/public-invitation/:token"
-             component={NewShowEventPage}/>
-      <Route path="/new/organizations/:organization_id/events/:_id/private-invitation/:token"
-             component={NewShowEventPage}/>
+      {/* public event pages  */}
+      <Route path="/organizations/:organization_id/events/:_id" component={ShowEventPage}/>
+      <Route path="/organizations/:organization_id/events/:_id/organization" component={ShowEventPage}/>
+      <Route path="/organizations/:organization_id/events/:_id/mapping/user" component={ShowEventPage}/>
+      <Route path="/organizations/:organization_id/events/:_id/user" component={ShowEventPage}/>
+      <Route path="/organizations/:organization_id/events/:_id/place/:place_id" component={ShowEventPage}/>
+      <Route path="/organizations/:organization_id/events/:_id/public-invitation/:token"
+             component={ShowEventPage}/>
+      <Route path="/organizations/:organization_id/events/:_id/private-invitation/:token"
+             component={ShowEventPage}/>
 
       {/* mapping only works with signed in user */}
       <Route component={(route) => <EnsureUserLoggedIn {...route} signInRoute={(p) => {
         const params = p.params as { _id: string, organization_id: string };
-        return `/new/organizations/${params.organization_id}/events/${params._id}/mapping/user`;
+        return `/organizations/${params.organization_id}/events/${params._id}/mapping/user`;
       }}/>}>
-        <Route path="/new/organizations/:organization_id/events/:_id/mapping/event-info" component={NewShowEventPage}/>
-        <Route path="/new/organizations/:organization_id/events/:_id/mapping/organization"
-               component={NewShowEventPage}/>
-        <Route path="/new/organizations/:organization_id/events/:_id/mapping" component={NewShowEventPage}/>
-        <Route path="/new/organizations/:organization_id/events/:_id/mapping/create-place"
-               component={NewShowEventPage}/>
-        <Route path="/new/organizations/:organization_id/events/:_id/mapping/edit-place/:place_id"
-               component={NewShowEventPage}/>
-        <Route path="/new/organizations/:organization_id/events/:_id/mapping/place/:place_id"
-               component={NewShowEventPage}/>
+        <Route path="/organizations/:organization_id/events/:_id/mapping/event-info" component={ShowEventPage}/>
+        <Route path="/organizations/:organization_id/events/:_id/mapping/organization"
+               component={ShowEventPage}/>
+        <Route path="/organizations/:organization_id/events/:_id/mapping" component={ShowEventPage}/>
+        <Route path="/organizations/:organization_id/events/:_id/mapping/create-place"
+               component={ShowEventPage}/>
+        <Route path="/organizations/:organization_id/events/:_id/mapping/edit-place/:place_id"
+               component={ShowEventPage}/>
+        <Route path="/organizations/:organization_id/events/:_id/mapping/place/:place_id"
+               component={ShowEventPage}/>
       </Route>
-
-
-      <Route path="/events/:_id" component={ShowEventPage}/>
-      <Route path="/events/:_id/mapping" component={MappingPage}/>
-      <Route path="/events/:_id/create-place" component={CreatePlacePage}/>
-      <Route path="/events/:_id/edit-place/:place_id" component={CreatePlacePage}/>
 
       <Route path="/welcome" component={HomePage}/>
 
@@ -160,9 +138,6 @@ const AppRouter = (
       <Route path="/reset-password" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET}/>}/>
       <Route path="/reset-password/:id" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET}/>}/>
       <Route path="/#/reset-password/:id" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET}/>}/>
-
-      {/* Styling stubs */}
-      <Route path="/questionaire" component={QuestionaireTestPage}/>
 
       {/* Not found pages */}
       <Route path="404" component={NotFoundPage}/>

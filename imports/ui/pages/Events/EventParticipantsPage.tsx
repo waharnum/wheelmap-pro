@@ -74,7 +74,7 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
             />
           )}
           tabs={<EventTabs id={event._id}/>}
-          publicLink={`/events/${event._id}`}
+          publicLink={`/organizations/${organization._id}/events/${event._id}`}
         />
         <div className="content-area scrollable hsplit">
           <div className="content-left">
@@ -133,7 +133,7 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
         </div>
       </section>
     );
-  }
+  };
 
   private onInvite = (emails: string[],
                       callback: (error: Meteor.Error | null, result: any) => void) => {
@@ -141,7 +141,7 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
       invitationEmailAddresses: emails,
       eventId: this.props.model.event._id,
     }, callback);
-  }
+  };
 }
 
 const ReactiveEventParticipantsPage = reactiveSubscriptionByParams(

@@ -1,304 +1,369 @@
-import { t } from 'c-3po';
+import {t} from 'c-3po';
 import * as L from 'leaflet';
 import styled from 'styled-components';
-import { toast } from 'react-toastify';
+import {toast} from 'react-toastify';
 import * as React from 'react';
-import * as moment from 'moment';
-import ClipboardButton from 'react-clipboard.js';
+import {Link, RouteComponentProps, InjectedRouter} from 'react-router';
 
-import Map from '../../components/Map';
-import Button from '../../components/Button';
-import { colors } from '../../stylesheets/colors';
-import MapLayout from '../../layouts/MapLayout';
-import { regionToBbox } from '../../../both/lib/geo-bounding-box';
-import EventStatistics from './EventStatistics';
+import {accessibilityCloudFeatureCache} from 'wheelmap-react/lib/lib/cache/AccessibilityCloudFeatureCache';
+
+import {IPlaceInfo} from '../../../both/api/place-infos/place-infos';
+import {IOrganization} from '../../../both/api/organizations/organizations';
+import {defaultRegion} from '../../../both/api/events/schema';
+import {Events, IEvent} from '../../../both/api/events/events';
+import {EventParticipants, IEventParticipant} from '../../../both/api/event-participants/event-participants';
+
+import {regionToBbox} from '../../../both/lib/geo-bounding-box';
+
+import {colors} from '../../stylesheets/colors';
+import NewMapLayout from '../../layouts/NewMapLayout';
+
+import LogoHeader from '../../components/LogoHeader';
+import {IStyledComponent} from '../../components/IStyledComponent';
+import {Loading, wrapDataComponent} from '../../components/AsyncDataComponent';
+import {IAsyncDataByIdProps, reactiveSubscriptionByParams} from '../../components/reactiveModelSubscription';
+
+import UserPanel from '../../panels/UserPanel';
+import EventPanel from './panels/EventPanel';
+import SurveyPanel from './panels/SurveyPanel';
+import PlaceDetailsPanel from '../../panels/PlaceDetailsPanel';
+import EventInvitationPanel from './panels/EventInvitationPanel';
+import OrganizationAboutPanel from '../Organizations/panels/OrganizationAboutPanel';
+
 import EventMiniMarker from './EventMiniMarker';
-import { IOrganization } from '../../../both/api/organizations/organizations';
-import { IEvent, Events } from '../../../both/api/events/events';
-import { IStyledComponent } from '../../components/IStyledComponent';
-import { wrapDataComponent } from '../../components/AsyncDataComponent';
-import { default as SidePanelHeader, SidePanelTitle } from '../../components/SidePanel';
-import { reactiveSubscriptionByParams, IAsyncDataByIdProps } from '../../components/reactiveModelSubscription';
-import { defaultRegion } from '../../../both/api/events/schema';
+import {PlaceInfoSchema} from '@sozialhelden/ac-format';
 
-interface IPageModel {
-  organization: IOrganization;
-  event: IEvent;
+const EditPlaceAction = (router: InjectedRouter, organization: IOrganization, event: IEvent, feature: IPlaceInfo) => {
+  return (<button className="btn btn-primary" onClick={() => {
+    let clonedFeature = Object.assign({}, feature);
+    // wheelmap react requires an _id in properties, db does not want this, so lets remove it
+    const {_id, ...properties} = clonedFeature.properties;
+    clonedFeature.properties = properties;
+
+    if (clonedFeature._id && clonedFeature.properties && clonedFeature.properties.eventId === event._id) {
+      // was part of this event/source, just edit right away
+      router.push({
+        pathname: `/organizations/${organization._id}/events/${event._id}/mapping/edit-place/${clonedFeature._id}`,
+        state: {feature: clonedFeature},
+      });
+    } else {
+      // was part of another event/source, needs clean up
+      // remove id, so place is saved as a new place!
+      delete clonedFeature._id;
+      // remove all invalid fields
+      clonedFeature = PlaceInfoSchema.clean(clonedFeature);
+
+      router.push({
+        pathname: `/organizations/${organization._id}/events/${event._id}/mapping/create-place`,
+        state: {feature: clonedFeature},
+      });
+    }
+
+  }}>{t`Edit place`}</button>);
 };
 
-const PublicEventHeader = (props: { event: IEvent, organization: IOrganization }) => (
-  <SidePanelHeader
-    titleComponent={(
-      <SidePanelTitle
-        title={props.event.name}
-        subTitle={moment(props.event.startTime).format('LLL')}
-        description={props.event.description}
-        prefixTitle={props.organization.name}
-        logo={props.organization.logo}
-        prefixLink={`/organizations/${props.organization._id}`}
+type PageModel = {
+  organization: IOrganization,
+  event: IEvent,
+  user: Meteor.User | null,
+  participant: IEventParticipant | null,
+  places: IPlaceInfo[],
+};
+
+type PageParams = {
+  organization_id: string,
+  _id: string, // event id,
+  place_id?: string,
+  token?: string,
+};
+
+type Props = RouteComponentProps<PageParams, {}> & IAsyncDataByIdProps<PageModel> & IStyledComponent;
+
+class ShowEventPage extends React.Component<Props> {
+
+  constructor(props: Props) {
+    super(props);
+    ShowEventPage.handleInvalidData(props);
+  }
+
+  componentWillReceiveProps(props: Props) {
+    ShowEventPage.handleInvalidData(props);
+  }
+
+  static handleInvalidData(props: Props) {
+    const {router, location} = props;
+    const {participant, event, organization} = props.model;
+
+    const isMappingFlow = location.pathname.endsWith('/mapping') || location.pathname.includes('/mapping/');
+    if (isMappingFlow && (!participant || event.status !== 'ongoing')) {
+      return router.replace(`/organizations/${organization._id}/events/${event._id}`);
+    }
+  }
+
+  getPanelContent(isMappingFlow: boolean) {
+    const {location, router, params} = this.props;
+    const {organization, event, user, participant} = this.props.model;
+
+    let content: React.ReactNode = null;
+    let header: React.ReactNode = null;
+    let forceContentToSidePanel: boolean = false;
+    let forceSidePanelOpen: boolean = false;
+    let overlapSidePanelTakeFullWidth: boolean = false;
+    let onDismissSidePanel: undefined | (() => void) = undefined;
+    let canDismissFromSidePanel: boolean = false;
+    let canDismissCardPanel: boolean = false;
+    let hideContentFromCardPanel: boolean = false;
+
+    if (location.pathname.endsWith('/create-place') || location.pathname.includes('/edit-place/')) {
+      // survey
+      const place = (location.state && location.state.feature as IPlaceInfo) || null;
+
+      content = <SurveyPanel event={event} place={place} onExitSurvey={() => {
+        router.push(`/organizations/${organization._id}/events/${event._id}/mapping`);
+      }}/>;
+      header = null;
+      forceContentToSidePanel = true;
+      forceSidePanelOpen = true;
+      overlapSidePanelTakeFullWidth = true;
+    } else if (params.place_id) {
+      // place details
+      const target = isMappingFlow ?
+        `/organizations/${organization._id}/events/${event._id}/mapping` :
+        `/organizations/${organization._id}/events/${event._id}`;
+
+      header = <LogoHeader link={target}
+                           prefixTitle={organization.name}
+                           logo={organization.logo}
+                           title={t`Place`}/>;
+      // TODO async fetch feature
+      const feature = accessibilityCloudFeatureCache.getCachedFeature(params.place_id);
+      const actions = (isMappingFlow && feature) ? EditPlaceAction(router, organization, event, feature) : null;
+      content = feature ? <PlaceDetailsPanel feature={feature} actions={actions}/> :
+        <Loading>{t`Place not found…`}</Loading>;
+      forceSidePanelOpen = true;
+      canDismissCardPanel = true;
+      // TODO center map to POI on first render
+    } else if (params.token && (
+        location.pathname.includes('/public-invitation/') ||
+        location.pathname.includes('/private-invitation/'))) {
+      // public-invitation
+      header = <LogoHeader link={`/organizations/${organization._id}/events/${event._id}`}
+                           prefixTitle={organization.name}
+                           logo={organization.logo}
+                           title={event.name}/>;
+      content =
+        <EventInvitationPanel user={user}
+                              event={event}
+                              organization={organization}
+                              token={params.token}
+                              participant={participant}
+                              privateInvite={location.pathname.includes('/private-invitation/')}
+                              onJoinedEvent={() => {
+                                router.push(`/organizations/${organization._id}/events/${event._id}/mapping`);
+                              }}/>;
+      forceSidePanelOpen = true;
+      forceContentToSidePanel = true;
+      onDismissSidePanel = () => {
+        router.push(`/organizations/${organization._id}/events/${event._id}`);
+      };
+    } else if (location.pathname.endsWith('/user')) {
+      // user panel
+      const target = isMappingFlow ?
+        `/organizations/${organization._id}/events/${event._id}/mapping` :
+        `/organizations/${organization._id}/events/${event._id}`;
+      onDismissSidePanel = () => {
+        router.push(target);
+      };
+      header = <LogoHeader link={target}
+                           prefixTitle={organization.name}
+                           logo={organization.logo}
+                           title={event.name}/>;
+      content = <UserPanel
+        onSignedInHook={() => {
+          router.push(target);
+        }}
+        onSignedOutHook={() => {
+          router.push(`/organizations/${organization._id}/events/${event._id}`);
+        }}
+      />;
+      forceContentToSidePanel = true;
+      forceSidePanelOpen = true;
+    } else if (location.pathname.endsWith('/organization') ||
+      // about-organization
+      location.pathname.endsWith('/mapping/organization')) {
+      const target = isMappingFlow ?
+        `/organizations/${organization._id}/events/${event._id}/mapping` :
+        `/organizations/${organization._id}/events/${event._id}`;
+      const userTarget = isMappingFlow ?
+        `/organizations/${organization._id}/events/${event._id}/mapping/user` :
+        `/organizations/${organization._id}/events/${event._id}/user`;
+      onDismissSidePanel = () => {
+        router.push(target);
+      };
+      canDismissFromSidePanel = true;
+      header = null;
+
+      const adminLink = event.editableBy(Meteor.userId()) ?
+        `/events/${event._id}/organize` : undefined;
+      content = <OrganizationAboutPanel organization={organization}
+                                        adminLink={adminLink}
+                                        organizationLink={`/organizations/${organization._id}`}
+                                        onGotoUserPanel={
+                                          () => {
+                                            router.push(userTarget);
+                                          }
+                                        }/>;
+      forceContentToSidePanel = true;
+      forceSidePanelOpen = true;
+    } else if (location.pathname.endsWith('/mapping')) {
+      // mapping flow
+      content = <EventPanel participant={participant} user={user} event={event} showActions={false}/>;
+      header = <LogoHeader link={`/organizations/${organization._id}/events/${event._id}/mapping/organization`}
+                           prefixTitle={organization.name}
+                           logo={organization.logo}
+                           title={event.name}>
+        <Link className="event-info"
+              to={`/organizations/${organization._id}/events/${event._id}/mapping/event-info`}></Link>
+      </LogoHeader>;
+      forceSidePanelOpen = true;
+      hideContentFromCardPanel = true;
+    } else if (location.pathname.endsWith('/event-info')) {
+      // event info while mapping
+      const target = `/organizations/${organization._id}/events/${event._id}/mapping`;
+      onDismissSidePanel = () => {
+        router.push(target);
+      };
+      content = <EventPanel participant={participant} user={user} event={event} showActions={false}/>;
+      header = <LogoHeader link={target}
+                           prefixTitle={organization.name}
+                           logo={organization.logo}
+                           title={t`Event`}/>;
+      forceContentToSidePanel = false;
+      canDismissCardPanel = true;
+    } else {
+      // default view
+      content = <EventPanel participant={participant} user={user} event={event}/>;
+      header = <LogoHeader link={`/organizations/${organization._id}/events/${event._id}/organization`}
+                           prefixTitle={organization.name}
+                           logo={organization.logo}
+                           title={t`Event`}/>;
+    }
+    return {
+      content,
+      header,
+      canDismissCardPanel,
+      forceSidePanelOpen,
+      forceContentToSidePanel,
+      onDismissSidePanel,
+      overlapSidePanelTakeFullWidth,
+      canDismissFromSidePanel,
+      hideContentFromCardPanel,
+    };
+  }
+
+  public render() {
+    const {router, location} = this.props;
+    const {organization, event, places} = this.props.model;
+
+    const isMappingFlow = location.pathname.endsWith('/mapping') ||
+      location.pathname.includes('/mapping/');
+
+    const {
+      content, header, forceSidePanelOpen, forceContentToSidePanel, canDismissFromSidePanel,
+      onDismissSidePanel, overlapSidePanelTakeFullWidth, canDismissCardPanel, hideContentFromCardPanel,
+    } = this.getPanelContent(isMappingFlow);
+
+    const bbox = regionToBbox(event.region || defaultRegion);
+
+    return (
+      <NewMapLayout
+        className={this.props.className}
+        header={header}
+        contentPanel={content}
+        hideContentFromCardPanel={hideContentFromCardPanel}
+        sidePanelHidden={forceSidePanelOpen ? false : undefined}
+        forceContentToSidePanel={forceContentToSidePanel}
+        overlapSidePanelTakeFullWidth={overlapSidePanelTakeFullWidth}
+        canDismissFromSidePanel={canDismissFromSidePanel}
+        onDismissSidePanel={onDismissSidePanel}
+        canDismissCardPanel={canDismissCardPanel}
+        onDismissCardPanel={() => {
+          if (isMappingFlow) {
+            router.push(`/organizations/${organization._id}/events/${event._id}/mapping`);
+          } else {
+            router.push(`/organizations/${organization._id}/events/${event._id}`);
+          }
+        }}
+        mapProperties={{
+          customPlaces: places,
+          bbox: isMappingFlow ? undefined : bbox,
+          onMarkerClick: (id) => {
+            if (isMappingFlow) {
+              router.push(`/organizations/${organization._id}/events/${event._id}/mapping/place/${id}`);
+            } else {
+              router.push(`/organizations/${organization._id}/events/${event._id}/place/${id}`);
+            }
+          },
+        }}
+        mapChildren={isMappingFlow ? (<Link to={{
+          pathname: `/organizations/${organization._id}/events/${event._id}/mapping/create-place`,
+          state: {mapPosition: {}, historyBehavior: 'back'},
+        }} className="add-place">+</Link>) : (<EventMiniMarker
+          event={event}
+          additionalLeafletLayers={[L.rectangle(bbox, {
+            className: 'event-bounds-polygon',
+            interactive: false,
+          })]}
+        />)}
       />
-    )}
-    action={(<HeaderShareAction event={props.event} />)}
-    organizeLink={props.event.editableBy(Meteor.userId()) ? `/events/${props.event._id}/organize` : undefined}
-  />
-);
-
-const OngoingEventHeader = (props: { event: IEvent }) => (
-  <div>
-    <EventStatistics
-      event={props.event}
-      achieved={true}
-      countdown={'full'} />
-  </div>
-);
-
-const OngoingEventMapContent = () => (
-  <div>
-  </div>
-);
-
-const HeaderShareAction = (props: { event: IEvent }) => (
-  <div>
-    <ClipboardButton className="btn btn-dark"
-      data-clipboard-text={window.location.href}
-      onSuccess={() => {
-        toast.success(t`Link copied to clipboard`);
-      }}>
-      {t`Share Link`}
-    </ClipboardButton>
-    <Button className="join-button btn-primary" to={`/events/${props.event._id}/mapping`}>{t`Start mapping`}</Button>
-  </div>
-);
-
-const FinishedEventMapContent = (props: { event: IEvent }) => {
-  const barGraphAchieved =
-    props.event.statistics && props.event.targets &&
-      props.event.targets.mappedPlacesCount && props.event.targets.mappedPlacesCount > 0 ?
-      Math.floor(100 * props.event.statistics.mappedPlacesCount / props.event.targets.mappedPlacesCount) : null;
-
-  return (
-    <div className="event-stats">
-      <div className="event-picture-container">
-        {props.event.photoUrl ? <img src={props.event.photoUrl} alt={t`Event picture`} /> : null}
-        <section className="image-overlay">
-          <div className="participant-count">
-            {props.event.statistics ? props.event.statistics.acceptedParticipantCount : 0}
-          </div>
-          <div className="participants-block">
-            <section className="participants-label">
-              {t`Participants`}
-            </section>
-            <section className="participants-icons">
-              {Array(props.event.statistics ? (props.event.statistics.acceptedParticipantCount + 1) : 0).join('p ­')}
-            </section>
-          </div>
-        </section>
-      </div>
-      <div className="stats-box">
-        <div className="places-block">
-          <section className="poi-icon" />
-          <section className="planned-label">
-            <p>{props.event.targets ? props.event.targets.mappedPlacesCount : 0}</p>
-            <small>{t`Planned`}</small>
-          </section>
-          <section className="achieved-label">
-            <p>{props.event.statistics ? props.event.statistics.mappedPlacesCount : 0}</p>
-            <small>{t`Achieved`}</small>
-          </section>
-        </div>
-        {barGraphAchieved !== null ?
-          <div className="places-graph">
-            <section style={{ width: `${barGraphAchieved}%` }} className="bar-graph-achieved" />
-            <section style={{ width: `${100 - barGraphAchieved}%` }} className="bar-graph-planned" />
-          </div>
-          : null
-        }
-      </div>
-    </div>
-  );
+    );
+  }
 };
 
-const ShowEventPage = (props: IAsyncDataByIdProps<IPageModel> & IStyledComponent) => {
-  const event = props.model.event;
-  const organization = props.model.organization;
-  const bbox = regionToBbox(event.region || defaultRegion);
-
-  return (
-    <MapLayout className={props.className}>
-      <PublicEventHeader event={event} organization={organization} />
-      {event.status == 'ongoing' ? <OngoingEventHeader event={event} /> : null}
-      {event.status == 'planned' ? <OngoingEventHeader event={event} /> : null}
-      <div className="content-area">
-        <Map
-          bbox={bbox}>
-          <EventMiniMarker
-            event={event}
-            additionalLeafletLayers={[L.rectangle(bbox, {
-              className: 'event-bounds-polygon',
-              interactive: false,
-            })]}
-          />
-        </Map>
-        <div className="map-overlay">
-          {event.status == 'completed' ? <FinishedEventMapContent event={event} /> : null}
-          {event.status == 'ongoing' ? <OngoingEventMapContent /> : null}
-          {event.status == 'planned' ? <OngoingEventMapContent /> : null}
-        </div>
-      </div>
-    </MapLayout>
-  );
-}
-  ;
 
 const ReactiveShowEventPage = reactiveSubscriptionByParams(
-  wrapDataComponent<IPageModel,
-    IAsyncDataByIdProps<IPageModel | null>,
-    IAsyncDataByIdProps<IPageModel>>(ShowEventPage),
-  (id): IPageModel | null => {
+  wrapDataComponent<PageModel,
+    IAsyncDataByIdProps<PageModel | null>,
+    IAsyncDataByIdProps<PageModel>>(ShowEventPage),
+  (id): PageModel | null => {
     const event = Events.findOne(id);
     const organization = event ? event.getOrganization() : null;
+    const user = Meteor.user();
+    const participant = user ? EventParticipants.findOne({userId: user._id, eventId: id}) : null;
+    const places = event ? event.getPlaces() : [];
     // fetch model with organization & events in one go
-    return event && organization ? { organization, event } : null;
-  }, 'events.by_id.public', 'organizations.by_eventId.public', 'users.my.private');
+    return event && organization ? {organization, event, user, participant, places} : null;
+  }, 'events.by_id.public', 'organizations.by_eventId.public',
+  'eventParticipants.my_byEventId.private', 'placeInfos.by_eventId.public', 'users.my.private');
 
-export default styled(ReactiveShowEventPage) `
-  .event-date {
-    background-color: white;
+
+export default styled(ReactiveShowEventPage) `  
+  a.add-place {
+    width: 65px;
+    height: 65px;
+    position: absolute;
+    background-color: ${colors.linkBlue};
+    z-index: 400; /* above map but below CardPanel */
+    border-radius: 65px;
+    right: 10px;
+    bottom: 20px;
+    color: white;
+    font-size: 35px;
+    font-weight: 800;
+    text-align: center;
+    line-height: 65px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    font-family: 'iconfield-V03';
   }
-
-  .map-overlay {  
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    
-    .event-stats {
-      width: 400px;    
-      position: absolute;
-      right: 10px;
-      bottom: 40px;
-      background-color: white;
-      box-shadow: 0 0 2px 0 rgba(55,64,77,0.40);
-      
-      .stats-box {
-        padding: 10px;
-      }
-
-      .places-block {
-        display: flex;
-        justify-content: space-between;
-        
-        .poi-icon {
-          content: " ";
-          width: 42px;
-          height: 42px;
-          background-image: url(/images/icon-location@2x.png); 
-          background-position: center center;
-          background-repeat: no-repeat;
-          background-size: 100% 100%;
-        }
-        
-        section {
-          text-align: center;
-
-          p {
-            margin: 0;
-            padding-top: 4px;
-            font-size: 32px;
-            line-height: 28px;
-            font-weight: 200;
-          }
-
-          small {
-            font-size: 11px;
-            line-height: 11px;
-            font-weight: 300;
-            text-transform: uppercase;
-          }
-        }
-
-        section.achieved-label p {
-          font-weight: 800;
-        }
-      }
- 
-      .places-graph {
-        margin-top: 4px;
-        border: 1px black solid;
-        line-height: 0;
-        
-        section {
-          width: 30%;
-          height: 18px;      
-          padding-right: 4px;
-          line-height: 18px;
-          display: inline-block;
-          text-align: right;
-          font-weight: 400;
-        }
-        
-        .bar-graph-achieved {
-          background-color: ${colors.ctaGreen};
-          color: white;
-          padding: 0;
-        }
-        .bar-graph-remaining {
-          background-color: ${colors.errorRed};
-          color: white;
-          padding: 0;
-        }
-      }
-      
-      .event-picture-container {
-        position: relative;
-        
-        img {
-          min-height: 88px;
-          width: 100%;
-        }
-        
-        section.image-overlay {
-          position: absolute;
-          color: white;
-          bottom: 0px;
-          padding: 10px;
-          width: 100%;
-          background-color: rgba(0, 0, 0, 0.4);
-          
-          .participant-count {
-            font-size: 42px;
-            font-weight: 800;
-            line-height: 36px;
-          }
-          
-          .participants-block {
-            margin-right: 10px;
-            display: flex;
-            justify-content: flex-start;
-            
-            section.participants-label {
-              margin-right: 10px;
-              margin-top: 4px;
-              font-weight: 400;
-              font-size: 11px;
-              line-height: 14px;
-              text-transform: uppercase;
-            }
-
-            section.participants-icons {          
-              margin-right: 10px;
-              font-family: 'iconfield-v03';
-              font-size: 11px;
-            }
-          }
-        }
-      }
-    }
-
-    .join-button {
-      margin: auto;    
-      box-shadow: 0 0 7px 1px rgba(0,0,0,0.4);
-    }
-  }
-
   
+  a.event-info {
+    font-size: 30px;
+    font-family: 'iconfield-V03';
+  }
+  
+  &.fixed-side-panel {
+    a.event-info {
+      display: none;
+    }
+  }
 `;
