@@ -5,7 +5,7 @@
     "start": "meteor run",
     "test": "meteor test --once --driver-package dispatch:mocha-phantomjs",
     "test:dev": "meteor test --driver-package dispatch:mocha-phantomjs",
-    "collectTranslations": "meteor node packages/tools/collectTranslations.js && msgcat used-strings.pot node_modules/wheelmap-react/public/i18n/translations.pot > combined-strings.pot",
+    "collectTranslations": "meteor node packages/tools/collectTranslations.js && packages/tools/collectTranslations.sh",
     "importStrings": "msginit -i used-strings.pot -o client/i18n/en_DEV.po -l en_DEV --no-translator",
     "fetchFromTransifex": "meteor node packages/tools/fetchFromTransifex.js",
     "uploadToTransifex": "packages/tools/uploadToTransifex.sh"
