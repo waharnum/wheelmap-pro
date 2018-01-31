@@ -538,17 +538,21 @@ class Questionnaire extends React.Component<Props, State> {
     return (
       <section className="questionnaire-step enter-block"
                ref="latest-active-block">
+        <section className="block-header">
+          <h3>{definition.label}</h3>
+          <span className="time-left">{duration}</span>
+        </section>
         <h3 className="question">{this.state.question}</h3>
         <span className="call-to-action">
           <div className="form">
             <div className="form-group">
               {isOptional ?
                 [<button key="yes" className="primary"
-                         onClick={this.enterBlock.bind(this, field, this.state.question)}>{t`Yes`}</button>,
+                         onClick={this.enterBlock.bind(this, field, this.state.question, definition.label, duration)}>{t`Yes`}</button>,
                   <button key="no" className="primary"
                           onClick={this.skipBlock.bind(this, field, this.state.question)}>{t`No`}</button>] :
                 <button className="primary"
-                        onClick={this.enterBlock.bind(this, field, this.state.question)}>{t`Okay`}</button>
+                        onClick={this.enterBlock.bind(this, field, this.state.question, definition.label, duration)}>{t`Okay`}</button>
               }
             </div>
           </div>
@@ -617,17 +621,21 @@ class Questionnaire extends React.Component<Props, State> {
     return (
       <section className="questionnaire-step enter-array"
                ref="latest-active-block">
+        <section className="array-header">
+          <h3>label</h3>
+          <span className="time-left">{duration}</span>
+        </section>
         <h3 className="question">{this.state.question}</h3>
         <span className="call-to-action">
           <div className="form">
             <div className="form-group">
               {isOptional ?
                 [<button key="yes" className="primary"
-                         onClick={this.enterArray.bind(this, field, this.state.question, arrayIndex)}>{t`Yes`}</button>,
+                         onClick={this.enterArray.bind(this, field, this.state.question, arrayIndex, label, duration)}>{t`Yes`}</button>,
                   <button key="no" className="primary"
                           onClick={this.skipBlock.bind(this, field, this.state.question, arrayIndex)}>{t`No`}</button>] :
                 <button className="primary"
-                        onClick={this.enterArray.bind(this, field, this.state.question)}>{t`Okay`}</button>
+                        onClick={this.enterArray.bind(this, field, this.state.question, arrayIndex, label, duration)}>{t`Okay`}</button>
               }
             </div>
           </div>
