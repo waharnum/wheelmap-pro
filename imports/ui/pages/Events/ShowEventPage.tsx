@@ -180,7 +180,7 @@ class ShowEventPage extends React.Component<Props> {
       header = <LogoHeader link={target}
                            prefixTitle={organization.name}
                            logo={organization.logo}
-                           title={event.name}/>;
+                           title={t`My account`}/>;
       content = <UserPanel
         onSignedInHook={() => {
           router.push(target);
