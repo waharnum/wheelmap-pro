@@ -15,6 +15,7 @@ import {IPlaceInfo} from '../../both/api/place-infos/place-infos';
 
 type Props = {
   feature?: IPlaceInfo | null;
+  actions?: React.ReactNode;
 } & IStyledComponent;
 
 function fetchCategory(feature: IPlaceInfo | undefined | null,
@@ -60,7 +61,7 @@ class PlaceDetailsPanel extends React.Component<Props> {
   }
 
   public render(): JSX.Element | null {
-    const feature = this.props.feature;
+    const {feature, actions} = this.props;
     if (!feature) {
       return null;
     }
@@ -77,8 +78,12 @@ class PlaceDetailsPanel extends React.Component<Props> {
           feature={feature}
           category={category}
           parentCategory={parentCategory}
-
         />
+        {actions &&
+        <section className="place-actions">
+          {actions}
+        </section>
+        }
         <BasicAccessibility properties={properties}/>
         <AccessibilityDetails details={accessibility}/>
         <AccessibilityExtraInfo properties={properties}/>
@@ -99,5 +104,12 @@ export default styled(PlaceDetailsPanel)`
   padding: 10px;
   flex: 1;
   // custom styling
+  
+  .place-actions {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    padding: 0 25px;
+  }
 `;
 
