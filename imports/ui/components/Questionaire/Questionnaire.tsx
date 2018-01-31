@@ -28,6 +28,8 @@ type HistoryDataEntry = {
   }
   question: string,
   answer: any,
+  blockLabel?: string;
+  duration?: string;
   component?: React.ComponentClass<{ value: any }> | React.StatelessComponent<any>
   className?: string,
 };
@@ -379,6 +381,8 @@ class Questionnaire extends React.Component<Props, State> {
                       question={entry.question}
                       value={entry.answer}
                       className={entry.className}
+                      blockLabel={entry.blockLabel}
+                      duration={entry.duration}
                       onClick={callback}/>
       );
     });
