@@ -450,7 +450,7 @@ class Questionnaire extends React.Component<Props, State> {
     // console.log('subModel', field, objectPath, subModel);
     // console.log('subSchema', field, subSchema);
 
-    /* specify key on AutoForm, so that the form is not reused between fields */
+    /* specify key on AutoForm, so that the form is not reused between fields, otherwise the state persists */
     return (
       <section className={`questionnaire-step ${isOptional ? 'questionnaire-optional' : 'questionnaire-mandatory'}`}
                ref="latest-active-block">
@@ -461,7 +461,10 @@ class Questionnaire extends React.Component<Props, State> {
           onSubmit={this.submitValue.bind(this, field, this.state.question)}
           schema={subSchema}
           model={subModel}>
-          <h3 className="question">{this.state.question}</h3>
+          <h3 className="question">
+            {this.state.question}
+            {!isOptional && <small title={t`Required field`} className="required">*</small>}
+          </h3>
           <section className={isSelfSubmitting ? 'value-entry-section ves-inline-field' : 'value-entry-section'}>
             <AutoField
               inputRef={ref => {
@@ -854,6 +857,11 @@ export default styled(Questionnaire) `
       font-weight: 800;
       letter-spacing: -0.51px;
       line-height: 29px;
+      
+      small.required {
+        margin-left: 5px;
+        position: absolute;
+      }
     }
 
     section.questionnaire-step.welcome h3,
