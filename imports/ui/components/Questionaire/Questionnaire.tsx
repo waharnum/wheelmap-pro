@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {toast} from 'react-toastify';
 import * as React from 'react';
 import {AutoForm, AutoField, ErrorsField, SubmitField} from 'uniforms-bootstrap3';
-import {extend, get, pick, set, concat, sample, isEqual} from 'lodash';
+import {extend, get, pick, set, concat, sample, isEqual, reduce} from 'lodash';
 
 
 import AccessibilityDetails from 'wheelmap-react/lib/components/NodeToolbar/AccessibilityDetails';
@@ -525,7 +525,14 @@ class Questionnaire extends React.Component<Props, State> {
   enterBlockSection(field: string) {
     const definition = this.props.schema.getDefinition(field);
     const isOptional = definition.optional === true;
+    const blockDuration = reduce(this.durationCache, (r, v, k) => {
+      if (k.startsWith(field)) {
+        return r + this.durationCache[k];
+      }
+      return r;
+    }, 0);
 
+    const duration = stringifyDuration(blockDuration);
     return (
       <section className="questionnaire-step enter-block"
                ref="latest-active-block">
@@ -595,6 +602,14 @@ class Questionnaire extends React.Component<Props, State> {
     const currentValue = get(this.state.model, simpleSchemaPathToObjectPath(field), []);
     const arrayIndex = currentValue.length;
 
+    const blockDuration = reduce(this.durationCache, (r, v, k) => {
+      if (k.startsWith(field)) {
+        return r + this.durationCache[k];
+      }
+      return r;
+    }, 0);
+    const label = `${definition.label} #${arrayIndex + 1}`;
+    const duration = stringifyDuration(blockDuration);
     return (
       <section className="questionnaire-step enter-array"
                ref="latest-active-block">
