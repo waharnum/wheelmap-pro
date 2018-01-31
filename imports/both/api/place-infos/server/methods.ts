@@ -5,6 +5,10 @@ import {IPlaceInfo, PlaceInfos} from '../place-infos';
 import {FormatVersion, PlaceInfo, PlaceInfoSchema} from '@sozialhelden/ac-format';
 import {t} from 'c-3po';
 import {userIsAllowedToMapInEventId} from '../../events/priviledges';
+import {Events} from '../../events/events';
+import {createSourceForEvent} from '../../events/server/methods';
+import {Organization} from 'aws-sdk/clients/organizations';
+import {Organizations} from '../../organizations/organizations';
 
 const insertionSchema = new SimpleSchema({
   eventId: {
@@ -39,13 +43,27 @@ export const insert = new ValidatedMethod({
       throw new Meteor.Error(403, t`You do not have rights to add places for this event.`);
     }
 
-    // TODO fetch or create source for event id
+    const event = Events.findOne(doc.eventId);
+    if (!event) {
+      throw new Meteor.Error(404, 'Event not found.');
+    }
 
-    (doc.place as any)._testing = true;
+    if (!event.sourceId) {
+      const organization = Organizations.findOne(event.organizationId);
+      if (!organization) {
+        throw new Meteor.Error(404, 'Organization not found.');
+      }
+      const sourceId = createSourceForEvent(organization, event);
+      if (sourceId) {
+        event.sourceId = sourceId;
+        Events.update(doc.eventId, {$set: {sourceId}});
+      }
+    }
 
-    // user and event id with place
+    // source, user and event id with place
     doc.place.properties.eventId = String(doc.eventId);
     doc.place.properties.creatorId = this.userId;
+    doc.place.properties.sourceId = String(event.sourceId);
 
     doc.place.formatVersion = FormatVersion;
 

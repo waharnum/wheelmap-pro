@@ -10,7 +10,7 @@ import {sendEventInvitationEmailTo} from '../../event-participants/server/_invit
 import {ISource, Sources} from '../../sources/sources';
 
 
-const createSourceForEvent = (organization: IOrganization, doc: IEvent): Mongo.ObjectID | null => {
+export const createSourceForEvent = (organization: IOrganization, doc: IEvent): Mongo.ObjectID | null => {
   if (!doc.sourceId) {
     const newDoc = {
       organizationId: organization._id as Mongo.ObjectID,
