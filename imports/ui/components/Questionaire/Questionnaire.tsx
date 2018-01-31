@@ -500,14 +500,14 @@ class Questionnaire extends React.Component<Props, State> {
     );
   }
 
-  enterBlock = (field: string, question: string) => {
+  enterBlock = (field: string, question: string, label: string, duration: string) => {
     console.log('Entered', field, question);
     // start empty object if not existing yet
 
     const objectPath = simpleSchemaPathToObjectPath(field, this.state.arrayIndexes);
     set(this.state.model, objectPath, get(this.state.model, objectPath, {}));
     const nextState = {
-      history: concat(this.state.history, {
+      history: concat(this.state.history, [{
         goTo: {
           index: this.state.currentIndex,
           arrayIndexes: this.state.arrayIndexes,
@@ -515,7 +515,9 @@ class Questionnaire extends React.Component<Props, State> {
         question,
         answer: sample(affirmativeAnswers),
         className: 'enter-block-history',
-      }),
+        blockLabel: label,
+        duration: duration,
+      }]),
       model: this.state.model,
     };
 
@@ -555,7 +557,7 @@ class Questionnaire extends React.Component<Props, State> {
     );
   }
 
-  enterArray = (field: string, question: string, index: number) => {
+  enterArray = (field: string, question: string, index: number, label: string, duration: string) => {
     console.log('Entered', field, question);
 
     // start empty object if not existing yet
@@ -563,7 +565,9 @@ class Questionnaire extends React.Component<Props, State> {
     set(this.state.model, objectPath, get(this.state.model, objectPath, [{}]));
 
     const nextState = {
-      history: concat(this.state.history, {
+      history: concat(this.state.history, [{
+        blockLabel: label,
+        duration: duration,
         goTo: {
           index: this.state.currentIndex,
           arrayIndexes: this.state.arrayIndexes,
@@ -571,7 +575,7 @@ class Questionnaire extends React.Component<Props, State> {
         question,
         answer: sample(affirmativeAnswers),
         className: 'enter-array-history',
-      }),
+      }]),
       arrayIndexes: this.state.arrayIndexes.concat([index]),
       model: this.state.model,
     };
