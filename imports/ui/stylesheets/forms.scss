@@ -180,7 +180,7 @@ form {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  display: relative; /* fix white page bug in mobile safari */
+  position: relative; /* fix white page bug in mobile safari */
 
   fieldset {
     width:100%;
