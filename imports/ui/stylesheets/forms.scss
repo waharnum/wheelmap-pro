@@ -170,11 +170,11 @@ a.btn-sm { /* e.g. forgot password */
 }
 
 .panel.panel-danger,
-form .panel-danger .panel-body {
-  display:none; /* WARNING: Hiding the autoform error-panel might also hide server-errors that are not shown inline */
-  // color: $error-red;
-  // font-weight: 400;
+form .panel-danger {
+  display: none; /* WARNING: Hiding the autoform error-panel might also hide server-errors that are not shown inline */
 }
+
+
 
 form {
   display: flex;

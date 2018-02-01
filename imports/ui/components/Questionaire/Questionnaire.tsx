@@ -485,12 +485,12 @@ class Questionnaire extends React.Component<Props, State> {
             <span className={isSelfSubmitting ? 'call-to-action' : 'call-to-action cta-full-width'}>
               <div className="form">
                 <div className="form-group">
+                  <ErrorsField />
                   {!isSelfSubmitting ?
                     <SubmitField className={t`primary-action`} value={t`Next`} /> : null}
                   {isOptional ?
                     <button className="secondary"
                       onClick={this.skipField.bind(this, field, this.state.question)}>{t`Skip`}</button> : null}
-                  <ErrorsField />
                 </div>
               </div>
             </span>
@@ -932,6 +932,12 @@ export default styled(Questionnaire) `
         }
       }
     }
+    form .form-group .panel.panel-danger { /* ARG: fix hidden in main form hack. See forms.scss */
+      display:block;
+      color: ${colors.errorRed};
+    }
+
+    
 
     .primary-action input.btn.btn-primary,
     input.btn.btn-primary,
