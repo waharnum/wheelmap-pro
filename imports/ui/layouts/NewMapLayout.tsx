@@ -72,26 +72,26 @@ class NewMapLayout extends React.Component<Props, State> {
     if (this.props.canDismissAdditionalCardPanel && this.props.onDismissAdditionalCardPanel) {
       this.props.onDismissAdditionalCardPanel();
     }
-  };
+  }
 
   dismissCardPanel = () => {
     if (this.props.canDismissCardPanel && this.props.onDismissCardPanel) {
       this.props.onDismissCardPanel();
     }
-  };
+  }
 
   dismissSidePanel = () => {
     // no check here, on map dismissing is separate
     if (this.props.onDismissSidePanel) {
       this.props.onDismissSidePanel();
     }
-  };
+  }
 
   searchBarLogoClicked = () => {
     if (this.props.onSearchBarLogoClicked) {
       this.props.onSearchBarLogoClicked();
     }
-  };
+  }
 
   public render() {
     const {
@@ -112,6 +112,10 @@ class NewMapLayout extends React.Component<Props, State> {
     const displaySidePanel = contentPanel && useSidePanel && !effectiveSidePanelHidden;
     const displayAdditionalCardPanel = additionalMapPanel && useAdditionalCardPanel && displayAnyCardPanel;
     const displaySearchBar = (preferContentInCard ? !(displaySidePanel || displayCardPanel) : true) && allowSearchBar;
+
+    const searchBarLogoComponent = searchBarLogo
+      ? <div className="small-logo" style={{ backgroundImage: `url(${searchBarLogo})` }} />
+      : <div className="small-logo-placeholder">{searchBarPrefix && searchBarPrefix.slice(0, 2)}</div>;
 
     return (
       <div id={id}
@@ -134,10 +138,7 @@ class NewMapLayout extends React.Component<Props, State> {
               minimalHeight={75}>
               <a onClick={this.searchBarLogoClicked}
                 className={onSearchBarLogoClicked ? 'organization-logo' : 'organization-logo disabled'}>
-                {searchBarLogo &&
-                  <div className="small-logo" style={{ backgroundImage: `url(${searchBarLogo})` }} />}
-                {(!searchBarLogo && searchBarPrefix) &&
-                  <h1>{searchBarPrefix}</h1>}
+                {searchBarLogoComponent}
               </a>
               <div className="search-input">
                 <SearchInputField />
@@ -161,7 +162,7 @@ class NewMapLayout extends React.Component<Props, State> {
       </div>
     );
   }
-};
+}
 
 export default styled(NewMapLayout) `
   overflow: hidden;
@@ -187,6 +188,18 @@ export default styled(NewMapLayout) `
         min-height: 32px;
         width: 50px;
         margin-right: 8px;
+      }
+      .small-logo-placeholder {
+        background-color: ${colors.bgAnthracite};
+        color: ${colors.white100};
+        border-radius:20px;
+        width:32px;
+        height:32px;
+        font-size:17px;
+        font-weight:600;
+        line-height: 32px;
+        margin-right:0.5em;
+        text-align:center;
       }
   
       h1 {
