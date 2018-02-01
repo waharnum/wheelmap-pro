@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { toast } from 'react-toastify';
 import * as React from 'react';
 import { AutoForm, AutoField, ErrorsField, SubmitField } from 'uniforms-bootstrap3';
-import {extend, get, pick, set, concat, sample, isEqual, reduce} from 'lodash';
+import { extend, get, pick, set, concat, sample, isEqual, reduce } from 'lodash';
 
 
 import AccessibilityDetails from 'wheelmap-react/lib/components/NodeToolbar/AccessibilityDetails';
@@ -381,8 +381,8 @@ class Questionnaire extends React.Component<Props, State> {
           question={entry.question}
           value={entry.answer}
           className={entry.className}
-                      blockLabel={entry.blockLabel}
-                      duration={entry.duration}
+          blockLabel={entry.blockLabel}
+          duration={entry.duration}
           onClick={callback} />
       );
     });
@@ -548,11 +548,11 @@ class Questionnaire extends React.Component<Props, State> {
             <div className="form-group">
               {isOptional ?
                 [<button key="yes" className="primary"
-                         onClick={this.enterBlock.bind(this, field, this.state.question, definition.label, duration)}>{t`Yes`}</button>,
+                  onClick={this.enterBlock.bind(this, field, this.state.question, definition.label, duration)}>{t`Yes`}</button>,
                 <button key="no" className="primary"
                   onClick={this.skipBlock.bind(this, field, this.state.question)}>{t`No`}</button>] :
                 <button className="primary"
-                        onClick={this.enterBlock.bind(this, field, this.state.question, definition.label, duration)}>{t`Okay`}</button>
+                  onClick={this.enterBlock.bind(this, field, this.state.question, definition.label, duration)}>{t`Okay`}</button>
               }
             </div>
           </div>
@@ -631,11 +631,11 @@ class Questionnaire extends React.Component<Props, State> {
             <div className="form-group">
               {isOptional ?
                 [<button key="yes" className="primary"
-                         onClick={this.enterArray.bind(this, field, this.state.question, arrayIndex, label, duration)}>{t`Yes`}</button>,
+                  onClick={this.enterArray.bind(this, field, this.state.question, arrayIndex, label, duration)}>{t`Yes`}</button>,
                 <button key="no" className="primary"
                   onClick={this.skipBlock.bind(this, field, this.state.question, arrayIndex)}>{t`No`}</button>] :
                 <button className="primary"
-                        onClick={this.enterArray.bind(this, field, this.state.question, arrayIndex, label, duration)}>{t`Okay`}</button>
+                  onClick={this.enterArray.bind(this, field, this.state.question, arrayIndex, label, duration)}>{t`Okay`}</button>
               }
             </div>
           </div>
@@ -1330,10 +1330,9 @@ export default styled(Questionnaire) `
         }
       }
 
-      section.questionnaire-step.enter-block,
-      section.questionnaire-step.enter-array,
-      section.questionnaire-history-entry.enter-block-history,
-      section.questionnaire-history-entry.enter-array-history {
+      .block-header, .array-header {
+        display: flex;
+        justify-content: space-between;
 
         h3 {
           opacity: 0.75;
@@ -1343,22 +1342,11 @@ export default styled(Questionnaire) `
           letter-spacing: -0.25px;
           text-transform: uppercase;
         }
+        
+        span {
+          padding-right: 18px;
+        }
       } 
-
-      section.questionnaire-history-entry {
-        background-color: ${colors.bgGreyLighter};
-
-        h3 {
-          font-size: 21px;
-          line-height: 29px;
-          font-weight: 800;
-          opacity: 0.75;
-        }
-
-        q {
-          font-weight: 400;
-        }
-      }
 
       section.questionnaire-step.next-block {
         display: none;
@@ -1368,5 +1356,6 @@ export default styled(Questionnaire) `
         line-height: 18px;
       }
     }
+    
   }
 `;

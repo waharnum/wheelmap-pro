@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import * as React from 'react';
 
-import {IStyledComponent} from '../IStyledComponent';
-import {colors} from '../../stylesheets/colors';
+import { IStyledComponent } from '../IStyledComponent';
+import { colors } from '../../stylesheets/colors';
 
 type Props = {
   question: string,
@@ -15,7 +15,7 @@ type Props = {
 
 const HistoryEntry = class extends React.Component<IStyledComponent & Props> {
   public render() {
-    const {component, className, onClick, question, value, blockLabel, duration} = this.props;
+    const { component, className, onClick, question, value, blockLabel, duration } = this.props;
     const ValueComponent = component;
     return (
       <section
@@ -27,7 +27,7 @@ const HistoryEntry = class extends React.Component<IStyledComponent & Props> {
         </section>}
         <section className="question-and-answer">
           <h3 className="question">{question}</h3>
-          <q className="answer">{(ValueComponent) ? <ValueComponent value={value}/> : String(value)}</q>
+          <q className="answer">{(ValueComponent) ? <ValueComponent value={value} /> : String(value)}</q>
         </section>
       </section>
     );
@@ -70,11 +70,12 @@ export default styled(HistoryEntry) `
     }
   }
   
-  .block-header {
+  section.block-header {
     display: flex;
     justify-content: space-between;
   
     h3 {
+      border:2px solid orange;
       width: unset;
       opacity: 0.75;
       font-size: 14px;
@@ -85,7 +86,6 @@ export default styled(HistoryEntry) `
     }
     
     span {
-      quotes: none;;
       margin: 0;
       white-space: nowrap;
       padding-right: 4px;
