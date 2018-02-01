@@ -97,6 +97,12 @@ export default styled(HistoryEntry) `
     cursor: pointer;
     position: relative;
     
+    section.block-header {
+      span { 
+        padding-right: 14px;
+      }
+    }
+    
     &:after {
       transition: color 0.25s ease, opacity 0.25s ease;
       position: absolute;
