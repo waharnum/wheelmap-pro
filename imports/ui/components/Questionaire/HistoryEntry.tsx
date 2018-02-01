@@ -75,7 +75,6 @@ export default styled(HistoryEntry) `
     justify-content: space-between;
   
     h3 {
-      border:2px solid orange;
       width: unset;
       opacity: 0.75;
       font-size: 14px;
