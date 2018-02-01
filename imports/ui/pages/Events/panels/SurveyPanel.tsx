@@ -69,7 +69,7 @@ class SurveyPanel extends React.Component<Props> {
     } else {
       const geometry: PointGeometry | undefined = this.props.initialPosition ? {
         type: 'Point',
-        coordinates: [this.props.initialPosition.lat, this.props.initialPosition.lon],
+        coordinates: [this.props.initialPosition.lon, this.props.initialPosition.lat],
       } : undefined;
       initialModel = {geometry};
     }
