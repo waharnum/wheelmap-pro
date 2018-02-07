@@ -6,10 +6,10 @@ import SearchIcon from 'wheelmap-react/lib/components/SearchToolbar/SearchIcon';
 import SearchInputField from 'wheelmap-react/lib/components/SearchToolbar/SearchInputField';
 import CloseIcon from 'wheelmap-react/lib/components/icons/actions/Close';
 
-import { IStyledComponent } from '../components/IStyledComponent';
+import {IStyledComponent} from '../components/IStyledComponent';
 
-import Map, { Props as MapProps } from '../components/Map';
-import { colors } from '../stylesheets/colors';
+import Map, {Props as MapProps} from '../components/Map';
+import {colors} from '../stylesheets/colors';
 
 type Props = {
   header: React.ReactNode;
@@ -50,7 +50,8 @@ class NewMapLayout extends React.Component<Props, State> {
     super(props);
     // aligned with wheelmap-react, but can this be css only?
     // todo listen to window size
-    const lowResolution = window.screen.availWidth <= 512 || window.screen.availHeight <= 512;
+    const lowResolution = window.screen.availWidth <= 512 || window.screen.availHeight <= 512 ||
+      window.screen.width <= 512 || window.screen.height <= 512;
 
     this.state = {
       preferContentInCard: lowResolution,
@@ -72,26 +73,26 @@ class NewMapLayout extends React.Component<Props, State> {
     if (this.props.canDismissAdditionalCardPanel && this.props.onDismissAdditionalCardPanel) {
       this.props.onDismissAdditionalCardPanel();
     }
-  }
+  };
 
   dismissCardPanel = () => {
     if (this.props.canDismissCardPanel && this.props.onDismissCardPanel) {
       this.props.onDismissCardPanel();
     }
-  }
+  };
 
   dismissSidePanel = () => {
     // no check here, on map dismissing is separate
     if (this.props.onDismissSidePanel) {
       this.props.onDismissSidePanel();
     }
-  }
+  };
 
   searchBarLogoClicked = () => {
     if (this.props.onSearchBarLogoClicked) {
       this.props.onSearchBarLogoClicked();
     }
-  }
+  };
 
   public render() {
     const {
@@ -99,7 +100,7 @@ class NewMapLayout extends React.Component<Props, State> {
       forceContentToSidePanel, searchBarPrefix, searchBarLogo, canDismissFromSidePanel, overlapSidePanelTakeFullWidth,
       sidePanelHidden, canDismissAdditionalCardPanel, canDismissCardPanel, onSearchBarLogoClicked, mapChildren,
     } = this.props;
-    const { preferContentInCard, initialSidePanelHidden } = this.state;
+    const {preferContentInCard, initialSidePanelHidden} = this.state;
 
 
     const effectiveSidePanelHidden = sidePanelHidden === undefined ? initialSidePanelHidden : sidePanelHidden;
@@ -114,12 +115,12 @@ class NewMapLayout extends React.Component<Props, State> {
     const displaySearchBar = (preferContentInCard ? !(displaySidePanel || displayCardPanel) : true) && allowSearchBar;
 
     const searchBarLogoComponent = searchBarLogo
-      ? <div className="small-logo" style={{ backgroundImage: `url(${searchBarLogo})` }} />
+      ? <div className="small-logo" style={{backgroundImage: `url(${searchBarLogo})`}}/>
       : <div className="small-logo-placeholder">{searchBarPrefix && searchBarPrefix.slice(0, 2)}</div>;
 
     return (
       <div id={id}
-        className={`${className} map-layout ${preferContentInCard ? 'overlap-side-panel' : 'fixed-side-panel'}
+           className={`${className} map-layout ${preferContentInCard ? 'overlap-side-panel' : 'fixed-side-panel'}
            ${(displaySidePanel && overlapSidePanelTakeFullWidth) ? 'overlap-side-panel-full-width' : ''} `}>
         <section className={`side-panel ${displaySidePanel ? 'show-panel' : 'hide-panel'}`}>
           {header && <header>{header}</header>}
@@ -133,31 +134,31 @@ class NewMapLayout extends React.Component<Props, State> {
             {mapChildren}
           </Map>
           {displaySearchBar &&
-            <Toolbar className="search-toolbar"
-              isSwipeable={false}
-              minimalHeight={75}>
-              <a onClick={this.searchBarLogoClicked}
-                className={onSearchBarLogoClicked ? 'organization-logo' : 'organization-logo disabled'}>
-                {searchBarLogoComponent}
-              </a>
-              <div className="search-input">
-                <SearchInputField />
-                <SearchIcon className="search-icon" />
-              </div>
-            </Toolbar>}
+          <Toolbar className="search-toolbar"
+                   isSwipeable={false}
+                   minimalHeight={75}>
+            <a onClick={this.searchBarLogoClicked}
+               className={onSearchBarLogoClicked ? 'organization-logo' : 'organization-logo disabled'}>
+              {searchBarLogoComponent}
+            </a>
+            <div className="search-input">
+              <SearchInputField/>
+              <SearchIcon className="search-icon"/>
+            </div>
+          </Toolbar>}
           {displayCardPanel && <Toolbar className="card-panel">
             {canDismissCardPanel && <a className="close-icon" onClick={this.dismissCardPanel}>
-              <CloseIcon />
+              <CloseIcon/>
             </a>}
             {contentPanel}
           </Toolbar>}
           {displayAdditionalCardPanel &&
-            <Toolbar className="card-panel additional-card-panel">
-              {canDismissAdditionalCardPanel && <a className="close-icon" onClick={this.dismissAdditionalCardPanel}>
-                <CloseIcon />
-              </a>}
-              {additionalMapPanel}
-            </Toolbar>}
+          <Toolbar className="card-panel additional-card-panel">
+            {canDismissAdditionalCardPanel && <a className="close-icon" onClick={this.dismissAdditionalCardPanel}>
+              <CloseIcon/>
+            </a>}
+            {additionalMapPanel}
+          </Toolbar>}
         </section>
       </div>
     );
@@ -320,6 +321,7 @@ export default styled(NewMapLayout) `
   // desktop mode, side panel moves map to the right
   &.fixed-side-panel {
     flex-direction: row;
+    overflow: auto;
   
     .search-toolbar {
       position: absolute;
@@ -338,6 +340,10 @@ export default styled(NewMapLayout) `
         width: 0;
         min-width: 0;
       }
+    }
+    
+    .map {
+      min-width: 137px;
     }
     
     // remove hard coded toolbar size
