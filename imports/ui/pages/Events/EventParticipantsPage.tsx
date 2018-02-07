@@ -59,7 +59,7 @@ class EventParticipantsPage extends React.Component<IAsyncDataByIdProps<IPageMod
     const participants = this.props.model.participants;
 
     const allowPublicInvitation = !!event.invitationToken && event.status !== 'draft';
-    const link = Meteor.absoluteUrl(`events/${event._id}/public-invitation/${event.invitationToken}`);
+    const link = Meteor.absoluteUrl(`organizations/${organization._id}/events/${event._id}/public-invitation/${event.invitationToken}`);
 
     return (
       <ScrollableLayout id="EventParticipantsPage" className={this.props.className}>

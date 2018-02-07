@@ -12,8 +12,11 @@ import {EventParticipants, IEventParticipant} from '../event-participants';
 const appName = 'wheelmap.pro';
 const appSupportEmail = 'support@wheelmap.pro';
 
-const invitationEmailBody = (userName: string, eventId: Mongo.ObjectID,
-                             organizationName: string, eventName: string, token: string) =>
+const invitationEmailBody = (userName: string,
+                             organizationId: Mongo.ObjectID,
+                             eventId: Mongo.ObjectID,
+                             organizationName: string,
+                             eventName: string, token: string) =>
   `Hi,
 
 ${userName} invites you to the event “${eventName}” by “${organizationName}” on ${appName}.
@@ -21,7 +24,7 @@ ${userName} invites you to the event “${eventName}” by “${organizationName
 Use this link to sign up and join:
 
 ${Meteor.absoluteUrl(
-    `events/${eventId}/accept-invitation/${token}`,
+    `organizations/${organizationId}/events/${eventId}/private-invitation/${token}`,
     {secure: true},
   )}
 
@@ -50,7 +53,7 @@ export function insertDraftEventParticipant(invitationEmailAddress: string, even
 
 export function sendEventInvitationEmailTo(eventParticipant: IEventParticipant, event: IEvent, organization: IOrganization) {
 
-  if (!event._id || !eventParticipant.invitationToken) {
+  if (!event._id || !eventParticipant.invitationToken || !organization._id) {
     throw new Meteor.Error(400, 'Invalid data');
   }
 
@@ -66,7 +69,7 @@ export function sendEventInvitationEmailTo(eventParticipant: IEventParticipant, 
       from: appSupportEmail,
       to: emailAddress,
       subject: `${userName} invites you to access their organization “${organizationName}”`,
-      text: invitationEmailBody(userName, event._id, organizationName, eventName, token),
+      text: invitationEmailBody(userName, organization._id, event._id, organizationName, eventName, token),
     });
     EventParticipants.update(selector, {$set: {invitationState: 'sent'}});
     return true;
