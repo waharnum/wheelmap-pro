@@ -16,6 +16,7 @@ import 'wheelmap-react/src/Map.css';
 
 import {IPlaceInfo} from '../../both/api/place-infos/place-infos';
 import {IStyledComponent} from './IStyledComponent';
+import {i18nSettings} from '../../../client/i18n';
 
 export type Props = {
   children?: React.ReactNode;
@@ -119,7 +120,7 @@ class Map extends React.Component<IStyledComponent & Props, State> {
     if (this.props.accessibilityCloudTileUrlBuilder) {
       return this.props.accessibilityCloudTileUrlBuilder();
     }
-    return `https://www.accessibility.cloud/place-infos?x={x}&y={y}&z={z}&appToken=${Meteor.settings.public.accessibilityCloud}`;
+    return `https://www.accessibility.cloud/place-infos?x={x}&y={y}&z={z}&appToken=${Meteor.settings.public.accessibilityCloud}&locale=${i18nSettings.bestMatchClientLocale || 'en'}`;
   };
 
   private onMoveEnd = (options: { zoom: number, lat: number, lon: number, bbox: L.LatLngBounds }) => {
