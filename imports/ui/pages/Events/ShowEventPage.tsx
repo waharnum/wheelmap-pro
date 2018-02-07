@@ -299,7 +299,7 @@ class ShowEventPage extends React.Component<Props> {
         }}
         mapProperties={{
           customPlaces: places,
-          bbox: isMappingFlow ? undefined : bbox,
+          bbox: bbox,
           onMarkerClick: (id) => {
             if (isMappingFlow) {
               router.push(`/organizations/${organization._id}/events/${event._id}/mapping/place/${id}`);
