@@ -58,6 +58,11 @@ const UnitQuantityQuestion = class extends React.Component<IStyledComponent & Pr
     const rawValue = event.target.value;
 
     if (this.props.onChange) {
+      if (rawValue === undefined || rawValue === '') {
+        this.props.onChange(null);
+        return;
+      }
+
       const displayString = `${rawValue}${this.state.displayUnit}`;
       // convert from display unit to output unit
       const storeValue = Qty(displayString).to(this.state.unit).scalar;
