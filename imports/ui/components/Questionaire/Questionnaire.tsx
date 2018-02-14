@@ -699,6 +699,9 @@ class Questionnaire extends React.Component<Props, State> {
   }
 
   abortSection() {
+    const lastStep = this.state.history[this.state.history.length - 1];
+    const goTo = lastStep.goTo;
+
     return (
       <section className="questionnaire-step done"
                ref="latest-active-block">
@@ -707,7 +710,14 @@ class Questionnaire extends React.Component<Props, State> {
           {t`We will discard your changes, do you really want to abort?`}
           <div className="form">
             <div className="form-group">
-              <button onClick={this.props.onExitSurvey} className="primary btn-danger">{t`Back to map`}</button>
+              <button onClick={this.props.onExitSurvey} className="primary btn-danger">{t`Abort`}</button>
+              {goTo && <button onClick={() => {
+                this.goToNextField('history', {
+                  history: this.state.history.slice(0, -1),
+                  currentIndex: goTo.index,
+                  arrayIndexes: goTo.arrayIndexes,
+                });
+              }} className="primary">{t`Resume survey`}</button>}
             </div>
           </div>
         </span>
@@ -812,20 +822,20 @@ class Questionnaire extends React.Component<Props, State> {
               {canSkip ?
                 <button className="btn btn-sm dropdown-toggle" type="button"
                         id={`tiredDropdown`}
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{t`I'm tired`}
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{t`Finish`}
                 </button> :
                 <button className="btn" type="button" onClick={this.props.onExitSurvey}>{t`Cancel`}</button>
               }
               <div className="dropdown-menu" aria-labelledby={`tiredDropdown`}>
                 <h3>{t`Tired? What do you want to do now?`}</h3>
                 <span className="dropdown-actions">
-                  <button className="complete-block"
-                          disabled={this.state.activeField ? this.state.activeField.lastIndexOf('.') <= 0 : true}
-                          onClick={this.exitBlock}>{t`Complete ${pathName}`}</button>
+                  {/*<button className="complete-block"*/}
+                  {/*disabled={this.state.activeField ? this.state.activeField.lastIndexOf('.') <= 0 : true}*/}
+                  {/*onClick={this.exitBlock}>{t`Complete ${pathName}`}</button>*/}
                   <button className="stop-survey"
                           disabled={this.state.currentIndex >= this.props.fields.length}
                           onClick={this.stopSurvey}>{t`Stop here`}</button>
-                  <button className="secondary">{t`I'm fine`}</button>
+                  <button className="secondary">{t`Back to survey`}</button>
                 </span>
               </div>
             </span>
