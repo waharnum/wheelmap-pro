@@ -93,6 +93,7 @@ class PlaceDetailsPanel extends React.Component<Props> {
           category={category}
           parentCategory={parentCategory}
         />
+        <code>{JSON.stringify(feature.properties, null, 2)}</code>
         <LicenseHint properties={properties}/>
       </section>
     );
