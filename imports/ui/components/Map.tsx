@@ -44,7 +44,6 @@ class Map extends React.Component<IStyledComponent & Props, State> {
     leafletMap: null,
   };
   private leafletMap: L.Map;
-  private customLayer: L.LayerGroup | null;
   private currentMarkerIds: string[] = [];
 
   public componentWillReceiveProps(nextProps, nextContext) {
@@ -56,32 +55,7 @@ class Map extends React.Component<IStyledComponent & Props, State> {
     if (applyBbox) {
       this.repositionMap(nextProps);
     }
-
-    Categories.fetchOnce(nextProps).then(() => {
-      if (this.leafletMap) {
-        const ids = nextProps.customPlaces ? nextProps.customPlaces.map(f => f._id) : [];
-        // this is a fairly stupid diff, remove all current elements, add all new elements
-        if (!isEqual(this.currentMarkerIds, ids)) {
-          if (this.customLayer) {
-            this.leafletMap.removeLayer(this.customLayer);
-            this.customLayer.clearLayers();
-            this.customLayer = null;
-          }
-
-          if (nextProps.customPlaces) {
-            const markers = nextProps.customPlaces.map(
-              feature => {
-                feature.properties._id = feature._id;
-                accessibilityCloudFeatureCache.cacheFeature(feature);
-                return this.createMarkerFromFeature(feature, [feature.geometry.coordinates[1], feature.geometry.coordinates[0]]);
-              });
-            this.customLayer = L.layerGroup(markers);
-            this.leafletMap.addLayer(this.customLayer);
-          }
-          this.currentMarkerIds = ids;
-        }
-      }
-    });
+    this.updatePlaces(nextProps);
   }
 
   public render(): JSX.Element {
@@ -116,6 +90,25 @@ class Map extends React.Component<IStyledComponent & Props, State> {
     );
   }
 
+  private updatePlaces = (nextProps: Props) => {
+    if (this.leafletMap) {
+      const ids = nextProps.customPlaces ? nextProps.customPlaces.map(f => String(f._id)) : [];
+
+      // this is a fairly stupid diff
+      if (!isEqual(this.currentMarkerIds, ids)) {
+        if (nextProps.customPlaces) {
+          nextProps.customPlaces.forEach(
+            feature => {
+              feature.properties._id = feature._id;
+              // this does not yet work, as no map is set on the ac layer so far
+              accessibilityCloudFeatureCache.injectFeature(feature);
+            });
+        }
+        this.currentMarkerIds = ids;
+      }
+    }
+  };
+
   private buildAccessibilityCloudTileUrl = () => {
     if (this.props.accessibilityCloudTileUrlBuilder) {
       return this.props.accessibilityCloudTileUrlBuilder();
@@ -130,9 +123,11 @@ class Map extends React.Component<IStyledComponent & Props, State> {
   };
 
   private onMapMounted = (map: L.Map) => {
+    console.log('MAP mounted, ');
     this.leafletMap = map;
     this.setState({leafletMap: map});
     this.repositionMap(this.props);
+    this.updatePlaces(this.props);
   };
 
   private repositionMap(props: Props) {
