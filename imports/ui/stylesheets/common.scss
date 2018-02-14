@@ -61,6 +61,7 @@ a {
 .fill-header-bar {
   position: relative;
   border-bottom: 1px solid $shadow-grey;
+  background-color: $bg-white;
 }
 
 .fill-header-bar:before {
@@ -70,7 +71,7 @@ a {
   top: 0;
   height: 100%;
   width: 100%;
-  background-color: white;
+  background-color: $bg-white;
   border-bottom: 1px solid $shadow-grey;
   box-sizing: content-box;
 
@@ -125,7 +126,7 @@ svg path.event-bounds-polygon {
   // fill-opacity: 0.2;
   stroke-width: 2px;
   stroke-linecap: round;
-  stroke-dasharray: 1,4;
+  stroke-dasharray: 1, 4;
 }
 
 /* dropdown transitions */
