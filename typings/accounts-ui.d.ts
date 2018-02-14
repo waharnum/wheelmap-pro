@@ -18,5 +18,11 @@ declare module 'meteor/accounts-base' {
     export function sendEnrollmentEmail(userId: string, email: string);
 
     export function onCreateUser(callback: (options: any, user: Meteor.User) => Meteor.User);
+
+    export function config(any);
+
+    export const urls: {
+      resetPassword: (token: string) => string;
+    };
   }
 }

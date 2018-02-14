@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Meteor} from 'meteor/meteor';
+import {Session} from 'meteor/session';
 import {Accounts, STATES} from 'meteor/std:accounts-ui';
 import {Router, Route, Redirect, browserHistory} from 'react-router';
 
@@ -70,8 +71,6 @@ const AppRouter = (
         <Route path="/organizations/list" component={ListOrganizationsPage}/>
       </Route>
 
-      {/* signup */}
-      <Route path="/signup" component={SignUpPage}/>
 
       {/* organize pages */}
       <Route component={EnsureUserLoggedIn}>
@@ -135,9 +134,11 @@ const AppRouter = (
       <Route path="/welcome" component={HomePage}/>
 
       {/* user management */}
-      <Route path="/reset-password" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET}/>}/>
-      <Route path="/reset-password/:id" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET}/>}/>
-      <Route path="/#/reset-password/:id" component={() => <Accounts.ui.LoginForm formState={STATES.PASSWORD_RESET}/>}/>
+      <Route path="/signup" component={SignUpPage}/>
+      <Route path="/reset-password/:password_reset_token"
+             onEnter={(p) => Session.set('Meteor.loginButtons.resetPasswordToken', p.params.password_reset_token)}
+             onLeave={() => Session.set('Meteor.loginButtons.resetPasswordToken', null)}
+             component={SignUpPage}/>
 
       {/* Not found pages */}
       <Route path="404" component={NotFoundPage}/>

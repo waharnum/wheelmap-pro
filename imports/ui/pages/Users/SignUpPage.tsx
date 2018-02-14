@@ -9,27 +9,32 @@ import {AutoForm, SubmitField} from 'uniforms-bootstrap3';
 import {Hint, HintBox} from '../../components/HintBox';
 import {Link, RouteComponentProps} from 'react-router';
 
+type RouteParams = {
+  password_reset_token?: string;
+};
 
-const SignUpPage = (props: IStyledComponent & RouteComponentProps<{}, {}>) => {
+const SignUpPage = (props: IStyledComponent & RouteComponentProps<RouteParams, RouteParams>) => {
   const redirectTarget = props.location.state && props.location.state.afterSignIn && props.location.state.afterSignIn.pathname;
+  const isReset = !!props.params.password_reset_token;
 
   return (
     <ScrollableLayout id="ProfilePage" className={props.className}>
       <AdminHeader titleComponent={<Link to="/" className="logo"><h1>{t`wheelmap.pro`}</h1></Link>}/>
       <div className="content-area scrollable hsplit">
         <div className="content-left">
-          <h2>{t`Create an account`}</h2>
-          <Accounts.ui.LoginForm formState={STATES.SIGN_UP}
-                                 onSignedInHook={() => {
-                                   if (redirectTarget) {
-                                     props.router.replace(redirectTarget);
-                                   }
-                                 }}
-                                 onPostSignUpHook={() => {
-                                   if (redirectTarget) {
-                                     props.router.replace(redirectTarget);
-                                   }
-                                 }}/>
+          <h2>{isReset ? t`Reset password` : t`Create an account`}</h2>
+          <Accounts.ui.LoginForm
+            formState={isReset ? STATES.PASSWORD_CHANGE : undefined}
+            onSignedInHook={() => {
+              if (redirectTarget) {
+                props.router.replace(redirectTarget);
+              }
+            }}
+            onPostSignUpHook={() => {
+              if (redirectTarget) {
+                props.router.replace(redirectTarget);
+              }
+            }}/>
         </div>
         <div className="content-right">
           <HintBox title={t`Join us at wheelmap.pro!`}>

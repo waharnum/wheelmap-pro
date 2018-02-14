@@ -2,23 +2,16 @@ import {Meteor} from 'meteor/meteor';
 import {Tracker} from 'meteor/tracker';
 import {Session} from 'meteor/session';
 import {Accounts} from 'meteor/std:accounts-ui';
-import {LocationDescriptor} from 'history';
 import {browserHistory} from 'react-router';
 import SimpleSchema from 'simpl-schema';
 import {BoolField} from 'uniforms-bootstrap3';
 import {t} from 'c-3po';
 import {registerSchemaForI18n} from '../../i18n/i18n';
 
-Accounts.config({
-  sendVerificationEmail: true,
-  forbidClientAccountCreation: false,
-});
-
 Accounts.ui.config({
   passwordSignupFields: 'EMAIL_ONLY',
   loginPath: '/signup',
   signUpPath: '/signup',
-  resetPasswordPath: '/reset-password',
   profilePath: '/profile',
   requireEmailVerification: true,
   minimumPasswordLength: 6,
