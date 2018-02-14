@@ -51,7 +51,8 @@ class NewMapLayout extends React.Component<Props, State> {
     // aligned with wheelmap-react, but can this be css only?
     // todo listen to window size
     const lowResolution = window.screen.availWidth <= 512 || window.screen.availHeight <= 512 ||
-      window.screen.width <= 512 || window.screen.height <= 512;
+      window.screen.width <= 512 || window.screen.height <= 512 || // firefox dev-mode
+      window.innerHeight <= 512 || window.innerWidth <= 512; // safari dev-mode
 
     this.state = {
       preferContentInCard: lowResolution,
