@@ -671,7 +671,8 @@ class Questionnaire extends React.Component<Props, State> {
   welcomeSection() {
     const newPlace = !this.state.model._id || !this.state.model.properties ||
       Object.keys(this.state.model.properties).length === 0;
-    const question = newPlace ? t`Let’s go, we need more data on places!` : t`Let’s update this place!`;
+    const question = newPlace ? t`Welcome, we are going to map your first place!` :
+      t`Welcome, we are going to update your first place!`;
     return (
       <section className="questionnaire-step welcome"
                ref="latest-active-block">
