@@ -1,5 +1,6 @@
 import {t} from 'c-3po';
 import * as React from 'react';
+import styled from 'styled-components';
 
 const NotFoundPage = (props) => (
   <section className="not-found">
@@ -7,4 +8,6 @@ const NotFoundPage = (props) => (
   </section>
 );
 
-export default NotFoundPage;
+
+export default styled(NotFoundPage) `
+`;
