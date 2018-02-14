@@ -86,6 +86,7 @@ class ShowEventPage extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
     ShowEventPage.handleInvalidData(props);
+    this.setMapOptions(props);
   }
 
   componentWillReceiveProps(props: Props) {
@@ -101,6 +102,18 @@ class ShowEventPage extends React.Component<Props> {
       return router.replace(`/organizations/${organization._id}/events/${event._id}`);
     }
   }
+
+  setMapOptions = (props: Props) => {
+    const {event} = this.props.model;
+    const bbox = regionToBbox(event.region || defaultRegion);
+    const center = bbox.getCenter();
+    this.mapOptions = {
+      zoom: 8,
+      lat: center.lat,
+      lon: center.lng,
+      bbox,
+    };
+  };
 
   getPanelContent(isMappingFlow: boolean) {
     const {location, router, params} = this.props;
