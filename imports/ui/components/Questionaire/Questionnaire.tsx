@@ -494,7 +494,12 @@ class Questionnaire extends React.Component<Props, State> {
                     <SubmitField className={t`primary-action`} value={t`Next`}/> : null}
                   {isOptional ?
                     <button className="secondary"
-                            onClick={this.skipField.bind(this, field, this.state.question)}>{t`Skip`}</button> : null}
+                            onClick={(e) => {
+                              // safari registers to any button in the form, and submits - so we have to prevent this
+                              e.preventDefault();
+                              e.stopPropagation();
+                              this.skipField(field, this.state.question);
+                            }}>{t`Skip`}</button> : null}
                   <ErrorsField/>
                 </div>
               </div>
