@@ -540,7 +540,7 @@ class Questionnaire extends React.Component<Props, State> {
                ref="latest-active-block">
         <section className="block-header">
           <h3>{definition.label}</h3>
-          <span className="time-left">{duration}</span>
+          {/*<span className="time-left">{duration}</span>*/}
         </section>
         <h3 className="question">{this.state.question}</h3>
         <span className="call-to-action">
@@ -623,7 +623,7 @@ class Questionnaire extends React.Component<Props, State> {
                ref="latest-active-block">
         <section className="array-header">
           <h3>{label}</h3>
-          <span className="time-left">{duration}</span>
+          {/*<span className="time-left">{duration}</span>*/}
         </section>
         <h3 className="question">{this.state.question}</h3>
         <span className="call-to-action">
@@ -835,10 +835,10 @@ class Questionnaire extends React.Component<Props, State> {
             <div className="progress-bar">
               <div className="progress-done" style={{width: `${this.state.progress * 100}%`}}/>
             </div>
-            <span className="time-left">
-              {stringifyDuration(this.state.remainingDuration)}
-              {' ' + t`left`}
-            </span>
+            {/*<span className="time-left">*/}
+            {/*{stringifyDuration(this.state.remainingDuration)}*/}
+            {/*{' ' + t`left`}*/}
+            {/*</span>*/}
           </div>
         </header>
         <div className="content">
