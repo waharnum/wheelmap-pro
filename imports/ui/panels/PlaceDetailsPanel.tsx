@@ -87,13 +87,13 @@ class PlaceDetailsPanel extends React.Component<Props> {
         <BasicAccessibility properties={properties}/>
         <AccessibilityDetails details={accessibility}/>
         <AccessibilityExtraInfo properties={properties}/>
-        <NodeFooter
-          feature={feature}
-          featureId={featureId}
-          category={category}
-          parentCategory={parentCategory}
-        />
-        <code>{JSON.stringify(feature.properties, null, 2)}</code>
+        {/* Node footer uses Link internally */}
+        {/*<NodeFooter*/}
+        {/*feature={feature}*/}
+        {/*featureId={featureId}*/}
+        {/*category={category}*/}
+        {/*parentCategory={parentCategory}*/}
+        {/*/>*/}
         <LicenseHint properties={properties}/>
       </section>
     );
