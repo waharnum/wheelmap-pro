@@ -390,10 +390,12 @@ class Questionnaire extends React.Component<Props, State> {
 
   submitValue = (field: string, question: string, resultObj: any) => {
     const objectPath = simpleSchemaPathToObjectPath(field, this.state.arrayIndexes);
+    const objectPathAtIndexZero = simpleSchemaPathToObjectPath(field);
 
-    console.log('Submitted', JSON.stringify(resultObj), field, objectPath, question);
+    const resultValue = get(resultObj, objectPathAtIndexZero);
 
-    const resultValue = get(resultObj, objectPath);
+    // console.log('Submitted', {resultObj: JSON.stringify(resultObj), resultValue, field, objectPath, question});
+
     let bareValue = resultValue;
     if (typeof resultValue === 'object') {
       const {toString, ...stripped} = resultValue;
@@ -443,16 +445,19 @@ class Questionnaire extends React.Component<Props, State> {
     const isOptional = definition.optional === true;
     const isSelfSubmitting = definition.uniforms && definition.uniforms.selfSubmitting;
 
-
+    // all this is to get simple schema to validate only this one field, not the whole object
     const subSchema = pickFieldForAutoForm(this.props.schema, field);
-
     const objectPath = simpleSchemaPathToObjectPath(field, this.state.arrayIndexes);
-    const subModel = pick(this.state.model, objectPath.split('.'));
+    const objectPathAtIndexZero = simpleSchemaPathToObjectPath(field);
+    const simpleSchemaPathAtIndexZero = simpleSchemaPathToObjectPath(field, [], {wrapInArray: false});
 
-    (window as any).__subSchema = subSchema;
+    const currentValue = get(this.state.model, objectPath);
+    const subModel = {};
+    set(subModel, objectPathAtIndexZero, currentValue);
 
-    // console.log('subModel', field, objectPath, subModel);
-    // console.log('subSchema', field, subSchema);
+    // (window as any).__subSchema = subSchema;
+    // console.log('subModel', {field, objectPath, objectPathAtIndexZero, subModel});
+    // console.log('subSchema', {field, subSchema});
 
     /* specify key on AutoForm, so that the form is not reused between fields, otherwise the state persists */
     return (
@@ -480,7 +485,7 @@ class Questionnaire extends React.Component<Props, State> {
                 }
               }}
               label={false}
-              name={simpleSchemaPathToObjectPath(field, this.state.arrayIndexes, {wrapInArray: false})}>
+              name={simpleSchemaPathAtIndexZero}>
             </AutoField>
             <span className={isSelfSubmitting ? 'call-to-action' : 'call-to-action cta-full-width'}>
               <div className="form">
