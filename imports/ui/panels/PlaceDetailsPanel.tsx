@@ -105,6 +105,7 @@ export default styled(PlaceDetailsPanel)`
   padding: 10px;
   flex: 1;
   // custom styling
+  width: 100%;
   
   .place-actions {
     display: flex;
