@@ -225,7 +225,7 @@ class OrganizeEventPage extends React.Component
                   <div className="step-status">
                     <h3>{t`Tips for event organizers`}</h3>
                     <a className="btn" target="_blank"
-                       href="https://developmentseed.org/blog/2015/06/07/organizing-mapathons/">{t`Learn more`}</a>
+                       href="http://news.wheelmap.org/en/mapping-event/">{t`Learn more`}</a>
                   </div>
                 </li>
               </ol>
