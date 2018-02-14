@@ -24,10 +24,8 @@ const EventMiniMarker = (props: IMarkerProps & IStyledComponent) => {
                    lon={mapPos.lng}
                    onClick={props.onClick}
                    additionalLeafletLayers={props.additionalLeafletLayers}
-    >
-      <section className="glyphicon">*</section>
-    </CustomMapIcon>);
-}
+    />);
+};
 
 const BubbleNoseSize = 5;
 
