@@ -9,7 +9,7 @@ import {IAsyncDataProps, reactiveSubscription} from '../reactiveModelSubscriptio
 import {wrapDataComponent} from '../AsyncDataComponent';
 import {IOrganization} from '../../../both/api/organizations/organizations';
 import {Categories, ICategory} from '../../../both/api/categories/categories';
-import {getUserLanguages} from '../../../../client/i18n';
+import {getUserLanguages, i18nSettings} from '../../../../client/i18n';
 
 
 type Props = {
@@ -19,6 +19,7 @@ type Props = {
 } & IAsyncDataProps<ICategory[]>;
 
 type State = {
+  categories: Array<ICategory>,
   categoryTree: Array<Array<ICategory>>,
   selectedCategories: Array<ICategory>,
 };
@@ -46,8 +47,18 @@ const isRoot = (cat: ICategory): boolean => {
   return !cat.parentIds || cat.parentIds.length === 0 || !cat.parentIds[0];
 };
 
+// if no categories are in the db
+const hardCodedCategoryFallback = {
+  '_id': 'undefined',
+  'icon': 'undefined',
+  'parentIds': [],
+  'translations': {'_id': {[i18nSettings.bestMatchClientLocale]: t`Unknown`}},
+  'synonyms': [],
+} as ICategory;
+
 const CategoryChooserQuestion = class extends React.Component<IStyledComponent & Props, State> {
   state: State = {
+    categories: [],
     categoryTree: [],
     selectedCategories: [],
   };
@@ -103,7 +114,7 @@ const CategoryChooserQuestion = class extends React.Component<IStyledComponent &
 
   itemSelected = (currentLevel, event) => {
     const selectedCategoryId = event.target.value;
-    const childCategories = this.props.model.filter(hasSameParent(selectedCategoryId));
+    const childCategories = this.state.categories.filter(hasSameParent(selectedCategoryId));
 
     // append next level to tree, make sure to remove old level
     const categoryTree = childCategories.length > 0 ?
@@ -138,13 +149,14 @@ const CategoryChooserQuestion = class extends React.Component<IStyledComponent &
   stateFromProps(props: Props) {
     const categoryTree: Array<Array<ICategory>> = [];
     const selectedCategories: Array<ICategory> = [];
+    const categories = props.model.length === 0 ? [hardCodedCategoryFallback] : props.model;
     if (props.value) {
       // find category in list
-      const foundCategory = props.model.find((cat) => cat._id === props.value);
+      const foundCategory = categories.find((cat) => cat._id === props.value);
       if (foundCategory) {
         // add current level
         selectedCategories.unshift(foundCategory);
-        const siblings = props.model.filter(hasSameParent(foundCategory._id));
+        const siblings = categories.filter(hasSameParent(foundCategory._id));
         if (siblings.length > 0) {
           categoryTree.unshift(siblings);
         }
@@ -152,9 +164,9 @@ const CategoryChooserQuestion = class extends React.Component<IStyledComponent &
         let parentCategory: ICategory | undefined = foundCategory;
         while (parentCategory && parentCategory.parentIds && parentCategory.parentIds.length > 0 && parentCategory.parentIds[0]) {
           const parentId = parentCategory.parentIds[0];
-          parentCategory = props.model.find((cat) => cat._id === parentId);
+          parentCategory = categories.find((cat) => cat._id === parentId);
           if (parentCategory) {
-            const treeSiblings = props.model.filter(hasSameParent(parentId));
+            const treeSiblings = categories.filter(hasSameParent(parentId));
             if (treeSiblings.length > 0) {
               categoryTree.unshift(treeSiblings);
               selectedCategories.unshift(parentCategory);
@@ -164,9 +176,10 @@ const CategoryChooserQuestion = class extends React.Component<IStyledComponent &
       }
     }
 
-    categoryTree.unshift(props.model.filter(isRoot));
+    categoryTree.unshift(categories.filter(isRoot));
 
     return {
+      categories,
       selectedCategories,
       categoryTree,
     };
