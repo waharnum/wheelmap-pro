@@ -8,6 +8,7 @@ import {EventParticipants} from '../../event-participants/event-participants';
 import {IOrganization, Organizations} from '../../organizations/organizations';
 import {sendEventInvitationEmailTo} from '../../event-participants/server/_invitations';
 import {ISource, Sources} from '../../sources/sources';
+import {eventStatusLabels} from '../eventStatus';
 
 
 export const createSourceForEvent = (organization: IOrganization, doc: IEvent): Mongo.ObjectID | null => {
@@ -83,15 +84,19 @@ export const remove = new ValidatedMethod({
   },
 });
 
-export const publish = new ValidatedMethod({
-  name: 'events.publish',
+export const setStatus = new ValidatedMethod({
+  name: 'events.setStatus',
   validate: new SimpleSchema({
     eventId: {
       type: String,
       regEx: SimpleSchema.RegEx.Id,
     },
+    eventStatus: {
+      type: String,
+      allowedValues: eventStatusLabels.map((v) => v.value),
+    },
   }).validator(),
-  run({eventId}) {
+  run({eventId, eventStatus}) {
     const event = Events.findOne(eventId);
 
     if (!event) {
@@ -100,87 +105,29 @@ export const publish = new ValidatedMethod({
     if (!event.editableBy(this.userId)) {
       throw new Meteor.Error(403, 'You don\'t have permission to publish this event.');
     }
-    if (event.status !== 'draft' && event.status !== 'canceled') {
-      throw new Meteor.Error(403, 'This event is already published.');
-    }
 
     const organization = Organizations.findOne(event.organizationId);
-    Events.update(eventId, {$set: {status: 'planned'}});
-
-    EventParticipants.find({invitationState: 'draft', eventId}).forEach((invitation) => {
-      console.log('Publishing!', invitation._id);
-      sendEventInvitationEmailTo(invitation, event, organization);
-    });
-  },
-});
-
-export const start = new ValidatedMethod({
-  name: 'events.start',
-  validate: new SimpleSchema({
-    eventId: {
-      type: String,
-      regEx: SimpleSchema.RegEx.Id,
-    },
-  }).validator(),
-  run({eventId}) {
-    const event = Events.findOne(eventId);
-
     if (!event) {
-      throw new Meteor.Error(404, 'Event not found.');
-    }
-    if (!event.editableBy(this.userId)) {
-      throw new Meteor.Error(403, 'You don\'t have permission to start this event.');
+      throw new Meteor.Error(404, 'Organization for event not found.');
     }
 
-    Events.update(eventId, {$set: {status: 'ongoing'}});
+    if (event.status === eventStatus) {
+      throw new Meteor.Error(403, `This event is already ${eventStatus}.`);
+    }
+
+    Events.update(eventId, {$set: {status: eventStatus}});
+
+    switch (eventStatus) {
+      case 'planned':
+        // sent publish email
+        EventParticipants.find({invitationState: 'draft', eventId}).forEach((invitation) => {
+          console.log('Publishing!', invitation._id);
+          sendEventInvitationEmailTo(invitation, event, organization);
+        });
+        break;
+      // TODO add other notifications
+    }
+
   },
 });
 
-export const complete = new ValidatedMethod({
-  name: 'events.complete',
-  validate: new SimpleSchema({
-    eventId: {
-      type: String,
-      regEx: SimpleSchema.RegEx.Id,
-    },
-  }).validator(),
-  run({eventId}) {
-    const event = Events.findOne(eventId);
-
-    if (!event) {
-      throw new Meteor.Error(404, 'Event not found.');
-    }
-    if (!event.editableBy(this.userId)) {
-      throw new Meteor.Error(403, 'You don\'t have permission to complete this event.');
-    }
-
-    Events.update(eventId, {$set: {status: 'completed'}});
-  },
-});
-
-export const cancel = new ValidatedMethod({
-  name: 'events.cancel',
-  validate: new SimpleSchema({
-    eventId: {
-      type: String,
-      regEx: SimpleSchema.RegEx.Id,
-    },
-  }).validator(),
-  run({eventId}) {
-    const event = Events.findOne(eventId);
-
-    if (!event) {
-      throw new Meteor.Error(404, 'Event not found.');
-    }
-    if (!event.editableBy(this.userId)) {
-      throw new Meteor.Error(403, 'You don\'t have permission to cancel this event.');
-    }
-    if (event.status === 'canceled') {
-      throw new Meteor.Error(403, 'This event is already canceled.');
-    }
-
-    Events.update(eventId, {$set: {status: 'canceled'}});
-
-    // TODO sent email about cancelled event
-  },
-});

@@ -233,7 +233,7 @@ class OrganizeEventPage extends React.Component
                 <h2>{t`Publish event`}</h2>
                 <li className={'event-timeline-step run-event ' + stepStates.runEvent}>
                   {/* Before event was published */}
-                  <div className="step-status step-todo">
+                  {event.status === 'draft' && (<div className="step-status step-todo">
                     <div className="step-information">
                       <h3>{t`Mapping event still a draft`}</h3>
                       <p>{t`Please make sure all details are correct. When you publish, invitation emails will be sent.`}</p>
@@ -241,7 +241,17 @@ class OrganizeEventPage extends React.Component
                     <div className="publishing-actions">
                       <button className="btn btn-primary" onClick={this.publishEvent}>{t`Publish event`}</button>
                     </div>
-                  </div>
+                  </div>)}
+                  {/* Canceled */}
+                  {event.status === 'canceled' && (<div className="step-status step-todo">
+                    <div className="step-information">
+                      <h3>{t`Your event was canceled!`}</h3>
+                      <p>{t`If you want, you can reopen the event. This will send out emails to all participants again.`}</p>
+                    </div>
+                    <div className="publishing-actions">
+                      <button className="btn btn-primary" onClick={this.publishEvent}>{t`Republish event`}</button>
+                    </div>
+                  </div>)}
                   {/* After event was published */}
                   <div className="notification-completed step-active">
                     {t`Congratulations! Your event has been published`}
@@ -300,13 +310,21 @@ class OrganizeEventPage extends React.Component
                   {event.status === 'completed' &&
                   (<section>
                     <div className="notification-completed step-completed">{t`Your event has been completed`}</div>
-                    <div className="step-status step-completed">
-                      <div className="step-information">
-                        <h3>{t`Mapping event finished`}</h3>
-                        <p>{t`Your event is over now.`}</p>
+                    <div className="step-status step-multi-line step-completed">
+                      <div className="first-row">
+                        <div className="step-information">
+                          <h3>{t`Mapping event finished`}</h3>
+                          <p>{t`Your event is over now.`}</p>
+                        </div>
+                        <div className="publishing-actions">
+                          <Button to={`/organizations/${organization._id}/events/${event._id}`}>{t`View event`}</Button>
+                        </div>
                       </div>
-                      <div className="publishing-actions">
-                        <Button to={`/organizations/${organization._id}/events/${event._id}`}>{t`View event`}</Button>
+                      <div className="second-row">
+                        <div className="publishing-actions">
+                          <button className="btn btn-primary"
+                                  onClick={this.reopenEvent}>{t`Reopen event`}</button>
+                        </div>
                       </div>
                     </div>
                   </section>)}
@@ -367,7 +385,7 @@ class OrganizeEventPage extends React.Component
   }
 
   private publishEvent = () => {
-    Meteor.call('events.publish', {eventId: this.state.event._id}, (error, result) => {
+    Meteor.call('events.setStatus', {eventId: this.state.event._id, eventStatus: 'planned'}, (error, result) => {
       if (error) {
         toast.error(error.reason);
       }
@@ -375,7 +393,7 @@ class OrganizeEventPage extends React.Component
   };
 
   private startEvent = () => {
-    Meteor.call('events.start', {eventId: this.state.event._id}, (error, result) => {
+    Meteor.call('events.setStatus', {eventId: this.state.event._id, eventStatus: 'ongoing'}, (error, result) => {
       if (error) {
         toast.error(error.reason);
       }
@@ -383,7 +401,15 @@ class OrganizeEventPage extends React.Component
   };
 
   private completeEvent = () => {
-    Meteor.call('events.complete', {eventId: this.state.event._id}, (error, result) => {
+    Meteor.call('events.setStatus', {eventId: this.state.event._id, eventStatus: 'completed'}, (error, result) => {
+      if (error) {
+        toast.error(error.reason);
+      }
+    });
+  };
+
+  private reopenEvent = () => {
+    Meteor.call('events.setStatus', {eventId: this.state.event._id, eventStatus: 'ongoing'}, (error, result) => {
       if (error) {
         toast.error(error.reason);
       }
@@ -397,7 +423,10 @@ class OrganizeEventPage extends React.Component
       actions: [
         Dialog.CancelAction(),
         Dialog.OKAction(() => {
-          Meteor.call('events.cancel', {eventId: this.state.event._id}, (error, result) => {
+          Meteor.call('events.setStatus', {
+            eventId: this.state.event._id,
+            eventStatus: 'canceled',
+          }, (error, result) => {
             if (error) {
               toast.error(error.reason);
             }
