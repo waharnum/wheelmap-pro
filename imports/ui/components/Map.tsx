@@ -158,7 +158,7 @@ class Map extends React.Component<IStyledComponent & Props, State> {
 
     const marker = new HighlightableMarker(coordinates, {
       onClick: this.onMarkerClick,
-      hrefForFeatureId: () => {
+      hrefForFeature: () => {
         return '';
       },
       feature,
