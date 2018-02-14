@@ -62,18 +62,15 @@ const CategoryChooserQuestion = class extends React.Component<IStyledComponent &
     categoryTree: [],
     selectedCategories: [],
   };
+  inputRefs: { [key: number]: HTMLSelectElement | null } = {};
 
   constructor(props: Props) {
     super(props);
     this.state = this.stateFromProps(props);
   }
 
-  public componentDidMount() {
-    this.fireInputRef();
-  }
-
   public componentWillReceiveProps(nextProps: Props) {
-    this.setState(this.stateFromProps(nextProps), this.fireInputRef);
+    this.setState(this.stateFromProps(nextProps));
   }
 
   public render() {
@@ -88,7 +85,7 @@ const CategoryChooserQuestion = class extends React.Component<IStyledComponent &
             <span key={currentLevel}
                   className="selectWrapper">
               <select className="form-control"
-                      ref={`select-${currentLevel}`}
+                      ref={(r) => this.storeInputRef(currentLevel, r)}
                       name="selectCategory"
                       value={currentSelected ? currentSelected._id : ''}
                       onChange={itemSelected}>
@@ -112,6 +109,18 @@ const CategoryChooserQuestion = class extends React.Component<IStyledComponent &
     );
   }
 
+  storeInputRef = (level: number, ref: HTMLSelectElement | null) => {
+    this.inputRefs[level] = ref;
+    const treeSize = this.state.categoryTree.length - 1;
+
+    if (this.inputRefs[treeSize] && this.state.categoryTree[treeSize].length > 0) {
+      const mainSelectField = this.inputRefs[treeSize] as HTMLSelectElement;
+      if (this.props.inputRef) {
+        this.props.inputRef(mainSelectField);
+      }
+    }
+  };
+
   itemSelected = (currentLevel, event) => {
     const selectedCategoryId = event.target.value;
     const childCategories = this.state.categories.filter(hasSameParent(selectedCategoryId));
@@ -129,20 +138,10 @@ const CategoryChooserQuestion = class extends React.Component<IStyledComponent &
     this.setState({
       selectedCategories,
       categoryTree,
-    }, this.fireInputRef);
+    });
 
     if (this.props.onChange) {
       this.props.onChange(selectedCategoryId);
-    }
-  };
-
-  fireInputRef = () => {
-    const treeSize = this.state.categoryTree.length - 1;
-    if (this.refs && this.refs[`select-${treeSize}`] && this.state.categoryTree[treeSize].length > 0) {
-      const mainSelectField = this.refs[`select-${treeSize}`] as HTMLSelectElement;
-      if (this.props.inputRef) {
-        this.props.inputRef(mainSelectField);
-      }
     }
   };
 
