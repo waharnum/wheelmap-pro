@@ -10,11 +10,14 @@ import {IStyledComponent} from '../IStyledComponent';
 import {i18nSettings} from '../../../../client/i18n';
 import {getPreferredUnitForKind} from '../../../both/i18n/units';
 
+
+// mostly these come from uniforms
 type Props = {
   onChange: (value: string | Quantity | null) => void,
   value: Quantity;
   placeholder?: string;
-  field: SchemaDefinition
+  field: SchemaDefinition;
+  inputRef?: () => void;
 };
 
 type State = {
@@ -42,6 +45,7 @@ const UnitQuantityQuestion = class extends React.Component<IStyledComponent & Pr
           <div className="form-group">
             <section className="inputFieldWrapper">
               <input type="number"
+                     ref={this.props.inputRef}
                      value={this.state.displayValue}
                      className="form-control"
                      placeholder={this.props.placeholder}
