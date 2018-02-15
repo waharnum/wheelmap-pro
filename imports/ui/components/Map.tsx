@@ -91,7 +91,7 @@ class Map extends React.Component<IStyledComponent & Props, State> {
   }
 
   private updatePlaces = (nextProps: Props) => {
-    if (this.leafletMap) {
+    Categories.fetchOnce(nextProps).then(() => {
       const ids = nextProps.customPlaces ? nextProps.customPlaces.map(f => String(f._id)) : [];
 
       // this is a fairly stupid diff
@@ -106,7 +106,7 @@ class Map extends React.Component<IStyledComponent & Props, State> {
         }
         this.currentMarkerIds = ids;
       }
-    }
+    });
   };
 
   private buildAccessibilityCloudTileUrl = () => {
@@ -123,11 +123,11 @@ class Map extends React.Component<IStyledComponent & Props, State> {
   };
 
   private onMapMounted = (map: L.Map) => {
-    console.log('MAP mounted, ');
     this.leafletMap = map;
-    this.setState({leafletMap: map});
+    this.setState({leafletMap: map}, () => {
+      this.updatePlaces(this.props);
+    });
     this.repositionMap(this.props);
-    this.updatePlaces(this.props);
   };
 
   private repositionMap(props: Props) {
