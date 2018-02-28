@@ -20,6 +20,7 @@ import {i18nSettings} from '../../../client/i18n';
 
 export type Props = {
   children?: React.ReactNode;
+  wheelmapTileUrlBuilder?: () => string | false;
   accessibilityCloudTileUrlBuilder?: () => string | false;
   minZoom?: number;
   maxZoom?: number;
@@ -124,6 +125,9 @@ class Map extends React.Component<IStyledComponent & Props, State> {
   };
 
   private buildWheelMapBaseUrl = () => {
+    if (this.props.wheelmapTileUrlBuilder) {
+      return this.props.wheelmapTileUrlBuilder();
+    }
     return `${Meteor.absoluteUrl('proxy/wheelmap')}`;
   };
 

@@ -113,6 +113,7 @@ class InternalEventBaseForm extends React.Component<IEventBaseFormProps & IStyle
         <div className="content-right">
           <Map
             accessibilityCloudTileUrlBuilder={() => false}
+            wheelmapTileUrlBuilder={() => false}
             {...center}
             maxZoom={18}
             minZoom={3}
