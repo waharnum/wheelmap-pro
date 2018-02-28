@@ -1,491 +1,3381 @@
-# Translators:
-# Sebastian Felix Zappe <hypo@me.com>, 2017
+# 
 msgid ""
 msgstr ""
-"Last-Translator: Sebastian Felix Zappe <hypo@me.com>, 2017\n"
-"Language-Team: German (https://www.transifex.com/sozialhelden/teams/16671/de/)\n"
+"Language-Team: German (https://www.transifex.com/sozialhelden/teams/54219/de/)\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/components/NodeToolbar/ShareButtons/ShareButtons.js:81
+#: imports/both/api/event-participants/server/methods.js:19
+#: imports/both/api/event-participants/server/methods.js:54
+#: imports/both/api/event-participants/server/methods.js:70
+#: imports/both/api/event-participants/server/methods.js:83
+#: imports/both/api/organization-members/server/methods.js:16
+#: imports/both/api/organization-members/server/methods.js:35
+#: imports/both/api/organization-members/server/methods.js:66
+#: imports/both/api/organization-members/server/methods.js:80
+#: imports/both/api/place-infos/server/methods.js:44
+#: imports/both/api/sources/server/privileges.js:55
+#: imports/both/api/sources/server/privileges.js:70
+#: imports/both/api/users/server/methods.js:55
+#: imports/both/api/users/server/methods.js:66
+#: imports/both/api/users/server/methods.js:74
+#: imports/both/api/users/server/methods.js:88
+#: imports/server/i18n/rpc-method.js:42 imports/server/stub-data.js:287
+msgid "Please log in first."
+msgstr ""
+
+#: imports/both/api/event-participants/server/methods.js:96
+#: imports/both/api/organization-members/server/methods.js:50
+#: imports/both/api/organization-members/server/methods.js:95
+#: imports/both/api/sources/server/privileges.js:62
+#: imports/server/stub-data.js:290
+msgid "Not authorized."
+msgstr ""
+
+#: imports/both/i18n/duration.js:5
+msgid "y"
+msgstr ""
+
+#: imports/both/i18n/duration.js:6
+msgid "m"
+msgstr ""
+
+#: imports/both/i18n/duration.js:7
+msgid "d"
+msgstr ""
+
+#: imports/both/i18n/duration.js:8
+msgid "h"
+msgstr ""
+
+#: imports/both/i18n/duration.js:9
+msgid "min"
+msgstr ""
+
+#: imports/both/i18n/duration.js:10
+msgid "s"
+msgstr ""
+
+#: imports/both/lib/format-distance.js:4
+msgid "Unknown Distance"
+msgstr ""
+
+#: imports/both/lib/format-distance.js:9
+#: imports/both/lib/format-distance.js:13
+#: imports/both/lib/format-distance.js:17
+msgid "${ value } m"
+msgstr ""
+
+#: imports/both/lib/format-distance.js:21
+#: imports/both/lib/format-distance.js:25
+msgid "${ value } km"
+msgstr ""
+
+#: imports/both/lib/invite-schema.js:11
+msgid "Email Addresses"
+msgstr ""
+
+#: imports/both/lib/invite-schema.js:16
+msgid "Email Address"
+msgstr ""
+
+#: imports/both/lib/invite-schema.js:18
+msgid "e.g. lisa@example.com"
+msgstr ""
+
+#: imports/server/i18n/rpc-method.js:45
+msgid "You are not authorized to import categories."
+msgstr ""
+
+#: imports/ui/components/AsyncDataComponent.js:8
+msgid "Loading"
+msgstr ""
+
+#: imports/ui/components/AsyncDataComponent.js:11
+msgid "Missing data"
+msgstr ""
+
+#: imports/ui/components/Countdown.js:12
+msgid "days"
+msgstr ""
+
+#: imports/ui/components/Countdown.js:15
+msgid "hours"
+msgstr ""
+
+#: imports/ui/components/Countdown.js:18
+msgid "minutes"
+msgstr ""
+
+#: imports/ui/components/Countdown.js:21
+msgid "seconds"
+msgstr ""
+
+#: imports/ui/components/EnsureUserLoggedIn.js:15
+msgid "Loading..."
+msgstr ""
+
+#: imports/ui/components/InviteByEmailForm.js:41
+msgid "Send invites"
+msgstr ""
+
+#: imports/ui/components/OrganizationsDropdown.js:24
+#: imports/ui/pages/Home/HomePage.js:11
+#: imports/ui/pages/Organizations/NoSelectedOrganizationHeader.js:15
+#: imports/ui/pages/Survey/SurveyDebugPage.js:28
+#: imports/ui/pages/Users/ProfilePage.js:13
+#: imports/ui/pages/Users/SignUpPage.js:14
+msgid "wheelmap.pro"
+msgstr ""
+
+#: imports/ui/components/PreviewToggle.js:16
+msgid "Edit view"
+msgstr ""
+
+#: imports/ui/components/PreviewToggle.js:16
+msgid "Public View"
+msgstr ""
+
+#: imports/ui/components/SubSchemaChooser.js:145
+msgid "Filter"
+msgstr ""
+
+#: imports/ui/components/UserMenu.js:23 imports/ui/panels/UserPanel.js:19
+msgid "Claim your Account"
+msgstr ""
+
+#: imports/ui/components/UserMenu.js:24 imports/ui/panels/UserPanel.js:20
+msgid "Claim Account"
+msgstr ""
+
+#: imports/both/api/event-participants/invitationStates.js:3
+#: imports/both/api/events/eventStatus.js:4
+msgid "Draft"
+msgstr ""
+
+#: imports/both/api/event-participants/invitationStates.js:4
+#: imports/both/api/organization-members/invitationStates.js:3
+msgid "Queued for sending"
+msgstr ""
+
+#: imports/both/api/event-participants/invitationStates.js:5
+#: imports/both/api/organization-members/invitationStates.js:4
+msgid "Sent"
+msgstr ""
+
+#: imports/both/api/event-participants/invitationStates.js:6
+#: imports/both/api/organization-members/invitationStates.js:5
+msgid "Accepted"
+msgstr ""
+
+#: imports/both/api/event-participants/invitationStates.js:7
+#: imports/both/api/organization-members/invitationStates.js:6
+msgid "Error Occurred"
+msgstr ""
+
+#: imports/both/api/event-participants/invitationStates.js:8
+msgid "Old guest"
+msgstr ""
+
+#: imports/both/api/event-participants/invitationStates.js:14
+#: imports/both/api/organization-members/invitationStates.js:12
+msgid "Unknown State"
+msgstr ""
+
+#: imports/both/api/events/eventOpenFor.js:3
+msgid "Invite Only"
+msgstr ""
+
+#: imports/both/api/events/eventOpenFor.js:4
+msgid "Everyone"
+msgstr ""
+
+#: imports/both/api/events/eventOpenFor.js:10
+msgid "Unknown value"
+msgstr ""
+
+#: imports/both/api/events/eventStatus.js:5
+#: imports/ui/pages/Events/panels/EventPanel.js:45
+msgid "Planned"
+msgstr ""
+
+#: imports/both/api/events/eventStatus.js:6
+msgid "Ongoing"
+msgstr ""
+
+#: imports/both/api/events/eventStatus.js:7
+msgid "Completed"
+msgstr ""
+
+#: imports/both/api/events/eventStatus.js:8
+msgid "Canceled"
+msgstr ""
+
+#: imports/both/api/events/eventStatus.js:20
+msgid "Unknown Status"
+msgstr ""
+
+#: imports/both/api/events/schema.js:23
+#: imports/both/api/organizations/schema.js:8
+#: imports/both/api/sources/schema.js:11
+msgid "Name"
+msgstr ""
+
+#: imports/both/api/events/schema.js:27
+msgid "e.g. Event title"
+msgstr ""
+
+#: imports/both/api/events/schema.js:31
+#: imports/both/api/organizations/schema.js:16
+msgid "Description (optional)"
+msgstr ""
+
+#: imports/both/api/events/schema.js:36
+msgid "e.g. Healthcare places in…"
+msgstr ""
+
+#: imports/both/api/events/schema.js:40
+msgid "Region name"
+msgstr ""
+
+#: imports/both/api/events/schema.js:44
+msgid "e.g. Berlin Alexanderplatz"
+msgstr ""
+
+#: imports/both/api/events/schema.js:68
+msgid "Start Date and Time"
+msgstr ""
+
+#: imports/both/api/events/schema.js:73
+msgid "End Date and Time"
+msgstr ""
+
+#: imports/both/api/events/schema.js:78
+msgid "Website URL"
+msgstr ""
+
+#: imports/both/api/events/schema.js:84
+#: imports/both/api/organizations/schema.js:67
+msgid "e.g. http://www.example.com"
+msgstr ""
+
+#: imports/both/api/events/schema.js:88
+msgid "URL to a picture of the event"
+msgstr ""
+
+#: imports/both/api/events/schema.js:94
+msgid "e.g. http://www.example.com/photo.jpg"
+msgstr ""
+
+#: imports/both/api/events/schema.js:98
+msgid "Invitation token"
+msgstr ""
+
+#: imports/both/api/events/schema.js:104
+msgid "Verify GPS position of edits"
+msgstr ""
+
+#: imports/both/api/events/schema.js:116
+msgid "Goal for mapped places"
+msgstr ""
+
+#: imports/both/api/events/schema.js:125
+msgid "Open for…"
+msgstr ""
+
+#: imports/both/api/licenses/schema.js:10
+msgid "Official english title"
+msgstr ""
+
+#: imports/both/api/licenses/schema.js:15
+msgid "Short name (optional)"
+msgstr ""
+
+#: imports/both/api/licenses/schema.js:21
+msgid "Link to descriptive website (optional)"
+msgstr ""
+
+#: imports/both/api/licenses/schema.js:28
+msgid "Link to full legal text (optional)"
+msgstr ""
+
+#: imports/both/api/licenses/schema.js:35
+msgid "Plaintext summary (optional)"
+msgstr ""
+
+#: imports/both/api/licenses/schema.js:41
+msgid "Considered as..."
+msgstr ""
+
+#: imports/both/api/licenses/schema.js:44
+msgid "Public Domain (CC0)"
+msgstr ""
+
+#: imports/both/api/licenses/schema.js:45
+msgid "Free, with Attribution required (CCBY)"
+msgstr ""
+
+#: imports/both/api/licenses/schema.js:46
+msgid "Share Alike (CCSA)"
+msgstr ""
+
+#: imports/both/api/licenses/schema.js:47
+msgid "Restricted / Proprietary (©)"
+msgstr ""
+
+#: imports/both/api/organization-members/roles.js:3
+msgid "Manager"
+msgstr ""
+
+#: imports/both/api/organization-members/roles.js:4
+msgid "Developer"
+msgstr ""
+
+#: imports/both/api/organization-members/roles.js:5
+msgid "Founder'"
+msgstr ""
+
+#: imports/both/api/organization-members/roles.js:6
+msgid "Volunteer"
+msgstr ""
+
+#: imports/both/api/organization-members/roles.js:7
+msgid "Member"
+msgstr ""
+
+#: imports/both/api/organization-members/roles.js:14
+msgid "Unknown Role"
+msgstr ""
+
+#: imports/both/api/organizations/schema.js:12
+msgid "e.g. Organization Name"
+msgstr ""
+
+#: imports/both/api/organizations/schema.js:21
+msgid "e.g. Our organization is…"
+msgstr ""
+
+#: imports/both/api/organizations/schema.js:25 compiled/place-properties.js:26
+msgid "Address"
+msgstr ""
+
+#: imports/both/api/organizations/schema.js:31
+msgid "Address (Additional)"
+msgstr ""
+
+#: imports/both/api/organizations/schema.js:37
+msgid "ZIP-Code"
+msgstr ""
+
+#: imports/both/api/organizations/schema.js:43 compiled/address.js:94
+msgid "City"
+msgstr ""
+
+#: imports/both/api/organizations/schema.js:49 compiled/address.js:137
+msgid "Country"
+msgstr ""
+
+#: imports/both/api/organizations/schema.js:55
+msgid "Phone number"
+msgstr ""
+
+#: imports/both/api/organizations/schema.js:61
+msgid "Organization Link"
+msgstr ""
+
+#: imports/both/api/organizations/schema.js:71
+msgid "URL to Organization Logo"
+msgstr ""
+
+#: imports/both/api/organizations/schema.js:77
+msgid "e.g. http://www.example.com/logo.png"
+msgstr ""
+
+#: imports/both/api/organizations/schema.js:81
+#: imports/both/api/users/accounts.js:73
+msgid "Accept Terms & Conditions"
+msgstr ""
+
+#: imports/both/api/sources/schema.js:15
+msgid "Short name for backlinks (should include your Organization)"
+msgstr ""
+
+#: imports/both/api/sources/schema.js:20
+msgid "License"
+msgstr ""
+
+#: imports/both/api/sources/schema.js:25
+msgid "Description"
+msgstr ""
+
+#: imports/both/api/sources/schema.js:30
+msgid "Web-site (optional)"
+msgstr ""
+
+#: imports/both/api/sources/schema.js:36
+msgid "Additional accessibility information (English)"
+msgstr ""
+
+#: imports/both/api/sources/schema.js:42
+msgid ""
+"Only a draft (content not available to people outside your organization)"
+msgstr ""
+
+#: imports/both/api/sources/schema.js:48
+msgid "Stream chain setup"
+msgstr ""
+
+#: imports/both/api/sources/schema.js:60 imports/both/api/sources/schema.js:70
+msgid "Data is available to everybody"
+msgstr ""
+
+#: imports/both/api/sources/schema.js:65
+msgid "Access to this data source can be requested"
+msgstr ""
+
+#: imports/both/api/users/accounts.js:65
+msgid "What is your name (or nickname)?"
+msgstr ""
+
+#: imports/both/api/users/accounts.js:69
+msgid "e.g. Petra"
+msgstr ""
+
+#: imports/both/api/users/accounts.js:76
+msgid "TODO Provide link to t&c here"
+msgstr ""
+
+#: imports/both/api/users/accounts.js:85
+msgid "email"
+msgstr ""
+
+#: imports/both/api/users/accounts.js:89
+msgid "e.g. petra@example.com"
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:17
+msgid "Like Wheelmap but customized to fit your own community."
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:18
+msgid ""
+"Which public places are accessible for people with disabilities? Create your"
+" own mapping community and empower your volunteers to go out and mark the "
+"accessibility of places! Wheelmap Pro is a powerful tool with your own "
+"brand, your specific accessibility criteria and step-by-step action plans."
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:19
+msgid "Create your community"
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:23
+msgid "Step 1."
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:24
+msgid ""
+"Start a new mapping community or join a community as a volunteer. We help "
+"you plan and organize successful mapping events for collecting accessibility"
+" data."
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:27
+msgid "Step 2."
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:28
+msgid ""
+"Invite volunteers to mapping events during which groups evaluate the "
+"accessibility of local public places."
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:31
+msgid "Step 3."
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:32
+msgid ""
+"The accessibility information which your community gathers can then be "
+"shared publicly to help people with and without disabilities to navigate the"
+" world."
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:39
+msgid "About us"
+msgstr ""
+
+#: imports/ui/pages/Home/HomePage.js:40 src/components/MainMenu/strings.js:19
+msgid "Imprint"
+msgstr ""
+
+#: imports/ui/pages/NotFound/AccessForbiddenPage.js:3
+msgid ""
+"Sorry, this should not have happened. You are not authorized for this page."
+msgstr ""
+
+#: imports/ui/pages/NotFound/NotFoundPage.js:4
+msgid "Sorry, this should not have happened. Page not found."
+msgstr ""
+
+#: imports/ui/pages/Events/CreateEventPage.js:19
+#: imports/ui/pages/Organizations/OrganizationAdminHeader.js:11
+msgid "Dashboard"
+msgstr ""
+
+#: imports/ui/pages/Events/CreateEventPage.js:20
+msgid "Create Event"
+msgstr ""
+
+#: imports/ui/pages/Events/CreatePlacePage.js:25
+#: imports/ui/pages/Events/panels/SurveyPanel.js:20
+msgid "Unknown error"
+msgstr ""
+
+#: imports/ui/pages/Events/EventBaseForm.js:45
+msgid "Optimal a 640 x 400 PNG-file."
+msgstr ""
+
+#: imports/ui/pages/Events/EventBaseForm.js:158
+#: imports/ui/pages/Organizations/OrganizationBaseForm.js:101
+msgid "Update"
+msgstr ""
+
+#: imports/ui/pages/Events/EventBaseForm.js:159
+#: imports/ui/pages/Organizations/OrganizationBaseForm.js:102
+msgid "Create"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:642
+#: imports/ui/pages/Events/EventBaseForm.js:160
+#: imports/ui/pages/Organizations/OrganizationBaseForm.js:103
+#: src/components/NodeToolbar/AccessibilityEditor/WheelchairStatusEditor.js:131
+msgid "Cancel"
+msgstr ""
+
+#: imports/ui/pages/Events/EventBaseForm.js:164
+msgid "zoom or pan to adjust region"
+msgstr ""
+
+#: imports/ui/pages/Events/EventBaseForm.js:168
+msgid "Set this region as the mapping area?"
+msgstr ""
+
+#: imports/ui/pages/Events/EventBaseForm.js:169
+msgid "Reset"
+msgstr ""
+
+#: imports/ui/pages/Events/EventBaseForm.js:170
+msgid "Save"
+msgstr ""
+
+#: imports/ui/pages/Events/EventParticipantsPage.js:40
+msgid "Share an invitation link"
+msgstr ""
+
+#: imports/ui/pages/Events/EventParticipantsPage.js:43
+msgid ""
+"You can also share the following link to invite people, e.g. via Social "
+"Media or handouts."
+msgstr ""
+
+#: imports/ui/pages/Events/EventParticipantsPage.js:44
+msgid ""
+"Once the event is not a draft and not set to private, you will be able to "
+"share a public invite link here."
+msgstr ""
+
+#: imports/ui/pages/Events/EventParticipantsPage.js:49
+#: imports/ui/pages/Events/panels/EventPanel.js:15
+msgid "Link copied to clipboard"
+msgstr ""
+
+#: imports/ui/pages/Events/EventParticipantsPage.js:50
+msgid "Copy to clipboard"
+msgstr ""
+
+#: imports/ui/pages/Events/EventParticipantsPage.js:71
+msgid "Invite single participants to event"
+msgstr ""
+
+#: imports/ui/pages/Events/EventParticipantsPage.js:73
+msgid "No one invited yet."
+msgstr ""
+
+#: imports/ui/pages/Events/EventParticipantsPage.js:77
+msgid ""
+"The event is not published yet. Invitations will be send when published."
+msgstr ""
+
+#: imports/ui/pages/Events/EventParticipantsPage.js:78
+msgid "You made this event public. Invitations will be send immediately."
+msgstr ""
+
+#: imports/ui/pages/Events/EventParticipantsPage.js:82
+msgid ""
+"Invited people will receive a personal invitation which is only valid for "
+"them."
+msgstr ""
+
+#: imports/ui/pages/Events/EventParticipantsPage.js:83
+msgid "Everybody with the share-link below can join."
+msgstr ""
+
+#: imports/ui/pages/Events/EventStatistics.js:15
+#: imports/ui/pages/Organizations/OrganizationStatistics.js:20
+msgid "planned"
+msgstr ""
+
+#: imports/ui/pages/Events/EventStatistics.js:19
+#: imports/ui/pages/Organizations/OrganizationStatistics.js:23
+msgid "mapped"
+msgstr ""
+
+#: imports/ui/pages/Events/EventStatistics.js:26
+#: imports/ui/pages/Organizations/OrganizationStatistics.js:13
+msgid "invited"
+msgstr ""
+
+#: imports/ui/pages/Events/EventStatistics.js:30
+#: imports/ui/pages/Organizations/OrganizationStatistics.js:16
+msgid "accepted"
+msgstr ""
+
+#: imports/ui/pages/Events/EventStatistics.js:35
+#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:35
+msgid "Days Left"
+msgstr ""
+
+#: imports/ui/pages/Events/EventStatistics.js:38
+#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:38
+msgid "Days Ago"
+msgstr ""
+
+#: imports/ui/pages/Events/EventTabs.js:8
+msgid "Event Overview"
+msgstr ""
+
+#: imports/ui/pages/Events/EventTabs.js:9
+#: imports/ui/pages/Events/panels/EventPanel.js:38
+msgid "Participants"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:452
+#: imports/ui/pages/Events/EventTabs.js:10
+#: imports/ui/pages/Events/OrganizeEventPage.js:195
+#: imports/ui/pages/Events/OrganizeEventPage.js:297
+#: imports/ui/pages/Organizations/OrganizationAdminHeader.js:13
+msgid "Edit"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:141
+msgid "Please confirm cancellation"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:142
+msgid ""
+"This will cancel your event and send out cancellation emails to all "
+"invitees. You will not be able to undo this!"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:191
+msgid "Event created successfully."
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:200
+msgid "${ stats.fullParticipantCount } invitations prepared."
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:203
+msgid "No invitations prepared."
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:204
+#: imports/ui/pages/Events/OrganizeEventPage.js:213
+msgid "Emails will be send when you publish."
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:206
+msgid "Invite participants"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:211
+msgid "${ stats.fullParticipantCount } participant invites prepared"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:214
+msgid "Add more"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:218
+msgid "${ stats.invitedParticipantCount } participants invited"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:220
+msgid "Invite more"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:222
+msgid "Some documents to read."
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:224
+msgid "Tips for event organizers"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:225
+msgid "Learn more"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:227
+#: imports/ui/pages/Events/OrganizeEventPage.js:234
+msgid "Publish event"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:231
+msgid "Mapping event still a draft"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:232
+msgid ""
+"Please make sure all details are correct. When you publish, invitation "
+"emails will be sent."
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:237
+msgid "Your event was canceled!"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:238
+msgid ""
+"If you want, you can reopen the event. This will send out emails to all "
+"participants again."
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:240
+msgid "Republish event"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:241
+msgid "Congratulations! Your event has been published"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:245
+msgid "Mapping event published"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:247
+#: imports/ui/pages/Events/OrganizeEventPage.js:264
+#: imports/ui/pages/Events/OrganizeEventPage.js:281
+msgid "View event"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:250
+msgid "Start event"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:251
+#: imports/ui/pages/Events/OrganizeEventPage.js:268
+msgid "Cancel event"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:253
+msgid ""
+"Your event is now online. It will be started when its start time is due. Be careful when cancelling your event:\n"
+"you can not undo this."
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:257
+msgid "Your event is ongoing"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:261
+msgid "Mapping event ongoing"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:262
+msgid "Your event is currently in progress."
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:267
+msgid "Complete event"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:270
+msgid ""
+"Your event is now running. It will be closed the day after it finishes. Be careful when cancelling your event:\n"
+"you can not undo this."
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:274
+msgid "Your event has been completed"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:278
+msgid "Mapping event finished"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:279
+msgid "Your event is over now."
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:284
+msgid "Reopen event"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:286
+msgid "After the event"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:288
+msgid "Event picture has been set."
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:290
+#: imports/ui/pages/Events/OrganizeEventPage.js:292
+msgid "Set event picture"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:296
+msgid "Event picture was set"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:300
+msgid "Great. You may share the link now."
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:302
+#: imports/ui/pages/Events/OrganizeEventPage.js:304
+msgid "Share results"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:305
+#: src/components/NodeToolbar/ShareButtons/ShareButtons.js:92
+msgid "Share"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:307
+msgid "Results have been shared"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:308
+msgid "View"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:310
+msgid "Organizing your event is easy:"
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:311
+msgid "Prepare the essentials before you start."
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:312
+msgid "Decide to have a public or invite only event."
+msgstr ""
+
+#: imports/ui/pages/Events/OrganizeEventPage.js:313
+msgid "Publish your event to send invitations and see who is on board."
+msgstr ""
+
+#: imports/ui/pages/Events/ShowEventPage.js:59
+msgid "Edit place"
+msgstr ""
+
+#: imports/ui/pages/Events/ShowEventPage.js:118
+#: imports/ui/pages/Organizations/ShowOrganizationPage.js:38
+msgid "Place"
+msgstr ""
+
+#: imports/ui/pages/Events/ShowEventPage.js:123
+msgid "Place not found…"
+msgstr ""
+
+#: imports/ui/pages/Events/ShowEventPage.js:150
+#: imports/ui/pages/Organizations/ShowOrganizationPage.js:49
+msgid "My account"
+msgstr ""
+
+#: imports/ui/pages/Events/ShowEventPage.js:196
+#: imports/ui/pages/Events/ShowEventPage.js:203
+msgid "Event"
+msgstr ""
+
+#: imports/ui/pages/Organizations/AccessibilityCloudPage.js:20
+msgid "Let’s collect accessible places together!"
+msgstr ""
+
+#: imports/ui/pages/Organizations/AccessibilityCloudPage.js:21
+msgid ""
+"We are a NGO that believes in an inclusive world. Our mission is to make "
+"accessibility information easier to find—wherever people need it. That’s why"
+" we want to encourage everybody to share this kind of data with each other. "
+"accessibility.cloud simplifies sharing and obtaining accessibility data in a"
+" standardized, future-proof, easy-to-use way."
+msgstr ""
+
+#: imports/ui/pages/Organizations/AccessibilityCloudPage.js:22
+msgid ""
+"While beeing a part of Wheelmap.pro your account has been mirrored to "
+"accessibility.cloud. So have a look for yourself."
+msgstr ""
+
+#: imports/ui/pages/Organizations/AccessibilityCloudPage.js:23
+msgid "Visit now"
+msgstr ""
+
+#: imports/ui/pages/Organizations/AccessibilityCloudPage.js:25
+msgid "Join us – you are already onboard."
+msgstr ""
+
+#: imports/ui/pages/Organizations/AccessibilityCloudPage.js:26
+msgid "You already have an account there."
+msgstr ""
+
+#: imports/ui/pages/Organizations/AccessibilityCloudPage.js:27
+msgid ""
+"Use our data: Get access to 50+ data sources with more than 1+ mio places."
+msgstr ""
+
+#: imports/ui/pages/Organizations/AccessibilityCloudPage.js:28
+msgid ""
+"Share your data. You collected accessibility data yourself? We'd love to see"
+" it!."
+msgstr ""
+
+#: imports/ui/pages/Organizations/CreateOrganizationPage.js:17
+#: imports/ui/pages/Organizations/NoOrganizationsPage.js:22
+#: imports/ui/pages/Organizations/NoSelectedOrganizationHeader.js:12
+#: imports/ui/pages/Organizations/OrganizationAdminHeader.js:18
+msgid "Create Organization"
+msgstr ""
+
+#: imports/ui/pages/Organizations/ListOrganizationsPage.js:21
+msgid "Loading…"
+msgstr ""
+
+#: imports/ui/pages/Organizations/ListOrganizationsPage.js:24
+msgid "All Organizations"
+msgstr ""
+
+#: imports/ui/pages/Organizations/ListOrganizationsPage.js:26
+msgid "Create new organization"
+msgstr ""
+
+#: imports/ui/pages/Organizations/NoOrganizationsPage.js:17
+msgid "Welcome on board!"
+msgstr ""
+
+#: imports/ui/pages/Organizations/NoOrganizationsPage.js:19
+msgid ""
+"It seems you are not part of any organization yet. Please wait for your "
+"invite, or create your own organization."
+msgstr ""
+
+#: imports/ui/pages/Organizations/NoOrganizationsPage.js:20
+msgid ""
+"Please choose your organization from the dropdown or create a new "
+"organization."
+msgstr ""
+
+#: imports/ui/pages/Organizations/NoOrganizationsPage.js:24
+msgid "Join or create an organization to contribute"
+msgstr ""
+
+#: imports/ui/pages/Organizations/NoOrganizationsPage.js:25
+msgid "If you want to contribute to wheelmap.pro you need an organization."
+msgstr ""
+
+#: imports/ui/pages/Organizations/NoOrganizationsPage.js:26
+msgid "Creating an organization is free and without any hidden costs. "
+msgstr ""
+
+#: imports/ui/pages/Organizations/OrganizationAdminHeader.js:12
+msgid "Members"
+msgstr ""
+
+#: imports/ui/pages/Organizations/OrganizationAdminHeader.js:14
+msgid "Accessibility Cloud"
+msgstr ""
+
+#: imports/ui/pages/Organizations/OrganizationBaseForm.js:33
+msgid "Optimal a 640 x 400 PNG-file with transparency."
+msgstr ""
+
+#: imports/ui/pages/Organizations/OrganizationBaseForm.js:39
+msgid ""
+"Wheelmap Pro helps you to plan and organize mapping events for accessibility"
+" data."
+msgstr ""
+
+#: imports/ui/pages/Organizations/OrganizationBaseForm.js:40
+msgid ""
+"This gathered information can then be shared publicly to help people with with and\n"
+"without disabilities to navigate the world."
+msgstr ""
+
+#: imports/ui/pages/Organizations/OrganizationBaseForm.js:42
+msgid ""
+"The app for your Organization will be setup and you’ll be ready to create "
+"your first mapping event."
+msgstr ""
+
+#: imports/ui/pages/Organizations/OrganizationMembersPage.js:58
+msgid "Remove"
+msgstr ""
+
+#: imports/ui/pages/Organizations/OrganizationMembersPage.js:85
+msgid "Invite to Organization"
+msgstr ""
+
+#: imports/ui/pages/Organizations/OrganizationStatistics.js:27
+msgid "created"
+msgstr ""
+
+#: imports/ui/pages/Organizations/OrganizationStatistics.js:30
+msgid "completed"
+msgstr ""
+
+#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:31
+msgid "Show details"
+msgstr ""
+
+#: imports/ui/pages/Organizations/OrganizeOrganizationPage.js:53
+msgid "Create event"
+msgstr ""
+
+#: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:24
+msgid ""
+"No invitation found. Maybe you already used this token or joined this "
+"organization in another way?"
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventInvitationPanel.js:51
+#: imports/ui/pages/Events/panels/EventInvitationPanel.js:65
+#: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:49
+msgid "Accepting invitation failed."
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventInvitationPanel.js:85
+#: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:70
+msgid "Something went wrong"
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventInvitationPanel.js:91
+#: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:75
+msgid "Accepting invitation"
+msgstr ""
+
+#: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:79
+msgid "Great to have you here!"
+msgstr ""
+
+#: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:80
+msgid "Please sign up to join \"${ organization.name }\"."
+msgstr ""
+
+#: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:85
+msgid "Welcome to our community!"
+msgstr ""
+
+#: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:86
+msgid "Thanks for signing up with ${ organization.name }!"
+msgstr ""
+
+#: imports/ui/pages/Organizations/SignUpForOrganizationPage.js:87
+msgid "Organize events now!"
+msgstr ""
+
+#: imports/ui/pages/Users/SignUpPage.js:17
+msgid "Reset password"
+msgstr ""
+
+#: imports/ui/pages/Users/SignUpPage.js:17
+msgid "Create an account"
+msgstr ""
+
+#: imports/ui/pages/Users/SignUpPage.js:28
+msgid "Join us at wheelmap.pro!"
+msgstr ""
+
+#: imports/ui/pages/Users/SignUpPage.js:29
+msgid "Signing up is free and without any hidden costs. "
+msgstr ""
+
+#: imports/ui/pages/Users/SignUpPage.js:30
+msgid ""
+"We promise to never share your email address with a 3rd party or send you "
+"unwanted news or spam."
+msgstr ""
+
+#: imports/ui/components/Questionaire/ChooseCategoryQuestion.js:34
+#: src/lib/Feature.js:259
+msgid "Unknown"
+msgstr ""
+
+#: imports/ui/components/Questionaire/ChooseCategoryQuestion.js:87
+msgid "Please select category"
+msgstr ""
+
+#: imports/ui/components/Questionaire/ChooseCategoryQuestion.js:87
+msgid "Please select sub-category"
+msgstr ""
+
+#: imports/ui/components/Questionaire/DebugTable.js:58
+#: imports/ui/components/Questionaire/Questionnaire.js:421
+msgid "Please specify the value for \\`${ label }\\`."
+msgstr ""
+
+#: imports/ui/components/Questionaire/DebugTable.js:63
+#: imports/ui/components/Questionaire/Questionnaire.js:426
+msgid "Do you wanna dive into \\`${ label }\\`?"
+msgstr ""
+
+#: imports/ui/components/Questionaire/DebugTable.js:63
+#: imports/ui/components/Questionaire/Questionnaire.js:426
+msgid "Please specify \\`${ label }\\`."
+msgstr ""
+
+#: imports/ui/components/Questionaire/DebugTable.js:72
+#: imports/ui/components/Questionaire/Questionnaire.js:435
+msgid ""
+"Do you wanna add another element to the list \\`${ label }\\` (${ "
+"currentValue.length })?"
+msgstr ""
+
+#: imports/ui/components/Questionaire/DebugTable.js:73
+#: imports/ui/components/Questionaire/Questionnaire.js:436
+msgid ""
+"Please add another element to the list \\`${ label }\\` (${ "
+"currentValue.length })."
+msgstr ""
+
+#: imports/ui/components/Questionaire/DebugTable.js:79
+#: imports/ui/components/Questionaire/Questionnaire.js:442
+msgid "Do you wanna add the first element to the list \\`${ label }\\`?"
+msgstr ""
+
+#: imports/ui/components/Questionaire/DebugTable.js:80
+#: imports/ui/components/Questionaire/Questionnaire.js:443
+msgid "Please add the first element to the list \\`${ label }\\`."
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:23
+msgid "Yes!"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:23
+msgid "Okay!"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:23
+msgid "Sure!"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:23
+msgid "Let's do this!"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:23
+msgid "I'm ready!"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:24
+msgid "I'm not sure."
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:24
+msgid "I'll skip this one."
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:24
+msgid "No idea."
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:24
+msgid "Ask me next time."
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:24
+msgid "Phew, I couldn't tell."
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:25
+msgid "I'd rather move to the next topic."
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:25
+msgid "I'll skip this block."
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:26
+msgid "I think I'm done."
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:26
+msgid "I've had enough"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:26
+msgid "I answered enough questions!"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:452
+msgid "Add"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:497
+msgid "Required field"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:512
+msgid "primary-action"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:512
+msgid "Next"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:519
+msgid "Skip"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:539
+#: imports/ui/components/Questionaire/Questionnaire.js:563
+#: imports/ui/components/Questionaire/YesNoQuestion.js:12
+#: src/components/NodeToolbar/AccessibilityDetails.js:17
+#: src/components/NodeToolbar/AccessibilityEditor/ToiletStatusEditor.js:124
+msgid "Yes"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:540
+#: imports/ui/components/Questionaire/Questionnaire.js:564
+#: imports/ui/components/Questionaire/YesNoQuestion.js:15
+#: src/components/NodeToolbar/AccessibilityDetails.js:18
+#: src/components/NodeToolbar/AccessibilityEditor/ToiletStatusEditor.js:127
+msgid "No"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:541
+#: imports/ui/components/Questionaire/Questionnaire.js:565
+#: imports/ui/components/Questionaire/Questionnaire.js:577
+#: imports/ui/pages/Events/panels/EventInvitationPanel.js:87
+msgid "Okay"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:570
+msgid "Welcome, we are going to map your first place!"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:571
+msgid "Welcome, we are going to update your first place!"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:582
+msgid "Well done, you made it through!"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:588
+msgid "Back to map"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:594
+msgid "Discard changes?"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:596
+msgid "We will discard your changes, do you really want to abort?"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:599
+msgid "Abort"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:606
+msgid "Resume survey"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:633
+msgid "block"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:641
+msgid "Finish"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:644
+msgid "Tired? What do you want to do now?"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:646
+msgid "Stop here"
+msgstr ""
+
+#: imports/ui/components/Questionaire/Questionnaire.js:647
+msgid "Back to survey"
+msgstr ""
+
+#: imports/both/api/event-participants/server/_invitations.js:71
+#: imports/both/api/event-participants/server/_invitations.js:111
+msgid "Email address in invitation is invalid"
+msgstr ""
+
+#: imports/both/api/event-participants/server/_invitations.js:77
+msgid "User ${ userId } has no assigned emails."
+msgstr ""
+
+#: imports/both/api/event-participants/server/_invitations.js:108
+msgid "No unaccepted invitation to ${ eventId } found with token ${ token }."
+msgstr ""
+
+#: imports/both/api/event-participants/server/_invitations.js:117
+msgid ""
+"Email is already used by another user. Please sign with that email address."
+msgstr ""
+
+#: imports/both/api/event-participants/server/_invitations.js:144
+msgid "No invitation in ${ eventId } found with token ${ token }."
+msgstr ""
+
+#: imports/both/api/event-participants/server/methods.js:23
+#: imports/both/api/event-participants/server/methods.js:58
+#: imports/both/api/event-participants/server/methods.js:74
+#: imports/both/api/event-participants/server/methods.js:91
+msgid "Event not found"
+msgstr ""
+
+#: imports/both/api/event-participants/server/methods.js:26
+#: imports/both/api/organization-members/server/methods.js:23
+msgid "You are not authorized to invite users to this organization."
+msgstr ""
+
+#: imports/both/api/event-participants/server/methods.js:30
+#: imports/both/api/organization-members/server/methods.js:20
+#: imports/both/api/organization-members/server/methods.js:44
+#: imports/both/api/organization-members/server/methods.js:70
+#: imports/both/api/organization-members/server/methods.js:89
+msgid "Organization not found"
+msgstr ""
+
+#: imports/both/api/event-participants/server/methods.js:87
+msgid "Event participants not found"
+msgstr ""
+
+#: imports/both/api/organization-members/server/methods.js:39
+#: imports/both/api/organization-members/server/methods.js:84
+msgid "Organization member not found"
+msgstr ""
+
+#: imports/both/api/organization-members/server/methods.js:56
+#: imports/both/api/organization-members/server/methods.js:100
+msgid "Cannot revoke the membership of the last admin of an organization."
+msgstr ""
+
+#: imports/both/api/organizations/server/methods.js:34
+msgid "You don\\'t have permission to remove this organization."
+msgstr ""
+
+#: imports/both/api/place-infos/server/methods.js:47
+msgid "You do not have rights to add places for this event."
+msgstr ""
+
+#: imports/both/api/sources/server/privileges.js:59
+msgid "Source not found."
+msgstr ""
+
+#: imports/both/api/sources/server/privileges.js:79
+msgid "Source not found or not visible."
+msgstr ""
+
+#: imports/both/api/users/server/methods.js:77
+msgid "You are not authorized to approve users."
+msgstr ""
+
+#: imports/both/api/users/server/methods.js:81
+#: imports/both/api/users/server/methods.js:95
+msgid "Can not find user with this id."
+msgstr ""
+
+#: imports/both/api/users/server/methods.js:91
+msgid "You are not authorized to remove users."
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventInvitationPanel.js:96
+#: imports/ui/pages/Events/panels/EventInvitationPanel.js:104
+msgid "Great that you are joining ${ event.name }."
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventInvitationPanel.js:97
+msgid "Sign up as a guest"
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventInvitationPanel.js:100
+msgid "Sign-in/Sign-up with email"
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventInvitationPanel.js:107
+msgid "Sign-up as a guest"
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventInvitationPanel.js:113
+msgid "${ userName }, you are already a participant of ${ event.name }."
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventInvitationPanel.js:114
+#: imports/ui/pages/Events/panels/EventPanel.js:178
+msgid "Start mapping"
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventInvitationPanel.js:119
+msgid "${ userName }, great that you are joining ${ event.name }."
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventInvitationPanel.js:120
+msgid "Join event"
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventPanel.js:16
+msgid "Share Link"
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventPanel.js:18
+msgid "If possible can you bring the following items…"
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventPanel.js:21
+msgid "A Ruler"
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventPanel.js:22
+msgid "or other tools to measure door widths and step heights."
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventPanel.js:24
+msgid "A Smartphone"
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventPanel.js:25
+msgid "or tablet with internet connection."
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventPanel.js:27
+msgid "Some Beverages"
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventPanel.js:28
+msgid "snacks will be provided by us."
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventPanel.js:48
+msgid "Achieved"
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventPanel.js:177
+msgid "Join Us"
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventPanel.js:180
+msgid "Going"
+msgstr ""
+
+#: imports/ui/pages/Events/panels/EventPanel.js:215
+msgid "Event picture"
+msgstr ""
+
+#: imports/ui/pages/Organizations/panels/OrganizationAboutPanel.js:30
+msgid "Administrate"
+msgstr ""
+
+#: imports/ui/pages/Organizations/panels/UserFooter.js:12
+msgid "Sign Up"
+msgstr ""
+
+#: imports/ui/pages/Organizations/panels/UserFooter.js:14
+msgid "Sign In"
+msgstr ""
+
+#: src/components/NodeToolbar/ShareButtons/ShareButtons.js:100
 msgid "${ categoryName } on Wheelmap"
-msgstr "${ categoryName } auf Wheelmap"
+msgstr ""
 
-#: src/components/NodeToolbar/ShareButtons/ShareButtons.js:86
+#: src/components/NodeToolbar/ShareButtons/ShareButtons.js:105
 msgid "${ placeName } on Wheelmap.org"
-msgstr "${ placeName } auf Wheelmap.org"
+msgstr ""
 
-#: src/components/NodeToolbar/ShareButtons/ShareButtons.js:90
+#: src/components/SearchToolbar/CategoryButton.js:60
+msgid "${ props.name } Filter"
+msgstr ""
+
+#: src/components/NodeToolbar/ShareButtons/ShareButtons.js:109
 msgid "${ sharedObjectTitle }\\n\\nClick on this link to open it: ${ url }"
-msgstr "${ sharedObjectTitle }\\n\\nZum Öffnen auf diesen Link klicken: ${ url }"
+msgstr ""
 
 #: src/components/NodeToolbar/Report/strings.js:33
 msgid ""
 "(Note that it can take a while until the place is updated on Wheelmap after "
 "editing.)"
 msgstr ""
-"(Es kann danach eine Weile dauern, bis der Ort auch auf Wheelmap "
-"aktualisiert wird)"
 
 #: src/components/NodeToolbar/Report/strings.js:23
 msgid ""
 "(Note that you need to log in first to do this, and that it can take a while"
 " until the place is updated on Wheelmap.)"
 msgstr ""
-"(Dafür musst du dich auf OpenStreetMap einloggen. Es kann eine Weile dauern,"
-" bis der Ort auch auf Wheelmap aktualisiert wird.)"
 
 #: src/components/NodeToolbar/Report/strings.js:40
 msgid ""
 "(Please only write in English or German.)\\n\\nHi "
 "Sozialhelden,\\n\\nsomething is wrong with this place: ${ url }\\n\\nThe "
-"problem is:\\n\\n"
+"problem is:\\n\\nBrowser:\\n\\n${ navigator.userAgent }"
 msgstr ""
-"(Bitte schreib’ uns auf Englisch oder Deutsch!)\\n\\nLiebe "
-"Sozialhelden,\\n\\nan diesem Ort ist etwas falsch: ${ url }\\n\\nDas Problem"
-" ist:\\n\\n"
 
-#: src/components/Map/Map.js:106
+#: src/components/Map/Map.js:261
 msgid "A project by"
-msgstr "Ein Projekt von"
+msgstr ""
 
-#: src/lib/Feature.js:272
+#: src/components/FilterToolbar/FilterToolbar.js:196
+msgid "Accessibility Filter Dialog"
+msgstr ""
+
+#: src/lib/Feature.js:297
 msgid "Accessible hand basin"
-msgstr "Unterfahrbares Waschbecken"
+msgstr ""
 
 #: src/components/MainMenu/strings.js:23
 msgid "Add missing place"
-msgstr "Fehlenden Ort hinzufügen"
+msgstr ""
 
-#: src/components/NodeToolbar/NodeFooter.js:126
+#: src/components/NodeToolbar/NodeFooter.js:129
 msgid "Add toilet status"
-msgstr "Toilette markieren"
+msgstr ""
 
-#: src/components/FilterToolbar/FilterToolbar.js:76
+#: src/components/FilterToolbar/FilterToolbar.js:174
 msgid "All"
-msgstr "Alle"
+msgstr ""
 
-#: src/components/FilterToolbar/FilterToolbar.js:79
+#: src/components/NodeToolbar/Equipment/EquipmentOverview.js:77
+msgid "All elevators and escalators"
+msgstr ""
+
+#: src/components/FilterToolbar/FilterToolbar.js:177
 msgid "At least partially wheelchair accessible"
-msgstr "Teilweise rollstuhlgerecht oder besser"
+msgstr ""
 
-#: src/components/NodeToolbar/AccessibilityEditor/WheelchairStatusEditor.js:102
+#: src/components/NodeToolbar/AccessibilityEditor/WheelchairStatusEditor.js:134
 #: src/components/NodeToolbar/Report/strings.js:27
 msgid "Back"
-msgstr "Zurück"
+msgstr ""
 
-#: src/components/NodeToolbar/NodeFooter.js:113
+#: src/components/NodeToolbar/NodeFooter.js:116
 msgid "Bonus karma points!"
-msgstr "Bonus-Karma-Punkte!"
+msgstr ""
 
-#: src/components/NodeToolbar/AccessibilityEditor/WheelchairStatusEditor.js:99
-msgid "Cancel"
-msgstr "Abbrechen"
+#: src/components/NodeToolbar/NodeHeader.js:62
+msgid "Call ${ phoneNumber }"
+msgstr ""
 
-#: src/components/NodeToolbar/AccessibilityEditor/WheelchairStatusEditor.js:93
+#: src/components/NodeToolbar/AccessibilityEditor/WheelchairStatusEditor.js:125
 msgid "Change"
-msgstr "Ändern"
+msgstr ""
 
-#: src/components/FilterToolbar/FilterButton.js:92
+#: src/components/FilterToolbar/FilterButton.js:97
 msgid "Change which places are shown on the map"
-msgstr "Ändern, welche Orte auf der Karte angezeigt werden"
+msgstr ""
 
-#: src/lib/Feature.js:269
+#: src/components/CloseLink.js:49
+msgid "Clear Search"
+msgstr ""
+
+#: src/lib/Feature.js:294
 msgid "Clear floor space ≥ 150 cm wide"
-msgstr "Bewegungsflächen ≥ 150 cm breit"
+msgstr ""
 
-#: src/lib/Feature.js:269
+#: src/lib/Feature.js:294
 msgid "Clear floor space ≥ 59 inch wide"
-msgstr "Bewegungsflächen ≥ 59 Zoll breit"
+msgstr ""
 
-#: src/components/NodeToolbar/AccessibilityEditor/WheelchairStatusEditor.js:90
+#: src/components/FilterToolbar/FilterToolbar.js:56
+msgid "Close Dialog"
+msgstr ""
+
+#: src/components/NodeToolbar/ShareButtons/ShareButtons.js:130
+msgid "Collapse Share Menu"
+msgstr ""
+
+#: src/components/NodeToolbar/AccessibilityEditor/WheelchairStatusEditor.js:122
 msgid "Confirm"
-msgstr "Bestätigen"
+msgstr ""
 
 #: src/components/MainMenu/strings.js:17
 msgid "Contact"
-msgstr "Kontakt"
+msgstr ""
 
 #: src/components/NodeToolbar/Report/strings.js:35
 msgid "Contact the Wheelmap support team"
-msgstr "Wheelmap-Team kontaktieren"
+msgstr ""
 
-#: src/components/NodeToolbar/AccessibilityEditor/WheelchairStatusEditor.js:96
+#: src/components/NodeToolbar/AccessibilityEditor/WheelchairStatusEditor.js:128
 msgid "Continue"
-msgstr "Weiter"
+msgstr ""
 
-#: src/components/NodeToolbar/NodeFooter.js:104
+#: src/components/NodeToolbar/SourceLink.js:65
 msgid "Details"
-msgstr "Details"
+msgstr ""
 
 #: src/components/NodeToolbar/Report/strings.js:21
 msgid ""
 "Did you know you can change this place’s information on OpenStreetMap "
 "directly?"
 msgstr ""
-"Wusstest Du, dass Du diesen Ort auf OpenStreetMap direkt editieren kannst?"
 
-#: src/lib/Feature.js:268
+#: src/components/NodeToolbar/Equipment/EquipmentOverview.js:64
+msgid "Disruptions at this location"
+msgstr ""
+
+#: src/lib/Feature.js:293
 msgid "Doorways’ inner width ≥ 35 inch"
-msgstr "Türdurchgang ≥ 35 Zoll breit"
+msgstr ""
 
-#: src/lib/Feature.js:268
+#: src/lib/Feature.js:293
 msgid "Doorways’ inner width ≥ 90 cm"
-msgstr "Türdurchgang ≥ 90 cm breit"
+msgstr ""
 
 #: src/components/NodeToolbar/Report/strings.js:25
 msgid "Edit this place on OpenStreetMap"
-msgstr "Diesen Ort auf OpenStreetMap editieren"
+msgstr ""
 
-#: src/components/SearchToolbar/CategoryMenu.js:42
+#: src/lib/Categories.js:60
 msgid "Education"
-msgstr "Bildung"
+msgstr ""
 
-#: src/lib/Feature.js:248
+#: src/lib/Feature.js:273
 msgid "Entrance has a step or several steps, rooms are not accessible."
-msgstr "Eingang hat eine oder mehrere Stufen, Räume sind nicht zugänglich."
+msgstr ""
 
-#: src/lib/Feature.js:246
+#: src/lib/Feature.js:271
 msgid ""
 "Entrance has one step with max. 7 cm / 3 inch height, most rooms are without"
 " steps."
 msgstr ""
-"Eingang hat eine Stufe mit ≤ 7 cm / 3 Zoll Höhe, die meisten Räume sind "
-"stufenlos erreichbar."
 
-#: src/lib/Feature.js:243
+#: src/lib/Feature.js:268
 msgid "Entrance without steps, all rooms without steps."
-msgstr "Eingang ohne Stufen, alle Räume ohne Stufen."
+msgstr ""
 
-#: src/components/NotFound/NotFound.js:26
+#: src/components/NotFound/NotFound.js:44
+#: src/components/NotFound/NotFound.js:55
 msgid "Error"
-msgstr "Fehler"
+msgstr ""
+
+#: src/components/NodeToolbar/ShareButtons/ShareButtons.js:116
+msgid "Expand Share Menu"
+msgstr ""
 
 #: src/components/MainMenu/strings.js:21
 msgid "FAQ"
-msgstr "FAQ"
+msgstr ""
 
-#: src/components/NodeToolbar/ShareButtons/ShareButtons.js:89
+#: src/components/NodeToolbar/ShareButtons/ShareButtons.js:108
 msgid "Find out about this place’s accessibility."
-msgstr "Finde heraus, wie zugänglich dieser Ort ist."
+msgstr ""
 
-#: src/lib/Feature.js:271
+#: src/components/NodeToolbar/Report/strings.js:19
+msgid "Find out how"
+msgstr ""
+
+#: src/components/MainMenu/strings.js:25
+msgid "Find wheelchair accessible places"
+msgstr ""
+
+#: src/lib/Feature.js:296
 msgid "Folding grab rails"
-msgstr "Stützklappgriffe o.ä."
+msgstr ""
 
-#: src/components/SearchToolbar/CategoryMenu.js:32
+#: src/lib/Categories.js:50
 msgid "Food & Drinks"
-msgstr "Essen & Trinken"
+msgstr ""
 
-#: src/lib/Feature.js:228
+#: src/lib/Feature.js:253
 msgid "Fully"
-msgstr "Voll"
+msgstr ""
 
-#: src/lib/Feature.js:213
+#: src/lib/Feature.js:238
 msgid "Fully wheelchair accessible"
-msgstr "Voll rollstuhlgerecht"
+msgstr ""
 
 #: src/components/MainMenu/strings.js:11
 msgid "Get involved"
-msgstr "Mitmachen"
+msgstr ""
 
-#: src/lib/Feature.js:258
+#: src/lib/Feature.js:283
 msgid "Has a wheelchair accessible toilet."
-msgstr "Hat eine rollstuhlgerechte Toilette."
+msgstr ""
 
-#: src/components/SearchToolbar/CategoryMenu.js:46
+#: src/lib/Categories.js:64
 msgid "Health"
-msgstr "Gesundheit"
+msgstr ""
 
-#: src/components/Onboarding/Onboarding.js:25
+#: src/components/Onboarding/Onboarding.js:30
 msgid "Help out by marking places!"
-msgstr "Hilf’ mit, indem du Orte markierst!"
+msgstr ""
 
-#: src/components/SearchToolbar/CategoryMenu.js:38
+#: src/components/MainMenu/MainMenu.js:147
+msgid "Home"
+msgstr ""
+
+#: src/lib/Categories.js:56
 msgid "Hotels"
-msgstr "Hotels"
+msgstr ""
 
-#: src/components/NodeToolbar/AccessibilityEditor/ToiletStatusEditor.js:93
+#: src/components/NodeToolbar/AccessibilityEditor/WheelchairStatusEditor.js:148
+msgid "How wheelchair accessible is this place?"
+msgstr ""
+
+#: src/components/NodeToolbar/AccessibilityEditor/ToiletStatusEditor.js:130
 msgid "I don’t know"
-msgstr "Keine Ahnung"
+msgstr ""
 
-#: src/components/NodeToolbar/ShareButtons/ShareButtons.js:67
+#: src/components/NodeToolbar/ShareButtons/ShareButtons.js:86
 msgid "I found a place on Wheelmap: ${ url }"
-msgstr "Ich habe einen Ort auf Wheelmap gefunden: ${ url }"
+msgstr ""
 
-#: src/components/NodeToolbar/ShareButtons/ShareButtons.js:71
+#: src/components/NodeToolbar/ShareButtons/ShareButtons.js:90
 msgid "I found a place on Wheelmap…"
-msgstr "Ich habe einen Ort auf Wheelmap gefunden…"
+msgstr ""
 
-#: src/components/NodeToolbar/ShareButtons/ShareButtons.js:84
+#: src/components/NodeToolbar/ShareButtons/ShareButtons.js:103
 msgid "I found this place on Wheelmap: ${ placeName }"
-msgstr "Ich habe diesen Ort auf Wheelmap gefunden: ${ placeName }"
+msgstr ""
 
 #: src/components/NodeToolbar/Report/ReportDialog.js:42
 msgid "I have more information about this place."
-msgstr "Ich möchte mehr Informationen zu diesem Ort beitragen."
+msgstr ""
 
 #: src/components/NodeToolbar/Report/strings.js:17
 msgid ""
 "If the place closed permanently, you can tag the place as ‘disused’ on "
 "OpenStreetMap."
 msgstr ""
-"Wenn der Ort permanent geschlossen ist, kannst du auf OpenStreetMap das Tag "
-"‚disused‘ verwenden."
 
-#: src/components/MainMenu/strings.js:19
-msgid "Imprint"
-msgstr "Impressum"
+#: src/components/NodeToolbar/NodeHeader.js:119
+msgid "Improve on ${ sourceNameString }"
+msgstr ""
 
-#: src/components/NodeToolbar/NodeFooter.js:110
+#: src/components/NodeToolbar/NodeFooter.js:113
 msgid "Improve your karma!"
-msgstr "Verbessere Dein Karma!"
+msgstr ""
 
 #: src/components/NodeToolbar/Report/strings.js:29
 msgid ""
 "Information about this place has kindly been provided by another "
 "organization"
 msgstr ""
-"Die Informationen über diesen Ort wurden netterweise von einer anderen "
-"Organisation zur Verfügung gestellt."
 
-#: src/components/NodeToolbar/AccessibilityEditor/ToiletStatusEditor.js:84
+#: src/components/NodeToolbar/AccessibilityEditor/ToiletStatusEditor.js:121
 msgid "Is the toilet here wheelchair accessible?"
-msgstr "Ist die Toilette hier rollstuhlgerecht?"
+msgstr ""
 
 #: src/components/NodeToolbar/Report/strings.js:9
 msgid "Is there an issue with this place?"
-msgstr "Gibt es ein Problem mit diesem Ort?"
+msgstr ""
 
-#: src/components/SearchToolbar/CategoryMenu.js:36
+#: src/lib/Categories.js:54
 msgid "Leisure"
-msgstr "Freizeit"
+msgstr ""
 
-#: src/components/Onboarding/Onboarding.js:23
+#: src/components/Map/Map.js:451
+msgid "Map"
+msgstr ""
+
+#: src/components/Onboarding/Onboarding.js:28
 msgid ""
 "Mark and find wheelchair accessible places—worldwide and for free. It’s easy"
 " with our traffic light system:"
 msgstr ""
-"Finde und markiere rollstuhlgerechte Orte – weltweit und kostenlos. Mit dem "
-"einfachen Wheelmap-Ampelsystem:"
 
-#: src/components/NodeToolbar/NodeFooter.js:101
+#: src/components/NodeToolbar/NodeFooter.js:107
 msgid "Mark this place"
-msgstr "Ort markieren"
+msgstr ""
 
-#: src/components/SearchToolbar/CategoryMenu.js:52
+#: src/components/MainMenu/MainMenu.js:165
+msgid "Menu"
+msgstr ""
+
+#: src/lib/Categories.js:70
 msgid "Misc"
-msgstr "Anderes"
+msgstr ""
 
-#: src/components/SearchToolbar/CategoryMenu.js:48
+#: src/lib/Categories.js:66
 msgid "Money"
-msgstr "Geld"
+msgstr ""
 
 #: src/components/NodeToolbar/Report/ReportDialog.js:60
 msgid "My problem isn’t listed here…"
-msgstr "Mein Problem steht hier nicht…"
+msgstr ""
 
 #: src/components/MainMenu/strings.js:13
 msgid "News"
-msgstr "News"
+msgstr ""
 
-#: src/components/NodeToolbar/AccessibilityEditor/ToiletStatusEditor.js:90
-msgid "No"
-msgstr "Nein"
-
-#: src/lib/Feature.js:260
+#: src/lib/Feature.js:285
 msgid "No wheelchair accessible toilet."
-msgstr "Keine rollstuhlgerechte Toilette."
+msgstr ""
 
-#: src/lib/Feature.js:232
+#: src/lib/Feature.js:257
 msgid "Not at all"
-msgstr "Gar nicht"
+msgstr ""
 
-#: src/lib/Feature.js:217
+#: src/lib/Feature.js:242
 msgid "Not wheelchair accessible"
-msgstr "Nicht rollstuhlgerecht"
+msgstr ""
 
-#: src/components/SearchToolbar/CategoryMenu.js:44
+#: src/lib/Categories.js:62
 msgid "Official"
-msgstr "Offizielles"
+msgstr ""
 
-#: src/components/Onboarding/Onboarding.js:27
+#: src/components/Onboarding/Onboarding.js:32
 msgid "Okay, let’s go!"
-msgstr "Okay, los geht’s!"
+msgstr ""
 
-#: src/components/FilterToolbar/FilterToolbar.js:85
+#: src/components/FilterToolbar/FilterToolbar.js:183
 msgid "Only fully wheelchair accessible"
-msgstr "Nur voll rollstuhlgerechte Orte"
+msgstr ""
 
-#: src/components/FilterToolbar/FilterToolbar.js:88
+#: src/components/FilterToolbar/FilterToolbar.js:186
 msgid "Only show places with a wheelchair accessible toilet"
-msgstr "Nur Orte mit rollstuhlgerechter Toilette anzeigen"
+msgstr ""
 
-#: src/lib/Feature.js:230
+#: src/components/NodeToolbar/NodeHeader.js:117
+msgid "Open on ${ sourceNameString }"
+msgstr ""
+
+#: src/lib/Feature.js:255
 msgid "Partially"
-msgstr "Teilweise"
+msgstr ""
 
-#: src/lib/Feature.js:215
+#: src/lib/Feature.js:240
 msgid "Partially wheelchair accessible"
-msgstr "Teilweise rollstuhlgerecht"
+msgstr ""
 
-#: src/components/FilterToolbar/FilterToolbar.js:82
+#: src/components/FilterToolbar/FilterToolbar.js:180
 msgid "Places that I can contribute to"
-msgstr "Orte, bei denen ich mithelfen kann"
+msgstr ""
 
 #: src/components/MainMenu/strings.js:15
 msgid "Press"
-msgstr "Presse"
+msgstr ""
 
-#: src/components/NodeToolbar/NodeToolbar.js:113
+#: src/components/NodeToolbar/NodeToolbar.js:199
 msgid "Report an Issue"
-msgstr "Problem melden"
+msgstr ""
 
-#: src/components/NotFound/NotFound.js:30
+#: src/components/NotFound/NotFound.js:48
 msgid "Return Home"
-msgstr "Zurück zur Startseite"
+msgstr ""
 
-#: src/components/SearchToolbar/SearchInputField.js:31
+#: src/components/SearchToolbar/SearchInputField.js:49
 msgid "Search place or address"
-msgstr "Ort oder Adresse suchen"
+msgstr ""
 
-#: src/components/NodeToolbar/Report/strings.js:19
-msgid "See how"
-msgstr "So geht’s…"
+#: src/components/SearchToolbar/SearchResults.js:265
+msgid "Search results"
+msgstr ""
 
-#: src/components/NodeToolbar/ShareButtons/ShareButtons.js:73
-msgid "Share"
-msgstr "Teilen"
-
-#: src/components/SearchToolbar/CategoryMenu.js:30
+#: src/lib/Categories.js:48
 msgid "Shopping"
-msgstr "Einkaufen"
+msgstr ""
 
 #: src/components/NodeToolbar/Report/strings.js:37
 msgid ""
 "Sorry for that! Just drop us a line so we can help you to fix the issue."
 msgstr ""
-"Das tut uns leid! Schreib’ uns einfach, damit wir Dir helfen können, das "
-"Problem zu beheben."
 
-#: src/components/NotFound/NotFound.js:28
+#: src/components/NotFound/NotFound.js:46
 msgid "Sorry, that shouldn\\'t have happened!"
-msgstr "Sorry, das sollte nicht passieren!"
+msgstr ""
 
 #: src/components/NodeToolbar/LicenseHint.js:57
 msgid "Source:"
-msgstr "Quelle:"
+msgstr ""
 
-#: src/components/SearchToolbar/CategoryMenu.js:50
+#: src/lib/Categories.js:68
 msgid "Sport"
-msgstr "Sport"
+msgstr ""
 
 #: src/components/NodeToolbar/Report/ReportDialog.js:48
 msgid "The place does not exist."
-msgstr "Der Ort existiert nicht."
+msgstr ""
 
 #: src/components/NodeToolbar/Report/ReportDialog.js:54
 msgid "The place is in the wrong position."
-msgstr "Der Ort ist an der falschen Stelle."
+msgstr ""
 
 #: src/components/NodeToolbar/Report/ReportDialog.js:29
 msgid ""
 "The place is marked as ‘${ accessibilityDescription }’, but this is wrong!"
 msgstr ""
-"Der Ort ist als ,${ accessibilityDescription }‘ markiert, aber das ist "
-"falsch!"
 
 #: src/components/NodeToolbar/Report/ReportDialog.js:36
 msgid "The place’s toilet status is wrong or missing."
-msgstr "Der Toilettenstatus hier ist falsch oder fehlt."
+msgstr ""
 
-#: src/components/NodeToolbar/AccessibilityEditor/ToiletStatusEditor.js:96
+#: src/components/NodeToolbar/AccessibilityEditor/ToiletStatusEditor.js:133
 msgid "This means:"
-msgstr "Das bedeutet:"
+msgstr ""
 
-#: src/components/SearchToolbar/CategoryMenu.js:40
+#: src/lib/Categories.js:58
 msgid "Tourism"
-msgstr "Tourismus"
+msgstr ""
 
-#: src/components/SearchToolbar/CategoryMenu.js:34
+#: src/lib/Categories.js:52
 msgid "Transport"
-msgstr "Verkehr"
+msgstr ""
 
 #: src/components/MainMenu/strings.js:9
 msgid "Travel guide"
-msgstr "Reiseführer"
+msgstr ""
 
-#: src/lib/Feature.js:234
-msgid "Unknown"
-msgstr "Unbekannt"
-
-#: src/lib/Feature.js:219
+#: src/lib/Feature.js:244
 msgid "Unknown status"
-msgstr "Unbekannter Zustand"
+msgstr ""
 
-#: src/components/SearchToolbar/SearchResults.js:225
+#: src/components/SearchToolbar/SearchResults.js:207
 msgid "Unnamed"
-msgstr "Unbenannt"
+msgstr ""
 
-#: src/components/NodeToolbar/NodeHeader.js:106
+#: src/lib/Feature.js:308
 msgid "Unnamed place"
-msgstr "Unbenannter Ort"
+msgstr ""
 
 #: src/components/NodeToolbar/Report/strings.js:31
-msgid "Use the link below to see or change the place."
-msgstr "Benutze den Link unten, um den Ort zu verändern."
+msgid "Use the link below for details about the place and editing."
+msgstr ""
 
-#: src/lib/Feature.js:270
+#: src/components/NodeToolbar/AccessibilityEditor/WheelchairStatusEditor.js:157
+msgid "Wheelchair Accessibility"
+msgstr ""
+
+#: src/components/FilterToolbar/FilterToolbar.js:209
+msgid "Wheelchair Accessibility Filter"
+msgstr ""
+
+#: src/lib/Feature.js:295
 msgid "Wheelchair-height toilet seat"
-msgstr "WC-Becken mit höherem Sitz"
+msgstr ""
+
+#: src/components/Onboarding/Onboarding.js:48
+msgid "Wheelmap start screen"
+msgstr ""
 
 #: src/components/NodeToolbar/Report/strings.js:11
 msgid "Wheelmap uses data from OpenStreetMap to display places."
-msgstr "Wheelmap verwendet Daten von OpenStreetMap, um Orte anzuzeigen."
+msgstr ""
 
-#: src/components/NodeToolbar/ShareButtons/ShareButtons.js:69
+#: src/components/NodeToolbar/ShareButtons/ShareButtons.js:88
 msgid "Wheelmap.org"
-msgstr "Wheelmap.org"
+msgstr ""
 
-#: src/components/FilterToolbar/FilterToolbar.js:73
-msgid "Which places do you want to see?"
-msgstr "Welche Orte möchtest Du sehen?"
-
-#: src/components/NodeToolbar/AccessibilityEditor/ToiletStatusEditor.js:87
-msgid "Yes"
-msgstr "Ja"
+#: src/components/FilterToolbar/FilterToolbar.js:171
+msgid "Which places do you want to find?"
+msgstr ""
 
 #: src/components/NodeToolbar/Report/strings.js:15
 msgid "You can change this place’s position on OpenStreetMap."
-msgstr "Du kannst die Position dieses Ortes auf OpenStreetMap verändern."
+msgstr ""
 
 #: src/components/NodeToolbar/Report/strings.js:13
 msgid "You can remove non-existing places on OpenStreetMap."
-msgstr "Du kannst nicht existierende Orte auf OpenStreetMap löschen."
+msgstr ""
 
 #: src/components/NodeToolbar/Report/strings.js:44
 msgid "[Wheelmap] Problem with ${ placeName } on Wheelmap"
-msgstr "[Wheelmap] Problem mit ${ placeName } auf Wheelmap"
+msgstr ""
 
 #: src/components/NodeToolbar/Report/strings.js:46
 msgid "[Wheelmap] Problem with a ${ categoryName } on Wheelmap"
-msgstr "[Wheelmap] Problem mit ${ categoryName } auf Wheelmap"
+msgstr ""
 
 #: src/components/NodeToolbar/Report/strings.js:48
 msgid "[Wheelmap] Problem with a place on Wheelmap"
-msgstr "[Wheelmap] Problem mit einem Ort auf Wheelmap"
+msgstr ""
 
-#: src/components/Map/Map.js:109
-msgid "main sponsor:"
-msgstr "Hauptsponsor:"
+#: src/components/NodeToolbar/Equipment/EquipmentItem.js:32
+msgid "elevator"
+msgstr ""
 
-#: src/components/Map/Map.js:112
+#: src/components/NodeToolbar/Equipment/EquipmentItem.js:33
+msgid "escalator"
+msgstr ""
+
+#: src/components/Map/Map.js:266
 msgid ""
 "map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> "
 "contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-"
 "BY-SA</a>, Imagery © <a href=\"http://mapbox.com\">Mapbox</a>"
 msgstr ""
-"Kartendaten © <a href=\"http://openstreetmap.org\">OpenStreetMap</a>, <a "
-"href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, "
-"Bilddaten © <a href=\"http://mapbox.com\">Mapbox</a>"
+
+#: compiled/accessibility.js:68
+msgid "Entrances"
+msgstr ""
+
+#: compiled/accessibility.js:70
+msgid "Would you like to rate the first entrance?"
+msgstr ""
+
+#: compiled/accessibility.js:71
+msgid "Would you like to rate another entrance?"
+msgstr ""
+
+#: compiled/accessibility.js:78
+msgid "Restrooms"
+msgstr ""
+
+#: compiled/accessibility.js:80
+msgid "Would you like to rate the accessibility of the restroom?"
+msgstr ""
+
+#: compiled/accessibility.js:81
+msgid "Would you like to rate another restroom?"
+msgstr ""
+
+#: compiled/entrance.js:11
+msgid "What is the name of this entrance?"
+msgstr ""
+
+#: compiled/entrance.js:12
+msgid "e.g. main entrance"
+msgstr ""
+
+#: compiled/entrance.js:22
+msgid "How would you rate this entrance for wheelchair users?"
+msgstr ""
+
+#: compiled/entrance.js:29
+msgid "Is this the main entrance?"
+msgstr ""
+
+#: compiled/entrance.js:36
+msgid "Is the entrance stepless?"
+msgstr ""
+
+#: compiled/entrance.js:43
+msgid "Is there a slope at the entrance?"
+msgstr ""
+
+#: compiled/entrance.js:50
+msgid ""
+"Grade in percent as calculated by \\`100 * rise / run\\` or the tangent of "
+"the angle of inclination times 100"
+msgstr ""
+
+#: compiled/entrance.js:51
+msgid "What is the angle of the slope?"
+msgstr ""
+
+#: compiled/entrance.js:58
+msgid "Is a portable ramp available? Please check with the staff on-site."
+msgstr ""
+
+#: compiled/entrance.js:64
+msgid "Stairs"
+msgstr ""
+
+#: compiled/entrance.js:66
+msgid "Are there steps at the entrance?"
+msgstr ""
+
+#: compiled/entrance.js:72
+msgid "Door"
+msgstr ""
+
+#: compiled/entrance.js:74
+msgid "Would you like to add information about the door at the entrance?"
+msgstr ""
+
+#: compiled/entrance.js:81
+msgid "Is there a lift at this entrance?"
+msgstr ""
+
+#: compiled/entrance.js:89
+msgid "Is there an intercom at this entrance?"
+msgstr ""
+
+#: compiled/door.js:7
+msgid "How much space for turning is there at the entrance?"
+msgstr ""
+
+#: compiled/door.js:13
+msgid "Does the door open to the outside?"
+msgstr ""
+
+#: compiled/door.js:20 compiled/door.js:38
+msgid "Is this an automatic door or is the door always open?"
+msgstr ""
+
+#: compiled/door.js:24
+msgid "How wide is the door?"
+msgstr ""
+
+#: compiled/door.js:25
+msgid "This refers to the maximum size of an object that can pass."
+msgstr ""
+
+#: compiled/door.js:31
+msgid "Does the glass door have clear markings?"
+msgstr ""
+
+#: compiled/door.js:45
+msgid "Does this door have an ergonomic handle?"
+msgstr ""
+
+#: compiled/door.js:52
+msgid "Is this a revolving door?"
+msgstr ""
+
+#: compiled/door.js:59
+msgid "Does this door require a radar key?"
+msgstr ""
+
+#: compiled/door.js:66
+msgid "Does this door require an euro key?"
+msgstr ""
+
+#: compiled/stairs.js:10
+msgid "How many steps are there?"
+msgstr ""
+
+#: compiled/stairs.js:34
+msgid "How high is this step/ are these steps?"
+msgstr ""
+
+#: compiled/restroom.js:64
+msgid "Toilet"
+msgstr ""
+
+#: compiled/restroom.js:67
+msgid "Let's take a look at the toilet."
+msgstr ""
+
+#: compiled/restroom.js:77
+msgid "Entrance"
+msgstr ""
+
+#: compiled/restroom.js:80
+msgid "Would you like to add information about the entrance to the restroom?"
+msgstr ""
+
+#: compiled/address.js:10
+msgid "Text"
+msgstr ""
+
+#: compiled/address.js:13
+msgid "A displayable, formatted address as rich text."
+msgstr ""
+
+#: compiled/address.js:18
+msgid "Room"
+msgstr ""
+
+#: compiled/address.js:21
+msgid "Room name"
+msgstr ""
+
+#: compiled/address.js:22
+msgid "What is the name of the room?"
+msgstr ""
+
+#: compiled/address.js:23
+msgid "e.g. meeting room 'Rome'"
+msgstr ""
+
+#: compiled/address.js:28
+msgid "Level"
+msgstr ""
+
+#: compiled/address.js:31
+msgid "The number of the floor in british convention (ground floor is 0)"
+msgstr ""
+
+#: compiled/address.js:32
+msgid "What is the number of the floor?"
+msgstr ""
+
+#: compiled/address.js:34
+msgid "e.g. 4"
+msgstr ""
+
+#: compiled/address.js:39
+msgid "Building"
+msgstr ""
+
+#: compiled/address.js:42
+msgid "Building name"
+msgstr ""
+
+#: compiled/address.js:43
+msgid "e.g. main exposition hall"
+msgstr ""
+
+#: compiled/address.js:48
+msgid "House"
+msgstr ""
+
+#: compiled/address.js:51
+msgid "What is the house number?"
+msgstr ""
+
+#: compiled/address.js:56
+msgid "Street"
+msgstr ""
+
+#: compiled/address.js:59
+msgid "What is the name of the street?"
+msgstr ""
+
+#: compiled/address.js:60
+msgid "Please avoid numbers for houses or buildings."
+msgstr ""
+
+#: compiled/address.js:65
+msgid "Postal Code"
+msgstr ""
+
+#: compiled/address.js:68
+msgid "What is the postal code?"
+msgstr ""
+
+#: compiled/address.js:69
+msgid "Also called ZIP code."
+msgstr ""
+
+#: compiled/address.js:74
+msgid "Areas"
+msgstr ""
+
+#: compiled/address.js:77
+msgid ""
+"An array of named areas below the district and above street. In some regions"
+" such areas might also contain street names, when individual street segments"
+" have names separate from the name of the whole road."
+msgstr ""
+
+#: compiled/address.js:85
+msgid "District"
+msgstr ""
+
+#: compiled/address.js:88
+msgid ""
+"A division of city; typically an administrative unit within a larger city or"
+" a customary name of a city\\'s neighborhood."
+msgstr ""
+
+#: compiled/address.js:89
+msgid "The place is located destrict…"
+msgstr ""
+
+#: compiled/address.js:97
+msgid "In which city is this place?"
+msgstr ""
+
+#: compiled/address.js:102
+msgid "Regions"
+msgstr ""
+
+#: compiled/address.js:105
+msgid ""
+"For address conventions where more than to levels of named areas above the "
+"city level are in use, the regions attribute provides an array with all "
+"additional area names, ordered by decreasing size (starting with the highest"
+" subdivision below state)"
+msgstr ""
+
+#: compiled/address.js:113
+msgid "County"
+msgstr ""
+
+#: compiled/address.js:116
+msgid ""
+"A division of a state; typically a secondary-level administrative division "
+"of a country or equivalent."
+msgstr ""
+
+#: compiled/address.js:121
+msgid "State"
+msgstr ""
+
+#: compiled/address.js:124
+msgid ""
+"A division of a country; typically a first-level administrative division of "
+"a country and/or a geographical region."
+msgstr ""
+
+#: compiled/address.js:129
+msgid "State Code"
+msgstr ""
+
+#: compiled/address.js:132
+msgid "A code/abbreviation for the state division of a country."
+msgstr ""
+
+#: compiled/address.js:140
+msgid "The localised country name."
+msgstr ""
+
+#: compiled/address.js:145
+msgid "Country Code"
+msgstr ""
+
+#: compiled/address.js:150
+msgid ""
+"A three-letter country code in ISO 3166-1 alpha-3, see "
+"https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3"
+msgstr ""
+
+#: compiled/country-codes.js:6
+msgid "Aruba"
+msgstr ""
+
+#: compiled/country-codes.js:7
+msgid "Afghanistan"
+msgstr ""
+
+#: compiled/country-codes.js:8
+msgid "Angola"
+msgstr ""
+
+#: compiled/country-codes.js:9
+msgid "Anguilla"
+msgstr ""
+
+#: compiled/country-codes.js:10
+msgid "Åland Islands"
+msgstr ""
+
+#: compiled/country-codes.js:11
+msgid "Albania"
+msgstr ""
+
+#: compiled/country-codes.js:12
+msgid "Andorra"
+msgstr ""
+
+#: compiled/country-codes.js:13
+msgid "United Arab Emirates"
+msgstr ""
+
+#: compiled/country-codes.js:14
+msgid "Argentina"
+msgstr ""
+
+#: compiled/country-codes.js:15
+msgid "Armenia"
+msgstr ""
+
+#: compiled/country-codes.js:16
+msgid "American Samoa"
+msgstr ""
+
+#: compiled/country-codes.js:17
+msgid "Antarctica"
+msgstr ""
+
+#: compiled/country-codes.js:18
+msgid "French Southern Territories"
+msgstr ""
+
+#: compiled/country-codes.js:19
+msgid "Antigua and Barbuda"
+msgstr ""
+
+#: compiled/country-codes.js:20
+msgid "Australia"
+msgstr ""
+
+#: compiled/country-codes.js:21
+msgid "Austria"
+msgstr ""
+
+#: compiled/country-codes.js:22
+msgid "Azerbaijan"
+msgstr ""
+
+#: compiled/country-codes.js:23
+msgid "Burundi"
+msgstr ""
+
+#: compiled/country-codes.js:24
+msgid "Belgium"
+msgstr ""
+
+#: compiled/country-codes.js:25
+msgid "Benin"
+msgstr ""
+
+#: compiled/country-codes.js:26
+msgid "Bonaire, Sint Eustatius and Saba"
+msgstr ""
+
+#: compiled/country-codes.js:27
+msgid "Burkina Faso"
+msgstr ""
+
+#: compiled/country-codes.js:28
+msgid "Bangladesh"
+msgstr ""
+
+#: compiled/country-codes.js:29
+msgid "Bulgaria"
+msgstr ""
+
+#: compiled/country-codes.js:30
+msgid "Bahrain"
+msgstr ""
+
+#: compiled/country-codes.js:31
+msgid "Bahamas"
+msgstr ""
+
+#: compiled/country-codes.js:32
+msgid "Bosnia and Herzegovina"
+msgstr ""
+
+#: compiled/country-codes.js:33
+msgid "Saint Barthélemy"
+msgstr ""
+
+#: compiled/country-codes.js:34
+msgid "Belarus"
+msgstr ""
+
+#: compiled/country-codes.js:35
+msgid "Belize"
+msgstr ""
+
+#: compiled/country-codes.js:36
+msgid "Bermuda"
+msgstr ""
+
+#: compiled/country-codes.js:37
+msgid "Bolivia, Plurinational State of"
+msgstr ""
+
+#: compiled/country-codes.js:38
+msgid "Brazil"
+msgstr ""
+
+#: compiled/country-codes.js:39
+msgid "Barbados"
+msgstr ""
+
+#: compiled/country-codes.js:40
+msgid "Brunei Darussalam"
+msgstr ""
+
+#: compiled/country-codes.js:41
+msgid "Bhutan"
+msgstr ""
+
+#: compiled/country-codes.js:42
+msgid "Bouvet Island"
+msgstr ""
+
+#: compiled/country-codes.js:43
+msgid "Botswana"
+msgstr ""
+
+#: compiled/country-codes.js:44
+msgid "Central African Republic"
+msgstr ""
+
+#: compiled/country-codes.js:45
+msgid "Canada"
+msgstr ""
+
+#: compiled/country-codes.js:46
+msgid "Cocos (Keeling) Islands"
+msgstr ""
+
+#: compiled/country-codes.js:47
+msgid "Switzerland"
+msgstr ""
+
+#: compiled/country-codes.js:48
+msgid "Chile"
+msgstr ""
+
+#: compiled/country-codes.js:49
+msgid "China"
+msgstr ""
+
+#: compiled/country-codes.js:50
+msgid "Côte d'Ivoire"
+msgstr ""
+
+#: compiled/country-codes.js:51
+msgid "Cameroon"
+msgstr ""
+
+#: compiled/country-codes.js:52
+msgid "Congo, the Democratic Republic of the"
+msgstr ""
+
+#: compiled/country-codes.js:53
+msgid "Congo"
+msgstr ""
+
+#: compiled/country-codes.js:54
+msgid "Cook Islands"
+msgstr ""
+
+#: compiled/country-codes.js:55
+msgid "Colombia"
+msgstr ""
+
+#: compiled/country-codes.js:56
+msgid "Comoros"
+msgstr ""
+
+#: compiled/country-codes.js:57
+msgid "Cabo Verde"
+msgstr ""
+
+#: compiled/country-codes.js:58
+msgid "Costa Rica"
+msgstr ""
+
+#: compiled/country-codes.js:59
+msgid "Cuba"
+msgstr ""
+
+#: compiled/country-codes.js:60
+msgid "Curaçao"
+msgstr ""
+
+#: compiled/country-codes.js:61
+msgid "Christmas Island"
+msgstr ""
+
+#: compiled/country-codes.js:62
+msgid "Cayman Islands"
+msgstr ""
+
+#: compiled/country-codes.js:63
+msgid "Cyprus"
+msgstr ""
+
+#: compiled/country-codes.js:64
+msgid "Czechia"
+msgstr ""
+
+#: compiled/country-codes.js:65
+msgid "Germany"
+msgstr ""
+
+#: compiled/country-codes.js:66
+msgid "Djibouti"
+msgstr ""
+
+#: compiled/country-codes.js:67
+msgid "Dominica"
+msgstr ""
+
+#: compiled/country-codes.js:68
+msgid "Denmark"
+msgstr ""
+
+#: compiled/country-codes.js:69
+msgid "Dominican Republic"
+msgstr ""
+
+#: compiled/country-codes.js:70
+msgid "Algeria"
+msgstr ""
+
+#: compiled/country-codes.js:71
+msgid "Ecuador"
+msgstr ""
+
+#: compiled/country-codes.js:72
+msgid "Egypt"
+msgstr ""
+
+#: compiled/country-codes.js:73
+msgid "Eritrea"
+msgstr ""
+
+#: compiled/country-codes.js:74
+msgid "Western Sahara"
+msgstr ""
+
+#: compiled/country-codes.js:75
+msgid "Spain"
+msgstr ""
+
+#: compiled/country-codes.js:76
+msgid "Estonia"
+msgstr ""
+
+#: compiled/country-codes.js:77
+msgid "Ethiopia"
+msgstr ""
+
+#: compiled/country-codes.js:78
+msgid "Finland"
+msgstr ""
+
+#: compiled/country-codes.js:79
+msgid "Fiji"
+msgstr ""
+
+#: compiled/country-codes.js:80
+msgid "Falkland Islands (Malvinas)"
+msgstr ""
+
+#: compiled/country-codes.js:81
+msgid "France"
+msgstr ""
+
+#: compiled/country-codes.js:82
+msgid "Faroe Islands"
+msgstr ""
+
+#: compiled/country-codes.js:83
+msgid "Micronesia, Federated States of"
+msgstr ""
+
+#: compiled/country-codes.js:84
+msgid "Gabon"
+msgstr ""
+
+#: compiled/country-codes.js:85
+msgid "United Kingdom"
+msgstr ""
+
+#: compiled/country-codes.js:86
+msgid "Georgia"
+msgstr ""
+
+#: compiled/country-codes.js:87
+msgid "Guernsey"
+msgstr ""
+
+#: compiled/country-codes.js:88
+msgid "Ghana"
+msgstr ""
+
+#: compiled/country-codes.js:89
+msgid "Gibraltar"
+msgstr ""
+
+#: compiled/country-codes.js:90
+msgid "Guinea"
+msgstr ""
+
+#: compiled/country-codes.js:91
+msgid "Guadeloupe"
+msgstr ""
+
+#: compiled/country-codes.js:92
+msgid "Gambia"
+msgstr ""
+
+#: compiled/country-codes.js:93
+msgid "Guinea-Bissau"
+msgstr ""
+
+#: compiled/country-codes.js:94
+msgid "Equatorial Guinea"
+msgstr ""
+
+#: compiled/country-codes.js:95
+msgid "Greece"
+msgstr ""
+
+#: compiled/country-codes.js:96
+msgid "Grenada"
+msgstr ""
+
+#: compiled/country-codes.js:97
+msgid "Greenland"
+msgstr ""
+
+#: compiled/country-codes.js:98
+msgid "Guatemala"
+msgstr ""
+
+#: compiled/country-codes.js:99
+msgid "French Guiana"
+msgstr ""
+
+#: compiled/country-codes.js:100
+msgid "Guam"
+msgstr ""
+
+#: compiled/country-codes.js:101
+msgid "Guyana"
+msgstr ""
+
+#: compiled/country-codes.js:102
+msgid "Hong Kong"
+msgstr ""
+
+#: compiled/country-codes.js:103
+msgid "Heard Island and McDonald Islands"
+msgstr ""
+
+#: compiled/country-codes.js:104
+msgid "Honduras"
+msgstr ""
+
+#: compiled/country-codes.js:105
+msgid "Croatia"
+msgstr ""
+
+#: compiled/country-codes.js:106
+msgid "Haiti"
+msgstr ""
+
+#: compiled/country-codes.js:107
+msgid "Hungary"
+msgstr ""
+
+#: compiled/country-codes.js:108
+msgid "Indonesia"
+msgstr ""
+
+#: compiled/country-codes.js:109
+msgid "Isle of Man"
+msgstr ""
+
+#: compiled/country-codes.js:110
+msgid "India"
+msgstr ""
+
+#: compiled/country-codes.js:111
+msgid "British Indian Ocean Territory"
+msgstr ""
+
+#: compiled/country-codes.js:112
+msgid "Ireland"
+msgstr ""
+
+#: compiled/country-codes.js:113
+msgid "Iran, Islamic Republic of"
+msgstr ""
+
+#: compiled/country-codes.js:114
+msgid "Iraq"
+msgstr ""
+
+#: compiled/country-codes.js:115
+msgid "Iceland"
+msgstr ""
+
+#: compiled/country-codes.js:116
+msgid "Israel"
+msgstr ""
+
+#: compiled/country-codes.js:117
+msgid "Italy"
+msgstr ""
+
+#: compiled/country-codes.js:118
+msgid "Jamaica"
+msgstr ""
+
+#: compiled/country-codes.js:119
+msgid "Jersey"
+msgstr ""
+
+#: compiled/country-codes.js:120
+msgid "Jordan"
+msgstr ""
+
+#: compiled/country-codes.js:121
+msgid "Japan"
+msgstr ""
+
+#: compiled/country-codes.js:122
+msgid "Kazakhstan"
+msgstr ""
+
+#: compiled/country-codes.js:123
+msgid "Kenya"
+msgstr ""
+
+#: compiled/country-codes.js:124
+msgid "Kyrgyzstan"
+msgstr ""
+
+#: compiled/country-codes.js:125
+msgid "Cambodia"
+msgstr ""
+
+#: compiled/country-codes.js:126
+msgid "Kiribati"
+msgstr ""
+
+#: compiled/country-codes.js:127
+msgid "Saint Kitts and Nevis"
+msgstr ""
+
+#: compiled/country-codes.js:128
+msgid "Korea, Republic of"
+msgstr ""
+
+#: compiled/country-codes.js:129
+msgid "Kuwait"
+msgstr ""
+
+#: compiled/country-codes.js:130
+msgid "Lao People's Democratic Republic"
+msgstr ""
+
+#: compiled/country-codes.js:131
+msgid "Lebanon"
+msgstr ""
+
+#: compiled/country-codes.js:132
+msgid "Liberia"
+msgstr ""
+
+#: compiled/country-codes.js:133
+msgid "Libya"
+msgstr ""
+
+#: compiled/country-codes.js:134
+msgid "Saint Lucia"
+msgstr ""
+
+#: compiled/country-codes.js:135
+msgid "Liechtenstein"
+msgstr ""
+
+#: compiled/country-codes.js:136
+msgid "Sri Lanka"
+msgstr ""
+
+#: compiled/country-codes.js:137
+msgid "Lesotho"
+msgstr ""
+
+#: compiled/country-codes.js:138
+msgid "Lithuania"
+msgstr ""
+
+#: compiled/country-codes.js:139
+msgid "Luxembourg"
+msgstr ""
+
+#: compiled/country-codes.js:140
+msgid "Latvia"
+msgstr ""
+
+#: compiled/country-codes.js:141
+msgid "Macao"
+msgstr ""
+
+#: compiled/country-codes.js:142
+msgid "Saint Martin (French part)"
+msgstr ""
+
+#: compiled/country-codes.js:143
+msgid "Morocco"
+msgstr ""
+
+#: compiled/country-codes.js:144
+msgid "Monaco"
+msgstr ""
+
+#: compiled/country-codes.js:145
+msgid "Moldova, Republic of"
+msgstr ""
+
+#: compiled/country-codes.js:146
+msgid "Madagascar"
+msgstr ""
+
+#: compiled/country-codes.js:147
+msgid "Maldives"
+msgstr ""
+
+#: compiled/country-codes.js:148
+msgid "Mexico"
+msgstr ""
+
+#: compiled/country-codes.js:149
+msgid "Marshall Islands"
+msgstr ""
+
+#: compiled/country-codes.js:150
+msgid "Macedonia, the former Yugoslav Republic of"
+msgstr ""
+
+#: compiled/country-codes.js:151
+msgid "Mali"
+msgstr ""
+
+#: compiled/country-codes.js:152
+msgid "Malta"
+msgstr ""
+
+#: compiled/country-codes.js:153
+msgid "Myanmar"
+msgstr ""
+
+#: compiled/country-codes.js:154
+msgid "Montenegro"
+msgstr ""
+
+#: compiled/country-codes.js:155
+msgid "Mongolia"
+msgstr ""
+
+#: compiled/country-codes.js:156
+msgid "Northern Mariana Islands"
+msgstr ""
+
+#: compiled/country-codes.js:157
+msgid "Mozambique"
+msgstr ""
+
+#: compiled/country-codes.js:158
+msgid "Mauritania"
+msgstr ""
+
+#: compiled/country-codes.js:159
+msgid "Montserrat"
+msgstr ""
+
+#: compiled/country-codes.js:160
+msgid "Martinique"
+msgstr ""
+
+#: compiled/country-codes.js:161
+msgid "Mauritius"
+msgstr ""
+
+#: compiled/country-codes.js:162
+msgid "Malawi"
+msgstr ""
+
+#: compiled/country-codes.js:163
+msgid "Malaysia"
+msgstr ""
+
+#: compiled/country-codes.js:164
+msgid "Mayotte"
+msgstr ""
+
+#: compiled/country-codes.js:165
+msgid "Namibia"
+msgstr ""
+
+#: compiled/country-codes.js:166
+msgid "New Caledonia"
+msgstr ""
+
+#: compiled/country-codes.js:167
+msgid "Niger"
+msgstr ""
+
+#: compiled/country-codes.js:168
+msgid "Norfolk Island"
+msgstr ""
+
+#: compiled/country-codes.js:169
+msgid "Nigeria"
+msgstr ""
+
+#: compiled/country-codes.js:170
+msgid "Nicaragua"
+msgstr ""
+
+#: compiled/country-codes.js:171
+msgid "Niue"
+msgstr ""
+
+#: compiled/country-codes.js:172
+msgid "Netherlands"
+msgstr ""
+
+#: compiled/country-codes.js:173
+msgid "Norway"
+msgstr ""
+
+#: compiled/country-codes.js:174
+msgid "Nepal"
+msgstr ""
+
+#: compiled/country-codes.js:175
+msgid "Nauru"
+msgstr ""
+
+#: compiled/country-codes.js:176
+msgid "New Zealand"
+msgstr ""
+
+#: compiled/country-codes.js:177
+msgid "Oman"
+msgstr ""
+
+#: compiled/country-codes.js:178
+msgid "Pakistan"
+msgstr ""
+
+#: compiled/country-codes.js:179
+msgid "Panama"
+msgstr ""
+
+#: compiled/country-codes.js:180
+msgid "Pitcairn"
+msgstr ""
+
+#: compiled/country-codes.js:181
+msgid "Peru"
+msgstr ""
+
+#: compiled/country-codes.js:182
+msgid "Philippines"
+msgstr ""
+
+#: compiled/country-codes.js:183
+msgid "Palau"
+msgstr ""
+
+#: compiled/country-codes.js:184
+msgid "Papua New Guinea"
+msgstr ""
+
+#: compiled/country-codes.js:185
+msgid "Poland"
+msgstr ""
+
+#: compiled/country-codes.js:186
+msgid "Puerto Rico"
+msgstr ""
+
+#: compiled/country-codes.js:187
+msgid "Korea, Democratic People's Republic of"
+msgstr ""
+
+#: compiled/country-codes.js:188
+msgid "Portugal"
+msgstr ""
+
+#: compiled/country-codes.js:189
+msgid "Paraguay"
+msgstr ""
+
+#: compiled/country-codes.js:190
+msgid "Palestine, State of"
+msgstr ""
+
+#: compiled/country-codes.js:191
+msgid "French Polynesia"
+msgstr ""
+
+#: compiled/country-codes.js:192
+msgid "Qatar"
+msgstr ""
+
+#: compiled/country-codes.js:193
+msgid "Réunion"
+msgstr ""
+
+#: compiled/country-codes.js:194
+msgid "Romania"
+msgstr ""
+
+#: compiled/country-codes.js:195
+msgid "Russian Federation"
+msgstr ""
+
+#: compiled/country-codes.js:196
+msgid "Rwanda"
+msgstr ""
+
+#: compiled/country-codes.js:197
+msgid "Saudi Arabia"
+msgstr ""
+
+#: compiled/country-codes.js:198
+msgid "Sudan"
+msgstr ""
+
+#: compiled/country-codes.js:199
+msgid "Senegal"
+msgstr ""
+
+#: compiled/country-codes.js:200
+msgid "Singapore"
+msgstr ""
+
+#: compiled/country-codes.js:201
+msgid "South Georgia and the South Sandwich Islands"
+msgstr ""
+
+#: compiled/country-codes.js:202
+msgid "Saint Helena, Ascension and Tristan da Cunha"
+msgstr ""
+
+#: compiled/country-codes.js:203
+msgid "Svalbard and Jan Mayen"
+msgstr ""
+
+#: compiled/country-codes.js:204
+msgid "Solomon Islands"
+msgstr ""
+
+#: compiled/country-codes.js:205
+msgid "Sierra Leone"
+msgstr ""
+
+#: compiled/country-codes.js:206
+msgid "El Salvador"
+msgstr ""
+
+#: compiled/country-codes.js:207
+msgid "San Marino"
+msgstr ""
+
+#: compiled/country-codes.js:208
+msgid "Somalia"
+msgstr ""
+
+#: compiled/country-codes.js:209
+msgid "Saint Pierre and Miquelon"
+msgstr ""
+
+#: compiled/country-codes.js:210
+msgid "Serbia"
+msgstr ""
+
+#: compiled/country-codes.js:211
+msgid "South Sudan"
+msgstr ""
+
+#: compiled/country-codes.js:212
+msgid "Sao Tome and Principe"
+msgstr ""
+
+#: compiled/country-codes.js:213
+msgid "Suriname"
+msgstr ""
+
+#: compiled/country-codes.js:214
+msgid "Slovakia"
+msgstr ""
+
+#: compiled/country-codes.js:215
+msgid "Slovenia"
+msgstr ""
+
+#: compiled/country-codes.js:216
+msgid "Sweden"
+msgstr ""
+
+#: compiled/country-codes.js:217
+msgid "Swaziland"
+msgstr ""
+
+#: compiled/country-codes.js:218
+msgid "Sint Maarten (Dutch part)"
+msgstr ""
+
+#: compiled/country-codes.js:219
+msgid "Seychelles"
+msgstr ""
+
+#: compiled/country-codes.js:220
+msgid "Syrian Arab Republic"
+msgstr ""
+
+#: compiled/country-codes.js:221
+msgid "Turks and Caicos Islands"
+msgstr ""
+
+#: compiled/country-codes.js:222
+msgid "Chad"
+msgstr ""
+
+#: compiled/country-codes.js:223
+msgid "Togo"
+msgstr ""
+
+#: compiled/country-codes.js:224
+msgid "Thailand"
+msgstr ""
+
+#: compiled/country-codes.js:225
+msgid "Tajikistan"
+msgstr ""
+
+#: compiled/country-codes.js:226
+msgid "Tokelau"
+msgstr ""
+
+#: compiled/country-codes.js:227
+msgid "Turkmenistan"
+msgstr ""
+
+#: compiled/country-codes.js:228
+msgid "Timor-Leste"
+msgstr ""
+
+#: compiled/country-codes.js:229
+msgid "Tonga"
+msgstr ""
+
+#: compiled/country-codes.js:230
+msgid "Trinidad and Tobago"
+msgstr ""
+
+#: compiled/country-codes.js:231
+msgid "Tunisia"
+msgstr ""
+
+#: compiled/country-codes.js:232
+msgid "Turkey"
+msgstr ""
+
+#: compiled/country-codes.js:233
+msgid "Tuvalu"
+msgstr ""
+
+#: compiled/country-codes.js:234
+msgid "Taiwan, Province of China"
+msgstr ""
+
+#: compiled/country-codes.js:235
+msgid "Tanzania, United Republic of"
+msgstr ""
+
+#: compiled/country-codes.js:236
+msgid "Uganda"
+msgstr ""
+
+#: compiled/country-codes.js:237
+msgid "Ukraine"
+msgstr ""
+
+#: compiled/country-codes.js:238
+msgid "United States Minor Outlying Islands"
+msgstr ""
+
+#: compiled/country-codes.js:239
+msgid "Uruguay"
+msgstr ""
+
+#: compiled/country-codes.js:240
+msgid "United States of America"
+msgstr ""
+
+#: compiled/country-codes.js:241
+msgid "Uzbekistan"
+msgstr ""
+
+#: compiled/country-codes.js:242
+msgid "Holy See"
+msgstr ""
+
+#: compiled/country-codes.js:243
+msgid "Saint Vincent and the Grenadines"
+msgstr ""
+
+#: compiled/country-codes.js:244
+msgid "Venezuela, Bolivarian Republic of"
+msgstr ""
+
+#: compiled/country-codes.js:245
+msgid "Virgin Islands, British"
+msgstr ""
+
+#: compiled/country-codes.js:246
+msgid "Virgin Islands, U.S."
+msgstr ""
+
+#: compiled/country-codes.js:247
+msgid "VietNam"
+msgstr ""
+
+#: compiled/country-codes.js:248
+msgid "Vanuatu"
+msgstr ""
+
+#: compiled/country-codes.js:249
+msgid "Wallis and Futuna"
+msgstr ""
+
+#: compiled/country-codes.js:250
+msgid "Samoa"
+msgstr ""
+
+#: compiled/country-codes.js:251
+msgid "Yemen"
+msgstr ""
+
+#: compiled/country-codes.js:252
+msgid "South Africa"
+msgstr ""
+
+#: compiled/country-codes.js:253
+msgid "Zambia"
+msgstr ""
+
+#: compiled/country-codes.js:254
+msgid "Zimbabwe"
+msgstr ""
+
+#: compiled/place-info.js:19
+msgid "Properties"
+msgstr ""
+
+#: compiled/place-info.js:21
+msgid "First we need some information about the place."
+msgstr ""
+
+#: compiled/place-info.js:26
+msgid "Place on map"
+msgstr ""
+
+#: compiled/place-info.js:28
+msgid "On the map, drag the place icon to the entrance's exact position."
+msgstr ""
+
+#: compiled/place-properties.js:13
+msgid "What is the name of this place?"
+msgstr ""
+
+#: compiled/place-properties.js:19
+msgid "What type of place is this?"
+msgstr ""
+
+#: compiled/place-properties.js:28
+msgid "Would you like to add the address?"
+msgstr ""
+
+#: compiled/place-properties.js:36
+msgid "How would you describe this place?"
+msgstr ""
+
+#: compiled/place-properties.js:44
+msgid "What is the phone number of this place?"
+msgstr ""
+
+#: compiled/place-properties.js:45
+msgid "The phone number of this place, with international country code"
+msgstr ""
+
+#: compiled/place-properties.js:46
+msgid "e.g. +1-555-555-90-210"
+msgstr ""
+
+#: compiled/place-properties.js:54
+msgid "What type of place or structure is this?"
+msgstr ""
+
+#: compiled/place-properties.js:65
+msgid "Okay, now let\\`s map the accessibility."
+msgstr ""
