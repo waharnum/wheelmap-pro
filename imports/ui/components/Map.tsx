@@ -83,7 +83,7 @@ class Map extends React.Component<IStyledComponent & Props, State> {
           lon={this.props.bbox ? null : this.props.lon}
           onMoveEnd={this.onMoveEnd}
           onMapMounted={this.onMapMounted}
-          wheelmapApiBaseUrl={false}
+          wheelmapApiBaseUrl={this.buildWheelMapBaseUrl()}
           mapboxTileUrl={`https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${Meteor.settings.public.mapbox}`}
           accessibilityCloudAppToken={Meteor.settings.public.accessibilityCloud}
           accessibilityCloudTileUrl={this.buildAccessibilityCloudTileUrl()}
@@ -122,6 +122,10 @@ class Map extends React.Component<IStyledComponent & Props, State> {
       return this.props.accessibilityCloudTileUrlBuilder();
     }
     return `https://www.accessibility.cloud/place-infos?x={x}&y={y}&z={z}&appToken=${Meteor.settings.public.accessibilityCloud}&locale=${i18nSettings.bestMatchClientLocale || 'en'}`;
+  };
+
+  private buildWheelMapBaseUrl = () => {
+    return `${Meteor.absoluteUrl()}/proxy/wheelmap/`;
   };
 
   private onMoveEnd = (options: { zoom: number, lat: number, lon: number, bbox: L.LatLngBounds }) => {
