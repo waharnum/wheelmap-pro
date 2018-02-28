@@ -44,8 +44,7 @@ import config from 'wheelmap-react/lib/lib/config';
 config.wheelmapApiKey = Meteor.settings.public.wheelmap;
 config.accessibilityCloudAppToken = Meteor.settings.public.accessibilityCloud;
 config.accessibilityCloudBaseUrl = 'https://www.accessibility.cloud/';
-config.wheelmapApiBaseUrl = `${Meteor.absoluteUrl()}/proxy/wheelmap/`;
-
+config.wheelmapApiBaseUrl = `${Meteor.absoluteUrl('proxy/wheelmap')}`;
 
 class Map extends React.Component<IStyledComponent & Props, State> {
   state: State = {
@@ -125,7 +124,7 @@ class Map extends React.Component<IStyledComponent & Props, State> {
   };
 
   private buildWheelMapBaseUrl = () => {
-    return `${Meteor.absoluteUrl()}/proxy/wheelmap/`;
+    return `${Meteor.absoluteUrl('proxy/wheelmap')}`;
   };
 
   private onMoveEnd = (options: { zoom: number, lat: number, lon: number, bbox: L.LatLngBounds }) => {
