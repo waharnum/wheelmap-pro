@@ -152,8 +152,8 @@ class ShowEventPage extends React.Component<Props> {
                            logo={organization.logo}
                            title={t`Place`}/>;
 
-      // TODO const actions = (isMappingFlow && feature) ? EditPlaceAction(router, organization, event, feature) : null;
-      content = <PlaceDetailsPanel featureId={params.place_id} actions={null /* actions */}/>;
+      const actions = (feature: IPlaceInfo) => (isMappingFlow && feature) ? EditPlaceAction(router, organization, event, feature) : null;
+      content = <PlaceDetailsPanel featureId={params.place_id} actions={actions}/>;
       forceSidePanelOpen = true;
       canDismissCardPanel = true;
       // TODO center map to POI on first render

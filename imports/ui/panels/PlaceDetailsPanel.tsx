@@ -18,7 +18,7 @@ import {LoadFeatureForComponent} from '../components/LoadFeatureForComponent';
 
 type Props = {
   feature: IPlaceInfo;
-  actions?: React.ReactNode;
+  actions?: React.ReactNode | ((feature: IPlaceInfo) => React.ReactNode);
 } & IStyledComponent;
 
 function fetchCategory(feature: IPlaceInfo,
@@ -33,10 +33,7 @@ function fetchCategory(feature: IPlaceInfo,
     return;
   }
 
-  const categoryId =
-    // wheelmap object, also contains category, so check this first
-    ((properties as any).node_type && (properties as any).node_type.identifier) ||
-    properties.category;
+  const categoryId = properties.category;
   if (!categoryId) {
     callback({category: null});
     return;
@@ -88,7 +85,7 @@ class PlaceDetailsPanel extends React.Component<Props> {
         />
         {actions &&
         <section className="place-actions">
-          {actions}
+          {typeof actions === 'function' ? actions(feature) : actions}
         </section>
         }
         <BasicAccessibility properties={properties}/>
