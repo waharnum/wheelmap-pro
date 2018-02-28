@@ -151,11 +151,9 @@ class ShowEventPage extends React.Component<Props> {
                            prefixTitle={organization.name}
                            logo={organization.logo}
                            title={t`Place`}/>;
-      // TODO async fetch feature
-      const feature = accessibilityCloudFeatureCache.getCachedFeature(params.place_id);
-      const actions = (isMappingFlow && feature) ? EditPlaceAction(router, organization, event, feature) : null;
-      content = feature ? <PlaceDetailsPanel feature={feature} actions={actions}/> :
-        <Loading>{t`Place not found…`}</Loading>;
+
+      // TODO const actions = (isMappingFlow && feature) ? EditPlaceAction(router, organization, event, feature) : null;
+      content = <PlaceDetailsPanel featureId={params.place_id} actions={null /* actions */}/>;
       forceSidePanelOpen = true;
       canDismissCardPanel = true;
       // TODO center map to POI on first render

@@ -61,9 +61,7 @@ class ShowOrganizationPage extends React.Component<Props, State> {
                            prefixTitle={organization.name}
                            logo={organization.logo}
                            title={t`Place`}/>;
-      // TODO async fetch feature
-      const feature = accessibilityCloudFeatureCache.getCachedFeature(params.place_id);
-      content = <PlaceDetailsPanel feature={feature}/>;
+      content = <PlaceDetailsPanel featureId={params.place_id}/>;
       canDismissFromSidePanel = false;
       canDismissCardPanel = true;
       forceSidePanelOpen = true;

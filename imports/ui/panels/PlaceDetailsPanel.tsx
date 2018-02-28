@@ -3,6 +3,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import {IStyledComponent} from '../components/IStyledComponent';
 
+
 import NodeHeader from 'wheelmap-react/lib/components/NodeToolbar/NodeHeader';
 import BasicAccessibility from 'wheelmap-react/lib/components/NodeToolbar/BasicAccessibility';
 import AccessibilityDetails from 'wheelmap-react/lib/components/NodeToolbar/AccessibilityDetails';
@@ -10,15 +11,17 @@ import AccessibilityExtraInfo from 'wheelmap-react/lib/components/NodeToolbar/Ac
 import NodeFooter from 'wheelmap-react/lib/components/NodeToolbar/NodeFooter';
 import LicenseHint from 'wheelmap-react/lib/components/NodeToolbar/LicenseHint';
 import Categories from 'wheelmap-react/lib/lib/Categories';
-import {IPlaceInfo} from '../../both/api/place-infos/place-infos';
+import {getFeatureId} from 'wheelmap-react/lib/lib/Feature';
 
+import {IPlaceInfo} from '../../both/api/place-infos/place-infos';
+import {LoadFeatureForComponent} from '../components/LoadFeatureForComponent';
 
 type Props = {
-  feature?: IPlaceInfo | null;
+  feature: IPlaceInfo;
   actions?: React.ReactNode;
 } & IStyledComponent;
 
-function fetchCategory(feature: IPlaceInfo | undefined | null,
+function fetchCategory(feature: IPlaceInfo,
                        callback: (result: { category?: any, parentCategory?: any }) => void) {
   if (!feature) {
     callback({category: null});
@@ -66,7 +69,7 @@ class PlaceDetailsPanel extends React.Component<Props> {
       return null;
     }
 
-    const featureId = feature._id || 'unknown-id';
+    const featureId = getFeatureId(feature) || 'unknown-id';
     const properties = feature.properties;
     const category = this.state.category;
     const parentCategory = this.state.parentCategory;
@@ -100,7 +103,7 @@ class PlaceDetailsPanel extends React.Component<Props> {
   }
 };
 
-export default styled(PlaceDetailsPanel)`  
+export const StyledPlaceDetailsPanel = styled(PlaceDetailsPanel)`  
   // shared between all panels
   padding: 10px;
   flex: 1;
@@ -114,4 +117,6 @@ export default styled(PlaceDetailsPanel)`
     padding: 0 25px;
   }
 `;
+
+export default LoadFeatureForComponent(StyledPlaceDetailsPanel);
 
