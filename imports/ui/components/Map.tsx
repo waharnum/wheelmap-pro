@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import * as React from 'react';
 import {PropTypes} from 'react';
-import {isEqual, reverse} from 'lodash';
+import {isEqual} from 'lodash';
 
 import ReactWheelmapMap from 'wheelmap-react/lib/components/Map/Map';
 import HighlightableMarker from 'wheelmap-react/lib/components/Map/HighlightableMarker';
@@ -38,6 +38,14 @@ export type Props = {
 interface State {
   leafletMap: L.Map | null;
 }
+
+import config from 'wheelmap-react/lib/lib/config';
+
+config.wheelmapApiKey = Meteor.settings.public.wheelmap;
+config.accessibilityCloudAppToken = Meteor.settings.public.accessibilityCloud;
+config.accessibilityCloudBaseUrl = 'https://www.accessibility.cloud/';
+config.wheelmapApiBaseUrl = `${Meteor.absoluteUrl()}/proxy/wheelmap/`;
+
 
 class Map extends React.Component<IStyledComponent & Props, State> {
   state: State = {
