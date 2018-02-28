@@ -45,6 +45,8 @@ import '../imports/both/api/place-infos/server/indexing';
 import '../imports/both/api/place-infos/server/privileges';
 import '../imports/both/api/place-infos/server/methods';
 
+import '../imports/both/api/place-infos/server/wheelmap-proxy';
+
 // register categories
 import '../imports/both/api/categories/server/publications';
 import '../imports/both/api/categories/server/privileges';
