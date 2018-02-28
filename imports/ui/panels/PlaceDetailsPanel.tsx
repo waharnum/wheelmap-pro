@@ -32,7 +32,11 @@ function fetchCategory(feature: IPlaceInfo,
     callback({category: null});
     return;
   }
-  const categoryId = properties.category;
+
+  const categoryId =
+    // wheelmap object, also contains category, so check this first
+    ((properties as any).node_type && (properties as any).node_type.identifier) ||
+    properties.category;
   if (!categoryId) {
     callback({category: null});
     return;
