@@ -92,6 +92,15 @@ export function LoadFeatureForComponent<TOriginalProps>
           return;
         }
 
+        if (isWheelmap) {
+          // fix weird properties on wheelmap objects
+          const properties = feature.properties;
+          if (properties) {
+            const categoryId = (properties.node_type && properties.node_type.identifier);
+            properties.category = categoryId;
+          }
+        }
+
         this.setState({feature, loading: false});
         this.request = null;
       }, (reason) => {
