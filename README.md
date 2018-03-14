@@ -27,7 +27,7 @@ meteor npm install
 meteor 
 
 # to start with local settings
-# meteor --settings settings/local.json
+# meteor --settings settings/local-example.json
 
 # now open http://localhost:3000/ in the browser of your choice!
 
